@@ -1,0 +1,113 @@
+/* Header*/
+
+.header-container {
+    display: flex;
+    height: 54px;
+    margin-top: 10px;
+    align-items: center;
+    border-bottom: 1px solid rgba(217, 217, 217, 1);
+  }
+  
+  .logo-text {
+    white-space: nowrap;
+    margin-right: 60px;
+    color: black;
+    font-size: 16px;
+    font-weight: normal;
+    line-height: 22.4px;
+    text-decoration: none;
+  }
+  
+  
+  .bodymsg {
+    text-align: left;
+    margin-top: 40px;
+    font-size: 18px;
+  }
+  
+  .new {
+    margin-top: 60px;
+  }
+  
+  body {
+    margin: 0;
+    padding: 24px;
+    background: #fafafa;
+    color: #111;
+  }
+  
+  .container {
+    margin-left: 120px;
+    margin-right: 0px;
+    display: flex;
+    gap: 40px;
+  }
+  
+  .left-box {
+    width: 300px;
+    height: 420px;
+    margin-right: 120px;
+    background: #eaeaea;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #888;
+  }
+  
+  
+  .right-box {
+    flex: 1;
+  }
+  
+  h1 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  
+.action-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+.btn-next,
+.btn-back {
+    
+    padding: 12px 24px;
+    border-radius: 8px;
+    border: 1px solid;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    min-height: 32px;
+}
+
+.btn-next {
+    background-color: #02020c;
+    border-color: #020311;
+    color: white;
+}
+
+.btn-back {
+    border-color: #020211;
+    color: #050505;
+}
+  
+  
+  .footer-wrap {
+    display: flex;
+    justify-content: space-around;
+    border-top: 1px solid rgba(217, 217, 217, 1);
+    padding-top: 10px;
+    margin-top: 30px;
+  }
+  
+  /* Footer Styles */
+  footer {
+    text-align: center;
+    margin-top: 50px;
+  }

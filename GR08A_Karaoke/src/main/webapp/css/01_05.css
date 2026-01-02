@@ -1,0 +1,87 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+/* Header*/
+
+.header-container {
+    display: flex;
+    height: 54px;
+    margin-top: 10px;
+    align-items: center;
+    border-bottom: 1px solid rgba(217, 217, 217, 1);
+}
+
+.logo-text {
+    white-space: nowrap;
+    margin-right: 60px;
+    color: black;
+    font-size: 16px;
+    font-weight: normal;
+    line-height: 22.4px;
+    text-decoration: none;
+}
+
+
+.bodymsg {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+	align-items: center;
+    font-size: 18px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+th, td {
+    border: 1px solid #999;
+    padding: 8px 12px;
+    text-align: center;
+}
+th {
+    background-color: #f2f2f2;
+}
+.btn {
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    color: rgb(5, 5, 5);
+}
+.edit {
+    background-color: #b3b6b3;
+    margin-bottom: 5px;
+}
+.delete {
+    background-color: #e9603e; 
+}
+
+.action-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+.btn-back {
+    padding: 12px 24px;
+    border-radius: 8px;
+    border: 1px solid;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    min-height: 32px;
+}
+
+
+.btn-back {
+    border-color: #020211;
+    color: #0d0d0e;
+}
+/* Footer Styles */
+footer {
+    text-align: center;
+    margin-top: 300px;
+}
