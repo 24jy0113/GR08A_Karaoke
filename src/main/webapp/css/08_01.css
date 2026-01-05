@@ -1,0 +1,88 @@
+/* Header*/
+
+.header-container {
+    display: flex;
+    height: 54px;
+    margin-top: 10px;
+    align-items: center;
+    border-bottom: 1px solid rgba(217, 217, 217, 1);
+}
+
+.logo-text {
+    white-space: nowrap;
+    margin-right: 60px;
+    color: black;
+    font-size: 16px;
+    font-weight: normal;
+    line-height: 22.4px;
+    text-decoration: none;
+}
+
+
+.bodymsg {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 18px;
+}
+.msg{
+    margin-bottom: 30px;
+}
+.new {
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+input{
+    width: 30%;
+    height: 40px;
+}
+.search {
+    color: white;
+    margin-left: 10px;
+    padding: 5px 15px;
+    border-radius: 5px;
+    background-color: #0a0a0a;
+    cursor: pointer;
+    
+}
+.searchbox {
+    width: 300px;
+    height: 30px;
+    font-size: 16px;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.action-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+.btn-next,
+.btn-back {
+    padding: 12px 24px;
+    border-radius: 8px;
+    border: 1px solid;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    min-height: 32px;
+}
+
+.btn-next {
+    background-color: #02020c;
+    border-color: #020311;
+    color: white;
+}
+
+.btn-back {
+    border-color: #020211;
+    color: #141414;
+}
+
+/* Footer Styles */
+footer {
+    text-align: center;
+    margin-top: 50px;
+}
