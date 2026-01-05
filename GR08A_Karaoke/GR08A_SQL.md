@@ -240,6 +240,4 @@ mysql> SELECT * FROM user;
 3 rows in set (0.00 sec)
 
 
-
-mysql> 
 ```
