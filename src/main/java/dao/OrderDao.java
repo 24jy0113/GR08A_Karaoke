@@ -20,7 +20,7 @@ public class OrderDao {
 	public void delOrder(Order order) {
 	}
 
-	public ArrayList<Order> searchOederByRoom(int room) throws Exception {
+	public ArrayList<Order> searchOederByRoom(int room_id) throws Exception {
 		// プリペアードステートメントの参照変数.
 		PreparedStatement preState = null;
 
@@ -39,21 +39,26 @@ public class OrderDao {
 			con = DatabaseManager.connect();
 
 			// SQL文の作成
-			String sql = "SELECT order_id,total,room_id,item_creating_status_name,receiving_number "
+			String sql = "SELECT order_id,total,orders.room_id,room_number,receiving_number,"
+					+ "orders.item_creating_status_id,item_creating_status_name "
 					+ "FROM orders "
 					+ "INNER JOIN item_creating_status "
-					+ "ON orders.item_creating_status_id=item_creating_status.item_creating_status_id "
-					+ "WHERE room_id=?;";
+					+ "ON orders.item_creating_status_id = item_creating_status.item_creating_status_id "
+					+ "INNER JOIN room "
+					+ "ON orders.room_id = room.room_id "
+					+ "WHERE orders.room_id=?;";
 
 			// プリペアードステートメントを使用してSQL文を実行
 			preState = con.prepareStatement(sql);
-			preState.setInt(1, room);
+			preState.setInt(1, room_id);
 			resSet = preState.executeQuery();
 
 			// 検索結果からOrderインスタンスを生成
 			while (resSet.next()) {
 				list.add(new Order(resSet.getInt("order_id"), searchOrderItem(resSet.getInt("order_id")),
-						resSet.getInt("total"), resSet.getInt("room")));
+						resSet.getInt("total"), resSet.getInt("orders.room_id"), resSet.getInt("room"),
+						resSet.getInt("receiving_number"), resSet.getInt("orders.item_creating_status_id"),
+						resSet.getString("orders.item_creating_status_name")));
 			}
 
 		} catch (SQLException e) {
@@ -146,7 +151,7 @@ public class OrderDao {
 					option.add(resSet2.getInt("option_detail_id"));
 				}
 				// 検索結果からOrderインスタンスを生成.
-				list.add(new OrderItem(resSet1.getInt("item_id"), new Item(), resSet1.getInt("count"),
+				list.add(new OrderItem(resSet1.getInt("item_id"), , resSet1.getInt("count"),
 						option.stream().mapToInt(Integer::intValue).toArray(), resSet1.getInt("sub_total")));
 			}
 		} catch (SQLException e) {
