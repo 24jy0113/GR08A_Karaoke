@@ -20,7 +20,7 @@ public class OrderDao {
 	public void delOrder(Order order) {
 	}
 
-	public ArrayList<Order> searchOederByRoom(int room_id) throws Exception {
+	public ArrayList<Order> searchOederByRoom(int roomId) throws Exception {
 		// プリペアードステートメントの参照変数.
 		PreparedStatement preState = null;
 
@@ -50,7 +50,7 @@ public class OrderDao {
 
 			// プリペアードステートメントを使用してSQL文を実行
 			preState = con.prepareStatement(sql);
-			preState.setInt(1, room_id);
+			preState.setInt(1, roomId);
 			resSet = preState.executeQuery();
 
 			// 検索結果からOrderインスタンスを生成
@@ -88,9 +88,79 @@ public class OrderDao {
 			DatabaseManager.close(con);
 
 		}
+		return list;
 	}
 
-	public ArrayList<Order> searchOederByStatus(String status) {
+	public ArrayList<Order> searchOederByStatus(int statusId) throws Exception {
+		// プリペアードステートメントの参照変数.
+		PreparedStatement preState = null;
+
+		// データベース結果セットの参照変数.
+		ResultSet resSet = null;
+
+		// 返却値の参照変数を初期化.
+		ArrayList<Order> list = null;
+
+		// データベースの接続の参照変数.
+		Connection con = null;
+
+		try {
+
+			// データベース接続
+			con = DatabaseManager.connect();
+
+			// SQL文の作成
+			String sql = "SELECT order_id,total,orders.room_id,room_number,receiving_number,"
+					+ "orders.item_creating_status_id,item_creating_status_name "
+					+ "FROM orders "
+					+ "INNER JOIN item_creating_status "
+					+ "ON orders.item_creating_status_id = item_creating_status.item_creating_status_id "
+					+ "INNER JOIN room "
+					+ "ON orders.room_id = room.room_id "
+					+ "WHERE orders.item_creating_status_id=?;";
+
+			// プリペアードステートメントを使用してSQL文を実行
+			preState = con.prepareStatement(sql);
+			preState.setInt(1, statusId);
+			resSet = preState.executeQuery();
+
+			// 検索結果からOrderインスタンスを生成
+			while (resSet.next()) {
+				list.add(new Order(resSet.getInt("order_id"), searchOrderItem(resSet.getInt("order_id")),
+						resSet.getInt("total"), resSet.getInt("orders.room_id"), resSet.getInt("room"),
+						resSet.getInt("receiving_number"), resSet.getInt("orders.item_creating_status_id"),
+						resSet.getString("orders.item_creating_status_name")));
+			}
+
+		} catch (SQLException e) {
+
+			// デバッグ用のスタックトレース
+			e.printStackTrace();
+
+			// フロントエンド用のエラーメッセージ
+			String errMsg = "DB接続に失敗しました！<br>管理者に連絡してください。";
+
+			// 例外を投げる
+			throw new Exception(errMsg);
+
+		} finally {
+
+			// 結果のリソースの開放
+			if (resSet != null) {
+				resSet.close();
+			}
+
+			// プリペアードステートメントのリソースの開放
+			if (preState != null) {
+				preState.close();
+			}
+
+			// 接続を切断する
+			DatabaseManager.close(con);
+
+		}
+		return list;
+
 	}
 
 	public void addOrderItem(OrderItem item, Order order) {
