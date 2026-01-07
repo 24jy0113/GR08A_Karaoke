@@ -31,7 +31,7 @@ public class LoginServlet extends HttpServlet {
 		boolean isValidUser = userDao.validate(userId,password);
 		
 
-		// 仮の認証処理（本来はDAOでDB確認）
+		// 仮の認証処理（本来はDAOでDB確認）test
 		if ("SF0112".equals(userId) && "12345678".equals(password)) {
 			// ログイン成功
 			request.getRequestDispatcher("index_select.jsp")
