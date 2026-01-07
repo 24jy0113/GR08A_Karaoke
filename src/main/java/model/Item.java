@@ -11,16 +11,17 @@ public class Item {
 	private int price;
 	private String image;
 	private boolean stock;
-	private ArrayList<String> option;
-	private ArrayList<Integer> optionPrice;
+	private ArrayList<Integer> optionId;
+	private ArrayList<ArrayList<String>> optionName;
+	private ArrayList<ArrayList<Integer>> optionPrice;
 
 	public Item(int id, String name, String category, int itemNo, int price, String image, boolean stock) {
-		this(id, name, category, itemNo, price, image, stock, new ArrayList<>(), new ArrayList<>());
+		this(id, name, category, itemNo, price, image, stock, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 	}
 
 	public Item(int id, String name, String category, int itemNo, int price, String image, boolean stock,
-			ArrayList<String> option,
-			ArrayList<Integer> optionPrice) {
+			ArrayList<Integer> optionId, ArrayList<ArrayList<String>> optionName,
+			ArrayList<ArrayList<Integer>> optionPrice) {
 		this.id = id;
 		itemName = name;
 		this.category = category;
@@ -28,14 +29,15 @@ public class Item {
 		this.price = price;
 		this.image = image;
 		this.stock = stock;
-		this.option = option;
+		this.optionId = optionId;
+		this.optionName = optionName;
 		this.optionPrice = optionPrice;
 	}
-	
+
 	public void isOption() {
-		
+
 	}
-	
+
 	public int getId() {
 		return id;
 	}
@@ -76,30 +78,50 @@ public class Item {
 		this.stock = stock;
 	}
 
-	public ArrayList<String> getOptionList() {
-		return option;
+	public ArrayList<Integer> getOptionIdList() {
+		return optionId;
 	}
 
-	public String getOption(int i) {
-		return option.get(i);
+	public int getOptionId(int i) {
+		return optionId.get(i).intValue();
 	}
 
-	public void setOptionList(ArrayList<String> option) {
-		this.option = option;
+	public void setOptionIdList(ArrayList<Integer> optionId) {
+		this.optionId = optionId;
 	}
 
-	public ArrayList<Integer> getOptionPriceList() {
+	public ArrayList<ArrayList<String>> getOptionNameList() {
+		return optionName;
+	}
+
+	public ArrayList<String> getOptionNameList(int i) {
+		return optionName.get(i);
+	}
+
+	public String getOptionName(int i, int j) {
+		return optionName.get(i).get(j);
+	}
+
+	public void setOptionNameList(ArrayList<ArrayList<String>> optionName) {
+		this.optionName = optionName;
+	}
+
+	public ArrayList<ArrayList<Integer>> getOptionPriceList() {
 		return optionPrice;
 	}
 
-	public int getOptionPrice(int i) {
+	public ArrayList<Integer> getOptionPriceList(int i) {
 		return optionPrice.get(i);
 	}
 
-	public void setOptionPriceList(ArrayList<Integer> optionPrice) {
+	public int getOptionPrice(int i, int j) {
+		return optionPrice.get(i).get(j).intValue();
+	}
+
+	public void setOptionPriceList(ArrayList<ArrayList<Integer>> optionPrice) {
 		this.optionPrice = optionPrice;
 	}
-	
+
 	public int getCategoryId() {
 		return categoryId;
 	}
