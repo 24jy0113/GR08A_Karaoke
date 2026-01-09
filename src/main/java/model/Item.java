@@ -15,15 +15,22 @@ public class Item {
 	private ArrayList<ArrayList<String>> optionName;
 	private ArrayList<ArrayList<Integer>> optionPrice;
 
-	public Item(int id, String name, String category, int itemNo, int price, String image, boolean stock) {
-		this(id, name, category, itemNo, price, image, stock, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+	public Item() {
 	}
 
-	public Item(int id, String name, String category, int itemNo, int price, String image, boolean stock,
+	public Item(int id, String name, int categoryId, String category, int itemNo, int price, String image,
+			boolean stock) {
+		this(id, name, categoryId, category, itemNo, price, image, stock, new ArrayList<>(), new ArrayList<>(),
+				new ArrayList<>());
+	}
+
+	public Item(int id, String name, int categoryId, String category, int itemNo, int price, String image,
+			boolean stock,
 			ArrayList<Integer> optionId, ArrayList<ArrayList<String>> optionName,
 			ArrayList<ArrayList<Integer>> optionPrice) {
 		this.id = id;
 		itemName = name;
+		this.categoryId = categoryId;
 		this.category = category;
 		this.itemNo = itemNo;
 		this.price = price;
