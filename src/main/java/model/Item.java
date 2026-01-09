@@ -18,6 +18,19 @@ public class Item {
 	public Item() {
 	}
 
+	public Item(String name, int categoryId, String category, int itemNo, int price, String image,
+			boolean stock,
+			ArrayList<Integer> optionId, ArrayList<ArrayList<String>> optionName,
+			ArrayList<ArrayList<Integer>> optionPrice) {
+		this(-1, name, categoryId, category, itemNo, price, image, stock, optionId, optionName, optionPrice);
+	}
+	
+	public Item(String name, int categoryId, String category, int itemNo, int price, String image,
+			boolean stock) {
+		this(-1, name, categoryId, category, itemNo, price, image, stock, new ArrayList<>(), new ArrayList<>(),
+				new ArrayList<>());
+	}
+
 	public Item(int id, String name, int categoryId, String category, int itemNo, int price, String image,
 			boolean stock) {
 		this(id, name, categoryId, category, itemNo, price, image, stock, new ArrayList<>(), new ArrayList<>(),
