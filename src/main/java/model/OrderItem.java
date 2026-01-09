@@ -84,7 +84,7 @@ public class OrderItem {
 	private void calcTotal() {
 		int optionSum = 0;
 		for (int i = 0; i < option.length; i++) {
-			optionSum += item.getOptionPrice(i);
+			optionSum += item.getOptionPrice(i, option[i]);
 		}
 		total = (item.getPrice() + optionSum) * count;
 	}
