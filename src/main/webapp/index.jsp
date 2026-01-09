@@ -11,9 +11,9 @@
 	<!-- Header -->
 	<header>
 		<div class="header-container">
-			<a href="./index.html"> <img src="./img/logo.png" alt="logo"
+			<a href="./index.jsp"> <img src="./img/logo.png" alt="logo"
 				width="44" height="44">
-			</a> <a href="index.html" class="logo-text">七福サウンド</a>
+			</a> <a href="index.jsp" class="logo-text">七福サウンド</a>
 		</div>
 	</header>
 	<main>

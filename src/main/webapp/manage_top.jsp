@@ -20,7 +20,7 @@
 				<ul class="gnav_list">
 					<li><img class="user_img" src="./img/user.png" alt="cart"
 						width="25" height="25">佐藤 花子</li>
-					<li><a class="gnav_botton" href="./index.html">ログアウト</a></li>
+					<li><a class="gnav_botton" href="./index.jsp">ログアウト</a></li>
 				</ul>
 			</nav>
 		</div>
@@ -29,17 +29,17 @@
 		<div>
 			<p class="bodymsg">利用する項目を選択してください</p>
 			<div class="container">
-				<a class="button" href="08_01商品変更検索画面-管理者.html">商品情報</a>
+				<a class="button" href="modify_search.jsp">商品情報</a>
 
 			</div>
 			<div class="container">
 
-				<a class="button" href="10_03予約情報画面-管理者.html">予約情報</a>
+				<a class="button" href="res_list_manager.jsp">予約情報</a>
 
 			</div>
 			<div class="container">
 
-				<a class="button" href="01_03管理者アカウント確認画面.html">アカウント情報</a>
+				<a class="button" href="re_login.jsp">アカウント情報</a>
 			</div>
 		</div>
 	</main>

@@ -20,7 +20,7 @@
 				<ul class="gnav_list">
 					<li><img class="user_img" src="./img/user.png" alt="cart"
 						width="25" height="25">佐藤 花子</li>
-					<li><a class="gnav_botton" href="./index.html">ログアウト</a></li>
+					<li><a class="gnav_botton" href="./index.jsp">ログアウト</a></li>
 				</ul>
 			</nav>
 		</div>
@@ -30,7 +30,7 @@
 			<h1 class="bodymsg">アカウント登録</h1>
 			<p style="text-align: center; margin-bottom: 30px;">下記の情報を入力してください</p>
 			<h1>アカウント情報</h1>
-			<form action="01_02_01アカウント登録確認画面.html" method="get"
+			<form action="sign_up_confirm.jsp" method="get"
 				onsubmit="return validateForm()">
 				<div class="form-row">
 					<label>権限</label>
@@ -68,7 +68,7 @@
 					style="text-align: center; color: chocolate;"></span><br>
 				<div class="action-buttons">
 					<button type="button" class="btn-back"
-						onclick="location.href='01_05アカウント情報一覧画面.html'">キャンセル</button>
+						onclick="location.href='account_search_result.jsp'">キャンセル</button>
 					<button type="submit" class="btn-next">確認する</button>
 				</div>
 			</form>
