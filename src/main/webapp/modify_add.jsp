@@ -34,21 +34,21 @@
             <div class="right-box">
                 <div class="input-row">
                     <label>商品名</label>
-                    <input id="menuInput" type="text" />
+                    <input id="productName" type="text" />
                 </div>
                 <div class="input-row">
                     <label>単価</label>
-                    <input id="menuInput" type="text" />　円　　＊税込価格
+                    <input id="price" type="text" />　円　　＊税込価格
                 </div>
                 <div class="input-row">
                     <label>商品画像</label>
                     <input type="file" name="image" accept=".png, .jpg, .jpeg">
-                    <button type="submit">　<img src="./img/upload.png" alt="upload" style="border: none;"></button>
+                    <button type="button">　<img src="./img/upload.png" alt="upload" style="border: none;"></button>
                     <p>＊JPG, JPEG, PNGのみ</p>
                 </div>
                 <div class="input-row">
                     <label>注文番号</label>
-                    <input id="menuInput" type="text" />
+                    <input id="orderNo" type="text" />
                 </div>
                 <div class="input-row">
                     <label>カテゴリー</label>
@@ -64,7 +64,7 @@
                     <label><input type="radio" name="stock" value="あり" checked> あり</label>
                     <label><input type="radio" name="stock" value="なし"> なし</label>
                 </div>
-                <div class="input-row">
+                <div class="input-row" id="option">
                     <label>オプション</label>
                     <label><input type="radio" name="option" value="あり" checked> あり</label>
                     <label><input type="radio" name="option" value="なし"> なし</label>
@@ -73,33 +73,16 @@
                 <div id="optionArea">
                     <!-- ★最初のオプションブロック（コピー元テンプレート） -->
                     <div class="option-block">
-                        <label>オプション名</label>
-                        <input type="text" class="option-name">
-                        <div class="choice-row">
-                            選択肢1：<input type="text" class="choice1">
-                            価格(税込)：<input type="number" class="price1">
-                        </div>
-                        <div class="choice-row">
-                            選択肢2：<input type="text" class="choice2">
-                            価格(税込)：<input type="number" class="price2">
-                        </div>
-                        <button id="addSelectBtn" class="add-select-btn">選択肢を追加</button>
-                        <button class="delete-btn"><img src="./img/delete.svg" alt="delete"></button>
+                        <label>オプションを選択してください</label>
+                        <select class="category-select">
+	                        <option value="drinkSize">ドリンクサイズ</option>
+	                        <option value="S">S</option>
+	                        <option value="M">M</option>
+	                        <option value="L">L</option>
+                    	</select>
+                    	 <button class="delete-btn" type="button"><img src="./img/delete.svg" alt="delete"></button>
                     </div>
-                    <div class="option-block">
-                        <label>オプション名</label>
-                        <input type="text" class="option-name">
-                        <div class="choice-row">
-                            選択肢1：<input type="text" class="choice1">
-                            価格(税込)：<input type="number" class="price1">
-                        </div>
-                        <div class="choice-row">
-                            選択肢2：<input type="text" class="choice2">
-                            価格(税込)：<input type="number" class="price2">
-                        </div>
-                        <button id="addSelectBtn" class="add-select-btn">選択肢を追加</button>
-                        <button class="delete-btn"><img src="./img/delete.svg" alt="delete"></button>
-                    </div>
+                    
                 </div>
                 <!-- ▼ オプション追加ボタン ▼ -->
                 <button id="addOptionBtn" class="add-option-btn">オプションを追加</button>
@@ -113,10 +96,10 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            const radios = document.querySelectorAll('input[name="option_flag"]');
+            const radios = document.querySelectorAll('input[name="option"]');
             const optionArea = document.getElementById("optionArea");
             function toggleOptionArea() {
-                const selected = document.querySelector('input[name="option_flag"]:checked').value;
+                const selected = document.querySelector('input[name="option"]:checked').value;
                 if (selected === "なし") {
                     optionArea.style.display = "none";
                     // 入力値をクリアしたい場合（不要なら消す）
@@ -132,23 +115,27 @@
         });
         // 2. オプション追加
         // -------------------------
+        const addOptionBtn = document.getElementById("addOptionBtn");
+        const optionArea = document.getElementById("optionArea");
+
         addOptionBtn.addEventListener("click", function () {
-            // 既存の最初のブロックをコピー
-            const firstBlock = document.querySelector(".option-block");
-            const newBlock = firstBlock.cloneNode(true);
-            // 中身を空にする
-            newBlock.querySelectorAll("input").forEach(input => input.value = "");
-            // 削除ボタンにイベント再設定
-            newBlock.querySelector(".delete-btn").addEventListener("click", function () {
-                if (document.querySelectorAll(".option-block").length > 1) {
-                    this.parentElement.remove();
-                } else {
-                    alert("最後のオプションは削除できません。");
-                }
-            });
-            // 追加
-            optionArea.appendChild(newBlock);
-        });
+        const firstBlock = document.querySelector(".option-block");
+        const newBlock = firstBlock.cloneNode(true);
+
+        newBlock.querySelectorAll("input").forEach(el => el.value = "");
+        newBlock.querySelectorAll("select").forEach(el => el.selectedIndex = 0);
+
+        newBlock.querySelector(".delete-btn").addEventListener("click", function () {
+        if (document.querySelectorAll(".option-block").length > 1) {
+            newBlock.remove();
+        } else {
+            alert("最後のオプションは削除できません。");
+        }
+    });
+
+    optionArea.appendChild(newBlock);
+});
+
         // -------------------------
         // 3. 最初の削除ボタンにも動作を付ける
         // -------------------------

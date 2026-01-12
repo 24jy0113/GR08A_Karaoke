@@ -59,7 +59,16 @@ h1 {
     text-align: center;
 }
 
-
+input{
+    margin-top: 5px;
+    width: 200px;
+    padding: 8px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    background-color: white;
+    cursor: pointer;
+}
 
 .input-row {
     display: flex;
@@ -79,6 +88,11 @@ h1 {
     padding: 4px;
 }
 
+input[type="radio"] {
+    margin: 0;
+    width: auto;      
+    padding: 0;
+}
 #menuInput {
     width: 260px;
     padding: 12px;

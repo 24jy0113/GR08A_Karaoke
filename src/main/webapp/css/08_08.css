@@ -61,23 +61,20 @@ h1 {
 
 .input-row {
     display: flex;
-    align-items: center; 
-    margin-bottom: 10px;
-}
+    align-items: center;
+    gap: 14px;
+    margin-top: 10px;
 
-.input-row > label:first-child {
-    width: 100px; 
-    display: inline-block;
 }
 
 .input-row label {
-    display: flex;
-    align-items: center;
-    gap: 0px; 
+    width: 80px;         
+    font-weight: bold;
 }
 
-.input-row {
-    column-gap: 0px;  
+.input-row input {
+    flex: 0.5;              
+    padding: 4px;
 }
 
 input[type="radio"] {
@@ -92,7 +89,7 @@ input[type="radio"] {
 }
 
 
-#menuInput {
+#productName,#orderNo,#price {
     width: 260px;
     padding: 12px;
     font-size: 18px;
@@ -100,17 +97,20 @@ input[type="radio"] {
     border-radius: 10px;
     text-align: center;
 }
+
+#option{
+    border-bottom: 1px solid #ddd;
+}
 .option-block {
-    border-top: 1px solid #ddd;
+    
     border-bottom: 1px solid #ddd;
     padding: 15px;
     margin-bottom: 15px;
     border-radius: 5px;
 }
 .delete-btn {
-    margin-top: 10px;
     border: none;
-    padding: 5px 10px;
+    margin-left: 30px;
     cursor: pointer;
 }
 .add-option-btn {
@@ -138,13 +138,6 @@ button {
     color: inherit;
     background: none
   }
-.field-row {
-    display: flex;
-    align-items: center;
-    margin-bottom: 12px;
-    gap: 20px;
-}
-
 .category-select {
     width: 200px;
     padding: 8px;
@@ -156,7 +149,7 @@ button {
 }
 input{
     margin-top: 5px;
-    width: 200px;
+    width: 50%;
     padding: 8px;
     font-size: 16px;
     border: 2px solid #ccc;
