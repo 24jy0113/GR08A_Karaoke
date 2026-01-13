@@ -3,7 +3,7 @@ package model;
 import java.sql.Timestamp;
 
 public class User {
-	private String id;
+	private String userId;
 	private String userName;
 	private String roleName;
 	private String permissions;
@@ -13,23 +13,31 @@ public class User {
 	public User() {
 	}
 
-	public User(String id, String userName, String roleName, String permissions, String passwordHash,
+	public User(String userId, String userName, String roleName, String permissions, String passwordHash,
 			Timestamp lastLoginTime) {
 		super();
-		this.id = id;
+		this.userId = userId;
 		this.userName = userName;
 		this.roleName = roleName;
 		this.permissions = permissions;
 		this.passwordHash = passwordHash;
 		this.lastLoginTime = lastLoginTime;
 	}
+	
+	public boolean isAdmin() {
+        return "管理者".equals(roleName);
+    }
 
-	public String getId() {
-		return id;
+    public boolean hasPermission(String perm) {
+        return permissions != null && permissions.contains(perm);
+    }
+
+	public String getUserId() {
+		return userId;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 	public String getUserName() {

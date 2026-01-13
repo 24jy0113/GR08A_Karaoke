@@ -28,13 +28,13 @@
 		<div>
 			<p class="bodymsg">フロント・フロア・キッチン・顧客の中から利用する項目を選択してください</p>
 			<div class="container">
-				<a class="button" href="09_01表示選択画面ーフロントのトップ画面.html">フロント用</a> <a
-					class="button" href="12_05伝票一覧-フロア.html">フロア用</a>
+				<a class="button" href="front_top.jsp">フロント用</a> <a
+					class="button" href="floor_order_list.jsp">フロア用</a>
 
 			</div>
 			<div class="container">
-				<a class="button" href="12_01注文情報確認ーキッチン.html">キッチン用</a> <a
-					class="button" href="02_01部屋番号入力画面-フロア.html">顧客用</a>
+				<a class="button" href="kitchen_order_list.jsp">キッチン用</a> <a
+					class="button" href="room_search.jsp">顧客用</a>
 			</div>
 			<div class="container">
 				<a class="button" href="manage_top.jsp">管理者用</a>

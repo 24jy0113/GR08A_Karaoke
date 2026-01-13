@@ -19,12 +19,12 @@
 	<main>
 		<p>アカウントIDとパスワードを入力し、ログインしてください</p>
 		<h2>アカウントログイン</h2>
-		<form method="post" action="LoginServlet">
+		<form method="post" action="<%= request.getContextPath() %>/LoginServlet">
 			<table>
 				<tr>
 					<th>アカウントID</th>
 					<td><input type="text" name="userId" required
-						placeholder="例：00112"></td>
+						placeholder="例：000001"></td>
 				</tr>
 				<tr>
 					<th>パスワード</th>

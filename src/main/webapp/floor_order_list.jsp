@@ -14,8 +14,8 @@ if (user == null) {
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>注文情報確認ーキッチン</title>
-    <link rel="stylesheet" type="text/css" href="./css/12_01.css">
+    <title>伝票一覧-フロント</title>
+    <link rel="stylesheet" type="text/css" href="./css/12_03.css">
     <link rel="stylesheet" type="text/css" href="./css/header.css">
 </head>
 <body>
@@ -31,7 +31,7 @@ if (user == null) {
             </nav>
         </div>
     </header>
-    <h1>注文一覧</h1>
+    <h1>調理済み一覧</h1>
     <div class="card-container">
         <div class="card">
             <strong>101室</strong><br>
@@ -40,7 +40,7 @@ if (user == null) {
             ポテト S　 x1<br>
             <br>
             受取番号：S110101<br>
-            <button>調理済み</button>
+            <button>完了</button>
         </div>
         <div class="card">
             <strong>102室</strong><br>
@@ -49,7 +49,7 @@ if (user == null) {
             ポテト S　 x1<br>
             <br>
             受取番号：S110102<br>
-            <button>調理済み</button>
+            <button>完了</button>
         </div>
         <div class="card">
             <strong>103室</strong><br>
@@ -58,7 +58,7 @@ if (user == null) {
             ポテト S　 x1<br>
             <br>
             受取番号：S110103<br>
-            <button>調理済み</button>
+            <button>完了</button>
         </div>
         <div class="card">
             <strong>104室</strong><br>
@@ -67,7 +67,7 @@ if (user == null) {
             ポテト S　 x1<br>
             <br>
             受取番号：S110104<br>
-            <button>調理済み</button>
+            <button>完了</button>
         </div>
         <div class="card">
             <strong>105室</strong><br>
@@ -76,7 +76,7 @@ if (user == null) {
             ポテト S　 x1<br>
             <br>
             受取番号：S110105<br>
-            <button>調理済み</button>
+            <button>完了</button>
         </div>
         <div class="card">
             <strong>106室</strong><br>
@@ -85,13 +85,13 @@ if (user == null) {
             ポテト S　 x1<br>
             <br>
             受取番号：S110106<br>
-            <button>調理済み</button>
+            <button>完了</button>
         </div>
     </div>
     <div class="footer-buttons">
-        <button type="button" onclick="location.href='modify_search_kitchen.jsp'">在庫状況の更新</button>
-        <button type="button" onclick="location.href='kitchen_order_finished.jsp'">調理済み一覧</button>
+        
+        <button type="button" onclick="location.href='index_select.jsp'">担当選択画面へ戻る</button>
+
     </div>
-    <button class="select" onclick="location.href='index_select.jsp'">担当選択画面へ戻る</button>
 </body>
 </html>

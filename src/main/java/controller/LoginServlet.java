@@ -7,40 +7,62 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
+import jakarta.servlet.http.HttpSession;
 import dao.UserDao;
+import model.User;
 
 /**
  * Servlet implementation class LoginServlet
  */
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-	private UserDao userDao = new UserDao();
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
 
-		request.setCharacterEncoding("UTF-8");
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
 
-		String userId = request.getParameter("userId");
-		String password = request.getParameter("password");
-		
-		boolean isValidUser = userDao.validate(userId,password);
-		
+        req.setCharacterEncoding("UTF-8");
+        String rawUserId = req.getParameter("userId");
+        String password = req.getParameter("password");
+        String userId;
+        
+        try {
+            userId = String.format("%06d", Integer.parseInt(rawUserId.trim()));
+        } catch (NumberFormatException e) {
+            req.setAttribute("error", "アカウントIDは6桁の数字で入力してください");
+            req.getRequestDispatcher("index.jsp").forward(req, resp);
+            return;
+        }
+        User user = UserDao.login(userId, password);
 
-		// 仮の認証処理（本来はDAOでDB確認）test
-		if ("SF0112".equals(userId) && "12345678".equals(password)) {
-			// ログイン成功
-			request.getRequestDispatcher("index_select.jsp")
-					.forward(request, response);
-		} else {
-			// ログイン失敗
-			request.setAttribute("error", "アカウントIDまたはパスワードが違います。");
-			request.getRequestDispatcher("index.jsp")
-					.forward(request, response);
-		}
-	}
+        if (user == null) {
+        	System.out.println("Login failed: user == null");
+            req.setAttribute("error", "アカウントIDまたはパスワードが違います");
+            req.getRequestDispatcher("index.jsp").forward(req, resp);
+            return;
+        }
+
+        HttpSession session = req.getSession();
+        session.setAttribute("loginUser", user);
+        
+        String role = user.getRoleName().trim();
+        String context = req.getContextPath();
+        
+        switch (user.getRoleName()) {
+            case "フロント":
+                resp.sendRedirect(context + "/front_top.jsp");
+                break;
+            case "キッチン":
+                resp.sendRedirect(context + "/kitchen_order_list.jsp");
+                break;
+            case "フロア":
+                resp.sendRedirect(context + "/floor_order_list.jsp");
+                break;
+            case "管理者":
+                resp.sendRedirect(context + "/manage_top.jsp");
+                break;
+            default:
+                resp.sendRedirect(context + "/index.jsp");
+        }
+
+    }
 }
