@@ -24,7 +24,7 @@ public class Item {
 			ArrayList<ArrayList<Integer>> optionPrice) {
 		this(-1, name, categoryId, category, itemNo, price, image, stock, optionId, optionName, optionPrice);
 	}
-	
+
 	public Item(String name, int categoryId, String category, int itemNo, int price, String image,
 			boolean stock) {
 		this(-1, name, categoryId, category, itemNo, price, image, stock, new ArrayList<>(), new ArrayList<>(),
@@ -54,8 +54,12 @@ public class Item {
 		this.optionPrice = optionPrice;
 	}
 
-	public void isOption() {
-
+	public boolean hasOption() {
+		boolean optRes = false;
+		if (optionId != null && optionName != null && optionPrice != null) {
+			optRes = true;
+		}
+		return optRes;
 	}
 
 	public int getId() {
