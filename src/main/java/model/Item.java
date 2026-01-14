@@ -1,8 +1,6 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.stream.Collectors;
 
 public class Item {
 	private int id;
@@ -13,36 +11,18 @@ public class Item {
 	private int price;
 	private String image;
 	private boolean stock;
-	private ArrayList<Integer> optionId;
-	private ArrayList<ArrayList<String>> optionName;
-	private ArrayList<ArrayList<Integer>> optionPrice;
+	private ArrayList<Option> options;
 
 	public Item() {
 	}
 
 	public Item(String name, int categoryId, String category, int itemNo, int price, String image,
-			boolean stock,
-			ArrayList<Integer> optionId, ArrayList<ArrayList<String>> optionName,
-			ArrayList<ArrayList<Integer>> optionPrice) {
-		this(-1, name, categoryId, category, itemNo, price, image, stock, optionId, optionName, optionPrice);
-	}
-
-	public Item(String name, int categoryId, String category, int itemNo, int price, String image,
 			boolean stock) {
-		this(-1, name, categoryId, category, itemNo, price, image, stock, new ArrayList<>(), new ArrayList<>(),
-				new ArrayList<>());
+		this(-1, name, categoryId, category, itemNo, price, image, stock);
 	}
 
 	public Item(int id, String name, int categoryId, String category, int itemNo, int price, String image,
 			boolean stock) {
-		this(id, name, categoryId, category, itemNo, price, image, stock, new ArrayList<>(), new ArrayList<>(),
-				new ArrayList<>());
-	}
-
-	public Item(int id, String name, int categoryId, String category, int itemNo, int price, String image,
-			boolean stock,
-			ArrayList<Integer> optionId, ArrayList<ArrayList<String>> optionName,
-			ArrayList<ArrayList<Integer>> optionPrice) {
 		this.id = id;
 		itemName = name;
 		this.categoryId = categoryId;
@@ -51,17 +31,31 @@ public class Item {
 		this.price = price;
 		this.image = image;
 		this.stock = stock;
-		this.optionId = optionId;
-		this.optionName = optionName;
-		this.optionPrice = optionPrice;
 	}
 
-	public boolean hasOption() {
-		boolean optRes = false;
-		if (optionId != null && optionName != null && optionPrice != null) {
-			optRes = true;
+	public ArrayList<Option> getOptions() {
+		return options;
+	}
+
+	public void setOptions(ArrayList<Option> options) {
+		this.options = options;
+	}
+
+	public void addOptions(Option option) {
+		options.add(option);
+	}
+
+	public void delOptions(int id) {
+		for (int i = 0; i < options.size(); i++) {
+			if (id == options.get(i).getId())
+				options.remove(i);
 		}
-		return optRes;
+	}
+	public void addSelection(int index,int id, String name, int price) {
+		options.get(index).addSelection(id, name, price);
+	}
+	public void delSelection(int index,int id) {
+		options.get(index).delSelection(id);
 	}
 
 	public int getId() {
@@ -102,62 +96,6 @@ public class Item {
 
 	public void setStock(boolean stock) {
 		this.stock = stock;
-	}
-
-	public void addOption(int id, ArrayList<String> name, ArrayList<Integer> price) {
-		optionId.add(id);
-		optionName.add(name);
-		optionPrice.add(price);
-	}
-
-	public void addOption(int id, String[] name, int[] price) {
-		ArrayList<Integer> priceList = Arrays.stream(price).boxed().collect(Collectors.toCollection(ArrayList::new));
-		ArrayList<String> nameList = new ArrayList<String>(Arrays.asList(name));
-		addOption(id, nameList, priceList);
-	}
-
-	public ArrayList<Integer> getOptionIdList() {
-		return optionId;
-	}
-
-	public int getOptionId(int i) {
-		return optionId.get(i).intValue();
-	}
-
-	public void setOptionIdList(ArrayList<Integer> optionId) {
-		this.optionId = optionId;
-	}
-
-	public ArrayList<ArrayList<String>> getOptionNameList() {
-		return optionName;
-	}
-
-	public ArrayList<String> getOptionNameList(int i) {
-		return optionName.get(i);
-	}
-
-	public String getOptionName(int i, int j) {
-		return optionName.get(i).get(j);
-	}
-
-	public void setOptionNameList(ArrayList<ArrayList<String>> optionName) {
-		this.optionName = optionName;
-	}
-
-	public ArrayList<ArrayList<Integer>> getOptionPriceList() {
-		return optionPrice;
-	}
-
-	public ArrayList<Integer> getOptionPriceList(int i) {
-		return optionPrice.get(i);
-	}
-
-	public int getOptionPrice(int i, int j) {
-		return optionPrice.get(i).get(j).intValue();
-	}
-
-	public void setOptionPriceList(ArrayList<ArrayList<Integer>> optionPrice) {
-		this.optionPrice = optionPrice;
 	}
 
 	public int getCategoryId() {
