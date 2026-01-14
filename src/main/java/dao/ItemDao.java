@@ -3,6 +3,7 @@ package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,15 +12,15 @@ import model.Item;
 
 public class ItemDao {
 
-	// 商品を追加する
+	// 商品を追加する.
 	public void addItem(Item item) throws Exception {
-		// SQL文作成
+		// SQL文作成.
 		String sql = "INSERT INTO"
 				+ " item(item_name,category_id,order_number,price,item_image,stock)"
 				+ " VALUES(?,?,?,?,?,?)";
 
 		try (Connection con = DatabaseManager.connect(); PreparedStatement preState = con.prepareStatement(sql);) {
-			// プリペアードステートメントを使用
+			// プリペアードステートメントを使用.
 			preState.setString(1, item.getItemName());
 			preState.setInt(2, item.getCategoryId());
 			preState.setInt(3, item.getItemNo());
@@ -28,27 +29,27 @@ public class ItemDao {
 			preState.setBoolean(6, item.isStock());
 			preState.executeUpdate();
 		} catch (Exception e) {
-			// デバッグ用のスタックトレース
+			// デバッグ用のスタックトレース.
 			e.printStackTrace();
 
-			// フロントエンド用のエラーメッセージ
+			// フロントエンド用のエラーメッセージ.
 			String errMsg = "DB接続に失敗しました！<br>管理者に連絡してください。";
 
-			// 例外を投げる
+			// 例外を投げる.
 			throw new Exception(errMsg);
 		}
 
 	}
 
-	// 商品を更新する
+	// 商品を更新する.
 	public void updateItem(Item item) throws Exception {
-		// SQL文作成
+		// SQL文作成.
 		String sql = "UPDATE item"
 				+ " SET item_name = ?,category_id = ?,order_number = ?,price = ?,item_image = ?,stock = ?)"
 				+ " WHERE item_id = ?";
 
 		try (Connection con = DatabaseManager.connect(); PreparedStatement preState = con.prepareStatement(sql);) {
-			// プリペアードステートメントを使用
+			// プリペアードステートメントを使用.
 			preState.setString(1, item.getItemName());
 			preState.setInt(2, item.getCategoryId());
 			preState.setInt(3, item.getItemNo());
@@ -58,55 +59,55 @@ public class ItemDao {
 			preState.setInt(7, item.getId());
 			preState.executeUpdate();
 		} catch (Exception e) {
-			// デバッグ用のスタックトレース
+			// デバッグ用のスタックトレース.
 			e.printStackTrace();
 
-			// フロントエンド用のエラーメッセージ
+			// フロントエンド用のエラーメッセージ.
 			String errMsg = "DB接続に失敗しました！<br>管理者に連絡してください。";
 
-			// 例外を投げる
+			// 例外を投げる.
 			throw new Exception(errMsg);
 		}
 	}
 
-	// 商品を削除する
+	// 商品を削除する.
 	public void delItem(Item item) throws Exception {
-		// SQL文作成
+		// SQL文作成.
 		String sql = "DALETE FROM item"
 				+ " WHERE item_id = ?";
 
 		try (Connection con = DatabaseManager.connect(); PreparedStatement preState = con.prepareStatement(sql);) {
-			// プリペアードステートメントを使用
+			// プリペアードステートメントを使用.
 			preState.setInt(1, item.getId());
 			preState.executeUpdate();
 		} catch (Exception e) {
-			// デバッグ用のスタックトレース
+			// デバッグ用のスタックトレース.
 			e.printStackTrace();
 
-			// フロントエンド用のエラーメッセージ
+			// フロントエンド用のエラーメッセージ.
 			String errMsg = "DB接続に失敗しました！<br>管理者に連絡してください。";
 
-			// 例外を投げる
+			// 例外を投げる.
 			throw new Exception(errMsg);
 		}
 	}
 
-	// 商品を名前の部分一致で探す
+	// 商品を名前の部分一致で探す.
 	public ArrayList<Item> searchItemByName(String name) throws Exception {
-		// 返却地の参照変数を初期化
+		// 返却地の参照変数を初期化.
 		ArrayList<Item> list = new ArrayList<Item>();
 
-		// SQL文作成
+		// SQL文作成.
 		String sql = "SELECT item_id,item_name,item.category_id,category_name,order_number,price,item_image,stock"
 				+ " FROM item INNER JOIN category ON item.category_id = category.category_id"
 				+ " WHERE item_name LIKE ?";
 
 		try (Connection con = DatabaseManager.connect(); PreparedStatement preState = con.prepareStatement(sql);) {
-			// プリペアードステートメントを使用
+			// プリペアードステートメントを使用.
 			preState.setString(1, "%" + name + "%");
 
 			try (ResultSet resSet = preState.executeQuery();) {
-				//検索結果からItemインスタンスを生成
+				//検索結果からItemインスタンスを生成.
 				while (resSet.next()) {
 					list.add(new Item(resSet.getInt("item_id"), resSet.getString("item_name"),
 							resSet.getInt("category_id"), resSet.getString("category_name"),
@@ -115,111 +116,113 @@ public class ItemDao {
 				}
 			}
 		} catch (Exception e) {
-			// デバッグ用のスタックトレース
+			// デバッグ用のスタックトレース.
 			e.printStackTrace();
 
-			// フロントエンド用のエラーメッセージ
+			// フロントエンド用のエラーメッセージ.
 			String errMsg = "DB接続に失敗しました！<br>管理者に連絡してください。";
 
-			// 例外を投げる
+			// 例外を投げる.
 			throw new Exception(errMsg);
 		}
 
 		return list;
 	}
 
-	// 商品を注文番号(order_number)で探す
+	// 商品を注文番号(order_number)で探す.
 	public Item searchItemByNumber(int num) throws Exception {
-		// 返却地の参照変数を初期化
-		Item list = new Item();
+		// 返却地の参照変数を初期化.
+		Item list = null;
 
-		// SQL文作成
+		// SQL文作成.
 		String sql = "SELECT item_id,item_name,item.category_id,category_name,order_number,price,item_image,stock"
 				+ " FROM item INNER JOIN category ON item.category_id = category.category_id"
 				+ " WHERE order_number = ?";
 
 		try (Connection con = DatabaseManager.connect(); PreparedStatement preState = con.prepareStatement(sql);) {
-			// プリペアードステートメントを使用
+			// プリペアードステートメントを使用.
 			preState.setInt(1, num);
 
 			try (ResultSet resSet = preState.executeQuery();) {
-				//検索結果からItemインスタンスを生成
+				//検索結果からItemインスタンスを生成.
 				list = new Item(resSet.getInt("item_id"), resSet.getString("item_name"),
 						resSet.getInt("category_id"), resSet.getString("category_name"),
 						resSet.getInt("order_number"), resSet.getInt("price"),
 						resSet.getString("item_image"), resSet.getBoolean("stock"));
 			}
 		} catch (Exception e) {
-			// デバッグ用のスタックトレース
+			// デバッグ用のスタックトレース.
 			e.printStackTrace();
 
-			// フロントエンド用のエラーメッセージ
+			// フロントエンド用のエラーメッセージ.
 			String errMsg = "DB接続に失敗しました！<br>管理者に連絡してください。";
 
-			// 例外を投げる
+			// 例外を投げる.
 			throw new Exception(errMsg);
 		}
 		return list;
 	}
 
-	// 商品を商品IDで探す
+	// 商品を商品IDで探す.
 	public Item searchItemById(int id) throws Exception {
-		// 返却地の参照変数を初期化
-		Item list = new Item();
+		// 返却地の参照変数を初期化.
+		Item list = null;
 
-		// SQL文作成
-		String sql = "SELECT item_id,item_name,item.category_id,category_name,order_number,price,item_image,stock"
+		// SQL文作成.
+		String sql1 = "SELECT item_id,item_name,item.category_id,category_name,order_number,price,item_image,stock"
 				+ " FROM item INNER JOIN category ON item.category_id = category.category_id"
 				+ " WHERE item_id = ?";
-		try (Connection con = DatabaseManager.connect(); PreparedStatement preState = con.prepareStatement(sql);) {
-			// プリペアードステートメントを使用
+		String sql2 = "";
+
+		try (Connection con = DatabaseManager.connect(); PreparedStatement preState = con.prepareStatement(sql1);) {
+			// プリペアードステートメントを使用.
 			preState.setInt(1, id);
 			try (ResultSet resSet = preState.executeQuery();) {
-				//検索結果からItemインスタンスを生成
+				//検索結果からItemインスタンスを生成.
 				list = new Item(resSet.getInt("item_id"), resSet.getString("item_name"),
 						resSet.getInt("category_id"), resSet.getString("category_name"),
 						resSet.getInt("order_number"), resSet.getInt("price"),
 						resSet.getString("item_image"), resSet.getBoolean("stock"));
 			}
-		} catch (Exception e) {
-			// デバッグ用のスタックトレース
+		} catch (SQLException e) {
+			// デバッグ用のスタックトレース.
 			e.printStackTrace();
 
-			// フロントエンド用のエラーメッセージ
+			// フロントエンド用のエラーメッセージ.
 			String errMsg = "DB接続に失敗しました！<br>管理者に連絡してください。";
 
-			// 例外を投げる
+			// 例外を投げる.
 			throw new Exception(errMsg);
 		}
 
 		return list;
 	}
 
-	// カテゴリー一覧を取得する
+	// カテゴリー一覧を取得する.
 	public Map<Integer, String> categoryGetList() throws Exception {
-		// 返却地の参照変数を初期化
+		// 返却地の参照変数を初期化.
 		Map<Integer, String> map = new HashMap<>();
 
-		// SQL文作成
+		// SQL文作成.
 		String sql = "SELECT category_id,category_name"
 				+ " FROM category";
 
 		try (Connection con = DatabaseManager.connect(); PreparedStatement preState = con.prepareStatement(sql);) {
 			try (ResultSet resSet = preState.executeQuery();) {
-				//検索結果をmapに格納
+				//検索結果をmapに格納.
 				while (resSet.next()) {
 					map.put(resSet.getInt("category_id"), resSet.getString("category_name"));
 				}
 			}
 
 		} catch (Exception e) {
-			// デバッグ用のスタックトレース
+			// デバッグ用のスタックトレース.
 			e.printStackTrace();
 
-			// フロントエンド用のエラーメッセージ
+			// フロントエンド用のエラーメッセージ.
 			String errMsg = "DB接続に失敗しました！<br>管理者に連絡してください。";
 
-			// 例外を投げる
+			// 例外を投げる.
 			throw new Exception(errMsg);
 		}
 
