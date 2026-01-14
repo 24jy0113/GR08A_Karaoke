@@ -15,16 +15,19 @@ public class OrderDao {
 		if (order.getId() > 0) {
 			System.err.println("order_idが割り振られているため、このorderは登録済みです。");
 
-			// フロントエンド用のエラーメッセージ
+			// フロントエンド用のエラーメッセージ.
 			String errMsg = "注文の登録が重複したためDBの登録に失敗しました！<br>管理者に連絡してください。";
 
-			// 例外を投げる
+			// 例外を投げる.
 			throw new Exception(errMsg);
 		}
 
-		// SQL文の作成
+		// SQL文の作成.
+		// 注文の登録.
 		String sql1 = "INSERT INTO orders(total,receiving_number,item_creating_status_id,room_id) VALUE(?,?,?,?);";
+		// 注文詳細（OrderItemごと）の登録
 		String sql2 = "INSERT INTO order_detail(order_id,item_id,`count`,sub_total) VALUE(?,?,?,?);";
+		// 注文と注文詳細のつながりの登録.
 		String sql3 = "INSERT INTO order_detail_option(order_detail_id,option_detail_id) VALUE(?,?);";
 
 		try (Connection con = DatabaseManager.connect();
@@ -32,23 +35,31 @@ public class OrderDao {
 				PreparedStatement preState2 = con.prepareStatement(sql2, PreparedStatement.RETURN_GENERATED_KEYS);
 				PreparedStatement preState3 = con.prepareStatement(sql3)) {
 
-			// データベース接続
-			con = DatabaseManager.connect();
-
-			// プリペアードステートメントを使用してSQL文を実行
+			// プリペアードステートメントを使用してSQL文を実行.
 			preState1.setInt(0, order.getTotal());
 			preState1.setInt(1, order.getReceivingNo());
+			preState1.setInt(2, order.getStatusId());
+			preState1.setInt(3, order.getRoomId());
 			preState1.executeUpdate();
+			try (ResultSet resSet = preState1.getGeneratedKeys();) {
+				preState2.setInt(0, resSet.getInt(1));
+				for (OrderItem item : order.getItem()) {
+					preState2.setInt(1, item.getItem().getId());
+					preState2.setInt(2, item.getTotal());
+					preState2.setInt(3, item.getTotal());
+					preState2.executeUpdate();
+				}
+			}
 
 		} catch (SQLException e) {
 
-			// デバッグ用のスタックトレース
+			// デバッグ用のスタックトレース.
 			e.printStackTrace();
 
-			// フロントエンド用のエラーメッセージ
+			// フロントエンド用のエラーメッセージ.
 			String errMsg = "DB接続に失敗しました！<br>管理者に連絡してください。";
 
-			// 例外を投げる
+			// 例外を投げる.
 			throw new Exception(errMsg);
 
 		}
@@ -63,9 +74,9 @@ public class OrderDao {
 	public ArrayList<Order> searchOederByRoom(int roomId) throws Exception {
 
 		// 返却値の参照変数を初期化.
-		ArrayList<Order> list = null;
+		ArrayList<Order> list = new ArrayList<>();
 
-		// SQL文の作成
+		// SQL文の作成.
 		String sql = "SELECT order_id,total,orders.room_id,room_number,receiving_number,"
 				+ "orders.item_creating_status_id,item_creating_status_name "
 				+ "FROM orders "
@@ -77,11 +88,11 @@ public class OrderDao {
 
 		try (Connection con = DatabaseManager.connect(); PreparedStatement preState = con.prepareStatement(sql);) {
 
-			// プリペアードステートメントを使用してSQL文を実行
+			// プリペアードステートメントを使用してSQL文を実行.
 			preState.setInt(1, roomId);
 			try (ResultSet resSet = preState.executeQuery();) {
 
-				// 検索結果からOrderインスタンスを生成
+				// 検索結果からOrderインスタンスを生成.
 				while (resSet.next()) {
 					list.add(new Order(resSet.getInt("order_id"), searchOrderItem(resSet.getInt("order_id")),
 							resSet.getInt("total"), resSet.getInt("orders.room_id"), resSet.getInt("room"),
@@ -91,13 +102,13 @@ public class OrderDao {
 			}
 		} catch (SQLException e) {
 
-			// デバッグ用のスタックトレース
+			// デバッグ用のスタックトレース.
 			e.printStackTrace();
 
-			// フロントエンド用のエラーメッセージ
+			// フロントエンド用のエラーメッセージ.
 			String errMsg = "DB接続に失敗しました！<br>管理者に連絡してください。";
 
-			// 例外を投げる
+			// 例外を投げる.
 			throw new Exception(errMsg);
 
 		}
@@ -106,9 +117,9 @@ public class OrderDao {
 
 	public ArrayList<Order> searchOederByStatus(int statusId) throws Exception {
 		// 返却値の参照変数を初期化.
-		ArrayList<Order> list = null;
+		ArrayList<Order> list = new ArrayList<>();
 
-		// SQL文の作成
+		// SQL文の作成.
 		String sql = "SELECT order_id,total,orders.room_id,room_number,receiving_number,"
 				+ "orders.item_creating_status_id,item_creating_status_name "
 				+ "FROM orders "
@@ -120,11 +131,11 @@ public class OrderDao {
 
 		try (Connection con = DatabaseManager.connect(); PreparedStatement preState = con.prepareStatement(sql);) {
 
-			// プリペアードステートメントを使用してSQL文を実行
+			// プリペアードステートメントを使用してSQL文を実行.
 			preState.setInt(1, statusId);
 			try (ResultSet resSet = preState.executeQuery();) {
 
-				// 検索結果からOrderインスタンスを生成
+				// 検索結果からOrderインスタンスを生成.
 				while (resSet.next()) {
 					list.add(new Order(resSet.getInt("order_id"), searchOrderItem(resSet.getInt("order_id")),
 							resSet.getInt("total"), resSet.getInt("orders.room_id"), resSet.getInt("room"),
@@ -135,13 +146,13 @@ public class OrderDao {
 
 		} catch (SQLException e) {
 
-			// デバッグ用のスタックトレース
+			// デバッグ用のスタックトレース.
 			e.printStackTrace();
 
-			// フロントエンド用のエラーメッセージ
+			// フロントエンド用のエラーメッセージ.
 			String errMsg = "DB接続に失敗しました！<br>管理者に連絡してください。";
 
-			// 例外を投げる
+			// 例外を投げる.
 			throw new Exception(errMsg);
 
 		}
@@ -161,7 +172,7 @@ public class OrderDao {
 	public ArrayList<OrderItem> searchOrderItem(int order) throws Exception {
 
 		// 返却値の参照変数を初期化.
-		ArrayList<OrderItem> list = null;
+		ArrayList<OrderItem> list = new ArrayList<>();
 
 		// SQL文の作成.
 		String sql1 = "SELECT item_id,`count`,sub_total,order_detail_id "
