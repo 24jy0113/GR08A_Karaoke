@@ -1,5 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"
+    import="model.User"
+%>
+<%
+User user = (User) session.getAttribute("loginUser");
+if (user == null) {
+    response.sendRedirect(request.getContextPath() + "/index.jsp");
+    return;
+}
+%>
 <!DOCTYPE html>
 <html lang=ja>
 
@@ -18,8 +27,8 @@
             <h1 class="title_name">七福サウンド</h1>
             <nav class="gnav">
                 <ul class="gnav_list">
-                    <li><img class="user_img" src="./img/user.png" alt="cart" width="25" height="25">佐藤 花子</li>
-                    <li><a class="gnav_botton" href="./index.jsp">ログアウト</a></li>
+                     <li><img class="user_img" src="./img/user.png" alt="cart" width="25" height="25"><%= user.getUserName() %></li>
+                    <li><a class="gnav_botton" href="<%= request.getContextPath() %>/LogoutServlet">ログアウト</a></li>
                 </ul>
             </nav>
         </div>

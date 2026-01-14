@@ -28,9 +28,8 @@ if (user == null) {
 			<h1 class="title_name">七福サウンド</h1>
 			<nav class="gnav">
 				<ul class="gnav_list">
-					<li><img class="user_img" src="./img/user.png" alt="cart"
-						width="25" height="25"><%= user.getUserName() %></li>
-					<li><a class="gnav_botton" href="./index.jsp">ログアウト</a></li>
+					 <li><img class="user_img" src="./img/user.png" alt="cart" width="25" height="25"><%= user.getUserName() %></li>
+                    <li><a class="gnav_botton" href="<%= request.getContextPath() %>/LogoutServlet">ログアウト</a></li>
 				</ul>
 			</nav>
 		</div>
