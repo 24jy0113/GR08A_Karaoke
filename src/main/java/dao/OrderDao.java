@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import model.Item;
 import model.Order;
 import model.OrderItem;
 
@@ -23,15 +22,13 @@ public class OrderDao {
 			throw new Exception(errMsg);
 		}
 
-		// データベースの接続の参照変数.
-		Connection con = null;
-
 		// SQL文の作成
 		String sql1 = "INSERT INTO orders(total,receiving_number,item_creating_status_id,room_id) VALUE(?,?,?,?);";
 		String sql2 = "INSERT INTO order_detail(order_id,item_id,`count`,sub_total) VALUE(?,?,?,?);";
 		String sql3 = "INSERT INTO order_detail_option(order_detail_id,option_detail_id) VALUE(?,?);";
 
-		try (PreparedStatement preState1 = con.prepareStatement(sql1, PreparedStatement.RETURN_GENERATED_KEYS);
+		try (Connection con = DatabaseManager.connect();
+				PreparedStatement preState1 = con.prepareStatement(sql1, PreparedStatement.RETURN_GENERATED_KEYS);
 				PreparedStatement preState2 = con.prepareStatement(sql2, PreparedStatement.RETURN_GENERATED_KEYS);
 				PreparedStatement preState3 = con.prepareStatement(sql3)) {
 
@@ -39,6 +36,8 @@ public class OrderDao {
 			con = DatabaseManager.connect();
 
 			// プリペアードステートメントを使用してSQL文を実行
+			preState1.setInt(0, order.getTotal());
+			preState1.setInt(1, order.getReceivingNo());
 			preState1.executeUpdate();
 
 		} catch (SQLException e) {
@@ -51,11 +50,6 @@ public class OrderDao {
 
 			// 例外を投げる
 			throw new Exception(errMsg);
-
-		} finally {
-
-			// 接続を切断する
-			DatabaseManager.close(con);
 
 		}
 	}
@@ -71,9 +65,6 @@ public class OrderDao {
 		// 返却値の参照変数を初期化.
 		ArrayList<Order> list = null;
 
-		// データベースの接続の参照変数.
-		Connection con = null;
-
 		// SQL文の作成
 		String sql = "SELECT order_id,total,orders.room_id,room_number,receiving_number,"
 				+ "orders.item_creating_status_id,item_creating_status_name "
@@ -84,10 +75,7 @@ public class OrderDao {
 				+ "ON orders.room_id = room.room_id "
 				+ "WHERE orders.room_id=?;";
 
-		try (PreparedStatement preState = con.prepareStatement(sql);) {
-
-			// データベース接続
-			con = DatabaseManager.connect();
+		try (Connection con = DatabaseManager.connect(); PreparedStatement preState = con.prepareStatement(sql);) {
 
 			// プリペアードステートメントを使用してSQL文を実行
 			preState.setInt(1, roomId);
@@ -112,11 +100,6 @@ public class OrderDao {
 			// 例外を投げる
 			throw new Exception(errMsg);
 
-		} finally {
-
-			// 接続を切断する
-			DatabaseManager.close(con);
-
 		}
 		return list;
 	}
@@ -124,9 +107,6 @@ public class OrderDao {
 	public ArrayList<Order> searchOederByStatus(int statusId) throws Exception {
 		// 返却値の参照変数を初期化.
 		ArrayList<Order> list = null;
-
-		// データベースの接続の参照変数.
-		Connection con = null;
 
 		// SQL文の作成
 		String sql = "SELECT order_id,total,orders.room_id,room_number,receiving_number,"
@@ -138,10 +118,7 @@ public class OrderDao {
 				+ "ON orders.room_id = room.room_id "
 				+ "WHERE orders.item_creating_status_id=?;";
 
-		try (PreparedStatement preState = con.prepareStatement(sql);) {
-
-			// データベース接続
-			con = DatabaseManager.connect();
+		try (Connection con = DatabaseManager.connect(); PreparedStatement preState = con.prepareStatement(sql);) {
 
 			// プリペアードステートメントを使用してSQL文を実行
 			preState.setInt(1, statusId);
@@ -167,11 +144,6 @@ public class OrderDao {
 			// 例外を投げる
 			throw new Exception(errMsg);
 
-		} finally {
-
-			// 接続を切断する
-			DatabaseManager.close(con);
-
 		}
 		return list;
 
@@ -186,13 +158,10 @@ public class OrderDao {
 	public void delOrderItem(OrderItem item, Order order) {
 	}
 
-	public ArrayList<OrderItem> searchOrderItem(int order) throws Exception{
+	public ArrayList<OrderItem> searchOrderItem(int order) throws Exception {
 
 		// 返却値の参照変数を初期化.
 		ArrayList<OrderItem> list = null;
-
-		// データベースの接続の参照変数.
-		Connection con = null;
 
 		// SQL文の作成.
 		String sql1 = "SELECT item_id,`count`,sub_total,order_detail_id "
@@ -201,11 +170,9 @@ public class OrderDao {
 		String sql2 = "SELECT option_detail_id "
 				+ "FROM order_detail_option "
 				+ "WHERE order_detail_id=?;";
-		try (PreparedStatement preState1 = con.prepareStatement(sql1);
+		try (Connection con = DatabaseManager.connect();
+				PreparedStatement preState1 = con.prepareStatement(sql1);
 				PreparedStatement preState2 = con.prepareStatement(sql2);) {
-
-			// データベース接続.
-			con = DatabaseManager.connect();
 
 			// プリペアードステートメントを使用してSQL文を実行.
 			// 注文単位でアイテムの情報を取得.
@@ -226,8 +193,10 @@ public class OrderDao {
 							option.add(resSet2.getInt("option_detail_id"));
 						}
 						// 検索結果からOrderインスタンスを生成.
+						/*
 						list.add(new OrderItem(resSet1.getInt("item_id"), , resSet1.getInt("count"),
 								option.stream().mapToInt(Integer::intValue).toArray(), resSet1.getInt("sub_total")));
+						*/
 					}
 				}
 			}
@@ -242,11 +211,7 @@ public class OrderDao {
 			// 例外を投げる.
 			throw new Exception(errMsg);
 
-		}finally {
-			// 接続を切断する.
-			DatabaseManager.close(con);	
 		}
-
 
 		return list;
 	}
