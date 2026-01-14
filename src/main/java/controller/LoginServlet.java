@@ -35,7 +35,6 @@ public class LoginServlet extends HttpServlet {
         User user = UserDao.login(userId, password);
 
         if (user == null) {
-        	System.out.println("Login failed: user == null");
             req.setAttribute("error", "アカウントIDまたはパスワードが違います");
             req.getRequestDispatcher("index.jsp").forward(req, resp);
             return;
