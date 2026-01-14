@@ -1,6 +1,8 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class Item {
 	private int id;
@@ -100,6 +102,18 @@ public class Item {
 
 	public void setStock(boolean stock) {
 		this.stock = stock;
+	}
+
+	public void addOption(int id, ArrayList<String> name, ArrayList<Integer> price) {
+		optionId.add(id);
+		optionName.add(name);
+		optionPrice.add(price);
+	}
+
+	public void addOption(int id, String[] name, int[] price) {
+		ArrayList<Integer> priceList = Arrays.stream(price).boxed().collect(Collectors.toCollection(ArrayList::new));
+		ArrayList<String> nameList = new ArrayList<String>(Arrays.asList(name));
+		addOption(id, nameList, priceList);
 	}
 
 	public ArrayList<Integer> getOptionIdList() {
