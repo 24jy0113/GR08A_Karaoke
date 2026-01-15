@@ -41,7 +41,7 @@ if (user == null) {
                     <h3>予約情報の読み込みが完了しました！</h3>
                 </div>     
                 <div class="action-buttons">
-                    <button type="button" class="btn-back" onclick="location.href='res_msg_manager.jsp'">予約情報画面へ戻る</button>
+                    <button type="button" class="btn-back" onclick="location.href='res_list_manager.jsp'">予約情報画面へ戻る</button>
                 </div>
             </div>
         </div>

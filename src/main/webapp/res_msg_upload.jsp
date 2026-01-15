@@ -48,7 +48,7 @@ if (user == null) {
                     <img src="./img/file.png" alt="file">
                 </div>
                 <div class="action-buttons">
-                    <button type="button" class="btn-back" onclick="location.href='res_msg_manager.jsp'">予約情報画面へ戻る</button>
+                    <button type="button" class="btn-back" onclick="location.href='res_list_manager.jsp'">予約情報画面へ戻る</button>
                     <button type="submit" class="btn-next" onclick="location.href='res_msg_uploaded.jsp'">予約情報を取得する</button>
                 </div>
             </div>

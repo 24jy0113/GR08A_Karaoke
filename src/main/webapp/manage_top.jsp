@@ -48,7 +48,7 @@ if (user == null) {
 			</div>
 			<div class="container">
 
-				<a class="button" href="re_login.jsp">アカウント情報</a>
+				<a class="button" href="<%= request.getContextPath() %>/ReLoginServlet">アカウント情報</a>
 			</div>
 		</div>
 	</main>
