@@ -1,40 +1,51 @@
 package controller;
 
+import java.io.IOException;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import jakarta.servlet.http.HttpSession;
 
-/**
- * Servlet implementation class NoticeServlet
- */
+import action.NoticeAction;
+import model.NoticeResult;
+import model.Room;
+
 @WebServlet("/NoticeServlet")
 public class NoticeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
+	
     public NoticeServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+    
+    @Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+
+	    // 1. Session取得（なければ終了）
+	    HttpSession session = request.getSession(false);
+	    if (session == null || session.getAttribute("room") == null) {
+	        response.setContentType("application/json;charset=UTF-8");
+	        response.getWriter().write("{\"sessionExpired\":true}");
+	        return;
+	    }
+
+	    // 2. Room情報取得
+	    Room room = (Room) session.getAttribute("room");
+
+	    // 3. Action呼び出し
+	    NoticeAction action = new NoticeAction();
+	    NoticeResult result = action.execute(room, session);
+
+	    // 4. JSONで返却
+	    response.setContentType("application/json;charset=UTF-8");
+	    response.getWriter().write(result.toJson());
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+    
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 
