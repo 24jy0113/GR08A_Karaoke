@@ -33,29 +33,32 @@ public class Item {
 		this.stock = stock;
 	}
 
-	public ArrayList<Option> getOptions() {
+	public ArrayList<Option> getOptionList() {
 		return options;
 	}
 
-	public void setOptions(ArrayList<Option> options) {
+	public void setOptionList(ArrayList<Option> options) {
 		this.options = options;
 	}
 
-	public void addOptions(Option option) {
+	public Option getOption(int optId) {
+		Option resOpt = null;
+		for (Option option : options) {
+			if (optId == option.getId())
+				resOpt = option;
+		}
+		return resOpt;
+	}
+
+	public void addOption(Option option) {
 		options.add(option);
 	}
 
-	public void delOptions(int id) {
+	public void delOption(int optId) {
 		for (int i = 0; i < options.size(); i++) {
-			if (id == options.get(i).getId())
+			if (optId == options.get(i).getId())
 				options.remove(i);
 		}
-	}
-	public void addSelection(int index,int id, String name, int price) {
-		options.get(index).addSelection(id, name, price);
-	}
-	public void delSelection(int index,int id) {
-		options.get(index).delSelection(id);
 	}
 
 	public int getId() {

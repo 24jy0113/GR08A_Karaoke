@@ -36,6 +36,19 @@ public class Option {
 		this.name = name;
 	}
 
+	public Selection getSelection(int id) {
+		Selection resSel = null;
+		for (Selection selection : selections) {
+			if (id == selection.id)
+				resSel = selection;
+		}
+		return resSel;
+	}
+
+	public ArrayList<Selection> getSelectionList() {
+		return selections;
+	}
+
 	public void addSelection(int id, String name, int price) {
 		selections.add(new Selection(id, name, price));
 	}
