@@ -1,5 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"
+    import="model.User"
+%>
+<%
+User user = (User) session.getAttribute("loginUser");
+%>
 <!DOCTYPE html>
 <html lang=ja>
 
@@ -22,7 +27,7 @@
                     <li><a href="time_extend.jsp">延長申請</a></li>
                     <li><a href="item_search.jsp">メニューを番号で探す</a></li>
                     <li><a href="item_list.jsp">フード・ドリンク</a></li>
-                    <li><a href="cus_order_list.jsp">注文履歴</a></li>
+                    <li><a href="cus_purchase_history.jsp">注文履歴</a></li>
                     <li><a class="gnav_botton" href="cart_detail.jsp">
                             <img class="cart_img" src="./img/cart.png" alt="cart" width="20" height="20">カート内容を確認
                         </a>
@@ -49,7 +54,12 @@
 
         <div class="footer-wrap">
             <h1>部屋番号　101</h1>
-            <button type="button" class="btn-back" onclick="location.href='index_select.jsp'">表示選択画面へ戻る</button>
+           <% if (user.isFront()) { %>
+        	<button type="button" class="btn-back"
+                onclick="location.href='front_top.jsp'">
+            表示選択画面へ戻る
+        	</button>
+    	<% } %>
             <h1>残り時間　50分</h1>
         </div>
     </main>

@@ -17,7 +17,7 @@ import model.User;
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
 
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+	protected void doPost(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
 
         req.setCharacterEncoding("UTF-8");
@@ -29,14 +29,14 @@ public class LoginServlet extends HttpServlet {
             userId = String.format("%06d", Integer.parseInt(rawUserId.trim()));
         } catch (NumberFormatException e) {
             req.setAttribute("error", "アカウントIDは6桁の数字で入力してください");
-            req.getRequestDispatcher("index.jsp").forward(req, resp);
+            req.getRequestDispatcher("index.jsp").forward(req, res);
             return;
         }
         User user = UserDao.login(userId, password);
 
         if (user == null) {
             req.setAttribute("error", "アカウントIDまたはパスワードが違います");
-            req.getRequestDispatcher("index.jsp").forward(req, resp);
+            req.getRequestDispatcher("index.jsp").forward(req, res);
             return;
         }
 
@@ -48,19 +48,19 @@ public class LoginServlet extends HttpServlet {
         
         switch (user.getRoleName()) {
             case "フロント":
-                resp.sendRedirect(context + "/front_top.jsp");
+                res.sendRedirect(context + "/front_top.jsp");
                 break;
             case "キッチン":
-                resp.sendRedirect(context + "/kitchen_order_list.jsp");
+                res.sendRedirect(context + "/kitchen_order_list.jsp");
                 break;
             case "フロア":
-                resp.sendRedirect(context + "/floor_order_list.jsp");
+                res.sendRedirect(context + "/index_select.jsp");
                 break;
             case "管理者":
-                resp.sendRedirect(context + "/manage_top.jsp");
+                res.sendRedirect(context + "/index_select.jsp");
                 break;
             default:
-                resp.sendRedirect(context + "/index.jsp");
+                res.sendRedirect(context + "/index.jsp");
         }
 
     }

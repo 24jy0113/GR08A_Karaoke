@@ -39,7 +39,7 @@ if (user == null) {
             <input type="search" name="q" />
             <div class="action-buttons">
                 <button type="button" class="btn-back" onclick="location.href='front_top.jsp'">戻る</button>
-                <button type="submit" class="btn-next" onclick="location.href='front_cus_top.jsp'">次へ</button>
+                <button type="submit" class="btn-next" onclick="location.href='cus_top.jsp'">次へ</button>
             </div>
         </div>
     </main>

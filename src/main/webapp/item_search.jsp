@@ -16,12 +16,12 @@
             <h1 class="title_name">七福サウンド</h1>
             <nav class="gnav">
                 <ul class="gnav_list">
-                    <li><a href="front_cus_top.jsp">トップへ</a></li>
-                    <li><a href="04_01_01延長時間選択画面.html">延長申請</a></li>
+                    <li><a href="cus_top.jsp">トップへ</a></li>
+                    <li><a href="time_extend.jsp">延長申請</a></li>
                     <li><a href="item_search.jsp">メニューを番号で探す</a></li>
                     <li><a href="item_list.jsp">フード・ドリンク</a></li>
-                    <li><a href="05_01注文履歴一覧画面.html">注文履歴</a></li>
-                    <li><a class="gnav_botton" href="07_01カート内容画面.html">
+                    <li><a href="cus_purchase_history.jsp">注文履歴</a></li>
+                    <li><a class="gnav_botton" href="cart_detail.jsp">
                             <img class="cart_img" src="./img/cart.png" alt="cart" width="20" height="20">カート内容を確認
                         </a>
                     </li>

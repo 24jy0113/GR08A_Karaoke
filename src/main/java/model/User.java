@@ -23,11 +23,20 @@ public class User {
 		this.passwordHash = passwordHash;
 		this.lastLoginTime = lastLoginTime;
 	}
-	
-	public boolean isAdmin() {
-        return "管理者".equals(roleName);
+
+	public boolean isFront() {
+        return "フロント".equals(roleName);
+    }
+	public boolean isKitchen() {
+        return "キッチン".equals(roleName);
+    }
+    public boolean isFloor() {
+        return "フロア".equals(roleName);
     }
 
+    public boolean isManager() {
+        return "管理者".equals(roleName);
+    }
     public boolean hasPermission(String perm) {
         return permissions != null && permissions.contains(perm);
     }

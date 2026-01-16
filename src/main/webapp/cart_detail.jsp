@@ -20,7 +20,7 @@
                     <li><a href="time_extend.jsp">延長申請</a></li>
                     <li><a href="item_search.jsp">メニューを番号で探す</a></li>
                     <li><a href="item_list.jsp">フード・ドリンク</a></li>
-                    <li><a href="cus_order_list.jsp">注文履歴</a></li>
+                    <li><a href="cus_purchase_history.jsp">注文履歴</a></li>
                     <li><a class="gnav_botton" href="cart_detail.jsp">
                             <img class="cart_img" src="./img/cart.png" alt="cart" width="20" height="20">カート内容を確認
                         </a>

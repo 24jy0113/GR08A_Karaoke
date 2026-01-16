@@ -40,7 +40,7 @@ if (user == null) {
                 
                 
                 <div class="action-buttons">
-                    <button type="button" class="btn-back" onclick="location.href='res_list_manager.jsp'">予約情報画面へ戻る</button>
+                    <button type="button" class="btn-back" onclick="location.href='res_list_front.jsp'">予約情報画面へ戻る</button>
                 </div>
             </div>
         </div>
