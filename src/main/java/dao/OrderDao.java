@@ -25,9 +25,9 @@ public class OrderDao {
 		// SQL文の作成.
 		// 注文の登録.
 		String sql1 = "INSERT INTO orders(total,receiving_number,item_creating_status_id,room_id) VALUE(?,?,?,?);";
-		// 注文詳細（OrderItemごと）の登録
+		// 注文詳細（OrderItemごと）の登録.
 		String sql2 = "INSERT INTO order_detail(order_id,item_id,`count`,sub_total) VALUE(?,?,?,?);";
-		// 注文と注文詳細のつながりの登録.
+		// 注文詳細と選択された商品オプションのつながりの登録.
 		String sql3 = "INSERT INTO order_detail_option(order_detail_id,option_detail_id) VALUE(?,?);";
 
 		try (Connection con = DatabaseManager.connect();
@@ -35,20 +35,53 @@ public class OrderDao {
 				PreparedStatement preState2 = con.prepareStatement(sql2, PreparedStatement.RETURN_GENERATED_KEYS);
 				PreparedStatement preState3 = con.prepareStatement(sql3)) {
 
+			// 複数テーブルに挿入する必要があるので自動コミットを無効.
+			con.setAutoCommit(false);
+
 			// プリペアードステートメントを使用してSQL文を実行.
-			preState1.setInt(0, order.getTotal());
-			preState1.setInt(1, order.getReceivingNo());
-			preState1.setInt(2, order.getStatusId());
-			preState1.setInt(3, order.getRoomId());
-			preState1.executeUpdate();
-			try (ResultSet resSet = preState1.getGeneratedKeys();) {
-				preState2.setInt(0, resSet.getInt(1));
-				for (OrderItem item : order.getItem()) {
-					preState2.setInt(1, item.getItem().getId());
-					preState2.setInt(2, item.getTotal());
-					preState2.setInt(3, item.getTotal());
-					preState2.executeUpdate();
+			// 注文をテーブルに登録.
+			preState1.setInt(1, order.getTotal());
+			preState1.setInt(2, order.getReceivingNo());
+			preState1.setInt(3, order.getStatusId());
+			preState1.setInt(4, order.getRoomId());
+			
+			try {
+
+				preState1.executeUpdate();
+				
+				try (ResultSet resSet1 = preState1.getGeneratedKeys();) {
+					
+					// 生成された注文の主キーを取得して注文詳細を登録する.
+					preState2.setInt(0, resSet1.getInt(1));
+					
+					for (OrderItem item : order.getItem()) {
+						
+						preState2.setInt(1, item.getItem().getId());
+						preState2.setInt(2, item.getTotal());
+						preState2.setInt(3, item.getTotal());
+						preState2.executeUpdate();
+						
+						// 生成された注文詳細の主キーを取得して選択オプションのテーブルに登録する.
+					}
 				}
+
+				// すべて成功したらコミット.
+				con.commit();
+
+			} catch (SQLException e) {
+
+				// 挿入時に例外が出たらロールバックする.
+				con.rollback();
+
+				// デバッグ用のスタックトレース.
+				e.printStackTrace();
+
+				// フロントエンド用のエラーメッセージ.
+				String errMsg = "DBの挿入処理に失敗しました！<br>管理者に連絡してください。";
+
+				// 例外を投げる.
+				throw new Exception(errMsg);
+
 			}
 
 		} catch (SQLException e) {
