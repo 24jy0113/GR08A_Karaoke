@@ -38,29 +38,29 @@ public class OrderDao {
 			// 複数テーブルに挿入する必要があるので自動コミットを無効.
 			con.setAutoCommit(false);
 
-			// プリペアードステートメントを使用してSQL文を実行.
+			// プリペアードステートメントを使用.
 			// 注文をテーブルに登録.
 			preState1.setInt(1, order.getTotal());
 			preState1.setInt(2, order.getReceivingNo());
 			preState1.setInt(3, order.getStatusId());
 			preState1.setInt(4, order.getRoomId());
-			
+
 			try {
 
 				preState1.executeUpdate();
-				
+
 				try (ResultSet resSet1 = preState1.getGeneratedKeys();) {
-					
+
 					// 生成された注文の主キーを取得して注文詳細を登録する.
 					preState2.setInt(0, resSet1.getInt(1));
-					
+
 					for (OrderItem item : order.getItem()) {
-						
+
 						preState2.setInt(1, item.getItem().getId());
 						preState2.setInt(2, item.getTotal());
 						preState2.setInt(3, item.getTotal());
 						preState2.executeUpdate();
-						
+
 						// 生成された注文詳細の主キーを取得して選択オプションのテーブルに登録する.
 					}
 				}
@@ -121,7 +121,7 @@ public class OrderDao {
 
 		try (Connection con = DatabaseManager.connect(); PreparedStatement preState = con.prepareStatement(sql);) {
 
-			// プリペアードステートメントを使用してSQL文を実行.
+			// プリペアードステートメントを使用.
 			preState.setInt(1, roomId);
 			try (ResultSet resSet = preState.executeQuery();) {
 
@@ -164,7 +164,7 @@ public class OrderDao {
 
 		try (Connection con = DatabaseManager.connect(); PreparedStatement preState = con.prepareStatement(sql);) {
 
-			// プリペアードステートメントを使用してSQL文を実行.
+			// プリペアードステートメントを使用.
 			preState.setInt(1, statusId);
 			try (ResultSet resSet = preState.executeQuery();) {
 
@@ -205,7 +205,7 @@ public class OrderDao {
 	public ArrayList<OrderItem> searchOrderItem(int order) throws Exception {
 
 		// 返却値の参照変数を初期化.
-		ArrayList<OrderItem> list = new ArrayList<>();
+		ArrayList<OrderItem> resList = new ArrayList<>();
 
 		// SQL文の作成.
 		String sql1 = "SELECT item_id,`count`,sub_total,order_detail_id "
@@ -218,7 +218,7 @@ public class OrderDao {
 				PreparedStatement preState1 = con.prepareStatement(sql1);
 				PreparedStatement preState2 = con.prepareStatement(sql2);) {
 
-			// プリペアードステートメントを使用してSQL文を実行.
+			// プリペアードステートメントを使用.
 			// 注文単位でアイテムの情報を取得.
 			preState1.setInt(1, order);
 			try (ResultSet resSet1 = preState1.executeQuery();) {
@@ -227,7 +227,7 @@ public class OrderDao {
 					// オプション選択を記録するためのリスト.
 					ArrayList<Integer> option = new ArrayList<>();
 
-					// プリペアードステートメントを使用してSQL文を実行.
+					// プリペアードステートメントを使用.
 					// 商品単位でオプションの情報を取得.
 					preState2.setInt(1, resSet1.getInt("order_detail_id"));
 					try (ResultSet resSet2 = preState1.executeQuery();) {
@@ -236,11 +236,13 @@ public class OrderDao {
 						while (resSet2.next()) {
 							option.add(resSet2.getInt("option_detail_id"));
 						}
-						// 検索結果からOrderインスタンスを生成.
-						/*
-						list.add(new OrderItem(resSet1.getInt("item_id"), , resSet1.getInt("count"),
+						ItemDao itemDao = new ItemDao();
+
+						// 検索結果からOrderItemインスタンスを生成.
+						resList.add(new OrderItem(resSet1.getInt("item_id"),
+								itemDao.searchItemById(resSet1.getInt("item_id")), resSet1.getInt("count"),
 								option.stream().mapToInt(Integer::intValue).toArray(), resSet1.getInt("sub_total")));
-						*/
+
 					}
 				}
 			}
@@ -257,6 +259,6 @@ public class OrderDao {
 
 		}
 
-		return list;
+		return resList;
 	}
 }
