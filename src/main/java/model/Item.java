@@ -31,6 +31,7 @@ public class Item {
 		this.price = price;
 		this.image = image;
 		this.stock = stock;
+		options = new ArrayList<>();
 	}
 
 	public ArrayList<Option> getOptionList() {

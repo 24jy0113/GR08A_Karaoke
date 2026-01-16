@@ -1,36 +1,41 @@
 package model;
 
+import java.util.ArrayList;
+
 public class OrderItem {
 	private int id;
 	private Item item;
-	private int[] option;
+	private ArrayList<SelectedOption> selectedOptions;
 	private int count;
 	private int total;
 
 	public OrderItem(Item item) {
-		this(item, 1, null);
+		this(item, 1, new ArrayList<>());
 	}
 
-	public OrderItem(Item item, int[] option) {
-		this(item, 1, option);
+	public OrderItem(Item item, ArrayList<SelectedOption> selectedOptions) {
+		this(item, 1, selectedOptions);
 	}
 
 	public OrderItem(Item item, int count) {
-		this(item, count, null);
+		this(item, count, new ArrayList<>());
 	}
 
-	public OrderItem(Item item, int count, int[] option) {
-		this(-1, item, count, option, 0);
+	public OrderItem(Item item, int count, ArrayList<SelectedOption> selectedOptions) {
+		this(-1, item, count, selectedOptions, 0);
 		calcTotal();
 	}
 
-	public OrderItem(int id, Item item, int count, int[] option, int total) {
+	public OrderItem(int id, Item item, int count, ArrayList<SelectedOption> selectedOptions, int total) {
 		this.id = id;
 		this.item = item;
 		this.count = count;
-		this.option = option;
+		this.selectedOptions = selectedOptions;
 		this.total = total;
 	}
+
+	public record SelectedOption(int optId, int selectionId) {
+	};
 
 	public int getId() {
 		return id;
@@ -55,21 +60,34 @@ public class OrderItem {
 		calcTotal();
 	}
 
-	public int[] getOptionList() {
-		return option;
+	public ArrayList<SelectedOption> getOptionList() {
+		return selectedOptions;
 	}
 
-	public int getOption(int i) {
-		return option[i];
+	public SelectedOption getOption(int optId) {
+		SelectedOption resSelectedOption = null;
+		for (SelectedOption selectedOption : selectedOptions) {
+			if (optId == selectedOption.optId)
+				resSelectedOption = selectedOption;
+		}
+		return resSelectedOption;
 	}
 
-	public void setOptionList(int[] option) {
-		this.option = option;
+	public void setOptionList(ArrayList<SelectedOption> option) {
+		this.selectedOptions = option;
 		calcTotal();
 	}
 
-	public void setOption(int i, int option) {
-		this.option[i] = option;
+	public void setOption(int optId, int selectionId) {
+		delSelectedOption(optId);
+		selectedOptions.add(new SelectedOption(optId, selectionId));
+	}
+
+	public void delSelectedOption(int optId) {
+		for (int i = 0; i < selectedOptions.size(); i++) {
+			if (optId == selectedOptions.get(i).optId)
+				selectedOptions.remove(i);
+		}
 	}
 
 	public int getCount() {
@@ -82,11 +100,11 @@ public class OrderItem {
 	}
 
 	private void calcTotal() {
-		int optionSum = 0;
-		for (int i = 0; i < option.length; i++) {
-			optionSum += item.getOptionPrice(i, option[i]);
+		int optionPriceSum = 0;
+		for (SelectedOption selectedOption : selectedOptions) {
+			optionPriceSum += item.getOption(selectedOption.optId).getSelection(selectedOption.selectionId).price();
 		}
-		total = (item.getPrice() + optionSum) * count;
+		total = (item.getPrice() + optionPriceSum) * count;
 	}
 
 	public int getTotal() {

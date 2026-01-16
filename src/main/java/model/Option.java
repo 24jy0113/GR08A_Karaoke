@@ -41,7 +41,8 @@ public class Option {
 		return selections;
 	}
 
-	public void addSelection(int id, String name, int price) {
+	public void setSelection(int id, String name, int price) {
+		delSelection(id);
 		selections.add(new Selection(id, name, price));
 	}
 
