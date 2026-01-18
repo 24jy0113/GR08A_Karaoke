@@ -2,7 +2,7 @@ package dao;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
+import java.sql.SQLException;
 import java.sql.Connection;
 
 import model.User;
@@ -15,8 +15,8 @@ public class UserDao {
 	    String sql =
 	        "SELECT u.user_id, u.user_name, u.password, u.last_login_time, r.role_name " +
 	        "FROM user u " +
-	        "JOIN role_detail rd ON u.user_id = rd.user_id " +
-	        "JOIN role r ON rd.role_id = r.role_id " +
+	        "JOIN user_role ur ON u.user_id = ur.user_id " +
+	        "JOIN role r ON ur.role_id = r.role_id " +
 	        "WHERE u.user_id = ?";
 
 	    try (Connection conn = DBUtil.getConnection();
@@ -41,7 +41,7 @@ public class UserDao {
 	            user.setRoleName(rs.getString("role_name"));
 	            user.setPasswordHash(dbHash);
 	            user.setLastLoginTime(rs.getTimestamp("last_login_time"));
-	            user.setPermissions(buildPermissions(user.getRoleName()));
+	            //user.setPermissions(buildPermissions(user.getRoleName()));
 
 	            return user;
 	        }
@@ -51,9 +51,37 @@ public class UserDao {
 	    }
 	    return null;
 	}
+	
+	public static boolean checkPassword(String userId, String rawPassword) {
+
+	    String sql = "SELECT password FROM user WHERE user_id = ?";
+
+	    try (Connection conn = DBUtil.getConnection();
+	         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+	        ps.setString(1, userId);
+
+	        try (ResultSet rs = ps.executeQuery()) {
+
+	            if (!rs.next()) {
+	                // ユーザー存在しない
+	                return false;
+	            }
+
+	            String storedHash = rs.getString("password");
+	            String inputHash = PasswordUtil.hash(rawPassword);
+
+	            // パスワードの比較
+	            return storedHash.equals(inputHash);
+	        }
+
+	    } catch (SQLException e) {
+	        throw new RuntimeException(e);
+	    }
+	}
 
 
-    private static String buildPermissions(String roleName) {
+   /* private static String buildPermissions(String roleName) {
         switch (roleName) {
             case "管理者":
                 return "all";
@@ -65,4 +93,5 @@ public class UserDao {
                 return "";
         }
     }
+    */
 }

@@ -23,7 +23,7 @@ User user = (User) session.getAttribute("loginUser");
             <h1 class="title_name">七福サウンド</h1>
             <nav class="gnav">
                 <ul class="gnav_list">
-                     <li><a href="cus_top.jsp">トップへ</a></li>
+                    <li><a href="cus_top.jsp">トップへ</a></li>
                     <li><a href="time_extend.jsp">延長申請</a></li>
                     <li><a href="item_search.jsp">メニューを番号で探す</a></li>
                     <li><a href="item_list.jsp">フード・ドリンク</a></li>
@@ -46,7 +46,7 @@ User user = (User) session.getAttribute("loginUser");
 
             </div>
             <div class="container">
-                <a class="button" href="cus_order_list.jsp">注文履歴</a>
+                <a class="button" href="cus_purchase_history.jsp">注文履歴</a>
                 <a class="button" href="time_extend.jsp">利用時間の延長申請</a>
                 <a class="button" href="cart_detail.jsp">カート内容を確認</a>
             </div>
@@ -54,9 +54,9 @@ User user = (User) session.getAttribute("loginUser");
 
         <div class="footer-wrap">
             <h1>部屋番号　101</h1>
-           <% if (user.isFront()) { %>
+          <% if (user != null && user.isFront()) { %>
         	<button type="button" class="btn-back"
-                onclick="location.href='front_top.jsp'">
+                onclick="location.href='./front/front_top.jsp'">
             表示選択画面へ戻る
         	</button>
     	<% } %>

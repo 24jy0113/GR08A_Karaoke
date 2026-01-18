@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.util.Set;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -8,6 +9,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import dao.PermissionDAO;
 import dao.UserDao;
 import model.User;
 
@@ -39,19 +41,25 @@ public class LoginServlet extends HttpServlet {
             req.getRequestDispatcher("index.jsp").forward(req, res);
             return;
         }
-
-        HttpSession session = req.getSession();
+        
+        HttpSession session = req.getSession(true);
         session.setAttribute("loginUser", user);
+        session.setAttribute("user_id", user.getUserId());
+
+        Set<String> permissions = PermissionDAO.getPermissionsByUserId(user.getUserId());
+
+        session.setAttribute("permissions", permissions);
         
         String role = user.getRoleName().trim();
         String context = req.getContextPath();
         
         switch (user.getRoleName()) {
-            case "フロント":
-                res.sendRedirect(context + "/front_top.jsp");
-                break;
+           
             case "キッチン":
-                res.sendRedirect(context + "/kitchen_order_list.jsp");
+                res.sendRedirect(context + "/kitchen/kitchen_order_list.jsp");
+                break;
+            case "フロント":
+                res.sendRedirect(context + "/front/front_top.jsp");
                 break;
             case "フロア":
                 res.sendRedirect(context + "/index_select.jsp");

@@ -26,7 +26,7 @@ session = request.getSession(true);
 		<p>アカウントIDとパスワードを入力し、ログインしてください</p>
 		<p>ログアウトしました。</p>
 		<h2>アカウントログイン</h2>
-		<form method="post" action="index_select.jsp">
+		<form method="post" action="<%= request.getContextPath() %>/LoginServlet">
 			<table>
 				<tr>
 					<th>アカウントID</th>

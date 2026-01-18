@@ -2,6 +2,8 @@
     pageEncoding="UTF-8"
     import="model.User"
 %>
+<%@ taglib prefix="auth" uri="/auth" %>
+
 <%
 User user = (User) session.getAttribute("loginUser");
 if (user == null) {
@@ -34,19 +36,45 @@ if (user == null) {
 	</header>
 	<main>
 		<div>
-			<p class="bodymsg">フロント・フロア・キッチン・顧客の中から利用する項目を選択してください</p>
+			<p class="bodymsg">利用する項目をクリックしてください</p>
 			<div class="container">
-				<a class="button" href="front_top.jsp">フロント用</a> <a
-					class="button" href="floor_order_list.jsp">フロア用</a>
 
+			     <auth:hasPermission code="VIEW_FRONT">
+			        <a class="button" href="${pageContext.request.contextPath}/front/front_top.jsp">
+			            フロント用
+			        </a>
+			    </auth:hasPermission>
+			
+			    <auth:hasPermission code="VIEW_FLOOR">
+			        <a class="button" href="${pageContext.request.contextPath}/floor/floor_order_list.jsp">
+			            フロア用
+			        </a>
+			    </auth:hasPermission>
+			
 			</div>
+
 			<div class="container">
-				<a class="button" href="kitchen_order_list.jsp">キッチン用</a> <a
-					class="button" href="room_search.jsp">顧客用</a>
+
+			    <auth:hasPermission code="VIEW_KITCHEN">
+			        <a class="button" href="${pageContext.request.contextPath}/kitchen/kitchen_order_list.jsp">
+			            キッチン用
+			        </a>
+			    </auth:hasPermission>
+				<auth:hasPermission code="VIEW_CUS">
+			    <a class="button" href="${pageContext.request.contextPath}/room_search.jsp">顧客用</a>
+				</auth:hasPermission>
 			</div>
+
 			<div class="container">
-				<a class="button" href="manage_top.jsp">管理者用</a>
+			
+			    <auth:hasPermission code="ADMIN_ALL">
+			        <a class="button" href="${pageContext.request.contextPath}/admin/manage_top.jsp">
+			            管理者用
+			        </a>
+			    </auth:hasPermission>
+			
 			</div>
+			
 		</div>
 	</main>
 
