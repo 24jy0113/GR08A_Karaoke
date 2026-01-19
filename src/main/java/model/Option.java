@@ -3,7 +3,7 @@ package model;
 import java.util.ArrayList;
 
 public class Option {
-	private Integer id;
+	private int id;
 	private String name;
 	private ArrayList<Selection> selections;
 
@@ -20,7 +20,7 @@ public class Option {
 	public record Selection(int id, String name, int price) {
 	}
 
-	public Integer getId() {
+	public int getId() {
 		return id;
 	}
 
@@ -28,10 +28,10 @@ public class Option {
 		return name;
 	}
 
-	public Selection getSelection(int id) {
+	public Selection findSelectionById(int selectionId) {
 		Selection resSel = null;
 		for (Selection selection : selections) {
-			if (id == selection.id) {
+			if (selectionId == selection.id) {
 				resSel = selection;
 				break;
 			}

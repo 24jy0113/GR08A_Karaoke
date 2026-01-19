@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Item {
 	private int id;
-	private String itemName;
+	private String name;
 	private int categoryId;
 	private String category;
 	private int itemNo;
@@ -24,7 +24,7 @@ public class Item {
 	public Item(int id, String name, int categoryId, String category, int itemNo, int price, String image,
 			boolean stock) {
 		this.id = id;
-		itemName = name;
+		this.name = name;
 		this.categoryId = categoryId;
 		this.category = category;
 		this.itemNo = itemNo;
@@ -42,7 +42,7 @@ public class Item {
 		this.options = options;
 	}
 
-	public Option getOption(int optId) {
+	public Option findOptionById(int optId) {
 		Option resOpt = null;
 		for (Option option : options) {
 			if (optId == option.getId()) {
@@ -59,10 +59,8 @@ public class Item {
 
 	public void delOption(int optId) {
 		for (int i = 0; i < options.size(); i++) {
-			if (optId == options.get(i).getId()) {
+			if (optId == options.get(i).getId())
 				options.remove(i);
-				break;
-			}
 		}
 	}
 
@@ -75,11 +73,11 @@ public class Item {
 	}
 
 	public String getItemName() {
-		return itemName;
+		return name;
 	}
 
 	public void setItemName(String itemName) {
-		this.itemName = itemName;
+		this.name = itemName;
 	}
 
 	public int getPrice() {
