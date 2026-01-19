@@ -75,28 +75,6 @@ public class ItemDao {
 		}
 	}
 
-	// 商品を削除する.
-	public void delItem(Item item) throws Exception {
-		// SQL文作成.
-		String sql = "DALETE FROM item"
-				+ " WHERE item_id = ?";
-
-		try (Connection con = DatabaseManager.connect(); PreparedStatement preState = con.prepareStatement(sql);) {
-			// プリペアードステートメントを使用.
-			preState.setInt(1, item.getId());
-			preState.executeUpdate();
-		} catch (SQLException e) {
-			// デバッグ用のスタックトレース.
-			e.printStackTrace();
-
-			// フロントエンド用のエラーメッセージ.
-			String errMsg = "DB接続に失敗しました！<br>管理者に連絡してください。";
-
-			// 例外を投げる.
-			throw new Exception(errMsg);
-		}
-	}
-
 	// 商品を名前の部分一致で探す.
 	public ArrayList<Item> searchItemByName(String name) throws Exception {
 

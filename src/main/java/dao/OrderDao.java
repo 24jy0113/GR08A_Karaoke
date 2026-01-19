@@ -55,8 +55,8 @@ public class OrderDao {
 					// 生成された注文の主キーを取得して注文詳細を登録する.
 					preState2.setInt(0, resSet1.getInt(1));
 
-					for (OrderItem item : order.getItem()) {
-
+					for (OrderItem item : order.getItemList()) {
+						// 商品をテーブルに追加.
 						preState2.setInt(1, item.getItem().getId());
 						preState2.setInt(2, item.getTotal());
 						preState2.setInt(3, item.getTotal());
@@ -226,7 +226,8 @@ public class OrderDao {
 
 						// 結果をリストに格納.
 						while (resSet2.next()) {
-							option.add(new SelectedOption(resSet2.getInt("order_detail_id"), resSet2.getInt("option_detail_id")));
+							option.add(new SelectedOption(resSet2.getInt("order_detail_id"),
+									resSet2.getInt("option_detail_id")));
 						}
 						ItemDao itemDao = new ItemDao();
 
