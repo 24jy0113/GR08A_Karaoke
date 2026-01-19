@@ -29,7 +29,7 @@ public class ItemDao {
 			preState.setString(5, item.getImage());
 			preState.setBoolean(6, item.isStock());
 			preState.executeUpdate();
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			// デバッグ用のスタックトレース.
 			e.printStackTrace();
 
@@ -63,7 +63,7 @@ public class ItemDao {
 			preState.setBoolean(6, item.isStock());
 			preState.setInt(7, item.getId());
 			preState.executeUpdate();
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			// デバッグ用のスタックトレース.
 			e.printStackTrace();
 
@@ -85,7 +85,7 @@ public class ItemDao {
 			// プリペアードステートメントを使用.
 			preState.setInt(1, item.getId());
 			preState.executeUpdate();
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			// デバッグ用のスタックトレース.
 			e.printStackTrace();
 
@@ -145,7 +145,7 @@ public class ItemDao {
 								while (resSet3.next()) {
 
 									//　オプションの選択肢をOptionインスタンスに追加.
-									option.addSelection(resSet3.getInt("option_detail_id"),
+									option.setSelection(resSet3.getInt("option_detail_id"),
 											resSet3.getString("option_detail_name"), resSet3.getInt("price"));
 								}
 							}
@@ -219,7 +219,7 @@ public class ItemDao {
 
 						//　オプションの選択肢をOptionインスタンスに追加.
 						while (resSet3.next()) {
-							option.addSelection(resSet3.getInt("option_detail_id"),
+							option.setSelection(resSet3.getInt("option_detail_id"),
 									resSet3.getString("option_detail_name"), resSet3.getInt("price"));
 						}
 					}
@@ -291,7 +291,7 @@ public class ItemDao {
 
 						//　オプションの選択肢をOptionインスタンスに追加.
 						while (resSet3.next()) {
-							option.addSelection(resSet3.getInt("option_detail_id"),
+							option.setSelection(resSet3.getInt("option_detail_id"),
 									resSet3.getString("option_detail_name"), resSet3.getInt("price"));
 						}
 					}

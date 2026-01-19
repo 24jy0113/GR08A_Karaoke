@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import model.Order;
 import model.OrderItem;
+import model.OrderItem.SelectedOption;
 
 public class OrderDao {
 	public void addOrder(Order order) throws Exception {
@@ -193,15 +194,6 @@ public class OrderDao {
 
 	}
 
-	public void addOrderItem(OrderItem item, Order order) {
-	}
-
-	public void updateOrderItem(OrderItem item, Order order) {
-	}
-
-	public void delOrderItem(OrderItem item, Order order) {
-	}
-
 	public ArrayList<OrderItem> searchOrderItem(int order) throws Exception {
 
 		// 返却値の参照変数を初期化.
@@ -211,7 +203,7 @@ public class OrderDao {
 		String sql1 = "SELECT item_id,`count`,sub_total,order_detail_id "
 				+ "FROM order_detail "
 				+ "WHERE order_id=?;";
-		String sql2 = "SELECT option_detail_id "
+		String sql2 = "SELECT order_detail_id,option_detail_id "
 				+ "FROM order_detail_option "
 				+ "WHERE order_detail_id=?;";
 		try (Connection con = DatabaseManager.connect();
@@ -225,7 +217,7 @@ public class OrderDao {
 
 				while (resSet1.next()) {
 					// オプション選択を記録するためのリスト.
-					ArrayList<Integer> option = new ArrayList<>();
+					ArrayList<SelectedOption> option = new ArrayList<>();
 
 					// プリペアードステートメントを使用.
 					// 商品単位でオプションの情報を取得.
@@ -234,14 +226,14 @@ public class OrderDao {
 
 						// 結果をリストに格納.
 						while (resSet2.next()) {
-							option.add(resSet2.getInt("option_detail_id"));
+							option.add(new SelectedOption(resSet2.getInt("order_detail_id"), resSet2.getInt("option_detail_id")));
 						}
 						ItemDao itemDao = new ItemDao();
 
 						// 検索結果からOrderItemインスタンスを生成.
-						resList.add(new OrderItem(resSet1.getInt("item_id"),
+						resList.add(new OrderItem(resSet1.getInt("order_id"),
 								itemDao.searchItemById(resSet1.getInt("item_id")), resSet1.getInt("count"),
-								option.stream().mapToInt(Integer::intValue).toArray(), resSet1.getInt("sub_total")));
+								option, resSet1.getInt("sub_total")));
 
 					}
 				}
