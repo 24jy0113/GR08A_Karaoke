@@ -13,9 +13,6 @@ public class Item {
 	private boolean stock;
 	private ArrayList<Option> options;
 
-	public Item() {
-	}
-
 	public Item(String name, int categoryId, String category, int itemNo, int price, String image,
 			boolean stock) {
 		this(-1, name, categoryId, category, itemNo, price, image, stock);
