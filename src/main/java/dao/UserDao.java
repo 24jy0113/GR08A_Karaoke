@@ -3,6 +3,7 @@ package dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.sql.Connection;
 
 import model.User;
@@ -144,6 +145,88 @@ public class UserDao {
 	    } catch (Exception e) {
 	        throw new RuntimeException(e);
 	    }
+	}
+	public static User searchUserByUserId(String userId) {
+	    String sql = "SELECT user_id, user_name FROM user WHERE user_id = ?";
+	    try (Connection con = DBUtil.getConnection();
+	         PreparedStatement ps = con.prepareStatement(sql)) {
+
+	        ps.setString(1, userId);
+	        ResultSet rs = ps.executeQuery();
+
+	        if (rs.next()) {
+	            User u = new User();
+	            u.setUserId(rs.getString("user_id"));
+	            u.setUserName(rs.getString("user_name"));
+	            return u;
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return null;
+	}
+	public static ArrayList<User> searchUserByUserName(String userName) {
+	    ArrayList<User> list = new ArrayList<>();
+
+	    String sql = "SELECT user_id, user_name FROM user WHERE user_name LIKE ?";
+	    try (Connection con = DBUtil.getConnection();
+	         PreparedStatement ps = con.prepareStatement(sql)) {
+
+	        ps.setString(1, "%" + userName + "%");
+	        ResultSet rs = ps.executeQuery();
+
+	        while (rs.next()) {
+	            User u = new User();
+	            u.setUserId(rs.getString("user_id"));
+	            u.setUserName(rs.getString("user_name"));
+	            list.add(u);
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return list;
+	}
+	public static boolean updateUser(User user) {
+	    String sql = "UPDATE user SET user_name = ? WHERE user_id = ?";
+
+	    try (Connection con = DBUtil.getConnection();
+	         PreparedStatement ps = con.prepareStatement(sql)) {
+
+	        ps.setString(1, user.getUserName());
+	        ps.setString(2, user.getUserId());
+	        return ps.executeUpdate() == 1;
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return false;
+	}
+	public static boolean deleteUser(String userId) {
+
+	    String deleteUserRoleSql = "DELETE FROM user_role WHERE user_id = ?";
+	    String deleteUserSql     = "DELETE FROM user WHERE user_id = ?";
+
+	    try (Connection con = DBUtil.getConnection()) {
+
+	        con.setAutoCommit(false);
+
+	        try (PreparedStatement ps1 = con.prepareStatement(deleteUserRoleSql);
+	             PreparedStatement ps2 = con.prepareStatement(deleteUserSql)) {
+
+	            ps1.setString(1, userId);
+	            ps1.executeUpdate();
+
+	            ps2.setString(1, userId);
+	            int result = ps2.executeUpdate();
+
+	            con.commit();
+	            return result == 1;
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return false;
 	}
 
 

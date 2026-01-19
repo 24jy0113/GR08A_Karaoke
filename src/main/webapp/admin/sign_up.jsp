@@ -15,20 +15,20 @@ if (user == null) {
 <head>
 <meta charset="UTF-8">
 <title>アカウント登録</title>
-<link rel="stylesheet" type="text/css" href="../css/01_01.css">
-<link rel="stylesheet" type="text/css" href="../css/header.css">
+<link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/01_01.css">
+<link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/header.css">
 
 </head>
 <body>
 	<!-- Header -->
 	<header>
 		<div class="header_inner">
-			<img class="title_img" src="../img/logo.png" alt="logo" width="60"
+			<img class="title_img" src="<%= request.getContextPath() %>/img/logo.png" alt="logo" width="60"
 				height="60">
 			<h1 class="title_name">七福サウンド</h1>
 			<nav class="gnav">
 				<ul class="gnav_list">
-					 <li><img class="user_img" src="../img/user.png" alt="cart" width="25" height="25"><%= user.getUserName() %></li>
+					 <li><img class="user_img" src="<%= request.getContextPath() %>/img/user.png" alt="cart" width="25" height="25"><%= user.getUserName() %></li>
                     <li><a class="gnav_botton" href="<%= request.getContextPath() %>/LogoutServlet">ログアウト</a></li>
 				</ul>
 			</nav>
@@ -39,17 +39,18 @@ if (user == null) {
 			<h1 class="bodymsg">アカウント登録</h1>
 			<p style="text-align: center; margin-bottom: 30px;">下記の情報を入力してください</p>
 			<h1>アカウント情報</h1>
-			<form action="<%=request.getContextPath()%>/SignUpConfirmServlet" method="post">
+			<form action="<%=request.getContextPath()%>/SignUpConfirmServlet" method="post"  onsubmit="return validateForm()">
 
 				<div class="form-row">
 					<label>役割</label>
 					<div class="required-badge required">必須</div>
 					<div class="checkbox-group">
-					  <label><input type="checkbox" name="roleId" value="1"> キッチン</label>
-					  <label><input type="checkbox" name="roleId" value="2"> フロント</label>
-					  <label><input type="checkbox" name="roleId" value="3"> フロア</label>
-					  <label><input type="checkbox" name="roleId" value="4"> 管理者</label>
+					  <label><input type="radio" name="roleId" value="1"> キッチン</label>
+					  <label><input type="radio" name="roleId" value="2"> フロント</label>
+					  <label><input type="radio" name="roleId" value="3"> フロア</label>
+					  <label><input type="radio" name="roleId" value="4"> 管理者</label>
 					</div>
+
 
 				</div>
 
@@ -78,7 +79,7 @@ if (user == null) {
 					style="text-align: center; color: chocolate;"></span><br>
 				<div class="action-buttons">
 					<button type="button" class="btn-back"
-						onclick="location.href='account_search_result.jsp'">キャンセル</button>
+						onclick="history.back()">キャンセル</button>
 					<button type="submit" class="btn-next">確認する</button>
 				</div>
 			</form>
@@ -115,6 +116,13 @@ if (user == null) {
               error.textContent = "入力されたパスワードが不一致です";
               return false;
           }
+          const roleChecked = document.querySelector('input[name="roleId"]:checked');
+          if (!roleChecked) {
+              error.textContent = "役割を選択してください";
+              return false;
+          }
+
+          return true;
       }
   </script>
 </body>

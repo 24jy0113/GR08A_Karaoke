@@ -12,38 +12,27 @@ import jakarta.servlet.http.HttpServletResponse;
 import dao.UserDao;
 import model.User;
 
-/**
- * Servlet implementation class AccountSearchServlet
- */
 @WebServlet("/AccountSearchServlet")
 public class AccountSearchServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse res)
+            throws ServletException, IOException {
 
-		request.setCharacterEncoding("UTF-8");
+        req.setCharacterEncoding("UTF-8");
 
-		String keyword = request.getParameter("keyword");
+        String keyword = req.getParameter("keyword");
+        ArrayList<User> list = new ArrayList<>();
 
-		UserDao userDao = new UserDao();
+        if (keyword != null && !keyword.isBlank()) {
+            User u = UserDao.searchUserByUserId(keyword);
+            if (u != null) {
+                list.add(u);
+            } else {
+                list = UserDao.searchUserByUserName(keyword);
+            }
+        }
 
-		ArrayList<User> userList = new ArrayList<>();
-
-		if (keyword != null && !keyword.isEmpty()) {
-
-			User user = userDao.findById(keyword);
-
-			if (user != null) {
-				userList.add(user);
-			} else {
-				userList = userDao.findByUserName(keyword);
-			}
-		}
-
-		request.setAttribute("userList", userList);
-		request.getRequestDispatcher("account_search_result.jsp")
-				.forward(request, response);
-	}
-
+        req.setAttribute("userList", list);
+        req.getRequestDispatcher("/admin/account_search_result.jsp").forward(req, res);
+    }
 }

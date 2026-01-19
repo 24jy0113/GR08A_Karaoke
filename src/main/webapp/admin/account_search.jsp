@@ -22,20 +22,20 @@ if (ok == null || !ok) {
 <head>
 <meta charset="UTF-8">
 <title>アカウント情報検索画面</title>
-<link rel="stylesheet" type="text/css" href="../css/01_04.css">
-<link rel="stylesheet" type="text/css" href="../css/header.css">
+<link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/01_04.css">
+<link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/header.css">
 </head>
 
 <body>
 	<!-- Header -->
 	<header>
 		<div class="header_inner">
-			<img class="title_img" src="../img/logo.png" alt="logo" width="60"
+			<img class="title_img" src="<%= request.getContextPath() %>/img/logo.png" alt="logo" width="60"
 				height="60">
 			<h1 class="title_name">七福サウンド</h1>
 			<nav class="gnav">
 				<ul class="gnav_list">
-					 <li><img class="user_img" src="../img/user.png" alt="cart" width="25" height="25"><%= user.getUserName() %></li>
+					 <li><img class="user_img" src="<%= request.getContextPath() %>/img/user.png" alt="cart" width="25" height="25"><%= user.getUserName() %></li>
                     <li><a class="gnav_botton" href="<%= request.getContextPath() %>/LogoutServlet">ログアウト</a></li>
 				</ul>
 			</nav>
@@ -47,7 +47,7 @@ if (ok == null || !ok) {
 				<h1>アカウント情報の確認、変更、削除</h1>
 			</div>
 			<h4>アカウントIDかアカウント名を入力してください</h4>
-			<form action="AccountSearchServlet" method="get">
+			<form action="../AccountSearchServlet" method="get">
 				<input type="search" name="keyword"/>
 				<button type="submit" style="height: 50px;">検索</button>
 			</form>
