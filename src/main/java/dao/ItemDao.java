@@ -16,19 +16,55 @@ public class ItemDao {
 	// 商品を追加する.
 	public void addItem(Item item) throws Exception {
 		// SQL文作成.
-		String sql = "INSERT INTO"
-				+ " item(item_name,category_id,order_number,price,item_image,stock)"
-				+ " VALUES(?,?,?,?,?,?);";
+		String sql1 = "INSERT INTO item(item_name,category_id,order_number,price,item_image,stock) "
+				+ "VALUES(?,?,?,?,?,?);";
+		String sql2 = "INSERT INTO item_option(item_id,option_id) "
+				+ "VALUES(?,?);";
 
-		try (Connection con = DatabaseManager.connect(); PreparedStatement preState = con.prepareStatement(sql);) {
+		try (Connection con = DatabaseManager.connect();
+				PreparedStatement preState1 = con.prepareStatement(sql1, PreparedStatement.RETURN_GENERATED_KEYS);
+				PreparedStatement preState2 = con.prepareStatement(sql2);) {
+
+			// 複数テーブルに挿入する必要があるので自動コミットを無効.
+			con.setAutoCommit(false);
+
 			// プリペアードステートメントを使用.
-			preState.setString(1, item.getItemName());
-			preState.setInt(2, item.getCategoryId());
-			preState.setInt(3, item.getItemNo());
-			preState.setInt(4, item.getPrice());
-			preState.setString(5, item.getImage());
-			preState.setBoolean(6, item.isStock());
-			preState.executeUpdate();
+			preState1.setString(1, item.getItemName());
+			preState1.setInt(2, item.getCategoryId());
+			preState1.setInt(3, item.getItemNo());
+			preState1.setInt(4, item.getPrice());
+			preState1.setString(5, item.getImage());
+			preState1.setBoolean(6, item.isStock());
+
+			try {
+				// 商品テーブルに商品を登録.
+				preState1.executeUpdate();
+
+				// 複数行の挿入をするためバッチ処理に入れる.
+				try (ResultSet resSet = preState1.getGeneratedKeys()) {
+					if (resSet.next()) {
+						int generatedId = resSet.getInt(1);
+						for (Option option : item.getOptionList()) {
+							preState2.setInt(1, generatedId);
+							preState2.setInt(2, option.getId());
+							preState2.addBatch();
+						}
+					}
+				}
+				// オプションのつながりを登録.
+				preState2.executeBatch();
+
+				// すべて成功したらコミット.
+				con.commit();
+			} catch (SQLException e) {
+
+				// 挿入時に例外が出たらロールバックする.
+				con.rollback();
+
+				// 例外を投げる.
+				throw e;
+
+			}
 		} catch (SQLException e) {
 			// デバッグ用のスタックトレース.
 			e.printStackTrace();
@@ -45,24 +81,60 @@ public class ItemDao {
 	// 商品を更新する.
 	public void updateItem(Item item) throws Exception {
 		// SQL文作成.
-		String sql = "UPDATE item"
-				+ " SET item_name = ?,category_id = ?,order_number = ?,price = ?,item_image = ?,stock = ?)"
+		String sql1 = "UPDATE item"
+				+ " SET item_name = ?,category_id = ?,order_number = ?,price = ?,item_image = ?,stock = ?"
 				+ " WHERE item_id = ?;";
+		String sql2 = "DELETE FROM item_option WHERE item_id=?;";
+		String sql3 = "INSERT INTO item_option(item_id,option_id) "
+				+ "VALUES(?,?);";
 
-		try (Connection con = DatabaseManager.connect(); PreparedStatement preState = con.prepareStatement(sql);) {
+		try (Connection con = DatabaseManager.connect();
+				PreparedStatement preState1 = con.prepareStatement(sql1);
+				PreparedStatement preState2 = con.prepareStatement(sql2);
+				PreparedStatement preState3 = con.prepareStatement(sql3);) {
 
 			// 複数テーブルに挿入する必要があるので自動コミットを無効.
 			con.setAutoCommit(false);
 
 			// プリペアードステートメントを使用.
-			preState.setString(1, item.getItemName());
-			preState.setInt(2, item.getCategoryId());
-			preState.setInt(3, item.getItemNo());
-			preState.setInt(4, item.getPrice());
-			preState.setString(5, item.getImage());
-			preState.setBoolean(6, item.isStock());
-			preState.setInt(7, item.getId());
-			preState.executeUpdate();
+			preState1.setString(1, item.getItemName());
+			preState1.setInt(2, item.getCategoryId());
+			preState1.setInt(3, item.getItemNo());
+			preState1.setInt(4, item.getPrice());
+			preState1.setString(5, item.getImage());
+			preState1.setBoolean(6, item.isStock());
+			preState1.setInt(7, item.getId());
+			try {
+				preState1.executeUpdate();
+				// 商品テーブルに商品を登録.
+				preState1.executeUpdate();
+
+				// オプションのつながりを登録するために一度対象の商品のデータを削除.
+				preState2.setInt(1, item.getId());
+				preState2.executeUpdate();
+
+				// 複数行の挿入をするためバッチ処理に入れる.
+				preState3.setInt(1, item.getId());
+				for (Option option : item.getOptionList()) {
+					preState3.setInt(2, option.getId());
+					preState3.addBatch();
+				}
+
+				// オプションのつながりを登録.
+				preState3.executeBatch();
+
+				// すべて成功したらコミット.
+				con.commit();
+			} catch (SQLException e) {
+
+				// 挿入時に例外が出たらロールバックする.
+				con.rollback();
+
+				// 例外を投げる.
+				throw e;
+
+			}
+
 		} catch (SQLException e) {
 			// デバッグ用のスタックトレース.
 			e.printStackTrace();
