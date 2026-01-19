@@ -45,8 +45,10 @@ public class Item {
 	public Option getOption(int optId) {
 		Option resOpt = null;
 		for (Option option : options) {
-			if (optId == option.getId())
+			if (optId == option.getId()) {
 				resOpt = option;
+				break;
+			}
 		}
 		return resOpt;
 	}
@@ -57,8 +59,10 @@ public class Item {
 
 	public void delOption(int optId) {
 		for (int i = 0; i < options.size(); i++) {
-			if (optId == options.get(i).getId())
+			if (optId == options.get(i).getId()) {
 				options.remove(i);
+				break;
+			}
 		}
 	}
 

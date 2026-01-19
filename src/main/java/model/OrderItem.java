@@ -67,8 +67,10 @@ public class OrderItem {
 	public SelectedOption getOption(int optId) {
 		SelectedOption resSelectedOption = null;
 		for (SelectedOption selectedOption : selectedOptions) {
-			if (optId == selectedOption.optId)
+			if (optId == selectedOption.optId) {
 				resSelectedOption = selectedOption;
+				break;
+			}
 		}
 		return resSelectedOption;
 	}
@@ -85,8 +87,10 @@ public class OrderItem {
 
 	public void delSelectedOption(int optId) {
 		for (int i = 0; i < selectedOptions.size(); i++) {
-			if (optId == selectedOptions.get(i).optId)
+			if (optId == selectedOptions.get(i).optId) {
 				selectedOptions.remove(i);
+				break;
+			}
 		}
 	}
 

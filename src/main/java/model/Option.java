@@ -31,8 +31,10 @@ public class Option {
 	public Selection getSelection(int id) {
 		Selection resSel = null;
 		for (Selection selection : selections) {
-			if (id == selection.id)
+			if (id == selection.id) {
 				resSel = selection;
+				break;
+			}
 		}
 		return resSel;
 	}
@@ -48,8 +50,10 @@ public class Option {
 
 	public void delSelection(int id) {
 		for (int i = 0; i < selections.size(); i++) {
-			if (id == selections.get(i).id)
+			if (id == selections.get(i).id) {
 				selections.remove(i);
+				break;
+			}
 		}
 	}
 
