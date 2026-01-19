@@ -25,11 +25,14 @@ public class OrderDao {
 
 		// SQL文の作成.
 		// 注文の登録.
-		String sql1 = "INSERT INTO orders(total,receiving_number,item_creating_status_id,room_id) VALUE(?,?,?,?);";
+		String sql1 = "INSERT INTO orders(total,receiving_number,item_creating_status_id,room_id) "
+				+ "VALUES(?,?,?,?);";
 		// 注文詳細（OrderItemごと）の登録.
-		String sql2 = "INSERT INTO order_detail(order_id,item_id,`count`,sub_total) VALUE(?,?,?,?);";
+		String sql2 = "INSERT INTO order_detail(order_id,item_id,`count`,sub_total) "
+				+ "VALUES(?,?,?,?);";
 		// 注文詳細と選択された商品オプションのつながりの登録.
-		String sql3 = "INSERT INTO order_detail_option(order_detail_id,option_detail_id) VALUE(?,?);";
+		String sql3 = "INSERT INTO order_detail_option(order_detail_id,option_detail_id) "
+				+ "VALUES(?,?);";
 
 		try (Connection con = DatabaseManager.connect();
 				PreparedStatement preState1 = con.prepareStatement(sql1, PreparedStatement.RETURN_GENERATED_KEYS);
