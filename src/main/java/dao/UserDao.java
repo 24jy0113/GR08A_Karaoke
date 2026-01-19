@@ -79,6 +79,72 @@ public class UserDao {
 	        throw new RuntimeException(e);
 	    }
 	}
+	public static String generateNextUserId() {
+
+	    String sql = "SELECT MAX(user_id) FROM user";
+
+	    try (Connection con = DBUtil.getConnection();
+	         PreparedStatement ps = con.prepareStatement(sql);
+	         ResultSet rs = ps.executeQuery()) {
+
+	        if (rs.next()) {
+	            String maxId = rs.getString(1);
+	            int next = Integer.parseInt(maxId) + 1;
+	            return String.format("%06d", next);
+	        }
+
+	    } catch (Exception e) {
+	        throw new RuntimeException(e);
+	    }
+	    return "000001";
+	}
+	public static void insertUser(String userId, String userName, String rawPassword) {
+
+	    String sql = "INSERT INTO user(user_id, password, user_name) VALUES (?, ?, ?)";
+
+	    String hash = PasswordUtil.hash(rawPassword);
+
+	    try (Connection con = DBUtil.getConnection();
+	         PreparedStatement ps = con.prepareStatement(sql)) {
+
+	        ps.setString(1, userId);
+	        ps.setString(2, hash);
+	        ps.setString(3, userName);
+	        ps.executeUpdate();
+
+	    } catch (Exception e) {
+	        throw new RuntimeException(e);
+	    }
+	}
+	public static void insertUserRole(String userId, int roleId) {
+
+	    String sql = "INSERT INTO user_role(user_id, role_id) VALUES (?, ?)";
+
+	    try (Connection con = DBUtil.getConnection();
+	         PreparedStatement ps = con.prepareStatement(sql)) {
+
+	        ps.setString(1, userId);
+	        ps.setInt(2, roleId);
+	        ps.executeUpdate();
+
+	    } catch (Exception e) {
+	        throw new RuntimeException(e);
+	    }
+	}
+	public static void updateLastLoginTime(String userId) {
+
+	    String sql = "UPDATE user SET last_login_time = NOW() WHERE user_id = ?";
+
+	    try (Connection con = DBUtil.getConnection();
+	         PreparedStatement ps = con.prepareStatement(sql)) {
+
+	        ps.setString(1, userId);
+	        ps.executeUpdate();
+
+	    } catch (Exception e) {
+	        throw new RuntimeException(e);
+	    }
+	}
 
 
    /* private static String buildPermissions(String roleName) {

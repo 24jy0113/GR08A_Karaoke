@@ -42,6 +42,8 @@ public class LoginServlet extends HttpServlet {
             return;
         }
         
+        UserDao.updateLastLoginTime(user.getUserId());
+        
         HttpSession session = req.getSession(true);
         session.setAttribute("loginUser", user);
         session.setAttribute("user_id", user.getUserId());

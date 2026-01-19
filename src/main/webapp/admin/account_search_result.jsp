@@ -40,21 +40,25 @@ if (user == null) {
                     <tr>
                         <th>アカウントID</th>
                         <th>アカウント名</th>
-                        <th>フロント</th>
-                        <th>フロア</th>
-                        <th>キッチン</th>
+                        <th>キッチン用</th>
+                        <th>フロント用</th>
+                        <th>フロア用</th>
+                        <th>管理者用</th>
+                        <th>顧客用</th>
                         <th>パスワード</th>
                         <th>最終ログイン日時</th>
                         <th></th>
                     </tr>
                     <!-- 1行目 -->
                     <tr>
-                        <td>SF0112</td>
+                        <td>000005</td>
                         <td>佐藤花子</td>
                         <td>O</td>
                         <td>X</td>
-                        <td>O</td>
-                        <td>asau122ea</td>
+                        <td>X</td>
+                        <td>X</td>
+                        <td>X</td>
+                        <td>eeeeeeee</td>
                         <td>2025/01/01/09:55</td>
                         <td>
                             <button class="btn edit" onclick="location.href='account_update.jsp'">変更</button>
@@ -63,12 +67,14 @@ if (user == null) {
                     </tr>
                     <!-- 2行目 -->
                     <tr>
-                        <td>SF0113</td>
-                        <td>山田太郎</td>
+                        <td>000006</td>
+                        <td>佐藤ゆか</td>
+                        <td>X</td>
+                        <td>O</td>
                         <td>X</td>
                         <td>X</td>
                         <td>O</td>
-                        <td>qsxada2sa</td>
+                        <td>ffffffff</td>
                         <td>2025/10/01/13:05</td>
                         <td>
                             <button class="btn edit" onclick="location.href='account_update.jsp'">変更</button>

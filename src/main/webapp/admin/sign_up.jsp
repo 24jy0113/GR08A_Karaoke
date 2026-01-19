@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"
     import="model.User"
 %>
+<%@ taglib prefix="auth" uri="/auth" %>
 <%
 User user = (User) session.getAttribute("loginUser");
 if (user == null) {
@@ -38,29 +39,30 @@ if (user == null) {
 			<h1 class="bodymsg">アカウント登録</h1>
 			<p style="text-align: center; margin-bottom: 30px;">下記の情報を入力してください</p>
 			<h1>アカウント情報</h1>
-			<form action="sign_up_confirm.jsp" method="get"
-				onsubmit="return validateForm()">
+			<form action="<%=request.getContextPath()%>/SignUpConfirmServlet" method="post">
+
 				<div class="form-row">
-					<label>権限</label>
+					<label>役割</label>
 					<div class="required-badge required">必須</div>
 					<div class="checkbox-group">
-						<label><input type="checkbox"> フロント</label> <label><input
-							type="checkbox"> フロア</label> <label><input
-							type="checkbox"> キッチン</label>
+					  <label><input type="checkbox" name="roleId" value="1"> キッチン</label>
+					  <label><input type="checkbox" name="roleId" value="2"> フロント</label>
+					  <label><input type="checkbox" name="roleId" value="3"> フロア</label>
+					  <label><input type="checkbox" name="roleId" value="4"> 管理者</label>
 					</div>
-				</div>
 
+				</div>
 
 				<div class="form-row">
 					<label>アカウント名</label>
 					<div class="required-badge required">必須</div>
-					<input type="text">
+					<input type="text" name="userName">
+
 				</div>
 				<div class="form-row">
 					<label>パスワード</label>
 					<div class="required-badge required">必須</div>
-					<input type="password" id="password" name="newPassword"
-						placeholder="半角英数字のみ、8 桁以上、12 桁以下">
+					<input type="password" id="password" name="password" placeholder="半角英数字のみ、8 桁以上、12 桁以下">
 				</div>
 				<div class="form-row">
 					<label>パスワード（再入力）</label>

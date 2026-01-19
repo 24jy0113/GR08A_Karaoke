@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"
     import="model.User"
 %>
+<%@ taglib prefix="auth" uri="/auth" %>
 <%
 User user = (User) session.getAttribute("loginUser");
 if (user == null) {
@@ -9,6 +10,12 @@ if (user == null) {
     return;
 }
 %>
+<%
+String userId = (String) session.getAttribute("SIGNUP_USER_ID");
+String userName = (String) session.getAttribute("SIGNUP_USER_NAME");
+String roleIdStr = (String) session.getAttribute("SIGNUP_ROLE_ID");
+%>
+
 <!DOCTYPE html>
 <html lang=ja>
 <head>
@@ -39,35 +46,30 @@ if (user == null) {
                 <tbody>
                     <tr>
                         <th>アカウントID</th>
-                        <td>SF0112</td>
+                        <td><%= userId %></td>
                     </tr>
                     <tr>
                         <th>アカウント名</th>
-                        <td>佐藤花子</td>
+                        <td><%= userName %></td>
                     </tr>
                     <tr>
                         <th>パスワード</th>
                         <td>XXXXXXXX</td>
                     </tr>
                     <tr>
-                        <th>権限情報</th>
-                        <td>フロント</td>
-                        <td>フロア</td>
-                        <td>キッチン</td>
+                        <th>役割情報</th>
+                        <td><%= roleIdStr %></td>
                     </tr>
-                    <tr>
-                        <th></th>
-                        <td>O</td>
-                        <td>X</td>
-                        <td>O</td>
-                    </tr>
+                    
             
                 </tbody>
             </table>
             
             <div class="action-buttons">
                 <button type="button" class="btn-back" onclick="location.href='sign_up.jsp'">修正する</button>
-                <button type="submit" class="btn-next" onclick="location.href='sign_up_confirmed.jsp'">ユーザ登録を完了する</button>
+                <form action="<%=request.getContextPath()%>/SignUpCompleteServlet" method="post">
+				    <button type="submit" class="btn-next">ユーザ登録を完了する</button>
+				</form>
             </div>
         </div>
     </main>

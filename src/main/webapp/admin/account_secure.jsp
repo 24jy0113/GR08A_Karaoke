@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"
     import="model.User"
 %>
+<%@ taglib prefix="auth" uri="/auth" %>
 <%
 User user = (User) session.getAttribute("loginUser");
 if (user == null) {
