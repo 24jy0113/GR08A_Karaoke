@@ -43,7 +43,6 @@ public class OrderDao {
 			con.setAutoCommit(false);
 
 			// プリペアードステートメントを使用.
-			// 注文をテーブルに登録.
 			preState1.setInt(1, order.getTotal());
 			preState1.setInt(2, order.getReceivingNo());
 			preState1.setInt(3, order.getStatusId());
@@ -51,6 +50,7 @@ public class OrderDao {
 
 			try {
 
+				// 注文をテーブルに登録.
 				preState1.executeUpdate();
 
 				try (ResultSet resSet1 = preState1.getGeneratedKeys();) {
@@ -77,14 +77,8 @@ public class OrderDao {
 				// 挿入時に例外が出たらロールバックする.
 				con.rollback();
 
-				// デバッグ用のスタックトレース.
-				e.printStackTrace();
-
-				// フロントエンド用のエラーメッセージ.
-				String errMsg = "DBの挿入処理に失敗しました！<br>管理者に連絡してください。";
-
 				// 例外を投げる.
-				throw new Exception(errMsg);
+				throw e;
 
 			}
 
