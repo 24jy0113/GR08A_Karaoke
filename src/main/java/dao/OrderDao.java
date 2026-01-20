@@ -59,15 +59,21 @@ public class OrderDao {
 					preState2.setInt(0, resSet1.getInt(1));
 
 					for (OrderItem item : order.getItemList()) {
-						// 商品をテーブルに追加.
 						preState2.setInt(1, item.getItem().getId());
 						preState2.setInt(2, item.getTotal());
 						preState2.setInt(3, item.getTotal());
-						preState2.executeUpdate();
+						preState2.addBatch();
 
 						// 生成された注文詳細の主キーを取得して選択オプションのテーブルに登録する.
+						try ()
 					}
 				}
+				
+				// バッチ処理を実行.
+				// 商品をテーブルに追加.
+				preState2.executeBatch();
+				// 選択オプションのテーブルに登録する.
+				preState3.executeBatch();
 
 				// すべて成功したらコミット.
 				con.commit();
@@ -214,7 +220,7 @@ public class OrderDao {
 
 				while (resSet1.next()) {
 					// オプション選択を記録するためのリスト.
-					ArrayList<SelectedOption> option = new ArrayList<>();
+					ArrayList<SelectedOption> selOptList = new ArrayList<>();
 
 					// プリペアードステートメントを使用.
 					// 商品単位でオプションの情報を取得.
@@ -223,7 +229,7 @@ public class OrderDao {
 
 						// 結果をリストに格納.
 						while (resSet2.next()) {
-							option.add(new SelectedOption(resSet2.getInt("order_detail_id"),
+							selOptList.add(new SelectedOption(resSet2.getInt("order_detail_id"),
 									resSet2.getInt("option_detail_id")));
 						}
 						ItemDao itemDao = new ItemDao();
@@ -231,7 +237,7 @@ public class OrderDao {
 						// 検索結果からOrderItemインスタンスを生成.
 						resList.add(new OrderItem(resSet1.getInt("order_id"),
 								itemDao.searchItemById(resSet1.getInt("item_id")), resSet1.getInt("count"),
-								option, resSet1.getInt("sub_total")));
+								selOptList, resSet1.getInt("sub_total")));
 
 					}
 				}

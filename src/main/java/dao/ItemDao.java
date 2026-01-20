@@ -40,19 +40,24 @@ public class ItemDao {
 				// 商品テーブルに商品を登録.
 				preState1.executeUpdate();
 
-				// 複数行の挿入をするためバッチ処理に入れる.
-				try (ResultSet resSet = preState1.getGeneratedKeys()) {
-					if (resSet.next()) {
-						int generatedId = resSet.getInt(1);
-						for (Option option : item.getOptionList()) {
-							preState2.setInt(1, generatedId);
-							preState2.setInt(2, option.getId());
-							preState2.addBatch();
+				if (!item.getOptionList().isEmpty()) {
+					try (ResultSet resSet = preState1.getGeneratedKeys()) {
+						// 生成された主キーを取得.
+						if (resSet.next()) {
+							int generatedId = resSet.getInt(1);
+
+							for (Option option : item.getOptionList()) {
+								preState2.setInt(1, generatedId);
+								preState2.setInt(2, option.getId());
+
+								// 複数行の挿入をするためバッチ処理に入れる.
+								preState2.addBatch();
+							}
+							// オプションのつながりを登録.
+							preState2.executeBatch();
 						}
 					}
 				}
-				// オプションのつながりを登録.
-				preState2.executeBatch();
 
 				// すべて成功したらコミット.
 				con.commit();
@@ -369,10 +374,20 @@ public class ItemDao {
 		return resItem;
 	}
 
-	// カテゴリー一覧を取得する.
-	public Map<Integer, String> categoryGetList() throws Exception {
+	// オプション一覧を取得する.
+	public ArrayList<Option> getOptionList() {
 		// 返却値の参照変数を初期化.
-		Map<Integer, String> map = new HashMap<>();
+		ArrayList<Option> resList = new ArrayList<>();
+
+		// SQL文作成.
+
+		return resList;
+	}
+
+	// カテゴリー一覧を取得する.
+	public Map<Integer, String> getCategoryList() throws Exception {
+		// 返却値の参照変数を初期化.
+		Map<Integer, String> resMap = new HashMap<>();
 
 		// SQL文作成.
 		String sql = "SELECT category_id,category_name"
@@ -382,7 +397,7 @@ public class ItemDao {
 			try (ResultSet resSet = preState.executeQuery();) {
 				//検索結果をmapに格納.
 				while (resSet.next()) {
-					map.put(resSet.getInt("category_id"), resSet.getString("category_name"));
+					resMap.put(resSet.getInt("category_id"), resSet.getString("category_name"));
 				}
 			}
 
@@ -397,7 +412,7 @@ public class ItemDao {
 			throw new Exception(errMsg);
 		}
 
-		return map;
+		return resMap;
 	}
 
 }
