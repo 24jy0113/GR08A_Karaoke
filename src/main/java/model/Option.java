@@ -28,6 +28,7 @@ public class Option {
 		return name;
 	}
 
+	// 選択肢IDに対応するSelectionを返す。見つからないとnullが出るのでnullチェックをすること.
 	public Selection findSelectionById(int selectionId) {
 		Selection resSel = null;
 		for (Selection selection : selections) {
@@ -44,10 +45,12 @@ public class Option {
 	}
 
 	public void setSelection(int id, String name, int price) {
+		// レコードはフィールドがfinalなので一度消してから追加してます.
 		delSelection(id);
 		selections.add(new Selection(id, name, price));
 	}
 
+	// 選択肢IDに対応するSelectionを削除する.
 	public void delSelection(int id) {
 		for (int i = 0; i < selections.size(); i++) {
 			if (id == selections.get(i).id) {

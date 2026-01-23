@@ -57,7 +57,8 @@ public class Item {
 		options.add(option);
 	}
 
-	private void delOption(int optId) {
+	// オプションIDに対応するOptionを削除する.
+	public void delOption(int optId) {
 		for (int i = 0; i < options.size(); i++) {
 			if (optId == options.get(i).getId())
 				options.remove(i);
