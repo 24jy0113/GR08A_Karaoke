@@ -10,15 +10,20 @@ public class OrderItem {
 	private int total;
 
 	public OrderItem(Item item) {
-		this(item, 1, new ArrayList<>());
-	}
-
-	public OrderItem(Item item, ArrayList<SelectedOption> selectedOptions) {
-		this(item, 1, selectedOptions);
+		this(item, 1);
 	}
 
 	public OrderItem(Item item, int count) {
 		this(item, count, new ArrayList<>());
+		ArrayList<SelectedOption> selOptList = new ArrayList<>();
+		for (Option option : item.getOptionList()) {
+			selOptList.add(new SelectedOption(option.getId(), -1));
+		}
+		selectedOptions = selOptList;
+	}
+
+	public OrderItem(Item item, ArrayList<SelectedOption> selectedOptions) {
+		this(item, 1, selectedOptions);
 	}
 
 	public OrderItem(Item item, int count, ArrayList<SelectedOption> selectedOptions) {
@@ -34,9 +39,11 @@ public class OrderItem {
 		this.total = total;
 	}
 
+	// クラス内のデータ保持用のオプションの選択状況を持つレコード.
 	public record SelectedOption(int optId, int selectionId) {
 	};
 
+	// クラス自身のフィールドと持ってるItemクラス（とその下のOptionクラス）内の情報を統合して持つためのレコード.
 	public record SelectedOptionDetail(int optId, String optName, int selectionId, String selectionName, int price) {
 	};
 
@@ -61,6 +68,7 @@ public class OrderItem {
 		return selectedOptions;
 	}
 
+	// オプションIDに対応するSelectedOptionを返す。見つからないとnullが出るのでnullチェックをすること.
 	public SelectedOption findSelectedOptionById(int optId) {
 		SelectedOption resSelectedOption = null;
 		for (SelectedOption selectedOption : selectedOptions) {
@@ -72,6 +80,7 @@ public class OrderItem {
 		return resSelectedOption;
 	}
 
+	// SelectedOptionDetailのリストを返す.
 	public ArrayList<SelectedOptionDetail> getSelectedOptionDetailList() {
 		ArrayList<SelectedOptionDetail> resSelectedOptionDetailList = new ArrayList<>();
 		for (SelectedOption selectedOption : selectedOptions) {
@@ -80,6 +89,7 @@ public class OrderItem {
 		return resSelectedOptionDetailList;
 	}
 
+	// オプションIDに対応するSelectedOptionDetailを返す。見つからないとnullが出るのでnullチェックをすること.
 	public SelectedOptionDetail findSelectedOptionDetailById(int optId) {
 		SelectedOptionDetail resSelectedOptionDetail = null;
 		int id = findSelectedOptionById(optId).selectionId();
@@ -97,11 +107,13 @@ public class OrderItem {
 	}
 
 	public void setSelectedOption(int optId, int selectionId) {
+		// レコードはフィールドがfinalなので一度消してから追加してます.
 		delSelectedOption(optId);
 		selectedOptions.add(new SelectedOption(optId, selectionId));
 	}
 
-	public void delSelectedOption(int optId) {
+	// オプションIDに対応するSelectedOptionを削除する.
+	private void delSelectedOption(int optId) {
 		for (int i = 0; i < selectedOptions.size(); i++) {
 			if (optId == selectedOptions.get(i).optId()) {
 				selectedOptions.remove(i);
