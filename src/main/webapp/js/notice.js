@@ -10,7 +10,7 @@ function fetchNotice() {
 			// セッション切れ時の処理
 			if (data.sessionExpired) {
 				alert("セッションが切れました。初期画面に戻ります。");
-				location.href = "/init.jsp";
+				location.href = "/room_search.jsp";
 				return;
 			}
 

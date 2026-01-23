@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpSession;
 import action.NoticeAction;
 import model.NoticeResult;
 import model.Room;
+import service.RoomTimeService;
 
 @WebServlet("/NoticeServlet")
 public class NoticeServlet extends HttpServlet {
@@ -33,17 +34,22 @@ public class NoticeServlet extends HttpServlet {
 			response.getWriter().write("{\"sessionExpired\":true}");// セッション切れ情報(true)をJSON形式で文字列として送る
 			return;
 		}
-
 		// Room情報取得
 		Room room = (Room) session.getAttribute("room");
-
-		// Action呼び出し
-		NoticeAction action = new NoticeAction();
-		NoticeResult result = action.execute(room, session);
-
-		// JSONで返却
-		response.setContentType("application/json;charset=UTF-8");
-		response.getWriter().write(result.toJson());
+		try {
+			RoomTimeService service = new RoomTimeService();
+			room = service.refreshRoomFromDB(room.getId()); // DBから最新のRoom情報取得
+			// Action呼び出し
+			NoticeAction action = new NoticeAction();
+			NoticeResult result = action.execute(room, session);
+			// JSONで返却
+			response.setContentType("application/json;charset=UTF-8");
+			response.getWriter().write(result.toJson());
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.setContentType("application/json;charset=UTF-8");
+			response.getWriter().write("{\"error\":true}");
+		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
