@@ -47,7 +47,7 @@ public class Order {
 	public int getReceivingNo() {
 		return receivingNo;
 	}
-	
+
 	public int getStatusId() {
 		return statusId;
 	}
@@ -59,7 +59,7 @@ public class Order {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
+
 	public int getRoomId() {
 		return roomId;
 	}
@@ -70,5 +70,16 @@ public class Order {
 
 	public int getTotal() {
 		return total;
+	}
+
+	// 未選択のオプションがあるかを返す.
+	public boolean hasOptionUnselected() {
+		boolean res = false;
+		for (OrderItem item : items) {
+			if (item.hasOptionUnselected()) {
+				return true;
+			}
+		}
+		return res;
 	}
 }

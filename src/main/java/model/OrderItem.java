@@ -39,6 +39,9 @@ public class OrderItem {
 
 	// クラス内のデータ保持用のオプションの選択状況を持つレコード.
 	public record SelectedOption(int optId, int selectionId) {
+		public boolean isUnselected() {
+			return selectionId < 0;
+		}
 	};
 
 	// クラス自身のフィールドと持ってるItemクラス（とその下のOptionクラス）内の情報を統合して持つためのレコード.
@@ -144,5 +147,16 @@ public class OrderItem {
 
 	public void setTotal(int total) {
 		this.total = total;
+	}
+
+	// 未選択のオプションがあるかを返す.
+	public boolean hasOptionUnselected() {
+		boolean res = false;
+		for (SelectedOption selectedOption : selectedOptions) {
+			if (selectedOption.isUnselected()) {
+				return true;
+			}
+		}
+		return res;
 	}
 }

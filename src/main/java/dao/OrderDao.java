@@ -13,6 +13,16 @@ import model.OrderItem.SelectedOption;
 public class OrderDao {
 	public void addOrder(Order order) throws Exception {
 
+		if (order.hasOptionUnselected()) {
+			System.err.println("未選択のオプションがある注文を登録しようとしました。");
+
+			// フロントエンド用のエラーメッセージ.
+			String errMsg = "未選択のオプションがあるため注文の登録に失敗しました。<br>管理者に連絡してください。";
+
+			// 例外を投げる.
+			throw new Exception(errMsg);
+		}
+
 		if (order.getId() > 0) {
 			System.err.println("order_idが割り振られているため、このorderは登録済みです。");
 
@@ -146,9 +156,10 @@ public class OrderDao {
 
 				// 検索結果からOrderインスタンスを生成.
 				while (resSet.next()) {
-					list.add(new Order(resSet.getInt("order_id"), searchOrderItem(resSet.getInt("order_id")),
-							resSet.getInt("total"), resSet.getInt("orders.room_id"), resSet.getInt("room"),
-							resSet.getInt("receiving_number"), resSet.getInt("orders.item_creating_status_id"),
+					int orderId = resSet.getInt("order_id");
+					list.add(new Order(orderId, searchOrderItem(orderId), resSet.getInt("total"),
+							resSet.getInt("orders.room_id"), resSet.getInt("room"), resSet.getInt("receiving_number"),
+							resSet.getInt("orders.item_creating_status_id"),
 							resSet.getString("orders.item_creating_status_name")));
 				}
 			}
@@ -189,9 +200,10 @@ public class OrderDao {
 
 				// 検索結果からOrderインスタンスを生成.
 				while (resSet.next()) {
-					list.add(new Order(resSet.getInt("order_id"), searchOrderItem(resSet.getInt("order_id")),
-							resSet.getInt("total"), resSet.getInt("orders.room_id"), resSet.getInt("room"),
-							resSet.getInt("receiving_number"), resSet.getInt("orders.item_creating_status_id"),
+					int orderId = resSet.getInt("order_id");
+					list.add(new Order(orderId, searchOrderItem(orderId), resSet.getInt("total"),
+							resSet.getInt("orders.room_id"), resSet.getInt("room"), resSet.getInt("receiving_number"),
+							resSet.getInt("orders.item_creating_status_id"),
 							resSet.getString("orders.item_creating_status_name")));
 				}
 			}
