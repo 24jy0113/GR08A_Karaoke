@@ -53,25 +53,41 @@ public class OrderDao {
 				// 注文をテーブルに登録.
 				preState1.executeUpdate();
 
+				// 生成された注文の主キーを取得して注文詳細を登録する.
 				try (ResultSet resSet1 = preState1.getGeneratedKeys();) {
+					if (resSet1.next()) {
+						preState2.setInt(1, resSet1.getInt(1));
 
-					// 生成された注文の主キーを取得して注文詳細を登録する.
-					preState2.setInt(0, resSet1.getInt(1));
+						for (OrderItem item : order.getItemList()) {
+							preState2.setInt(2, item.getItem().getId());
+							preState2.setInt(3, item.getTotal());
+							preState2.setInt(4, item.getTotal());
 
-					for (OrderItem item : order.getItemList()) {
-						preState2.setInt(1, item.getItem().getId());
-						preState2.setInt(2, item.getTotal());
-						preState2.setInt(3, item.getTotal());
-						preState2.addBatch();
+							// 商品をテーブルに追加.
+							preState2.executeUpdate();
 
-						// 生成された注文詳細の主キーを取得して選択オプションのテーブルに登録する.
-						try ()
+							// 選択したオプションがある場合のみその情報を登録.
+							if (item.getSelectedOptionList().isEmpty()) {
+
+								// 生成された注文詳細の主キーを取得して選択オプションのテーブルに登録する.
+								try (ResultSet resSet2 = preState2.getGeneratedKeys()) {
+									if (resSet2.next()) {
+										preState3.setInt(1, resSet2.getInt(1));
+
+										for (SelectedOption option : item.getSelectedOptionList()) {
+											preState2.setInt(2, option.selectionId());
+
+											// 複数行の挿入をするためバッチ処理に入れる.
+											preState3.addBatch();
+										}
+									}
+								}
+							}
+						}
 					}
 				}
-				
+
 				// バッチ処理を実行.
-				// 商品をテーブルに追加.
-				preState2.executeBatch();
 				// 選択オプションのテーブルに登録する.
 				preState3.executeBatch();
 
@@ -87,7 +103,6 @@ public class OrderDao {
 				throw e;
 
 			}
-
 		} catch (SQLException e) {
 
 			// デバッグ用のスタックトレース.
