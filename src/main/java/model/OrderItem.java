@@ -15,11 +15,9 @@ public class OrderItem {
 
 	public OrderItem(Item item, int count) {
 		this(item, count, new ArrayList<>());
-		ArrayList<SelectedOption> selOptList = new ArrayList<>();
 		for (Option option : item.getOptionList()) {
-			selOptList.add(new SelectedOption(option.getId(), -1));
+			setSelectedOption(option.getId(), -1);
 		}
-		selectedOptions = selOptList;
 	}
 
 	public OrderItem(Item item, ArrayList<SelectedOption> selectedOptions) {
@@ -131,6 +129,7 @@ public class OrderItem {
 		calcTotal();
 	}
 
+	// 小計を計算する
 	private void calcTotal() {
 		int optionPriceSum = 0;
 		for (SelectedOptionDetail selectedOptionDetail : getSelectedOptionDetailList()) {
