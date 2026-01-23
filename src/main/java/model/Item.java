@@ -39,6 +39,7 @@ public class Item {
 		this.options = options;
 	}
 
+	// オプションIDに対応するOptionクラスを返す。見つからないとnullが出るのでnullチェックをすること.
 	public Option findOptionById(int optId) {
 		Option resOpt = null;
 		for (Option option : options) {
@@ -50,11 +51,13 @@ public class Item {
 		return resOpt;
 	}
 
-	public void addOption(Option option) {
+	public void setOption(Option option) {
+		delOption(option.getId());
+		// レコードはフィールドがfinalなので一度消してから追加してます.
 		options.add(option);
 	}
 
-	public void delOption(int optId) {
+	private void delOption(int optId) {
 		for (int i = 0; i < options.size(); i++) {
 			if (optId == options.get(i).getId())
 				options.remove(i);

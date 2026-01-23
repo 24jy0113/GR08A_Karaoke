@@ -207,7 +207,7 @@ public class ItemDao {
 							}
 
 							// オプションをItemインスタンスに追加.
-							item.addOption(option);
+							item.setOption(option);
 						}
 					}
 
@@ -281,7 +281,7 @@ public class ItemDao {
 					}
 
 					// オプションをItemインスタンスに追加.
-					item.addOption(option);
+					item.setOption(option);
 				}
 
 				// 作成したItemオブジェクトを返却値に入れる.
@@ -353,7 +353,7 @@ public class ItemDao {
 					}
 
 					// オプションをItemインスタンスに追加.
-					item.addOption(option);
+					item.setOption(option);
 				}
 
 				// 作成したItemオブジェクトを返却値に入れる.
