@@ -11,6 +11,10 @@ if (user == null) {
 %>
 <%
 User u = (User) session.getAttribute("UPDATE_USER");
+if (u == null) {
+    response.sendRedirect(request.getContextPath() + "/admin/account_search.jsp");
+    return;
+}
 %>
 <!DOCTYPE html>
 <html lang=ja>
@@ -34,6 +38,17 @@ User u = (User) session.getAttribute("UPDATE_USER");
             </nav>
         </div>
     </header>
+    <% String error = (String) request.getAttribute("errorMessage"); %>
+
+<% if (error != null) { %>
+    <div style="
+        color: red;
+        text-align: center;
+    ">
+        <%= error %>
+    </div>
+<% } %>
+    
     <main>
         <div>
             <h1 class="bodymsg">アカウント情報の変更確認</h1>
@@ -42,19 +57,19 @@ User u = (User) session.getAttribute("UPDATE_USER");
                 <tbody>
                     <tr>
                         <th>アカウントID</th>
-                        <td><%= u.getUserId() %></td>
+                        <td><%=u.getUserId() %></td>
                     </tr>
                     <tr>
                         <th>アカウント名</th>
-                        <td><%= u.getUserName() %></td>
+                        <td><%=u.getUserName()%></td>
                     </tr>
                     <tr>
                         <th>パスワード</th>
-                        <td>XXXXXXXX</td>
+                        <td><%=u.getPasswordHash() == null ? "変更なし" : "変更あり" %></td>
                     </tr>
                     <tr>
                         <th>役割</th>
-                        <td><%= u.getRoleName() %></td>
+                        <td><%=u.getRoleName() %></td>
                     </tr>
                     
                 </tbody>
@@ -62,7 +77,7 @@ User u = (User) session.getAttribute("UPDATE_USER");
             
             <div class="action-buttons">
                 <button type="button" class="btn-back" onclick="history.back()">修正する</button>
-                <form action="AccountUpdateConfirmServlet" method="post">
+                <form action="<%= request.getContextPath() %>/AccountUpdateConfirmServlet" method="post">
 				    <button type="submit" class="btn-next">変更を完了する</button>
 				</form>
             </div>

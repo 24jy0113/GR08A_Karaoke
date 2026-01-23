@@ -10,17 +10,13 @@ if (user == null) {
     return;
 }
 %>
-<%
-String userId = (String) session.getAttribute("SIGNUP_USER_ID");
-String userName = (String) session.getAttribute("SIGNUP_USER_NAME");
-String roleIdStr = (String) session.getAttribute("SIGNUP_ROLE_ID");
-%>
+
 <!DOCTYPE html>
 <html lang=ja>
 <head>
     <meta charset="UTF-8">
     <title>アカウント登録完了画面</title>
-    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/01_02.css">
+    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/01_02_01.css">
     <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/header.css">
 </head>
 <body>
@@ -39,29 +35,8 @@ String roleIdStr = (String) session.getAttribute("SIGNUP_ROLE_ID");
     </header>
     <main>
         <div>
-            <h1 class="bodymsg">アカウント登録完了</h1>
-            <p class="bodymsg">下記の情報でアカウントを登録しました</p>
-            <table class="tbstyle">
-                <tbody>
-                    <tr>
-                        <th>アカウントID</th>
-                        <td><%= userId %></td>
-                    </tr>
-                    <tr>
-                        <th>アカウント名</th>
-                        <td><%= userName %></td>
-                    </tr>
-                    <tr>
-                        <th>パスワード</th>
-                        <td>XXXXXXXX</td>
-                    </tr>
-                    <tr>
-                        <th>役割情報</th>
-                        <td><%= roleIdStr %></td>
-                    </tr>
+            <h1 class="bodymsg">アカウント登録が完了しました</h1>
             
-                </tbody>
-            </table>
             
             <div class="action-buttons">
                 <button type="button" class="btn-back" onclick="location.href='account_search.jsp'">アカウント検索へ戻る</button>

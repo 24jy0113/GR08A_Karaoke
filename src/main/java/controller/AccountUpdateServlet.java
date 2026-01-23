@@ -1,7 +1,7 @@
 package controller;
 import java.io.IOException;
 
-
+import dao.UserDao;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import model.User;
+import util.PasswordUtil;
 @WebServlet("/AccountUpdateServlet")
 public class AccountUpdateServlet extends HttpServlet {
 
@@ -16,13 +17,27 @@ public class AccountUpdateServlet extends HttpServlet {
             throws ServletException, IOException {
 
         req.setCharacterEncoding("UTF-8");
-
-        User u = new User();
+        
+        User u = (User) req.getSession().getAttribute("UPDATE_USER");
+        if (u == null) {
+            res.sendRedirect(req.getContextPath() + "/admin/account_search.jsp");
+            return;
+        }
+       
         u.setUserId(req.getParameter("userId"));
         u.setUserName(req.getParameter("userName"));
-
+        
+        String password = req.getParameter("password");
+        if (password != null && !password.isEmpty()) {
+            u.setPasswordHash(PasswordUtil.hash(password));
+        }
+        
+        String roleName = req.getParameter("roleName");
+        u.setRoleName(roleName);
+        u.setRoleId(UserDao.findRoleIdByRoleName(roleName));
+        
         req.getSession().setAttribute("UPDATE_USER", u);
-        res.sendRedirect("account_update_confirm.jsp");
+        res.sendRedirect(req.getContextPath() + "/admin/account_update_confirm.jsp");
     }
 }
 

@@ -1,5 +1,4 @@
 package controller;
-
 import java.io.IOException;
 
 import dao.UserDao;
@@ -10,24 +9,22 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import model.User;
-@WebServlet("/AccountDeleteServlet")
-public class AccountDeleteServlet extends HttpServlet {
+
+@WebServlet("/AccountDeleteInitServlet")
+public class AccountDeleteInitServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
 
-        req.setCharacterEncoding("UTF-8");
-
-        User u = (User) req.getSession().getAttribute("DELETE_USER");
-        if (u == null) {
+        String userId = req.getParameter("userId");
+        if (userId == null) {
             res.sendRedirect(req.getContextPath() + "/admin/account_search.jsp");
             return;
         }
 
-        UserDao.deleteUser(u.getUserId());
-        req.getSession().removeAttribute("DELETE_USER");
+        User u = UserDao.searchUserByUserId(userId);
+        req.getSession().setAttribute("DELETE_USER", u);
 
-        res.sendRedirect(req.getContextPath() + "/admin/account_deleted_msg.jsp");
+        req.getRequestDispatcher("/admin/account_delete_notice.jsp").forward(req, res);
     }
 }
-

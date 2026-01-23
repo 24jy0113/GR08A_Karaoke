@@ -48,7 +48,7 @@ main {
   margin-bottom: 15px;
 }
 .form-row label {
-  width: 150px;        /* 左側のタイトル幅 */
+  width: 150px;        /* 蟾ｦ蛛ｴ縺ｮ繧ｿ繧､繝医Ν蟷� */
   font-weight: bold;
 }
 .form-row input[type="text"],
@@ -63,7 +63,7 @@ main {
   border: none;
   outline: none; 
 }
-.checkbox-group {
+.radio-group {
   display: flex;
   gap: 20px;
 }

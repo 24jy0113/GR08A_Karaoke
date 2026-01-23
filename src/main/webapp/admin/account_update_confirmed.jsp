@@ -9,6 +9,7 @@ if (user == null) {
     return;
 }
 %>
+
 <!DOCTYPE html>
 <html lang=ja>
 <head>
@@ -33,37 +34,8 @@ if (user == null) {
     </header>
     <main>
         <div>
-            <h1 class="bodymsg">アカウント情報の変更完了</h1>
-            <p class="bodymsg">下記の情報でアカウント情報を変更しました</p>
-            <table class="tbstyle">
-                <tbody>
-                    <tr>
-                        <th>アカウントID</th>
-                        <td>SF0112</td>
-                    </tr>
-                    <tr>
-                        <th>アカウント名</th>
-                        <td>佐藤花子</td>
-                    </tr>
-                    <tr>
-                        <th>パスワード</th>
-                        <td>XXXXXXXX</td>
-                    </tr>
-                    <tr>
-                        <th>権限情報</th>
-                        <td>フロント</td>
-                        <td>フロア</td>
-                        <td>キッチン</td>
-                    </tr>
-                    <tr>
-                        <th></th>
-                        <td>O</td>
-                        <td>X</td>
-                        <td>O</td>
-                    </tr>
+            <h1 class="bodymsg">アカウント情報の変更が完了しました！</h1>
             
-                </tbody>
-            </table>
             <div class="action-buttons">
                 <button type="button" class="btn-back" onclick="location.href='account_search.jsp'">アカウント検索へ戻る</button>
                

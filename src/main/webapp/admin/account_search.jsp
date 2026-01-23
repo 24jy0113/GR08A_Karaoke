@@ -47,7 +47,7 @@ if (ok == null || !ok) {
 				<h1>アカウント情報の確認、変更、削除</h1>
 			</div>
 			<h4>アカウントIDかアカウント名を入力してください</h4>
-			<form action="../AccountSearchServlet" method="get">
+			<form action="<%= request.getContextPath() %>/AccountSearchServlet" method="get">
 				<input type="search" name="keyword"/>
 				<button type="submit" style="height: 50px;">検索</button>
 			</form>

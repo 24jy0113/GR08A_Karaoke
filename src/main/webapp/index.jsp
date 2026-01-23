@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	
 <!DOCTYPE html>
 <html lang=ja>
 <head>
@@ -16,6 +17,18 @@
 			</a> <a href="index.jsp" class="logo-text">七福サウンド</a>
 		</div>
 	</header>
+	<%
+	String logoutMsg = (String) session.getAttribute("logoutMsg");
+	if (logoutMsg != null) {
+	%>
+	    <p style="color: red; text-align: left;">
+	        <%= logoutMsg %>
+	    </p>
+	<%
+	    session.removeAttribute("logoutMsg");
+	}
+	%>
+	
 	<main>
 		<p>アカウントIDとパスワードを入力し、ログインしてください</p>
 		<h2>アカウントログイン</h2>

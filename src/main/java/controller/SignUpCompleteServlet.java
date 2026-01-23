@@ -19,27 +19,32 @@ public class SignUpCompleteServlet extends HttpServlet {
 
         HttpSession session = req.getSession(false);
 
-        String userId = (String) session.getAttribute("SIGNUP_USER_ID");
+        String userId   = (String) session.getAttribute("SIGNUP_USER_ID");
         String userName = (String) session.getAttribute("SIGNUP_USER_NAME");
         String password = (String) session.getAttribute("SIGNUP_PASSWORD");
-        String roleIdStr = (String) session.getAttribute("SIGNUP_ROLE_ID");
+        Integer roleId  = (Integer) session.getAttribute("SIGNUP_ROLE_ID");
 
-        if (userId == null) {
+        if (userId == null || roleId == null) {
             res.sendRedirect(req.getContextPath() + "/admin/sign_up.jsp");
             return;
         }
-        if (roleIdStr == null) {
-            res.sendRedirect(req.getContextPath() + "/admin/sign_up.jsp");
-            return;
-        }
-        
-        int roleId = Integer.parseInt(roleIdStr);
-        String newUserId = UserDao.generateNextUserId();
+
 
         UserDao.insertUser(userId, userName, password);
-        UserDao.insertUserRole(newUserId, roleId);
+        UserDao.insertUserRole(userId, roleId);
+        if (session.getAttribute("SIGNUP_USER_ID") == null) {
+            res.sendRedirect(req.getContextPath() + "/admin/sign_up.jsp");
+            return;
+        }
+
 
         session.removeAttribute("SIGNUP_PASSWORD");
+        session.removeAttribute("SIGNUP_USER_ID");
+        session.removeAttribute("SIGNUP_USER_NAME");
+        session.removeAttribute("SIGNUP_ROLE_ID");
+        session.removeAttribute("SIGNUP_ROLE_NAME");
+        
+       
 
         res.sendRedirect(req.getContextPath() + "/admin/sign_up_confirmed.jsp");
     }
