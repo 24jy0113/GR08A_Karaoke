@@ -52,8 +52,8 @@ public class Item {
 	}
 
 	public void setOption(Option option) {
-		delOption(option.getId());
 		// レコードはフィールドがfinalなので一度消してから追加してます.
+		delOption(option.getId());
 		options.add(option);
 	}
 
