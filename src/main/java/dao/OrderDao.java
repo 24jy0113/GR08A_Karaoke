@@ -127,16 +127,94 @@ public class OrderDao {
 		}
 	}
 
-	public void updateOrder(Order order) {
+	public void updateOrder(int orderId,int statusId) throws Exception {
+
+		// SQL文の作成.
+		// 注文の更新.
+		String sql = "UPDATE orders "
+				+ "SET item_creating_status_id=?"
+				+ " WHERE order_id=?;";
+
+		try (Connection con = DatabaseManager.connect();
+				PreparedStatement preState = con.prepareStatement(sql);){
+
+			// プリペアードステートメントを使用.
+
+			try {
+
+			} catch (SQLException e) {
+
+				// 例外を投げる.
+				throw e;
+
+			}
+		} catch (SQLException e) {
+
+			// デバッグ用のスタックトレース.
+			e.printStackTrace();
+
+			// フロントエンド用のエラーメッセージ.
+			String errMsg = "DB接続に失敗しました！<br>管理者に連絡してください。";
+
+			// 例外を投げる.
+			throw new Exception(errMsg);
+
+		}
 	}
 
 	public void delOrder(Order order) {
 	}
 
+//	// 注文IDに対応する注文をDBから取得してOrderクラスとして返す。見つからないとnullが出るのでnullチェックをすること.
+//	private Order searchOrderById(int orderId) throws Exception {
+//
+//		// 返却値の参照変数を初期化.
+//		Order resOrder = null;
+//
+//		// SQL文の作成.
+//		String sql = "SELECT order_id,total,orders.room_id,room_number,receiving_number,"
+//				+ "orders.item_creating_status_id,item_creating_status_name "
+//				+ "FROM orders "
+//				+ "INNER JOIN item_creating_status "
+//				+ "ON orders.item_creating_status_id = item_creating_status.item_creating_status_id "
+//				+ "INNER JOIN room "
+//				+ "ON orders.room_id = room.room_id "
+//				+ "WHERE orders.order_id=?;";
+//
+//		try (Connection con = DatabaseManager.connect(); PreparedStatement preState = con.prepareStatement(sql);) {
+//
+//			// プリペアードステートメントを使用.
+//			preState.setInt(1, orderId);
+//			try (ResultSet resSet = preState.executeQuery();) {
+//
+//				// 検索結果からOrderインスタンスを生成.
+//				while (resSet.next()) {
+//					resOrder = new Order(orderId, searchOrderItem(orderId), resSet.getInt("total"),
+//							resSet.getInt("orders.room_id"), resSet.getInt("room"), resSet.getInt("receiving_number"),
+//							resSet.getInt("orders.item_creating_status_id"),
+//							resSet.getString("orders.item_creating_status_name"));
+//				}
+//			}
+//		} catch (SQLException e) {
+//
+//			// デバッグ用のスタックトレース.
+//			e.printStackTrace();
+//
+//			// フロントエンド用のエラーメッセージ.
+//			String errMsg = "DB接続に失敗しました！<br>管理者に連絡してください。";
+//
+//			// 例外を投げる.
+//			throw new Exception(errMsg);
+//
+//		}
+//		return resOrder;
+//
+//	}
+
 	public ArrayList<Order> searchOederByRoom(int roomId) throws Exception {
 
 		// 返却値の参照変数を初期化.
-		ArrayList<Order> list = new ArrayList<>();
+		ArrayList<Order> resList = new ArrayList<>();
 
 		// SQL文の作成.
 		String sql = "SELECT order_id,total,orders.room_id,room_number,receiving_number,"
@@ -157,7 +235,7 @@ public class OrderDao {
 				// 検索結果からOrderインスタンスを生成.
 				while (resSet.next()) {
 					int orderId = resSet.getInt("order_id");
-					list.add(new Order(orderId, searchOrderItem(orderId), resSet.getInt("total"),
+					resList.add(new Order(orderId, searchOrderItem(orderId), resSet.getInt("total"),
 							resSet.getInt("orders.room_id"), resSet.getInt("room"), resSet.getInt("receiving_number"),
 							resSet.getInt("orders.item_creating_status_id"),
 							resSet.getString("orders.item_creating_status_name")));
@@ -175,7 +253,7 @@ public class OrderDao {
 			throw new Exception(errMsg);
 
 		}
-		return list;
+		return resList;
 	}
 
 	public ArrayList<Order> searchOederByStatus(int statusId) throws Exception {
