@@ -147,7 +147,16 @@ public class UserDao {
 	    }
 	}
 	public static User searchUserByUserId(String userId) {
-	    String sql = "SELECT user_id, user_name FROM user WHERE user_id = ?";
+	    String sql = "SELECT\n"
+	    		+ "    u.user_id,\n"
+	    		+ "    u.user_name,\n"
+	    		+ "    r.role_name,\n"
+	    		+ "    u.last_login_time\n"
+	    		+ "FROM USER u\n"
+	    		+ "LEFT JOIN USER_ROLE ur ON u.user_id = ur.user_id\n"
+	    		+ "LEFT JOIN ROLE r ON ur.role_id = r.role_id\n"
+	    		+ "WHERE u.user_id = ?\n"
+	    		;
 	    try (Connection con = DBUtil.getConnection();
 	         PreparedStatement ps = con.prepareStatement(sql)) {
 
@@ -158,6 +167,8 @@ public class UserDao {
 	            User u = new User();
 	            u.setUserId(rs.getString("user_id"));
 	            u.setUserName(rs.getString("user_name"));
+	            u.setRoleName(rs.getString("role_name"));
+	            u.setLastLoginTime(rs.getTimestamp("last_login_time"));
 	            return u;
 	        }
 	    } catch (Exception e) {
@@ -168,7 +179,15 @@ public class UserDao {
 	public static ArrayList<User> searchUserByUserName(String userName) {
 	    ArrayList<User> list = new ArrayList<>();
 
-	    String sql = "SELECT user_id, user_name FROM user WHERE user_name LIKE ?";
+	    String sql = "SELECT\n"
+	    		+ "    u.user_id,\n"
+	    		+ "    u.user_name,\n"
+	    		+ "    r.role_name,\n"
+	    		+ "    u.last_login_time\n"
+	    		+ "FROM USER u\n"
+	    		+ "LEFT JOIN USER_ROLE ur ON u.user_id = ur.user_id\n"
+	    		+ "LEFT JOIN ROLE r ON ur.role_id = r.role_id\n"
+	    		+ "WHERE user_name LIKE ?";
 	    try (Connection con = DBUtil.getConnection();
 	         PreparedStatement ps = con.prepareStatement(sql)) {
 
@@ -179,6 +198,8 @@ public class UserDao {
 	            User u = new User();
 	            u.setUserId(rs.getString("user_id"));
 	            u.setUserName(rs.getString("user_name"));
+	            u.setRoleName(rs.getString("role_name"));
+	            u.setLastLoginTime(rs.getTimestamp("last_login_time"));
 	            list.add(u);
 	        }
 	    } catch (Exception e) {
@@ -186,21 +207,72 @@ public class UserDao {
 	    }
 	    return list;
 	}
-	public static boolean updateUser(User user) {
-	    String sql = "UPDATE user SET user_name = ? WHERE user_id = ?";
+	public static boolean updateUser(User u) {
 
-	    try (Connection con = DBUtil.getConnection();
-	         PreparedStatement ps = con.prepareStatement(sql)) {
+	    Connection conn = null;
 
-	        ps.setString(1, user.getUserName());
-	        ps.setString(2, user.getUserId());
-	        return ps.executeUpdate() == 1;
+	    try {
+	        conn = DBUtil.getConnection();
+	        conn.setAutoCommit(false);
+
+	        if (u.getUserName() != null && !u.getUserName().isEmpty()) {
+	            try (PreparedStatement ps = conn.prepareStatement(
+	                "UPDATE user SET user_name = ? WHERE user_id = ?"
+	            )) {
+	                ps.setString(1, u.getUserName());
+	                ps.setString(2, u.getUserId());
+	                ps.executeUpdate();
+	            }
+	        }
+
+	        if (u.getPasswordHash() != null && !u.getPasswordHash().isEmpty()) {
+	            try (PreparedStatement ps = conn.prepareStatement(
+	                "UPDATE user SET password = ? WHERE user_id = ?"
+	            )) {
+	                ps.setString(1, u.getPasswordHash());
+	                ps.setString(2, u.getUserId());
+	                ps.executeUpdate();
+	            }
+	        }
+	        if (u.getRoleId() != null) {
+	            try (PreparedStatement ps = conn.prepareStatement(
+	                "UPDATE user_role SET role_id = ? WHERE user_id = ?"
+	            )) {
+	                ps.setInt(1, u.getRoleId());
+	                ps.setString(2, u.getUserId());
+
+	                int count = ps.executeUpdate();
+
+	                if (count == 0) {
+	                    try (PreparedStatement ps2 = conn.prepareStatement(
+	                        "INSERT INTO user_role (user_id, role_id) VALUES (?, ?)"
+	                    )) {
+	                        ps2.setString(1, u.getUserId());
+	                        ps2.setInt(2, u.getRoleId());
+	                        ps2.executeUpdate();
+	                    }
+	                }
+	            }
+	        }
+
+	        conn.commit();
+	        return true;
 
 	    } catch (Exception e) {
+	        try {
+	            if (conn != null) conn.rollback();
+	        } catch (Exception ignore) {}
 	        e.printStackTrace();
+	        return false;
+
+	    } finally {
+	        try {
+	            if (conn != null) conn.close();
+	        } catch (Exception ignore) {}
 	    }
-	    return false;
 	}
+
+
 	public static boolean deleteUser(String userId) {
 
 	    String deleteUserRoleSql = "DELETE FROM user_role WHERE user_id = ?";
@@ -227,6 +299,27 @@ public class UserDao {
 	        e.printStackTrace();
 	    }
 	    return false;
+	}
+	public static int findRoleIdByRoleName(String roleName) {
+
+	    String sql = "SELECT role_id FROM role WHERE role_name = ?";
+
+	    try (Connection con = DBUtil.getConnection();
+	         PreparedStatement ps = con.prepareStatement(sql)) {
+
+	        ps.setString(1, roleName);
+
+	        try (ResultSet rs = ps.executeQuery()) {
+	            if (rs.next()) {
+	                return rs.getInt("role_id");
+	            }
+	        }
+
+	    } catch (Exception e) {
+	        throw new RuntimeException(e);
+	    }
+
+	    throw new IllegalArgumentException("存在しない role_name: " + roleName);
 	}
 
 

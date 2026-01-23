@@ -10,12 +10,9 @@ if (user == null) {
 }
 %>
 <%
-String userId = request.getParameter("userId");
-String userName = request.getParameter("userName");
-String roleName = request.getParameter("roleName");
-
-if (userId == null) {
-    response.sendRedirect("account_search.jsp");
+User u = (User) session.getAttribute("DELETE_USER");
+if (u == null) {
+    response.sendRedirect(request.getContextPath() + "/admin/account_search.jsp");
     return;
 }
 %>
@@ -53,11 +50,11 @@ if (userId == null) {
                 <tbody>
                     <tr>
                         <th>アカウントID</th>
-                        <td><%= userId %>
+                        <td><%= u.getUserId() %>
                     </tr>
                     <tr>
                         <th>アカウント名</th>
-                        <td><%= userName %>
+                        <td><%= u.getUserName() %>
                     </tr>
                     <tr>
                         <th>パスワード</th>
@@ -65,15 +62,15 @@ if (userId == null) {
                     </tr>
                     <tr>
                         <th>役割</th>
-                        <td><%= roleName %></td>
+                        <td><%= u.getRoleName() %></td>
                     </tr>
                     
                 </tbody>
             </table>
             <div class="action-buttons">
                 <button type="button" class="btn-back" onclick="history.back()">キャンセル</button>
-                <form action="AccountDeleteServlet" method="post">
-				    <input type="hidden" name="userId" value="<%= userId %>">
+                <form action="<%= request.getContextPath() %>/AccountDeleteServlet" method="post">
+				    <input type="hidden" name="userId" value="<%= u.getUserId() %>">
 				    <button  class="btn delete" type="submit">削除する</button>
 				</form>
             </div>

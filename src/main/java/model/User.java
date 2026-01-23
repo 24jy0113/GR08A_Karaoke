@@ -6,6 +6,7 @@ public class User {
 	private String userId;
 	private String userName;
 	private String roleName;
+	private Integer roleId;
 	private String permissions;
 	private String passwordHash;
 	private Timestamp lastLoginTime;
@@ -13,12 +14,13 @@ public class User {
 	public User() {
 	}
 
-	public User(String userId, String userName, String roleName, String permissions, String passwordHash,
+	public User(String userId, String userName, String roleName, Integer roleId,String permissions, String passwordHash,
 			Timestamp lastLoginTime) {
 		super();
 		this.userId = userId;
 		this.userName = userName;
 		this.roleName = roleName;
+		this.roleId = roleId;
 		this.permissions = permissions;
 		this.passwordHash = passwordHash;
 		this.lastLoginTime = lastLoginTime;
@@ -63,6 +65,13 @@ public class User {
 
 	public void setRoleName(String roleName) {
 		this.roleName = roleName;
+	}
+	public Integer getRoleId() {
+		return roleId;
+	}
+
+	public void setRoleId(Integer roleId) {
+		this.roleId = roleId;
 	}
 
 	public String getPermissions() {

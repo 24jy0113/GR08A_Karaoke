@@ -34,6 +34,16 @@ if (user == null) {
 			</nav>
 		</div>
 	</header>
+	    <% String error = (String) request.getAttribute("error"); %>
+
+		<% if (error != null) { %>
+		    <div style="
+		        color: red;
+		        text-align: center;
+		    ">
+		        <%= error %>
+		    </div>
+		<% } %>
 	<main>
 		<div class="main-container">
 			<h1 class="bodymsg">アカウント登録</h1>
@@ -44,11 +54,11 @@ if (user == null) {
 				<div class="form-row">
 					<label>役割</label>
 					<div class="required-badge required">必須</div>
-					<div class="checkbox-group">
-					  <label><input type="radio" name="roleId" value="1"> キッチン</label>
-					  <label><input type="radio" name="roleId" value="2"> フロント</label>
-					  <label><input type="radio" name="roleId" value="3"> フロア</label>
-					  <label><input type="radio" name="roleId" value="4"> 管理者</label>
+					<div class="radio-group">
+					  <label><input type="radio" name="roleName" value="キッチン"> キッチン</label>
+					  <label><input type="radio" name="roleName" value="フロント"> フロント</label>
+					  <label><input type="radio" name="roleName" value="フロア"> フロア</label>
+					  <label><input type="radio" name="roleName" value="管理者"> 管理者</label>
 					</div>
 
 
@@ -116,7 +126,7 @@ if (user == null) {
               error.textContent = "入力されたパスワードが不一致です";
               return false;
           }
-          const roleChecked = document.querySelector('input[name="roleId"]:checked');
+          const roleChecked = document.querySelector('input[name="roleName"]:checked');
           if (!roleChecked) {
               error.textContent = "役割を選択してください";
               return false;

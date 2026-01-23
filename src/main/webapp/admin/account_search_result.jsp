@@ -57,17 +57,14 @@ if (user == null) {
 						    <td>XXXXXXXX</td>
 						    <td><%= u.getLastLoginTime() %></td>
 						    <td>
-						        <form action="<%= request.getContextPath() %>/admin/account_update.jsp" method="post">
+						        <form action="<%= request.getContextPath() %>/AccountUpdateInitServlet" method="post">
 						            <input class="btn edit" type="hidden" name="userId" value="<%= u.getUserId() %>">
-						            <input type="hidden" name="userName" value="<%= u.getUserName() %>">
 						            <button type="submit">変更</button>
 						        </form>
 						    </td>
 						    <td>
-						      <form action="<%= request.getContextPath() %>/admin/account_delete_notice.jsp" method="post">
+						      <form action="<%= request.getContextPath() %>/AccountDeleteInitServlet" method="post">
 	                            <input class="btn edit" type="hidden" name="userId" value="<%= u.getUserId() %>">
-						        <input type="hidden" name="userName" value="<%= u.getUserName() %>">
-						        <input type="hidden" name="roleName" value="<%= u.getRoleName() %>">
 	                            <button class="btn delete" type="submit">削除</button>
 	                          </form>
                         </td>

@@ -13,7 +13,7 @@ if (user == null) {
 <%
 String userId = (String) session.getAttribute("SIGNUP_USER_ID");
 String userName = (String) session.getAttribute("SIGNUP_USER_NAME");
-String roleIdStr = (String) session.getAttribute("SIGNUP_ROLE_ID");
+String roleName = (String) session.getAttribute("SIGNUP_ROLE_NAME");
 %>
 
 <!DOCTYPE html>
@@ -58,7 +58,7 @@ String roleIdStr = (String) session.getAttribute("SIGNUP_ROLE_ID");
                     </tr>
                     <tr>
                         <th>役割情報</th>
-                        <td><%= roleIdStr %></td>
+                        <td><%= roleName %></td>
                     </tr>
                     
             

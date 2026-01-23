@@ -27,8 +27,17 @@ public class LoginServlet extends HttpServlet {
         String password = req.getParameter("password");
         String userId;
         
+        if (rawUserId == null || password == null) {
+            res.sendRedirect(req.getContextPath() + "/login.jsp");
+            return;
+        }
         try {
             userId = String.format("%06d", Integer.parseInt(rawUserId.trim()));
+            if (userId.isEmpty() || password.isEmpty()) {
+                req.setAttribute("errorMsg", "ユーザーIDとパスワードを入力してください");
+                req.getRequestDispatcher("/login.jsp").forward(req, res);
+                return;
+            }
         } catch (NumberFormatException e) {
             req.setAttribute("error", "アカウントIDは6桁の数字で入力してください");
             req.getRequestDispatcher("index.jsp").forward(req, res);

@@ -21,6 +21,10 @@ public class AccountSearchServlet extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
 
         String keyword = req.getParameter("keyword");
+        if (keyword != null) {
+            keyword = keyword.replace("　", " ").trim();
+        }
+        
         ArrayList<User> list = new ArrayList<>();
 
         if (keyword != null && !keyword.isBlank()) {

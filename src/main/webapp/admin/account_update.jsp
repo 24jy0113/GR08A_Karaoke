@@ -9,6 +9,14 @@ if (user == null) {
     return;
 }
 %>
+<%
+User u = (User) session.getAttribute("UPDATE_USER");
+if (u == null) {
+    response.sendRedirect(request.getContextPath() + "/admin/account_search.jsp");
+    return;
+}
+%>
+
 <!DOCTYPE html>
 <html lang=ja>
 <head>
@@ -37,23 +45,23 @@ if (user == null) {
             <h1 class="bodymsg">アカウント情報の変更</h1>
             <p style="text-align: center;margin-bottom: 30px;">変更するアカウント情報を入力してください</p>
             <h1>アカウント情報</h1>
-            <form action="AccountUpdateServlet" method="post"  onsubmit="return validateForm()">
-                <div class="form-row">
-					<label>役割</label>
-					<div class="required-badge required">必須</div>
-					<div class="checkbox-group">
-					  <label><input type="checkbox" name="roleId" value="1"> キッチン</label>
-					  <label><input type="checkbox" name="roleId" value="2"> フロント</label>
-					  <label><input type="checkbox" name="roleId" value="3"> フロア</label>
-					  <label><input type="checkbox" name="roleId" value="4"> 管理者</label>
-					</div>
-
-				</div>
+            <form action="<%= request.getContextPath() %>/AccountUpdateServlet" method="post"  onsubmit="return validateForm()">
+                <input type="hidden" name="userId" value="<%= u.getUserId() %>">
 
 				<div class="form-row">
 					<label>アカウント名</label>
+					<input type="text" name="userName" value="<%= u.getUserName() %>">
+
+				</div>
+				<div class="form-row">
+					<label>役割</label>
 					<div class="required-badge required">必須</div>
-					<input type="text" name="userName">
+					<div class="radio-group">
+					  <label><input type="radio" name="roleName" value="キッチン" <%= "キッチン".equals(u.getRoleName())?"checked":"" %>> キッチン</label>
+					  <label><input type="radio" name="roleName" value="フロント" <%= "フロント".equals(u.getRoleName())?"checked":"" %>> フロント</label>
+					  <label><input type="radio" name="roleName" value="フロア" <%= "フロア".equals(u.getRoleName())?"checked":"" %>> フロア</label>
+					  <label><input type="radio" name="roleName" value="管理者" <%= "管理者".equals(u.getRoleName())?"checked":"" %>> 管理者</label>
+					</div>
 
 				</div>
 				<div class="form-row">
@@ -68,16 +76,14 @@ if (user == null) {
 						name="newPasswordConfirm" placeholder="確認のため、再度ご入力ください">
 				</div>
 				<div class="form-row">
-					<label></label> <input type="checkbox" onclick="togglePassword()">
+					<label></label> <input type="radio" onclick="togglePassword()">
 					パスワードを表示
 				</div>
 				<span id="errorMessage"
 					style="text-align: center; color: chocolate;"></span><br>
 					
 				<div class="action-buttons">
-					<button type="button" class="btn-back" onclick="location.href='account_search_result.jsp'">キャンセル</button>
-					<input type="hidden" name="userId" value="<%= request.getParameter("userId") %>">
-					<input type="text" name="userName" value="<%= request.getParameter("userName") %>">
+					<button type="button" class="btn-back" onclick="history.back()">キャンセル</button>
 					<button type="submit" class="btn-next">確認する</button>
 				</div>
             </form>

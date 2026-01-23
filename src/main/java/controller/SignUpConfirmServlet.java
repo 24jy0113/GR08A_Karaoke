@@ -19,13 +19,14 @@ public class SignUpConfirmServlet extends HttpServlet {
 
         String userName = req.getParameter("userName");
         String password = req.getParameter("password");
-        String roleId = req.getParameter("roleId");
+        String roleName = req.getParameter("roleName");
+        int roleId = UserDao.findRoleIdByRoleName(roleName);
 
         if (userName == null || userName.isEmpty()
             || password == null || password.isEmpty()
-            || roleId == null || roleId.isEmpty()) {
+            || roleName == null || roleName.isEmpty()) {
             req.setAttribute("error", "入力内容に不備があります");
-            req.getRequestDispatcher("/admin/sign_up.jsp").forward(req, res);
+            req.getRequestDispatcher(req.getContextPath() + "/admin/sign_up.jsp").forward(req, res);
             return;
         }
 
@@ -36,7 +37,8 @@ public class SignUpConfirmServlet extends HttpServlet {
         session.setAttribute("SIGNUP_USER_ID", newUserId);
         session.setAttribute("SIGNUP_USER_NAME", userName);
         session.setAttribute("SIGNUP_PASSWORD", password);
-        session.setAttribute("SIGNUP_ROLE_ID", roleId);
+        session.setAttribute("SIGNUP_ROLE_ID", roleId);  //DAO insert 用   
+        session.setAttribute("SIGNUP_ROLE_NAME", roleName);  //確認ページで表示用
 
         res.sendRedirect(req.getContextPath() + "/admin/sign_up_confirm.jsp");
     }
