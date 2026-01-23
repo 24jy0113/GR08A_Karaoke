@@ -118,10 +118,11 @@ public class ItemDao {
 				preState2.setInt(1, item.getId());
 				preState2.executeUpdate();
 
-				// 複数行の挿入をするためバッチ処理に入れる.
 				preState3.setInt(1, item.getId());
 				for (Option option : item.getOptionList()) {
 					preState3.setInt(2, option.getId());
+
+					// 複数行の挿入をするためバッチ処理に入れる.
 					preState3.addBatch();
 				}
 
