@@ -1,15 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" import="model.User" import="java.util.List"
-	import="model.Room"%>
+	import="java.util.ArrayList" import="model.Room" import="java.sql.Time"%>
+
 <%
 User user = (User) session.getAttribute("loginUser");
 if (user == null) {
-    response.sendRedirect(request.getContextPath() + "/index.jsp");
-    return;
+	response.sendRedirect(request.getContextPath() + "/index.jsp");
+	return;
 }
 %>
 <%
 List<Room> roomList = (List<Room>) request.getAttribute("roomList");
+if (roomList == null) {
+	out.println("データがありません");
+	return;
+}
 %>
 <!DOCTYPE html>
 <html lang="ja">
@@ -29,9 +34,9 @@ List<Room> roomList = (List<Room>) request.getAttribute("roomList");
 			<nav class="gnav">
 				<ul class="gnav_list">
 					<li><img class="user_img" src="../img/user.png" alt="cart"
-						width="25" height="25"><%= user.getUserName() %></li>
+						width="25" height="25"><%=user.getUserName()%></li>
 					<li><a class="gnav_botton"
-						href="<%= request.getContextPath() %>/LogoutServlet">ログアウト</a></li>
+						href="<%=request.getContextPath()%>/LogoutServlet">ログアウト</a></li>
 				</ul>
 			</nav>
 		</div>
@@ -64,42 +69,63 @@ List<Room> roomList = (List<Room>) request.getAttribute("roomList");
 					</tr>
 					<!-- 1行目 -->
 					<%
-                    for (Room room : roomList){
-                    %>
-					<tr>
-						<td>
-							<button type="button" onclick="location.href='front_cus_top.jsp'"
-								style="background-color: black; color: aliceblue;">延長・注文</button>
-						</td>
-						<form action="<%=request.getContextPath()%>/RoomUpdateConfirmServlet" method="post">
-							<input type="hidden" name="roomId" value="<%= room.getId() %>">
-							<!-- 部屋番号 -->
-						<td><%= room.getRoomNo() %></td>
-						<!-- 酒類の提供 -->
-						<td><select name="alcohol">
-								<option value="1" <%= room.isAlcohol() ? "selected" : "" %>>可能</option>
-								<option value="0" <%= !room.isAlcohol() ? "selected" : "" %>>不可</option>
-						</select></td>
-						<!-- 受付時間 -->
-						<td><input type="time" name="receptionTime"
-							value="<%= room.getReceptionTime().toLocalTime() %>"></td>
-						<!-- 退室時間 -->
-						<td><input type="time" name="leavingTime"
-							value="<%= room.getLeavingTime().toLocalTime() %>"></td>
-						<!-- 状態 -->
-						<td><select name="statusId">
-								<option value="1"
-									<%= room.getStatusId() == 1 ? "selected" : "" %>>空き</option>
-								<option value="2"
-									<%= room.getStatusId() == 2 ? "selected" : "" %>>予約</option>
-								<option value="3"
-									<%= room.getStatusId() == 3 ? "selected" : "" %>>受付済み</option>
-								<option value="4"
-									<%= room.getStatusId() == 4 ? "selected" : "" %>>キャンセル</option>
-						</select></td>
-						<button type="submit">更新</button>
-					</tr>
+					for (Room room : roomList) {
+					%>
+					<form
+						action="<%=request.getContextPath()%>/RoomUpdateConfirmServlet"
+						method="post">
+						<tr>
+							<input type="hidden" name="roomId" value="<%=room.getId()%>">
+							<td>
+								<button type="button"
+									onclick="location.href='front_cus_top.jsp?roomId=<%=room.getId()%>'"
+									style="background-color: black; color: aliceblue;">延長・注文</button>
+							</td>
 
+
+							<!-- 部屋番号 -->
+							<td><%=room.getRoomNo()%></td>
+							<!-- 酒類の提供 -->
+							<td><select name="alcohol">
+									<option value="1" <%=room.isAlcohol() ? "selected" : ""%>>可能</option>
+									<option value="0" <%=!room.isAlcohol() ? "selected" : ""%>>不可</option>
+							</select></td>
+							<!-- 受付時間 -->
+							<td><input type="time" name="receptionTime"
+								value="<%=room.getReceptionTime().toLocalTime()%>"></td>
+							<!-- 退室時間 -->
+							<td>
+								<!-- 予約あり --> <%
+ if (room.getStatusId() == 2) {
+ %> <input type="time" name="leavingTime"
+								value="<%=room.getLeavingTime().toLocalTime()%>" readonly>
+								<%
+								} else {
+								%> <!-- 予約なし --> <input type="time" name="leavingTime"
+								value="<%=room.getLeavingTime() != null ? room.getLeavingTime().toLocalTime() : ""%>">
+								<%
+								}
+								%>
+							</td>
+							<!-- 状態 -->
+							<td><select name="statusId">
+									<option value="1"
+										<%=room.getStatusId() == 1 ? "selected" : ""%>>空き</option>
+									<option value="2"
+										<%=room.getStatusId() == 2 ? "selected" : ""%>>予約</option>
+									<option value="3"
+										<%=room.getStatusId() == 3 ? "selected" : ""%>>受付済み</option>
+									<option value="4"
+										<%=room.getStatusId() == 4 ? "selected" : ""%>>キャンセル</option>
+							</select></td>
+							<td>
+								<button type="submit">更新</button>
+							</td>
+						</tr>
+					</form>
+					<%
+					}
+					%>
 				</table>
 				<div class="link">
 					<a href="">次のページへ</a>

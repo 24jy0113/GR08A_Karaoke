@@ -22,7 +22,7 @@ public class RoomTimeService {
 		return plannedLeaving.plusMinutes(diffMinutes);
 	}
 
-	// 受付時間＆退室時間 更新.
+	// 受付時間＆退室時間(予約ありの場合) 更新.
 	public void updateRoomTimes(int roomId, String receptionTimeStr) throws Exception {
 		Room room = RoomDao.getRoomById(roomId);
 		if (room == null)
@@ -45,7 +45,31 @@ public class RoomTimeService {
 		RoomDao.updateReceptionTime(roomId, Time.valueOf(actualReception)); // DAOに追記が必要
 		RoomDao.updateLeavingTime(roomId, Time.valueOf(adjustedLeaving));
 	}
+	
+	
+	// 受付時間＆退室時間(予約なしの場合) 更新.
+	public void updateRoomTimes(int roomId, String receptionTimeStr, String leavingTimeStr) throws Exception {
+	    Room room = RoomDao.getRoomById(roomId);
+	    if (room == null)
+	        throw new IllegalStateException("部屋情報が存在しません");
 
+	    LocalTime actualReception = LocalTime.parse(receptionTimeStr);
+	    LocalTime actualLeaving = null;
+
+	    if (leavingTimeStr != null && !leavingTimeStr.isEmpty()) {
+	        actualLeaving = LocalTime.parse(leavingTimeStr);
+	    }
+
+	    // DBに更新
+	    room.setReceptionTime(Time.valueOf(actualReception));
+	    if (actualLeaving != null) {
+	        room.setLeavingTime(Time.valueOf(actualLeaving));
+	        RoomDao.updateLeavingTime(roomId, Time.valueOf(actualLeaving));
+	    }
+	    RoomDao.updateReceptionTime(roomId, Time.valueOf(actualReception));
+	}
+	
+	
 	// セッション内のRoom情報を最新のDB情報で更新（再取得）するメソッド.
 	public Room refreshRoomFromDB(int roomId) throws Exception {
 		// RoomDaoのgetRoomByIdを呼び、DBから最新の部屋情報を取得して返す.

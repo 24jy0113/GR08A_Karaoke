@@ -32,11 +32,17 @@ public class RoomUpdateServlet extends HttpServlet {
 			boolean alcohol = request.getParameter("alcohol").equals("1");
 			int statusId = Integer.parseInt(request.getParameter("statusId"));
 			String receptionTime = request.getParameter("receptionTime");
+			String leavingTime = request.getParameter("leavingTime");
 
 			RoomTimeService service = new RoomTimeService();
 
 			// 受付時間・退室時間更新
-			service.updateRoomTimes(roomId, receptionTime);
+			if(statusId == 2) {
+				service.updateRoomTimes(roomId, receptionTime);
+			}else {
+				service.updateRoomTimes(roomId, receptionTime,leavingTime);
+			}
+			
 
 			// 酒類・状態更新
 			RoomDao.updateAlcohol(roomId, alcohol);
