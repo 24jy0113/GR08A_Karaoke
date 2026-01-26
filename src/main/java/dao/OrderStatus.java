@@ -12,13 +12,21 @@ public enum OrderStatus {
 
     private final int id;
 
-    // コンストラクタ
+    // コンストラクタ.
     OrderStatus(int id) {
         this.id = id;
     }
 
-    // IDを取得するメソッド
+    // IDを取得するメソッド.
     public int getId() {
         return id;
+    }
+    public static OrderStatus fromId(int id) {
+        for (OrderStatus status : OrderStatus.values()) {
+            if (status.getId() == id) {
+                return status;
+            }
+        }
+        throw new IllegalArgumentException("不正なステータスID: " + id);
     }
 }

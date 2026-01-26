@@ -2,6 +2,8 @@ package model;
 
 import java.util.ArrayList;
 
+import dao.OrderStatus;
+
 public class Order {
 	private int id;
 	private ArrayList<OrderItem> items;
@@ -9,10 +11,10 @@ public class Order {
 	private int roomId;
 	private int room;
 	private int receivingNo;
-	private int statusId;
+	private OrderStatus statusId;
 	private String status;
 
-	public Order(int id, ArrayList<OrderItem> item, int total, int roomId, int room, int receivingNo, int statusId,
+	public Order(int id, ArrayList<OrderItem> item, int total, int roomId, int room, int receivingNo, OrderStatus statusId,
 			String status) {
 		this.id = id;
 		this.items = item;
@@ -23,7 +25,7 @@ public class Order {
 		this.status = status;
 	}
 
-	public Order(ArrayList<OrderItem> item, int roomId, int room, int receivingNo, int statusId, String status) {
+	public Order(ArrayList<OrderItem> item, int roomId, int room, int receivingNo, OrderStatus statusId, String status) {
 		this(-1, item, 0, roomId, room, receivingNo, statusId, status);
 		int sum = 0;
 		for (int i = 0; i < item.size(); i++) {
@@ -48,7 +50,7 @@ public class Order {
 		return receivingNo;
 	}
 
-	public int getStatusId() {
+	public OrderStatus getStatusId() {
 		return statusId;
 	}
 

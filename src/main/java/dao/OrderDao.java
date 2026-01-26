@@ -55,7 +55,7 @@ public class OrderDao {
 			// プリペアードステートメントを使用.
 			preState1.setInt(1, order.getTotal());
 			preState1.setInt(2, order.getReceivingNo());
-			preState1.setInt(3, order.getStatusId());
+			preState1.setInt(3, order.getStatusId().getId());
 			preState1.setInt(4, order.getRoomId());
 
 			try {
@@ -127,27 +127,24 @@ public class OrderDao {
 		}
 	}
 
-	public void updateOrder(int orderId,int statusId) throws Exception {
+	public void updateStatus(int orderId, OrderStatus status) throws Exception {
 
 		// SQL文の作成.
 		// 注文の更新.
 		String sql = "UPDATE orders "
-				+ "SET item_creating_status_id=?"
-				+ " WHERE order_id=?;";
+				+ "SET item_creating_status_id=? "
+				+ "WHERE order_id=?;";
 
 		try (Connection con = DatabaseManager.connect();
-				PreparedStatement preState = con.prepareStatement(sql);){
+				PreparedStatement preState = con.prepareStatement(sql);) {
 
 			// プリペアードステートメントを使用.
+			preState.setInt(1, status.getId());
+			preState.setInt(2, orderId);
 
-			try {
+			// 更新を実行.
+			preState.executeUpdate();
 
-			} catch (SQLException e) {
-
-				// 例外を投げる.
-				throw e;
-
-			}
 		} catch (SQLException e) {
 
 			// デバッグ用のスタックトレース.
@@ -162,54 +159,140 @@ public class OrderDao {
 		}
 	}
 
-	public void delOrder(Order order) {
-	}
+	//	public void delOrder(Order order) throws Exception {
+	//		// SQL文の作成.
+	//		// 注文詳細と選択された商品オプションのつながりの削除.
+	//		String sql1 = "";
+	//		// 注文詳細（OrderItemごと）の削除.
+	//		String sql2 = "";
+	//		// 注文の登録.
+	//		String sql3 = "";
+	//
+	//		try (Connection con = DatabaseManager.connect();
+	//				PreparedStatement preState1 = con.prepareStatement(sql1);
+	//				PreparedStatement preState2 = con.prepareStatement(sql2);
+	//				PreparedStatement preState3 = con.prepareStatement(sql3)) {
+	//
+	//			// 複数テーブルを更新する必要があるので自動コミットを無効.
+	//			con.setAutoCommit(false);
+	//
+	//			// プリペアードステートメントを使用.
+	//			
+	//			
+	//			try {
+	//
+	//				// 注文をテーブルに登録.
+	//				preState1.executeUpdate();
+	//
+	//				// 生成された注文の主キーを取得して注文詳細を登録する.
+	//				try (ResultSet resSet1 = preState1.getGeneratedKeys();) {
+	//					if (resSet1.next()) {
+	//						preState2.setInt(1, resSet1.getInt(1));
+	//
+	//						for (OrderItem item : order.getItemList()) {
+	//							preState2.setInt(2, item.getItem().getId());
+	//							preState2.setInt(3, item.getTotal());
+	//							preState2.setInt(4, item.getTotal());
+	//
+	//							// 商品をテーブルに追加.
+	//							preState2.executeUpdate();
+	//
+	//							// 選択したオプションがある場合のみその情報を登録.
+	//							if (item.getSelectedOptionList().isEmpty()) {
+	//
+	//								// 生成された注文詳細の主キーを取得して選択オプションのテーブルに登録する.
+	//								try (ResultSet resSet2 = preState2.getGeneratedKeys()) {
+	//									if (resSet2.next()) {
+	//										preState3.setInt(1, resSet2.getInt(1));
+	//
+	//										for (SelectedOption option : item.getSelectedOptionList()) {
+	//											preState2.setInt(2, option.selectionId());
+	//
+	//											// 複数行の挿入をするためバッチ処理に入れる.
+	//											preState3.addBatch();
+	//										}
+	//									}
+	//								}
+	//							}
+	//						}
+	//					}
+	//				}
+	//
+	//				// バッチ処理を実行.
+	//				// 選択オプションのテーブルに登録する.
+	//				preState3.executeBatch();
+	//
+	//				// すべて成功したらコミット.
+	//				con.commit();
+	//
+	//			} catch (SQLException e) {
+	//
+	//				// 挿入時に例外が出たらロールバックする.
+	//				con.rollback();
+	//
+	//				// 例外を投げる.
+	//				throw e;
+	//
+	//			}
+	//		} catch (SQLException e) {
+	//
+	//			// デバッグ用のスタックトレース.
+	//			e.printStackTrace();
+	//
+	//			// フロントエンド用のエラーメッセージ.
+	//			String errMsg = "DB接続に失敗しました！<br>管理者に連絡してください。";
+	//
+	//			// 例外を投げる.
+	//			throw new Exception(errMsg);
+	//
+	//		}
+	//	}
 
-//	// 注文IDに対応する注文をDBから取得してOrderクラスとして返す。見つからないとnullが出るのでnullチェックをすること.
-//	private Order searchOrderById(int orderId) throws Exception {
-//
-//		// 返却値の参照変数を初期化.
-//		Order resOrder = null;
-//
-//		// SQL文の作成.
-//		String sql = "SELECT order_id,total,orders.room_id,room_number,receiving_number,"
-//				+ "orders.item_creating_status_id,item_creating_status_name "
-//				+ "FROM orders "
-//				+ "INNER JOIN item_creating_status "
-//				+ "ON orders.item_creating_status_id = item_creating_status.item_creating_status_id "
-//				+ "INNER JOIN room "
-//				+ "ON orders.room_id = room.room_id "
-//				+ "WHERE orders.order_id=?;";
-//
-//		try (Connection con = DatabaseManager.connect(); PreparedStatement preState = con.prepareStatement(sql);) {
-//
-//			// プリペアードステートメントを使用.
-//			preState.setInt(1, orderId);
-//			try (ResultSet resSet = preState.executeQuery();) {
-//
-//				// 検索結果からOrderインスタンスを生成.
-//				while (resSet.next()) {
-//					resOrder = new Order(orderId, searchOrderItem(orderId), resSet.getInt("total"),
-//							resSet.getInt("orders.room_id"), resSet.getInt("room"), resSet.getInt("receiving_number"),
-//							resSet.getInt("orders.item_creating_status_id"),
-//							resSet.getString("orders.item_creating_status_name"));
-//				}
-//			}
-//		} catch (SQLException e) {
-//
-//			// デバッグ用のスタックトレース.
-//			e.printStackTrace();
-//
-//			// フロントエンド用のエラーメッセージ.
-//			String errMsg = "DB接続に失敗しました！<br>管理者に連絡してください。";
-//
-//			// 例外を投げる.
-//			throw new Exception(errMsg);
-//
-//		}
-//		return resOrder;
-//
-//	}
+	//	// 注文IDに対応する注文をDBから取得してOrderクラスとして返す。見つからないとnullが出るのでnullチェックをすること.
+	//	private Order searchOrderById(int orderId) throws Exception {
+	//
+	//		// 返却値の参照変数を初期化.
+	//		Order resOrder = null;
+	//
+	//		// SQL文の作成.
+	//		String sql = "SELECT order_id,total,orders.room_id,room_number,receiving_number,"
+	//				+ "orders.item_creating_status_id,item_creating_status_name "
+	//				+ "FROM orders "
+	//				+ "INNER JOIN item_creating_status "
+	//				+ "ON orders.item_creating_status_id = item_creating_status.item_creating_status_id "
+	//				+ "INNER JOIN room "
+	//				+ "ON orders.room_id = room.room_id "
+	//				+ "WHERE orders.order_id=?;";
+	//
+	//		try (Connection con = DatabaseManager.connect(); PreparedStatement preState = con.prepareStatement(sql);) {
+	//
+	//			// プリペアードステートメントを使用.
+	//			preState.setInt(1, orderId);
+	//			try (ResultSet resSet = preState.executeQuery();) {
+	//
+	//				// 検索結果からOrderインスタンスを生成.
+	//				while (resSet.next()) {
+	//					resOrder = new Order(orderId, searchOrderItem(orderId), resSet.getInt("total"),
+	//							resSet.getInt("orders.room_id"), resSet.getInt("room"), resSet.getInt("receiving_number"),
+	//							resSet.getInt("orders.item_creating_status_id"),
+	//							resSet.getString("orders.item_creating_status_name"));
+	//				}
+	//			}
+	//		} catch (SQLException e) {
+	//
+	//			// デバッグ用のスタックトレース.
+	//			e.printStackTrace();
+	//
+	//			// フロントエンド用のエラーメッセージ.
+	//			String errMsg = "DB接続に失敗しました！<br>管理者に連絡してください。";
+	//
+	//			// 例外を投げる.
+	//			throw new Exception(errMsg);
+	//
+	//		}
+	//		return resOrder;
+	//
+	//	}
 
 	public ArrayList<Order> searchOederByRoom(int roomId) throws Exception {
 
@@ -237,10 +320,21 @@ public class OrderDao {
 					int orderId = resSet.getInt("order_id");
 					resList.add(new Order(orderId, searchOrderItem(orderId), resSet.getInt("total"),
 							resSet.getInt("orders.room_id"), resSet.getInt("room"), resSet.getInt("receiving_number"),
-							resSet.getInt("orders.item_creating_status_id"),
+							OrderStatus.fromId(resSet.getInt("orders.item_creating_status_id")),
 							resSet.getString("orders.item_creating_status_name")));
 				}
 			}
+		} catch (IllegalArgumentException e) {
+
+			// デバッグ用のスタックトレース.
+			e.printStackTrace();
+
+			// フロントエンド用のエラーメッセージ.
+			String errMsg = "状態IDが不正です。";
+
+			// 例外を投げる.
+			throw new Exception(errMsg);
+
 		} catch (SQLException e) {
 
 			// デバッグ用のスタックトレース.
@@ -256,7 +350,7 @@ public class OrderDao {
 		return resList;
 	}
 
-	public ArrayList<Order> searchOederByStatus(int statusId) throws Exception {
+	public ArrayList<Order> searchOederByStatus(OrderStatus status) throws Exception {
 		// 返却値の参照変数を初期化.
 		ArrayList<Order> list = new ArrayList<>();
 
@@ -273,7 +367,7 @@ public class OrderDao {
 		try (Connection con = DatabaseManager.connect(); PreparedStatement preState = con.prepareStatement(sql);) {
 
 			// プリペアードステートメントを使用.
-			preState.setInt(1, statusId);
+			preState.setInt(1, status.getId());
 			try (ResultSet resSet = preState.executeQuery();) {
 
 				// 検索結果からOrderインスタンスを生成.
@@ -281,10 +375,21 @@ public class OrderDao {
 					int orderId = resSet.getInt("order_id");
 					list.add(new Order(orderId, searchOrderItem(orderId), resSet.getInt("total"),
 							resSet.getInt("orders.room_id"), resSet.getInt("room"), resSet.getInt("receiving_number"),
-							resSet.getInt("orders.item_creating_status_id"),
+							OrderStatus.fromId(resSet.getInt("orders.item_creating_status_id")),
 							resSet.getString("orders.item_creating_status_name")));
 				}
 			}
+
+		} catch (IllegalArgumentException e) {
+
+			// デバッグ用のスタックトレース.
+			e.printStackTrace();
+
+			// フロントエンド用のエラーメッセージ.
+			String errMsg = "状態IDが不正です。";
+
+			// 例外を投げる.
+			throw new Exception(errMsg);
 
 		} catch (SQLException e) {
 
