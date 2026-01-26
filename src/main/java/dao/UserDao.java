@@ -42,7 +42,6 @@ public class UserDao {
 	            user.setRoleName(rs.getString("role_name"));
 	            user.setPasswordHash(dbHash);
 	            user.setLastLoginTime(rs.getTimestamp("last_login_time"));
-	            //user.setPermissions(buildPermissions(user.getRoleName()));
 
 	            return user;
 	        }
@@ -52,7 +51,24 @@ public class UserDao {
 	    }
 	    return null;
 	}
-	
+	public static void insertUser(String userId, String userName, String rawPassword) {
+
+	    String sql = "INSERT INTO user(user_id, password, user_name) VALUES (?, ?, ?)";
+
+	    String hash = PasswordUtil.hash(rawPassword);
+
+	    try (Connection con = DBUtil.getConnection();
+	         PreparedStatement ps = con.prepareStatement(sql)) {
+
+	        ps.setString(1, userId);
+	        ps.setString(2, hash);
+	        ps.setString(3, userName);
+	        ps.executeUpdate();
+
+	    } catch (Exception e) {
+	        throw new RuntimeException(e);
+	    }
+	}
 	public static boolean checkPassword(String userId, String rawPassword) {
 
 	    String sql = "SELECT password FROM user WHERE user_id = ?";
@@ -99,24 +115,7 @@ public class UserDao {
 	    }
 	    return "000001";
 	}
-	public static void insertUser(String userId, String userName, String rawPassword) {
-
-	    String sql = "INSERT INTO user(user_id, password, user_name) VALUES (?, ?, ?)";
-
-	    String hash = PasswordUtil.hash(rawPassword);
-
-	    try (Connection con = DBUtil.getConnection();
-	         PreparedStatement ps = con.prepareStatement(sql)) {
-
-	        ps.setString(1, userId);
-	        ps.setString(2, hash);
-	        ps.setString(3, userName);
-	        ps.executeUpdate();
-
-	    } catch (Exception e) {
-	        throw new RuntimeException(e);
-	    }
-	}
+	
 	public static void insertUserRole(String userId, int roleId) {
 
 	    String sql = "INSERT INTO user_role(user_id, role_id) VALUES (?, ?)";
@@ -321,19 +320,4 @@ public class UserDao {
 
 	    throw new IllegalArgumentException("存在しない role_name: " + roleName);
 	}
-
-
-   /* private static String buildPermissions(String roleName) {
-        switch (roleName) {
-            case "管理者":
-                return "all";
-            case "フロント":
-                return "order,customer";
-            case "キッチン":
-                return "order";
-            default:
-                return "";
-        }
-    }
-    */
 }
