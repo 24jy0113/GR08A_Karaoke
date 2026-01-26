@@ -442,7 +442,7 @@ public class OrderDao {
 							selOptList.add(new SelectedOption(resSet2.getInt("order_detail_id"),
 									resSet2.getInt("option_detail_id")));
 						}
-						ItemDao itemDao = new ItemDao();
+						var itemDao = new ItemDao();
 
 						// 検索結果からOrderItemインスタンスを生成.
 						resList.add(new OrderItem(resSet1.getInt("order_id"),
