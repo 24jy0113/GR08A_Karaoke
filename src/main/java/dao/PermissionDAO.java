@@ -1,13 +1,10 @@
 package dao;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.HashSet;
 import java.util.Set;
-
-import java.sql.Connection;
-
-import util.DBUtil;
 
 public class PermissionDAO {
 
@@ -21,7 +18,7 @@ public class PermissionDAO {
             "JOIN permission p ON rp.permission_id = p.permission_id " +
             "WHERE ur.user_id = ?";
 
-        try (Connection conn = DBUtil.getConnection();
+        try (Connection conn = DatabaseManager.connect();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, userId);
