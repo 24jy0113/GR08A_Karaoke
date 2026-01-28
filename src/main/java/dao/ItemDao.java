@@ -29,7 +29,7 @@ public class ItemDao {
 			con.setAutoCommit(false);
 
 			// プリペアードステートメントを使用.
-			preState1.setString(1, item.getItemName());
+			preState1.setString(1, item.getName());
 			preState1.setInt(2, item.getCategoryId());
 			preState1.setInt(3, item.getItemNo());
 			preState1.setInt(4, item.getPrice());
@@ -102,7 +102,7 @@ public class ItemDao {
 			con.setAutoCommit(false);
 
 			// プリペアードステートメントを使用.
-			preState1.setString(1, item.getItemName());
+			preState1.setString(1, item.getName());
 			preState1.setInt(2, item.getCategoryId());
 			preState1.setInt(3, item.getItemNo());
 			preState1.setInt(4, item.getPrice());

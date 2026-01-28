@@ -73,12 +73,12 @@ public class Item {
 		this.id = id;
 	}
 
-	public String getItemName() {
+	public String getName() {
 		return name;
 	}
 
-	public void setItemName(String itemName) {
-		this.name = itemName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public int getPrice() {
