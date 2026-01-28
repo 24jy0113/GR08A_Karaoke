@@ -110,7 +110,7 @@ public class RoomDao {
 	// 受付時間更新.
 	public static void updateReceptionTime(int roomId, Time newReceptionTime) throws Exception {
 		// SQL文作成.
-		String sql = "UPDATE room_usage_status SET reception_time = ? WHERE room_id = ?";
+		String sql = "UPDATE room_usage_status SET reception_time = ? WHERE room_id = ?;";
 
 		try (Connection con = DatabaseManager.connect(); PreparedStatement preState = con.prepareStatement(sql);) {
 			// プリペアードステートメントを使用.
@@ -131,7 +131,7 @@ public class RoomDao {
 
 	// 酒類提供更新.
 	public static void updateAlcohol(int roomId, boolean alcohol) throws Exception {
-		String sql = "UPDATE room SET alcohol_provision = ? WHERE room_id = ?";
+		String sql = "UPDATE room_usage_status SET alcohol_provision = ? WHERE room_id = ?;";
 
 		try (Connection con = DatabaseManager.connect();
 				PreparedStatement preState = con.prepareStatement(sql)) {
@@ -143,7 +143,7 @@ public class RoomDao {
 
 	// 状態更新.
 	public static void updateStatus(int roomId, int statusId) throws Exception {
-		String sql = "UPDATE room_usage_status SET status_id = ? WHERE room_id = ?";
+		String sql = "UPDATE room_usage_status SET status_id = ? WHERE room_id = ?;";
 
 		try (Connection con = DatabaseManager.connect();
 				PreparedStatement preState = con.prepareStatement(sql)) {

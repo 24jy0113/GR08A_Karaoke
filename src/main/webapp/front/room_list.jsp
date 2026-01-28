@@ -21,19 +21,23 @@ if (roomList == null) {
 <head>
 <meta charset="UTF-8">
 <title>部屋状況画面</title>
-<link rel="stylesheet" type="text/css" href="../css/11_01.css">
-<link rel="stylesheet" type="text/css" href="../css/header.css">
+<link rel="stylesheet" type="text/css"
+	href="<%=request.getContextPath()%>/css/11_01.css">
+<link rel="stylesheet" type="text/css"
+	href="<%=request.getContextPath()%>/css/header.css">
 </head>
 <body>
 	<!-- Header -->
 	<header>
 		<div class="header_inner">
-			<img class="title_img" src="../img/logo.png" alt="logo" width="60"
-				height="60">
+			<img class="title_img"
+				src="<%=request.getContextPath()%>/img/logo.png" alt="logo"
+				width="60" height="60">
 			<h1 class="title_name">七福サウンド</h1>
 			<nav class="gnav">
 				<ul class="gnav_list">
-					<li><img class="user_img" src="../img/user.png" alt="cart"
+					<li><img class="user_img"
+						src="<%=request.getContextPath()%>/img/user.png" alt="cart"
 						width="25" height="25"><%=user.getUserName()%></li>
 					<li><a class="gnav_botton"
 						href="<%=request.getContextPath()%>/LogoutServlet">ログアウト</a></li>
@@ -51,7 +55,7 @@ if (roomList == null) {
 						<option value="30" selected>空き</option>
 						<option value="60">予約</option>
 						<option value="90">受付済み</option>
-						<option value="120">キャンセル</option>
+						<option value="120">会計済み</option>
 					</select>
 					<button type="submit">絞り込み</button>
 					<button id="reloadButton">更新</button>
@@ -66,23 +70,23 @@ if (roomList == null) {
 						<th>退室時間</th>
 						<th>状態</th>
 						<th>予約受付時間</th>
+						<th></th>
 					</tr>
 					<!-- 1行目 -->
 					<%
 					for (Room room : roomList) {
 					%>
 					<form
-						action="<%=request.getContextPath()%>/RoomUpdateConfirmServlet"
+						action="<%=request.getContextPath()%>/RoomUpdateServlet"
 						method="post">
 						<tr>
 							<input type="hidden" name="roomId" value="<%=room.getId()%>">
 							<td>
 								<button type="button"
 									onclick="location.href='front_cus_top.jsp?roomId=<%=room.getId()%>'"
-									style="background-color: black; color: aliceblue;">延長・注文</button>
+									style="background-color: black; color: aliceblue;">
+									延長・注文</button>
 							</td>
-
-
 							<!-- 部屋番号 -->
 							<td><%=room.getRoomNo()%></td>
 							<!-- 酒類の提供 -->
@@ -95,13 +99,15 @@ if (roomList == null) {
 								value="<%=room.getReceptionTime().toLocalTime()%>"></td>
 							<!-- 退室時間 -->
 							<td>
-								<!-- 予約あり --> <%
- if (room.getStatusId() == 2) {
- %> <input type="time" name="leavingTime"
+								<%
+								// 予約あり.
+								if (room.getStatusId() == 2) {
+								%> <input type="time" name="leavingTime"
 								value="<%=room.getLeavingTime().toLocalTime()%>" readonly>
 								<%
 								} else {
-								%> <!-- 予約なし --> <input type="time" name="leavingTime"
+								// 予約なし.
+								%><input type="time" name="leavingTime"
 								value="<%=room.getLeavingTime() != null ? room.getLeavingTime().toLocalTime() : ""%>">
 								<%
 								}
@@ -116,8 +122,19 @@ if (roomList == null) {
 									<option value="3"
 										<%=room.getStatusId() == 3 ? "selected" : ""%>>受付済み</option>
 									<option value="4"
-										<%=room.getStatusId() == 4 ? "selected" : ""%>>キャンセル</option>
+										<%=room.getStatusId() == 4 ? "selected" : ""%>>会計済み</option>
 							</select></td>
+							<!-- 予約受付時間 -->
+							<td>
+								<%
+								// reservationTime が null でない場合のみ表示
+								if (room.getRes_receptionTime() != null) {
+									out.print(room.getRes_receptionTime().toLocalTime());
+								} else {
+									out.print(""); // 空白
+								}
+								%>
+							</td>
 							<td>
 								<button type="submit">更新</button>
 							</td>
