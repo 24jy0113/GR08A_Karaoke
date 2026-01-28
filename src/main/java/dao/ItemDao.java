@@ -163,9 +163,11 @@ public class ItemDao {
 		String sql1 = "SELECT item_id,item_name,item.category_id,category_name,order_number,price,item_image,stock "
 				+ "FROM item INNER JOIN category ON item.category_id = category.category_id "
 				+ "WHERE item_name LIKE ?;";
-		String sql2 = "SELECT item_id,item_name,item.category_id,category_name,order_number,price,item_image,stock "
-				+ "FROM item INNER JOIN category ON item.category_id = category.category_id "
-				+ "WHERE item_id = ?;";
+		String sql2 = "SELECT `option`.option_id,option_name "
+				+ "FROM item_option "
+				+ "INNER JOIN `option` "
+				+ "ON item_option.option_id = `option`.option_id "
+				+ "WHERE item_option.item_id = ?;";
 		String sql3 = "SELECT option_detail_id,option_detail_name,price "
 				+ "FROM option_detail "
 				+ "WHERE option_id = ?;";
