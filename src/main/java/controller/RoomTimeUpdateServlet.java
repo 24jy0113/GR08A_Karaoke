@@ -32,7 +32,7 @@ public class RoomTimeUpdateServlet extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 			request.setAttribute("error", "時間更新に失敗しました");
-			request.getRequestDispatcher("room_list.jsp").forward(request, response);
+			request.getRequestDispatcher("/front/room_list.jsp").forward(request, response);
 		}
 	}
 

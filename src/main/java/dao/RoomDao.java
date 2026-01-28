@@ -18,10 +18,11 @@ public class RoomDao {
 
 		String sql = "SELECT rus.room_id, r.room_number, alcohol_provision, "
 				+ "reception_time, leaving_time, rus.status_id, st.status_name, "
-				+ "reservation_reception_time, reservation_leaving_time "
-				+ "FROM room r "
-				+ "JOIN room_usage_status rus ON r.room_id = rus.room_id "
-				+ "JOIN status st ON rus.status_id = st.status_id";
+				+ "reservation_reception_time, reservation_leaving_time"
+				+ " FROM room r"
+				+ " JOIN room_usage_status rus ON r.room_id = rus.room_id"
+				+ " JOIN status st ON rus.status_id = st.status_id"
+				+ " JOIN reservation res ON rus.reservation_number = res.reservation_number;";
 
 		try (Connection con = DatabaseManager.connect(); PreparedStatement preState = con.prepareStatement(sql);) {
 			try (ResultSet resSet = preState.executeQuery()) {
@@ -62,10 +63,12 @@ public class RoomDao {
 			preState.setInt(1, roomId);
 			// 検索結果からRoomインスタンスを生成.
 			try (ResultSet resSet = preState.executeQuery()) {
-				room = new Room(resSet.getInt("room_id"), resSet.getInt("room_number"),
-						resSet.getBoolean("alcohol_provision"), resSet.getTime("reception_time"),
-						resSet.getTime("leaving_time"), resSet.getInt("status_id"), resSet.getString("status_name"),
-						resSet.getTime("reservation_reception_time"), resSet.getTime("reservation_leaving_time"));
+				if(resSet.next()) {
+					room = new Room(resSet.getInt("room_id"), resSet.getInt("room_number"),
+							resSet.getBoolean("alcohol_provision"), resSet.getTime("reception_time"),
+							resSet.getTime("leaving_time"), resSet.getInt("status_id"), resSet.getString("status_name"),
+							resSet.getTime("reservation_reception_time"), resSet.getTime("reservation_leaving_time"));
+				}
 			} catch (Exception e) {
 				// デバッグ用のスタックトレース.
 				e.printStackTrace();

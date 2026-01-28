@@ -12,7 +12,7 @@ if (user == null) {
 <%
 List<Room> roomList = (List<Room>) request.getAttribute("roomList");
 if (roomList == null) {
-	out.println("データがありません");
+	response.sendRedirect(request.getContextPath() + "/RoomListServlet");
 	return;
 }
 %>

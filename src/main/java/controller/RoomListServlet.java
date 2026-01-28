@@ -24,7 +24,7 @@ public class RoomListServlet extends HttpServlet {
 		try {
             List<Room> roomList = RoomDao.getAllRooms();
             request.setAttribute("roomList", roomList);
-            request.getRequestDispatcher("/room_list.jsp").forward(request, response);
+            request.getRequestDispatcher("/front/room_list.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
         }

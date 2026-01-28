@@ -50,7 +50,7 @@ public class RoomUpdateServlet extends HttpServlet {
 
 			// 完了画面へ
 			request.setAttribute("message", "更新できました");
-			request.getRequestDispatcher("/room_updated.jsp").forward(request, response);
+			request.getRequestDispatcher("/front/room_updated.jsp").forward(request, response);
 
 		} catch (Exception e) {
 			e.printStackTrace();
