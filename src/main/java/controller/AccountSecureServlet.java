@@ -2,13 +2,14 @@ package controller;
 
 import java.io.IOException;
 
-import dao.UserDao;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+
+import dao.UserDao;
 import model.User;
 
 @WebServlet("/AccountSecureServlet")
@@ -48,12 +49,19 @@ public class AccountSecureServlet extends HttpServlet {
             return;
         }
 
-        boolean ok = UserDao.checkPassword(rawUserId, password);
-        if (!ok) {
-            req.setAttribute("error", "パスワードが違います");
-            req.getRequestDispatcher("/admin/account_secure.jsp").forward(req, res);
-            return;
-        }
+        boolean ok;
+		try {
+			ok = UserDao.checkPassword(rawUserId, password);
+			if (!ok) {
+	            req.setAttribute("error", "パスワードが違います");
+	            req.getRequestDispatcher("/admin/account_secure.jsp").forward(req, res);
+	            return;
+	        }
+		} catch (Exception e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
+        
 
         session.setAttribute("ACCOUNT_REAUTH_OK", true);
 
