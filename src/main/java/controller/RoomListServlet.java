@@ -22,7 +22,7 @@ public class RoomListServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-            List<Room> roomList = RoomDao.getAllRooms(); // ★追加
+            List<Room> roomList = RoomDao.getAllRooms();
             request.setAttribute("roomList", roomList);
             request.getRequestDispatcher("/room_list.jsp").forward(request, response);
         } catch (Exception e) {
