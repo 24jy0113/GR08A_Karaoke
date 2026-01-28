@@ -9,6 +9,14 @@ public class DatabaseManager {
 	private static String user = "24jy0125";
 	private static String pass = "24jy0125";
 
+	static {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+	
 	private DatabaseManager() {
 	}
 
