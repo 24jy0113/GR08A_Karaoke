@@ -56,7 +56,7 @@ if (user == null) {
 							<td>${item.name }</td>
 							<td>${item.price }円（税込）</td>
 							<td>${item.isStock() ? "あり" : "なし"}</td>
-							<td><button type="submit" name="id" value="${item.id }" formaction="modify_update.jsp">変更</button></td>
+							<td><button type="submit" name="id" value="${item.id }" formaction="<%=request.getContextPath()%>/ItemEditServlet">変更</button></td>
 							<td><button type="submit" name="id" value="${item.id }" formaction="modify_delete.jsp">削除</button></td>
 						</tr>
 						</c:forEach>

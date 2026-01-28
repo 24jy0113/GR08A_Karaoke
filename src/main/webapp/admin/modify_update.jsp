@@ -60,9 +60,9 @@ if (user == null) {
                 <div class="input-row">
                     <label>カテゴリー</label>
                     <select class="category-select">
-                        <option value="food">フードメニュー</option>
-                        <option value="drink">ドリンクメニュー</option>
-                        <option value="dessert">デザートメニュー</option>
+                    <c:foreach var="category" items="${modify_update}">
+                        <option value="${category.key }">${category.value}</option>                    
+                    </c:foreach>
                     </select>
                 
                 </div>
