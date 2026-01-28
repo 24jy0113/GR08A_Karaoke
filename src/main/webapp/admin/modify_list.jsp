@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" import="model.User"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <%
 User user = (User) session.getAttribute("loginUser");
 if (user == null) {
@@ -7,8 +8,6 @@ if (user == null) {
 	return;
 }
 %>
-<%@ taglimit prefix="c" uri="jakarta.tags.core"%>
-<%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -54,11 +53,8 @@ if (user == null) {
 						<tr>
 							<td><img src="${item.getImage()} }" alt="salad"></td>
 							<td>${item.getName() }</td>
-							<td>${item.getPrice }円（税込）</td>
-							<td><c:choose>
-									<c:when item.isStock()>あり</c:when>
-									<c:otherwise>なし</c:otherwise>
-								</c:choose></td>
+							<td>${item.getPrice() }円（税込）</td>
+							<td>${item.isStock() ? "あり" : "なし"}</td>
 							<td><a type="button" class="update-link"
 								href='modify_update.jsp'>変更</a></td>
 							<td><a type="button" class="delete-link"

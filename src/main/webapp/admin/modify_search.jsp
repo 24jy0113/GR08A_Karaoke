@@ -39,10 +39,10 @@ if (user == null) {
 				<h1>商品検索</h1>
 				<h3>変更する商品名を入力してください</h3>
 			</div>
-			<from action="<%=request.getContextPath()%>/SearchItemByName"
-				method="GET"> <input type="search" name="q" />
-			<button type="submit" class="search">検索</button>
-			</from>
+			<form action="<%=request.getContextPath()%>/SearchItemByName"
+				method="GET"> <input type="search" name="q"> <input
+				type="submit" class="search" value="検索">
+			</form>
 
 			<div class="action-buttons">
 				<button type="button" class="btn-back"

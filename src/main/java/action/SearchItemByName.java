@@ -2,6 +2,7 @@ package action;
 
 import java.io.IOException;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -45,7 +46,8 @@ public class SearchItemByName extends HttpServlet {
 			// フロントエンド用のメッセージ.
 			request.setAttribute("errMsg", e.getMessage());
 		}
-		request.getRequestDispatcher("/webapp/admin/modify_list.jsp");
+		RequestDispatcher rd= request.getRequestDispatcher("/admin/modify_list.jsp");
+		rd.forward(request, response);
 	}
 
 }
