@@ -15,13 +15,13 @@ import dao.ItemDao;
  * Servlet implementation class SearchItemByName
  */
 @WebServlet("/SearchItemByName")
-public class SearchItemByName extends HttpServlet {
+public class ItemNameSearchServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Default constructor. 
 	 */
-	public SearchItemByName() {
+	public ItemNameSearchServlet() {
 		// TODO Auto-generated constructor stub
 	}
 

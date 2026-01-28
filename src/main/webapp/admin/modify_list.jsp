@@ -38,6 +38,7 @@ if (user == null) {
 		<div class="bodymsg">
 			<div class="msg">
 				<h2>該当商品一覧</h2>
+				<form method="post">
 				<table>
 
 					<tr>
@@ -52,16 +53,15 @@ if (user == null) {
 					<c:forEach var="item" items="${searchResult}">
 						<tr>
 							<td><img src="${item.getImage()} }" alt="salad"></td>
-							<td>${item.getName() }</td>
-							<td>${item.getPrice() }円（税込）</td>
+							<td>${item.name }</td>
+							<td>${item.price }円（税込）</td>
 							<td>${item.isStock() ? "あり" : "なし"}</td>
-							<td><a type="button" class="update-link"
-								href='modify_update.jsp'>変更</a></td>
-							<td><a type="button" class="delete-link"
-								href='modify_delete.jsp'>削除</a></td>
+							<td><button type="submit" name="id" value="${item.id }" formaction="modify_update.jsp">変更</button></td>
+							<td><button type="submit" name="id" value="${item.id }" formaction="modify_delete.jsp">削除</button></td>
 						</tr>
 						</c:forEach>
 				</table>
+				</form>
 
 				<div class="action-buttons">
 					<button type="button" class="btn-back"
