@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"
     import="model.User"
 %>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <%
 User user = (User) session.getAttribute("loginUser");
 if (user == null) {
@@ -42,11 +43,11 @@ if (user == null) {
             <div class="right-box">
                 <div class="input-row">
                     <label>商品名</label>
-                    <input id="menuInput" type="text" />
+                    <input id="menuInput" type="text" value="${item.name }" />
                 </div>
                 <div class="input-row">
                     <label>単価</label>
-                    <input id="menuInput" type="text" />円　　　＊税込価格
+                    <input id="menuInput" type="text" value="${item.price }" />円　　　＊税込価格
                 </div>
                 <div class="input-row">
                     <label>商品画像</label>
@@ -56,14 +57,14 @@ if (user == null) {
                 </div>
                 <div class="input-row">
                     <label>注文番号</label>
-                    <input id="menuInput" type="text" />
+                    <input id="menuInput" type="text" value="${item.itemNo }" />
                 </div>
                 <div class="input-row">
                     <label>カテゴリー</label>
                     <select class="category-select">
-                    <c:foreach var="category" items="${modify_update}">
+                    <c:forEach var="category" items="${categoryList}">
                         <option value="${category.key }">${category.value}</option>                    
-                    </c:foreach>
+                    </c:forEach>
                     </select>
                 
                 </div>

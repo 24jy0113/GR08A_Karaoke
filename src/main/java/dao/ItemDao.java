@@ -314,9 +314,11 @@ public class ItemDao {
 		String sql1 = "SELECT item_id,item_name,item.category_id,category_name,order_number,price,item_image,stock "
 				+ "FROM item INNER JOIN category ON item.category_id = category.category_id "
 				+ "WHERE item_id = ?;";
-		String sql2 = "SELECT item_id,item_name,item.category_id,category_name,order_number,price,item_image,stock "
-				+ "FROM item INNER JOIN category ON item.category_id = category.category_id "
-				+ "WHERE item_id = ?;";
+		String sql2 = "SELECT `option`.option_id,option_name\r\n"
+				+ "FROM item_option\r\n"
+				+ "INNER JOIN `option`\r\n"
+				+ "ON item_option.option_id = `option`.option_id\r\n"
+				+ "WHERE item_option.item_id = ?;";
 		String sql3 = "SELECT option_detail_id,option_detail_name,price "
 				+ "FROM option_detail "
 				+ "WHERE option_id = ?;";
@@ -332,34 +334,32 @@ public class ItemDao {
 
 			try (ResultSet resSet1 = preState1.executeQuery();
 					ResultSet resSet2 = preState2.executeQuery();) {
+				if (resSet1.next()) {
+					// 検索結果からItemインスタンスを生成.
+					resItem = new Item(resSet1.getInt("item_id"), resSet1.getString("item_name"),
+							resSet1.getInt("category_id"), resSet1.getString("category_name"),
+							resSet1.getInt("order_number"), resSet1.getInt("price"),
+							resSet1.getString("item_image"), resSet1.getBoolean("stock"));
 
-				// 検索結果からItemインスタンスを生成.
-				Item item = new Item(resSet1.getInt("item_id"), resSet1.getString("item_name"),
-						resSet1.getInt("category_id"), resSet1.getString("category_name"),
-						resSet1.getInt("order_number"), resSet1.getInt("price"),
-						resSet1.getString("item_image"), resSet1.getBoolean("stock"));
+					while (resSet2.next()) {
+						// Optionインスタンスを生成.
+						Option option = new Option(resSet2.getInt("option_id"), resSet2.getString("option_name"));
 
-				while (resSet2.next()) {
-					// Optionインスタンスを生成.
-					Option option = new Option(resSet2.getInt("option_id"), resSet2.getString("option_name"));
+						// オプションの主キーを取得して選択肢を検索.
+						preState3.setInt(1, resSet2.getInt("option_id"));
+						try (ResultSet resSet3 = preState3.executeQuery();) {
 
-					// オプションの主キーを取得して選択肢を検索.
-					preState3.setInt(1, resSet2.getInt("option_id"));
-					try (ResultSet resSet3 = preState3.executeQuery();) {
-
-						//　オプションの選択肢をOptionインスタンスに追加.
-						while (resSet3.next()) {
-							option.setSelection(resSet3.getInt("option_detail_id"),
-									resSet3.getString("option_detail_name"), resSet3.getInt("price"));
+							//　オプションの選択肢をOptionインスタンスに追加.
+							while (resSet3.next()) {
+								option.setSelection(resSet3.getInt("option_detail_id"),
+										resSet3.getString("option_detail_name"), resSet3.getInt("price"));
+							}
 						}
+
+						// オプションをItemインスタンスに追加.
+						resItem.setOption(option);
 					}
-
-					// オプションをItemインスタンスに追加.
-					item.setOption(option);
 				}
-
-				// 作成したItemオブジェクトを返却値に入れる.
-				resItem = item;
 			}
 
 		} catch (SQLException e) {
@@ -394,7 +394,7 @@ public class ItemDao {
 
 		// SQL文作成.
 		String sql = "SELECT category_id,category_name"
-				+ " FROM category";
+				+ " FROM category;";
 
 		try (Connection con = DatabaseManager.connect(); PreparedStatement preState = con.prepareStatement(sql);) {
 			try (ResultSet resSet = preState.executeQuery();) {
