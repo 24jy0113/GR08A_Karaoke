@@ -14,8 +14,8 @@ if (user == null) {
 <head>
     <meta charset="UTF-8">
     <title>商品情報確認画面-追加</title>
-    <link rel="stylesheet" type="text/css" href="../css/08_09.css">
-    <link rel="stylesheet" type="text/css" href="../css/header.css">
+    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/08_09.css">
+    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/header.css">
 </head>
 
 <body>

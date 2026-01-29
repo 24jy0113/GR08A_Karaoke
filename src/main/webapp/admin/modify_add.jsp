@@ -15,8 +15,8 @@ if (user == null) {
 <head>
     <meta charset="UTF-8">
     <title>商品更新入力画面-フロント</title>
-    <link rel="stylesheet" type="text/css" href="../css/08_08.css">
-    <link rel="stylesheet" type="text/css" href="../css/header.css">
+    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/08_08.css">
+    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/header.css">
 </head>
 
 <body>

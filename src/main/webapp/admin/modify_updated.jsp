@@ -15,22 +15,23 @@ if (user == null) {
 <head>
     <meta charset="UTF-8">
     <title>商品更新完了画面-管理者</title>
-    <link rel="stylesheet" type="text/css" href="../css/08_05.css">
-    <link rel="stylesheet" type="text/css" href="../css/header.css">
+    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/08_05.css">
+    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/header.css">
 </head>
 
 <body>
     <!-- Header -->
     <header>
         <div class="header_inner">
-            <img class="title_img" src="../img/logo.png" alt="logo" width="60" height="60">
-            <h1 class="title_name">七福サウンド</h1>
-            <nav class="gnav">
-                <ul class="gnav_list">
-                     <li><img class="user_img" src="../img/user.png" alt="cart" width="25" height="25"><%= user.getUserName() %></li>
+            <img class="title_img" src="<%= request.getContextPath() %>/img/logo.png" alt="logo" width="60"
+				height="60">
+			<h1 class="title_name">七福サウンド</h1>
+			<nav class="gnav">
+				<ul class="gnav_list">
+					 <li><img class="user_img" src="<%= request.getContextPath() %>/img/user.png" alt="cart" width="25" height="25"><%= user.getUserName() %></li>
                     <li><a class="gnav_botton" href="<%= request.getContextPath() %>/LogoutServlet">ログアウト</a></li>
-                </ul>
-            </nav>
+				</ul>
+			</nav>
         </div>
     </header>
     <main>
