@@ -22,14 +22,15 @@ if (user == null) {
     <!-- Header -->
     <header>
         <div class="header_inner">
-            <img class="title_img" src="../img/logo.png" alt="logo" width="60" height="60">
-            <h1 class="title_name">七福サウンド</h1>
-            <nav class="gnav">
-                <ul class="gnav_list">
-                     <li><img class="user_img" src="../img/user.png" alt="cart" width="25" height="25"><%= user.getUserName() %></li>
+            <img class="title_img" src="<%= request.getContextPath() %>/img/logo.png" alt="logo" width="60"
+				height="60">
+			<h1 class="title_name">七福サウンド</h1>
+			<nav class="gnav">
+				<ul class="gnav_list">
+					 <li><img class="user_img" src="<%= request.getContextPath() %>/img/user.png" alt="cart" width="25" height="25"><%= user.getUserName() %></li>
                     <li><a class="gnav_botton" href="<%= request.getContextPath() %>/LogoutServlet">ログアウト</a></li>
-                </ul>
-            </nav>
+				</ul>
+			</nav>
         </div>
     </header>
     <main>
@@ -68,7 +69,7 @@ if (user == null) {
                 </table>
                 <div class="action-buttons">
                     
-                    <button type="button" class="btn-back" onclick="location.href='modify_add.jsp'">修正する</button>
+                    <button type="button" class="btn-back" onclick="history.back()">修正する</button>
                     <button type="button" class="btn-next" onclick="modify_added.jsp'">確定する</button>
                 </div>
             </div>

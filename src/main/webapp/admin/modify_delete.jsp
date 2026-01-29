@@ -62,7 +62,7 @@ if (user == null) {
         
                 <div class="action-buttons">
                     
-                    <button type="button" class="btn-back" onclick="modify_list.jsp'">キャンセル</button>
+                    <button type="button" class="btn-back" onclick="history.back()">キャンセル</button>
                     <button type="submit" class="btn-next" onclick="location.href='modify_deleted.jsp'">削除を確定する</button>
                 </div>
             </div>

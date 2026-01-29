@@ -70,7 +70,7 @@ if (user == null) {
                 </table>
                 <div class="action-buttons">
                     
-                    <button type="button" class="btn-back" onclick="location.href='modify_search.jsp'">商品検索画面へ戻る</button>
+                    <button type="button" class="btn-back" onclick="history.back()">商品検索画面へ戻る</button>
                 </div>
             </div>
         </div>

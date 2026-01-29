@@ -68,7 +68,7 @@ if (user == null) {
                 </table>
                 <div class="action-buttons">
                     
-                    <button type="button" class="btn-back" onclick="location.href='modify_update.jsp'">修正する</button>
+                    <button type="button" class="btn-back" onclick="history.back()">修正する</button>
                     <button type="submit" class="btn-next" onclick="location.href='modify_updated.jsp'">確認する</button>
                 </div>
             </div>

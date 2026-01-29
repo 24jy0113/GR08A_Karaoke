@@ -44,7 +44,7 @@ if (user == null) {
 
 			<div class="action-buttons">
 				<button type="button" class="btn-back"
-					onclick="location.href='manage_top.jsp'">表示選択画面へ戻る</button>
+					onclick="history.back()">表示選択画面へ戻る</button>
 				<button type="submit" class="btn-next"
 					onclick="location.href='modify_add.jsp'">商品新規追加</button>
 			</div>

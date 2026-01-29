@@ -80,7 +80,7 @@ if (user == null) {
             </div>
         </div>
         <div class="action-buttons">
-            <button type="button" class="btn-back" onclick="location.href='modify_list.jsp'">該当商品一覧へ戻る</button>
+            <button type="button" class="btn-back" onclick="history.back()">該当商品一覧へ戻る</button>
             <button type="submit" class="btn-next" onclick="location.href='modify_update_confirm.jsp'">確認する</button>
         </div>
     </main>
