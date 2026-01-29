@@ -11,25 +11,25 @@ User user = (User) session.getAttribute("loginUser");
 <head>
     <meta charset="UTF-8">
     <title>顧客側トップ画面-フロント操作時</title>
-    <link rel="stylesheet" type="text/css" href="./css/03_01.css">
-    <link rel="stylesheet" type="text/css" href="./css/header.css">
+    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/03_01.css">
+    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/header.css">
 </head>
 
 <body>
     <!-- Header -->
     <header>
         <div class="header_inner">
-            <img class="title_img" src="./img/logo.png" alt="logo" width="60" height="60">
+            <img class="title_img" src="<%= request.getContextPath() %>/img/logo.png" alt="logo" width="60" height="60">
             <h1 class="title_name">七福サウンド</h1>
             <nav class="gnav">
                 <ul class="gnav_list">
-                    <li><a href="cus_top.jsp">トップへ</a></li>
-                    <li><a href="time_extend.jsp">延長申請</a></li>
-                    <li><a href="item_search.jsp">メニューを番号で探す</a></li>
-                    <li><a href="item_list.jsp">フード・ドリンク</a></li>
-                    <li><a href="cus_purchase_history.jsp">注文履歴</a></li>
+                    <li><a href="<%= request.getContextPath() %>/cus_top.jsp">トップへ</a></li>
+                    <li><a href="<%= request.getContextPath() %>/time_extend.jsp">延長申請</a></li>
+                    <li><a href="<%= request.getContextPath() %>/item_search.jsp">メニューを番号で探す</a></li>
+                    <li><a href="<%= request.getContextPath() %>/item_list.jsp">フード・ドリンク</a></li>
+                    <li><a href="<%= request.getContextPath() %>/cus_purchase_history.jsp">注文履歴</a></li>
                     <li><a class="gnav_botton" href="cart_detail.jsp">
-                            <img class="cart_img" src="./img/cart.png" alt="cart" width="20" height="20">カート内容を確認
+                            <img class="cart_img" src="<%= request.getContextPath() %>/img/cart.png" alt="cart" width="20" height="20">カート内容を確認
                         </a>
                     </li>
                 </ul>
@@ -41,14 +41,14 @@ User user = (User) session.getAttribute("loginUser");
             <h1 class="bodymsg">サービス一覧</h1>
             <p class="bodymsg">ご利用するサービスをお選びください</p>
             <div class="container">
-                <a class="button" href="item_list.jsp">一覧から商品を探す</a>
-                <a class="button" href="item_search.jsp">メニュー番号から商品を探す</a>
+                <a class="button" href="<%= request.getContextPath() %>/item_list.jsp">一覧から商品を探す</a>
+                <a class="button" href="<%= request.getContextPath() %>/item_search.jsp">メニュー番号から商品を探す</a>
 
             </div>
             <div class="container">
-                <a class="button" href="cus_purchase_history.jsp">注文履歴</a>
-                <a class="button" href="time_extend.jsp">利用時間の延長申請</a>
-                <a class="button" href="cart_detail.jsp">カート内容を確認</a>
+                <a class="button" href="<%= request.getContextPath() %>/cus_purchase_history.jsp">注文履歴</a>
+                <a class="button" href="<%= request.getContextPath() %>/time_extend.jsp">利用時間の延長申請</a>
+                <a class="button" href="<%= request.getContextPath() %>/cart_detail.jsp">カート内容を確認</a>
             </div>
         </div>
 
@@ -56,7 +56,7 @@ User user = (User) session.getAttribute("loginUser");
             <h1>部屋番号　101</h1>
           <% if (user != null && user.isFront()) { %>
         	<button type="button" class="btn-back"
-                onclick="location.href='./front/front_top.jsp'">
+                onclick="location.href='history.back()">
             表示選択画面へ戻る
         	</button>
     	<% } %>

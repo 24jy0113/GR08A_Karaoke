@@ -14,17 +14,17 @@ if (user == null) {
 <head>
     <meta charset="UTF-8">
     <title>伝票一覧-キッチン</title>
-    <link rel="stylesheet" type="text/css" href="../css/12_03.css">
-    <link rel="stylesheet" type="text/css" href="../css/header.css">
+    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/12_03.css">
+    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/header.css">
 </head>
 <body>
     <header>
         <div class="header_inner">
-            <img class="title_img" src="../img/logo.png" alt="logo" width="60" height="60">
+            <img class="title_img" src="<%= request.getContextPath() %>/img/logo.png" alt="logo" width="60" height="60">
             <h1 class="title_name">七福サウンド</h1>
             <nav class="gnav">
                 <ul class="gnav_list">
-                     <li><img class="user_img" src="../img/user.png" alt="cart" width="25" height="25"><%= user.getUserName() %></li>
+                     <li><img class="user_img" src="<%= request.getContextPath() %>/img/user.png" alt="cart" width="25" height="25"><%= user.getUserName() %></li>
                     <li><a class="gnav_botton" href="<%= request.getContextPath() %>/LogoutServlet">ログアウト</a></li>
                 </ul>
             </nav>
@@ -89,7 +89,7 @@ if (user == null) {
     </div>
     <div class="footer-buttons">
         
-        <button type="button" onclick="location.href='kitchen_order_list.jsp'">注文情報画面へ戻る</button>
+        <button type="button" onclick="location.href='history.back()'">注文情報画面へ戻る</button>
       
     </div>
 </body>

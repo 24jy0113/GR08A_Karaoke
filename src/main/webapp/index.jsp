@@ -6,13 +6,13 @@
 <head>
 <meta charset="UTF-8">
 <title>ログイン</title>
-<link rel="stylesheet" type="text/css" href="./css/index.css">
+<link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/index.css">
 </head>
 <body>
 	<!-- Header -->
 	<header>
 		<div class="header-container">
-			<a href="./index.jsp"> <img src="./img/logo.png" alt="logo"
+			<a href="<%= request.getContextPath() %>/index.jsp"> <img src="<%= request.getContextPath() %>/img/logo.png" alt="logo"
 				width="44" height="44">
 			</a> <a href="index.jsp" class="logo-text">七福サウンド</a>
 		</div>
