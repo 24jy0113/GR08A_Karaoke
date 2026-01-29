@@ -14,17 +14,17 @@ if (user == null) {
 <head>
     <meta charset="UTF-8">
     <title>完了した注文一覧-フロント</title>
-    <link rel="stylesheet" type="text/css" href="../css/12_04.css">
-    <link rel="stylesheet" type="text/css" href="../css/header.css">
+    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/12_04.css">
+    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/header.css">
 </head>
 <body>
     <header>
         <div class="header_inner">
-            <img class="title_img" src="../img/logo.png" alt="logo" width="60" height="60">
+            <img class="title_img" src="<%= request.getContextPath() %>/img/logo.png" alt="logo" width="60" height="60">
             <h1 class="title_name">七福サウンド</h1>
             <nav class="gnav">
                 <ul class="gnav_list">
-                     <li><img class="user_img" src="../img/user.png" alt="cart" width="25" height="25"><%= user.getUserName() %></li>
+                     <li><img class="user_img" src="<%= request.getContextPath() %>/img/user.png" alt="cart" width="25" height="25"><%= user.getUserName() %></li>
                     <li><a class="gnav_botton" href="<%= request.getContextPath() %>/LogoutServlet">ログアウト</a></li>
                 </ul>
             </nav>
