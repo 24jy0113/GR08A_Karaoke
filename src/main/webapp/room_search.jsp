@@ -36,11 +36,15 @@ if (user == null) {
             <div class="msg">
                 <h1>部屋番号を入力してください</h1>
             </div>
-            <input type="search" name="q" />
-            <div class="action-buttons">
-                <button type="button" class="btn-back" onclick="history.back()">戻る</button>
-                <button type="submit" class="btn-next" onclick="location.href='cus_top.jsp'">次へ</button>
-            </div>
+            <form action="<%= request.getContextPath() %>/RoomSearchServlet" method="get">
+			    <input type="search" name="roomNumber" required />
+			
+			    <div class="action-buttons">
+			        <button type="button" class="btn-back" onclick="history.back()">戻る</button>
+			        <button type="submit" class="btn-next">次へ</button>
+			    </div>
+		　　</form>
+
         </div>
     </main>
     
