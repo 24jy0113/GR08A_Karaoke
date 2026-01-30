@@ -160,61 +160,19 @@ public class ItemDao {
 		ArrayList<Item> resList = new ArrayList<Item>();
 
 		// SQL文作成.
-		String sql1 = "SELECT item_id,item_name,item.category_id,category_name,order_number,price,item_image,stock "
-				+ "FROM item INNER JOIN category ON item.category_id = category.category_id "
+		String sql1 = "SELECT item_id "
+				+ "FROM item "
 				+ "WHERE item_name LIKE ?;";
-		String sql2 = "SELECT `option`.option_id,option_name "
-				+ "FROM item_option "
-				+ "INNER JOIN `option` "
-				+ "ON item_option.option_id = `option`.option_id "
-				+ "WHERE item_option.item_id = ?;";
-		String sql3 = "SELECT option_detail_id,option_detail_name,price "
-				+ "FROM option_detail "
-				+ "WHERE option_id = ?;";
 
 		try (Connection con = DatabaseManager.connect();
-				PreparedStatement preState1 = con.prepareStatement(sql1);
-				PreparedStatement preState2 = con.prepareStatement(sql2);
-				PreparedStatement preState3 = con.prepareStatement(sql3);) {
+				PreparedStatement preState1 = con.prepareStatement(sql1);) {
 
 			// プリペアードステートメントを使用.
 			preState1.setString(1, "%" + name + "%");
 
 			try (ResultSet resSet1 = preState1.executeQuery();) {
 				while (resSet1.next()) {
-
-					// 検索結果からItemインスタンスを生成.
-					Item item = new Item(resSet1.getInt("item_id"), resSet1.getString("item_name"),
-							resSet1.getInt("category_id"), resSet1.getString("category_name"),
-							resSet1.getInt("order_number"), resSet1.getInt("price"),
-							resSet1.getString("item_image"), resSet1.getBoolean("stock"));
-
-					// 商品の主キーを取得してオプションを検索.
-					preState2.setInt(1, resSet1.getInt("item_id"));
-					try (ResultSet resSet2 = preState2.executeQuery();) {
-						while (resSet2.next()) {
-
-							// Optionインスタンスを生成.
-							Option option = new Option(resSet2.getInt("option_id"), resSet2.getString("option_name"));
-
-							// オプションの主キーを取得して選択肢を検索.
-							preState3.setInt(1, resSet2.getInt("option_id"));
-							try (ResultSet resSet3 = preState3.executeQuery();) {
-								while (resSet3.next()) {
-
-									//　オプションの選択肢をOptionインスタンスに追加.
-									option.setSelection(resSet3.getInt("option_detail_id"),
-											resSet3.getString("option_detail_name"), resSet3.getInt("price"));
-								}
-							}
-
-							// オプションをItemインスタンスに追加.
-							item.setOption(option);
-						}
-					}
-
-					// 作成したItemオブジェクトを返却値に入れる.
-					resList.add(item);
+					resList.add(searchItemById(resSet1.getInt("item_id")));
 				}
 			}
 
@@ -239,55 +197,20 @@ public class ItemDao {
 		Item resItem = null;
 
 		// SQL文作成.
-		String sql1 = "SELECT item_id,item_name,item.category_id,category_name,order_number,price,item_image,stock "
-				+ "FROM item INNER JOIN category ON item.category_id = category.category_id "
+		String sql1 = "SELECT item_id "
+				+ "FROM item "
 				+ "WHERE order_number = ?;";
-		String sql2 = "SELECT item_id,item_name,item.category_id,category_name,order_number,price,item_image,stock "
-				+ "FROM item INNER JOIN category ON item.category_id = category.category_id "
-				+ "WHERE item_id = ?;";
-		String sql3 = "SELECT option_detail_id,option_detail_name,price "
-				+ "FROM option_detail "
-				+ "WHERE option_id = ?;";
 
 		try (Connection con = DatabaseManager.connect();
-				PreparedStatement preState1 = con.prepareStatement(sql1);
-				PreparedStatement preState2 = con.prepareStatement(sql2);
-				PreparedStatement preState3 = con.prepareStatement(sql3);) {
+				PreparedStatement preState1 = con.prepareStatement(sql1);) {
 
 			// プリペアードステートメントを使用.
 			preState1.setInt(1, num);
-			preState2.setInt(1, num);
 
-			try (ResultSet resSet1 = preState1.executeQuery();
-					ResultSet resSet2 = preState2.executeQuery();) {
-
-				// 検索結果からItemインスタンスを生成.
-				Item item = new Item(resSet1.getInt("item_id"), resSet1.getString("item_name"),
-						resSet1.getInt("category_id"), resSet1.getString("category_name"),
-						resSet1.getInt("order_number"), resSet1.getInt("price"),
-						resSet1.getString("item_image"), resSet1.getBoolean("stock"));
-
-				while (resSet2.next()) {
-					// Optionインスタンスを生成.
-					Option option = new Option(resSet2.getInt("option_id"), resSet2.getString("option_name"));
-
-					// オプションの主キーを取得して選択肢を検索.
-					preState3.setInt(1, resSet2.getInt("option_id"));
-					try (ResultSet resSet3 = preState3.executeQuery();) {
-
-						//　オプションの選択肢をOptionインスタンスに追加.
-						while (resSet3.next()) {
-							option.setSelection(resSet3.getInt("option_detail_id"),
-									resSet3.getString("option_detail_name"), resSet3.getInt("price"));
-						}
-					}
-
-					// オプションをItemインスタンスに追加.
-					item.setOption(option);
+			try (ResultSet resSet1 = preState1.executeQuery();) {
+				while (resSet1.next()) {
+					resItem = searchItemById(resSet1.getInt("item_id"));
 				}
-
-				// 作成したItemオブジェクトを返却値に入れる.
-				resItem = item;
 			}
 
 		} catch (SQLException e) {
@@ -417,120 +340,118 @@ public class ItemDao {
 
 		return resMap;
 	}
+
 	// 商品一覧を取得（全件 or カテゴリ指定 from さい）
 	public ArrayList<Item> getItemList(Integer categoryId) throws Exception {
 
-	    ArrayList<Item> list = new ArrayList<>();
+		ArrayList<Item> list = new ArrayList<>();
 
-	    String sql =
-	        "SELECT i.item_id, i.item_name, i.category_id, c.category_name, " +
-	        "i.order_number, i.price, i.item_image, i.stock " +
-	        "FROM item i " +
-	        "INNER JOIN category c ON i.category_id = c.category_id ";
+		String sql = "SELECT i.item_id, i.item_name, i.category_id, c.category_name, " +
+				"i.order_number, i.price, i.item_image, i.stock " +
+				"FROM item i " +
+				"INNER JOIN category c ON i.category_id = c.category_id ";
 
-	    if (categoryId != null) {
-	        sql += " WHERE i.category_id = ?";
-	    }
+		if (categoryId != null) {
+			sql += " WHERE i.category_id = ?";
+		}
 
-	    try (Connection con = DatabaseManager.connect();
-	         PreparedStatement ps = con.prepareStatement(sql)) {
+		try (Connection con = DatabaseManager.connect();
+				PreparedStatement ps = con.prepareStatement(sql)) {
 
-	        if (categoryId != null) {
-	            ps.setInt(1, categoryId);
-	        }
+			if (categoryId != null) {
+				ps.setInt(1, categoryId);
+			}
 
-	        try (ResultSet rs = ps.executeQuery()) {
-	            while (rs.next()) {
-	                Item item = new Item(
-	                    rs.getInt("item_id"),
-	                    rs.getString("item_name"),
-	                    rs.getInt("category_id"),
-	                    rs.getString("category_name"),
-	                    rs.getInt("order_number"),
-	                    rs.getInt("price"),
-	                    rs.getString("item_image"),
-	                    rs.getBoolean("stock")
-	                );
-	                list.add(item);
-	            }
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	        throw new Exception("商品一覧の取得に失敗しました");
-	    }
+			try (ResultSet rs = ps.executeQuery()) {
+				while (rs.next()) {
+					Item item = new Item(
+							rs.getInt("item_id"),
+							rs.getString("item_name"),
+							rs.getInt("category_id"),
+							rs.getString("category_name"),
+							rs.getInt("order_number"),
+							rs.getInt("price"),
+							rs.getString("item_image"),
+							rs.getBoolean("stock"));
+					list.add(item);
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new Exception("商品一覧の取得に失敗しました");
+		}
 
-	    return list;
+		return list;
 	}
+
 	public ArrayList<Item> getItemListByPage(Integer categoryId, int offset, int limit)
-	        throws Exception {
+			throws Exception {
 
-	    ArrayList<Item> list = new ArrayList<>();
+		ArrayList<Item> list = new ArrayList<>();
 
-	    String sql =
-	        "SELECT i.item_id, i.item_name, i.category_id, c.category_name, " +
-	        "i.order_number, i.price, i.item_image, i.stock " +
-	        "FROM item i " +
-	        "INNER JOIN category c ON i.category_id = c.category_id ";
+		String sql = "SELECT i.item_id, i.item_name, i.category_id, c.category_name, " +
+				"i.order_number, i.price, i.item_image, i.stock " +
+				"FROM item i " +
+				"INNER JOIN category c ON i.category_id = c.category_id ";
 
-	    if (categoryId != null) {
-	        sql += " WHERE i.category_id = ? ";
-	    }
+		if (categoryId != null) {
+			sql += " WHERE i.category_id = ? ";
+		}
 
-	    sql += " ORDER BY i.item_id LIMIT ? OFFSET ?";
+		sql += " ORDER BY i.item_id LIMIT ? OFFSET ?";
 
-	    try (Connection con = DatabaseManager.connect();
-	         PreparedStatement ps = con.prepareStatement(sql)) {
+		try (Connection con = DatabaseManager.connect();
+				PreparedStatement ps = con.prepareStatement(sql)) {
 
-	        int index = 1;
+			int index = 1;
 
-	        if (categoryId != null) {
-	            ps.setInt(index++, categoryId);
-	        }
+			if (categoryId != null) {
+				ps.setInt(index++, categoryId);
+			}
 
-	        ps.setInt(index++, limit);
-	        ps.setInt(index, offset);
+			ps.setInt(index++, limit);
+			ps.setInt(index, offset);
 
-	        try (ResultSet rs = ps.executeQuery()) {
-	            while (rs.next()) {
-	                Item item = new Item(
-	                    rs.getInt("item_id"),
-	                    rs.getString("item_name"),
-	                    rs.getInt("category_id"),
-	                    rs.getString("category_name"),
-	                    rs.getInt("order_number"),
-	                    rs.getInt("price"),
-	                    rs.getString("item_image"),
-	                    rs.getBoolean("stock")
-	                );
-	                list.add(item);
-	            }
-	        }
-	    }
+			try (ResultSet rs = ps.executeQuery()) {
+				while (rs.next()) {
+					Item item = new Item(
+							rs.getInt("item_id"),
+							rs.getString("item_name"),
+							rs.getInt("category_id"),
+							rs.getString("category_name"),
+							rs.getInt("order_number"),
+							rs.getInt("price"),
+							rs.getString("item_image"),
+							rs.getBoolean("stock"));
+					list.add(item);
+				}
+			}
+		}
 
-	    return list;
+		return list;
 	}
+
 	public int getItemCount(Integer categoryId) throws Exception {
 
-	    String sql = "SELECT COUNT(*) FROM item";
-	    if (categoryId != null) {
-	        sql += " WHERE category_id = ?";
-	    }
+		String sql = "SELECT COUNT(*) FROM item";
+		if (categoryId != null) {
+			sql += " WHERE category_id = ?";
+		}
 
-	    try (Connection con = DatabaseManager.connect();
-	         PreparedStatement ps = con.prepareStatement(sql)) {
+		try (Connection con = DatabaseManager.connect();
+				PreparedStatement ps = con.prepareStatement(sql)) {
 
-	        if (categoryId != null) {
-	            ps.setInt(1, categoryId);
-	        }
+			if (categoryId != null) {
+				ps.setInt(1, categoryId);
+			}
 
-	        try (ResultSet rs = ps.executeQuery()) {
-	            if (rs.next()) {
-	                return rs.getInt(1);
-	            }
-	        }
-	    }
-	    return 0;
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					return rs.getInt(1);
+				}
+			}
+		}
+		return 0;
 	}
-
 
 }
