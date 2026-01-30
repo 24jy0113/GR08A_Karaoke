@@ -417,5 +417,120 @@ public class ItemDao {
 
 		return resMap;
 	}
+	// 商品一覧を取得（全件 or カテゴリ指定 from さい）
+	public ArrayList<Item> getItemList(Integer categoryId) throws Exception {
+
+	    ArrayList<Item> list = new ArrayList<>();
+
+	    String sql =
+	        "SELECT i.item_id, i.item_name, i.category_id, c.category_name, " +
+	        "i.order_number, i.price, i.item_image, i.stock " +
+	        "FROM item i " +
+	        "INNER JOIN category c ON i.category_id = c.category_id ";
+
+	    if (categoryId != null) {
+	        sql += " WHERE i.category_id = ?";
+	    }
+
+	    try (Connection con = DatabaseManager.connect();
+	         PreparedStatement ps = con.prepareStatement(sql)) {
+
+	        if (categoryId != null) {
+	            ps.setInt(1, categoryId);
+	        }
+
+	        try (ResultSet rs = ps.executeQuery()) {
+	            while (rs.next()) {
+	                Item item = new Item(
+	                    rs.getInt("item_id"),
+	                    rs.getString("item_name"),
+	                    rs.getInt("category_id"),
+	                    rs.getString("category_name"),
+	                    rs.getInt("order_number"),
+	                    rs.getInt("price"),
+	                    rs.getString("item_image"),
+	                    rs.getBoolean("stock")
+	                );
+	                list.add(item);
+	            }
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        throw new Exception("商品一覧の取得に失敗しました");
+	    }
+
+	    return list;
+	}
+	public ArrayList<Item> getItemListByPage(Integer categoryId, int offset, int limit)
+	        throws Exception {
+
+	    ArrayList<Item> list = new ArrayList<>();
+
+	    String sql =
+	        "SELECT i.item_id, i.item_name, i.category_id, c.category_name, " +
+	        "i.order_number, i.price, i.item_image, i.stock " +
+	        "FROM item i " +
+	        "INNER JOIN category c ON i.category_id = c.category_id ";
+
+	    if (categoryId != null) {
+	        sql += " WHERE i.category_id = ? ";
+	    }
+
+	    sql += " ORDER BY i.item_id LIMIT ? OFFSET ?";
+
+	    try (Connection con = DatabaseManager.connect();
+	         PreparedStatement ps = con.prepareStatement(sql)) {
+
+	        int index = 1;
+
+	        if (categoryId != null) {
+	            ps.setInt(index++, categoryId);
+	        }
+
+	        ps.setInt(index++, limit);
+	        ps.setInt(index, offset);
+
+	        try (ResultSet rs = ps.executeQuery()) {
+	            while (rs.next()) {
+	                Item item = new Item(
+	                    rs.getInt("item_id"),
+	                    rs.getString("item_name"),
+	                    rs.getInt("category_id"),
+	                    rs.getString("category_name"),
+	                    rs.getInt("order_number"),
+	                    rs.getInt("price"),
+	                    rs.getString("item_image"),
+	                    rs.getBoolean("stock")
+	                );
+	                list.add(item);
+	            }
+	        }
+	    }
+
+	    return list;
+	}
+	public int getItemCount(Integer categoryId) throws Exception {
+
+	    String sql = "SELECT COUNT(*) FROM item";
+	    if (categoryId != null) {
+	        sql += " WHERE category_id = ?";
+	    }
+
+	    try (Connection con = DatabaseManager.connect();
+	         PreparedStatement ps = con.prepareStatement(sql)) {
+
+	        if (categoryId != null) {
+	            ps.setInt(1, categoryId);
+	        }
+
+	        try (ResultSet rs = ps.executeQuery()) {
+	            if (rs.next()) {
+	                return rs.getInt(1);
+	            }
+	        }
+	    }
+	    return 0;
+	}
+
 
 }
