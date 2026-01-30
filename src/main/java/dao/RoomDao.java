@@ -201,5 +201,41 @@ public class RoomDao {
 			preState.executeUpdate();
 		}
 	}
+	public static Room getRoomByRoomNumber(int roomNumber) throws Exception {
+
+	    Room room = null;
+
+	    String sql =
+	        "SELECT rus.room_id, r.room_number, alcohol_provision, reception_time, leaving_time, " +
+	        "rus.status_id, st.status_name, reservation_reception_time, reservation_leaving_time " +
+	        "FROM room r " +
+	        "JOIN room_usage_status rus ON r.room_id = rus.room_id " +
+	        "JOIN reservation res ON rus.reservation_number = res.reservation_number " +
+	        "JOIN status st ON rus.status_id = st.status_id " +
+	        "WHERE r.room_number = ?";
+
+	    try (Connection con = DatabaseManager.connect();
+	         PreparedStatement ps = con.prepareStatement(sql)) {
+
+	        ps.setInt(1, roomNumber);
+
+	        try (ResultSet rs = ps.executeQuery()) {
+	            if (rs.next()) {
+	                room = new Room(
+	                    rs.getInt("room_id"),
+	                    rs.getInt("room_number"),
+	                    rs.getBoolean("alcohol_provision"),
+	                    rs.getTime("reception_time"),
+	                    rs.getTime("leaving_time"),
+	                    rs.getInt("status_id"),
+	                    rs.getString("status_name"),
+	                    rs.getTime("reservation_reception_time"),
+	                    rs.getTime("reservation_leaving_time")
+	                );
+	            }
+	        }
+	    }
+	    return room;
+	}
 
 }
