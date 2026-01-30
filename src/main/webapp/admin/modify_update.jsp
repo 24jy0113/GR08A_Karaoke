@@ -39,7 +39,7 @@ if (user == null) {
         </div>
         <div class="container">
             
-            <!-- 右側：検索欄＋テンキー -->
+            
             <div class="right-box">
                 <div class="input-row">
                     <label>商品名</label>
@@ -56,6 +56,7 @@ if (user == null) {
                     <p>＊JPG, JPEG, PNGのみ</p>
                 </div>
                 <div class="input-row">
+                
                     <label>注文番号</label>
                     <input id="menuInput" type="text" value="${item.itemNo }" />
                 </div>
@@ -70,14 +71,31 @@ if (user == null) {
                 </div>
                 <div class="input-row">
                     <label>在庫</label>
-                    <label><input type="radio" name="stock" value="あり" checked> あり</label>
-                    <label><input type="radio" name="stock" value="なし"> なし</label>
+                    <label><input type="radio" name="stock" value="あり" ${item.isStock() ? "checked" : ""}> あり</label>
+                    <label><input type="radio" name="stock" value="なし" ${!item.isStock() ? "checked" : ""}> なし</label>
                 </div>
                 <div class="input-row">
                     <label>オプション</label>
-                    <label><input type="radio" name="option" value="あり" checked> あり</label>
-                    <label><input type="radio" name="option" value="なし"> なし</label>
+                    <label><input type="radio" name="option" value="あり"  ${item.options.isEmpty() ? "checked" : ""}> あり</label>
+                    <label><input type="radio" name="option" value="なし"  ${!item.options.isEmpty() ? "checked" : ""}> なし</label>
                 </div>
+                <c:if test="item.options.isEmpty()">
+                <!-- オプション全体 -->
+                <div id="optionArea">
+                <c:forEach items="item.getOptionList()" var="item_option">
+                    <div class="option-block">
+                        オプションを選択してください
+                        <c:forEach items="optionlist" var="option">
+	                        <label><input type="checkbox" value="${option.key }">${option.value }</label>
+                        </c:forEach>
+                    	 <button class="delete-btn" type="button"><img src="../img/delete.svg" alt="delete"></button>
+                    </div>
+                </c:forEach>
+                </div>
+                <!-- ▼ オプション追加ボタン ▼ -->
+                <button id="addOptionBtn" class="add-option-btn">オプションを追加</button>
+                </c:if>
+            </div>
             </div>
         </div>
         <div class="action-buttons">

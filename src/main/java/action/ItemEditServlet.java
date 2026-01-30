@@ -38,9 +38,11 @@ public class ItemEditServlet extends HttpServlet {
 			var dao = new ItemDao();
 			var item = dao.searchItemById(id);
 			var category = dao.getCategoryList();
+			var option = dao.searchOptionByCategoryId(item.getCategoryId());
 			
 			request.setAttribute("item", item);
 			request.setAttribute("categoryList", category);
+			request.setAttribute("optionlist", option);
 
 		} catch (Exception e) {
 			// デバッグ用のスタックトレース.
