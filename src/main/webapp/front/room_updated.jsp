@@ -40,7 +40,7 @@ if (user == null) {
                     <h3>部屋状況の更新が完了しました</h3>
                 </div>
                 <div class="action-buttons">
-                    <button type="button" class="btn-back" onclick="location.href='room_list.jsp'">部屋状況画面へ戻る</button>
+                    <button type="button" class="btn-back" onclick="location.href='<%= request.getContextPath() %>/RoomListServlet'">部屋状況画面へ戻る</button>
                 </div>
             </div>
         </div>
