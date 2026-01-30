@@ -21,21 +21,28 @@ if (roomList == null) {
 <head>
 <meta charset="UTF-8">
 <title>部屋状況画面</title>
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/11_01.css">
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/header.css">
+<link rel="stylesheet" type="text/css"
+	href="<%=request.getContextPath()%>/css/11_01.css">
+<link rel="stylesheet" type="text/css"
+	href="<%=request.getContextPath()%>/css/header.css">
 </head>
 <body>
 	<!-- Header -->
 	<header>
 		<div class="header_inner">
-			<img class="title_img" src="<%= request.getContextPath() %>/img/logo.png" alt="logo" width="60" height="60">
-            <h1 class="title_name">七福サウンド</h1>
-            <nav class="gnav">
-                <ul class="gnav_list">
-                     <li><img class="user_img" src="<%= request.getContextPath() %>/img/user.png" alt="cart" width="25" height="25"><%= user.getUserName() %></li>
-                    <li><a class="gnav_botton" href="<%= request.getContextPath() %>/LogoutServlet">ログアウト</a></li>
-                </ul>
-            </nav>
+			<img class="title_img"
+				src="<%=request.getContextPath()%>/img/logo.png" alt="logo"
+				width="60" height="60">
+			<h1 class="title_name">七福サウンド</h1>
+			<nav class="gnav">
+				<ul class="gnav_list">
+					<li><img class="user_img"
+						src="<%=request.getContextPath()%>/img/user.png" alt="cart"
+						width="25" height="25"><%=user.getUserName()%></li>
+					<li><a class="gnav_botton"
+						href="<%=request.getContextPath()%>/LogoutServlet">ログアウト</a></li>
+				</ul>
+			</nav>
 		</div>
 	</header>
 	<main>
@@ -69,8 +76,7 @@ if (roomList == null) {
 					<%
 					for (Room room : roomList) {
 					%>
-					<form
-						action="<%=request.getContextPath()%>/RoomUpdateServlet"
+					<form action="<%=request.getContextPath()%>/RoomUpdateServlet"
 						method="post">
 						<tr>
 							<input type="hidden" name="roomId" value="<%=room.getId()%>">
@@ -89,7 +95,7 @@ if (roomList == null) {
 							</select></td>
 							<!-- 受付時間 -->
 							<td><input type="time" name="receptionTime"
-								value="<%=room.getReceptionTime().toLocalTime()%>"></td>
+								value="<%=room.getReceptionTime() != null ? room.getReceptionTime().toLocalTime() : ""%>"></td>
 							<!-- 退室時間 -->
 							<td>
 								<%

@@ -16,21 +16,17 @@ public class RoomDao {
 	public static List<Room> getAllRooms() throws Exception {
 		List<Room> list = new ArrayList<>();
 
-		String sql = "SELECT rus.room_id, r.room_number, alcohol_provision, "
-				+ "reception_time, leaving_time, rus.status_id, st.status_name, "
-				+ "reservation_reception_time, reservation_leaving_time"
-				+ " FROM room r"
-				+ " JOIN room_usage_status rus ON r.room_id = rus.room_id"
-				+ " JOIN status st ON rus.status_id = st.status_id"
-				+ " JOIN reservation res ON rus.reservation_number = res.reservation_number;";
+		String sql = "SELECT room_id, room_number"
+				+ " FROM room;";
 
 		try (Connection con = DatabaseManager.connect(); PreparedStatement preState = con.prepareStatement(sql);) {
 			try (ResultSet resSet = preState.executeQuery()) {
 				while (resSet.next()) {
-					list.add(new Room(resSet.getInt("room_id"), resSet.getInt("room_number"),
-							resSet.getBoolean("alcohol_provision"), resSet.getTime("reception_time"),
-							resSet.getTime("leaving_time"), resSet.getInt("status_id"), resSet.getString("status_name"),
-							resSet.getTime("reservation_reception_time"), resSet.getTime("reservation_leaving_time")));
+					Room r = getRoomById(resSet.getInt("room_id"));
+					if (r == null) {
+						r = new Room(resSet.getInt("room_id"), resSet.getInt("room_number"));
+					}
+					list.add(r);
 				}
 			} catch (Exception e) {
 				// デバッグ用のスタックトレース.
@@ -50,11 +46,11 @@ public class RoomDao {
 	public static Room getRoomById(int roomId) throws Exception {
 		Room room = null;
 		// SQL文作成.
-		String sql = "SELECT rus.room_id,r.room_number,alcohol_provision,reception_time,leaving_time,"
+		String sql = "SELECT r.room_id,r.room_number,alcohol_provision,reception_time,leaving_time,"
 				+ "rus.status_id,st.status_name,reservation_reception_time,reservation_leaving_time"
 				+ " FROM room r"
 				+ " JOIN room_usage_status rus ON r.room_id = rus.room_id"
-				+ " JOIN reservation res ON rus.reservation_number = res.reservation_number"
+				+ " LEFT JOIN reservation res ON rus.reservation_number = res.reservation_number"
 				+ " JOIN status st ON rus.status_id = st.status_id"
 				+ " WHERE rus.room_id = ?;";
 
@@ -63,11 +59,12 @@ public class RoomDao {
 			preState.setInt(1, roomId);
 			// 検索結果からRoomインスタンスを生成.
 			try (ResultSet resSet = preState.executeQuery()) {
-				if(resSet.next()) {
+				if (resSet.next()) {
 					room = new Room(resSet.getInt("room_id"), resSet.getInt("room_number"),
 							resSet.getBoolean("alcohol_provision"), resSet.getTime("reception_time"),
 							resSet.getTime("leaving_time"), resSet.getInt("status_id"), resSet.getString("status_name"),
-							resSet.getTime("reservation_reception_time"), resSet.getTime("reservation_leaving_time"));
+							resSet.getInt("reservation_number"), resSet.getTime("reservation_reception_time"),
+							resSet.getTime("reservation_leaving_time"));
 				}
 			} catch (Exception e) {
 				// デバッグ用のスタックトレース.
@@ -82,6 +79,58 @@ public class RoomDao {
 		}
 		return room;
 
+	}
+
+	// room_usage_statusにroom_idがあるか判断する.
+	public static boolean existsRoomUsageStatus(int roomId) throws Exception {
+		// SQL文作成.
+		String sql = "SELECT COUNT(*) FROM room_usage_status WHERE room_id = ?;";
+		try (Connection con = DatabaseManager.connect(); PreparedStatement preState = con.prepareStatement(sql);) {
+			// プリペアードステートメントを使用.
+			preState.setInt(1, roomId);
+			try (ResultSet resSet = preState.executeQuery()) {
+				if (resSet.next()) {
+					return resSet.getInt(1) > 0;
+				}
+			} catch (Exception e) {
+				// デバッグ用のスタックトレース.
+				e.printStackTrace();
+
+				// フロントエンド用のエラーメッセージ.
+				String errMsg = "DB接続に失敗しました！<br>管理者に連絡してください。";
+
+				// 例外を投げる.
+				throw new Exception(errMsg);
+			}
+		}
+		return false;
+	}
+
+	// existsRoomUsageStatus()でroom_idがなかったらINSERTする
+	public static void insertRoomUsageStatus(int roomId) throws Exception {
+		// SQL文作成.
+		String sql = "INSERT INTO room_usage_status"
+				+ "(room_id, alcohol_provision, reception_time, leaving_time, status_id, reservation_number)"
+				+ "VALUES (?, ?, ?, ?, ?, ?)";
+		try (Connection con = DatabaseManager.connect(); PreparedStatement preState = con.prepareStatement(sql);) {
+			// プリペアードステートメントを使用.
+			preState.setInt(1, roomId);
+			preState.setBoolean(2, false);
+			preState.setTime(3, null);
+			preState.setTime(4, null);
+			preState.setInt(5, 1);
+			preState.setObject(6, null);
+			preState.executeUpdate();
+		} catch (Exception e) {
+			// デバッグ用のスタックトレース.
+			e.printStackTrace();
+
+			// フロントエンド用のエラーメッセージ.
+			String errMsg = "DB接続に失敗しました！<br>管理者に連絡してください。";
+
+			// 例外を投げる.
+			throw new Exception(errMsg);
+		}
 	}
 
 	// room_usage_statusテーブルの退室時間を更新する.

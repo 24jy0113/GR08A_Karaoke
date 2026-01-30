@@ -37,6 +37,9 @@ public class RoomUpdateServlet extends HttpServlet {
 
 			RoomTimeService service = new RoomTimeService();
 			Room room = RoomDao.getRoomById(roomId);
+			if (!RoomDao.existsRoomUsageStatus(roomId)) {
+				RoomDao.insertRoomUsageStatus(roomId);
+			}
 
 			// 受付時間・退室時間更新
 			if (statusId == 3 || statusId == 2) { // 予約or受付済みの場合
