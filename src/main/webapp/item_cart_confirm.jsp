@@ -35,9 +35,9 @@
             <div class="container">
                 <!-- 左側：画像領域 -->
                 <div>
-                    <div class="left-box">画像</div>
+                    <div class="left-box"><img class="item-img" src="<%=request.getContextPath()%>/img/<%=item.getImage()%>" alt="product"></div>
                     <br>
-                    <h1>生ビール　　600円(税込)</h1>
+                    <h1><%= item.getName() %>　　<%= item.getPrice() %>　円(税込)</h1>
 
                 </div>
                 <!-- 右側 -->

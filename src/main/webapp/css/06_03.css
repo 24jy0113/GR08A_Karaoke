@@ -48,8 +48,8 @@ body {
 }
 
 .left-box {
-  width: 260px;
-  height: 320px;
+  width: 100%;
+  height: 200px;
   margin-right: 120px;
   background: #eaeaea;
   border-radius: 12px;
@@ -60,7 +60,17 @@ body {
   color: #888;
 }
 
-
+.item-img {
+  width: 100%;
+  height: 250px;
+  background: #f7f7f7;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  color: #aaa;
+}
 .right-box {
   flex: 1;
 }
