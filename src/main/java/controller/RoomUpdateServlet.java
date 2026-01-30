@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import dao.RoomDao;
+import model.Room;
 import service.RoomTimeService;
 
 @WebServlet("/RoomUpdateServlet")
@@ -35,15 +36,16 @@ public class RoomUpdateServlet extends HttpServlet {
 			String leavingTime = request.getParameter("leavingTime");
 
 			RoomTimeService service = new RoomTimeService();
+			Room room = RoomDao.getRoomById(roomId);
 
 			// 受付時間・退室時間更新
-			if(statusId == 2) {
-				service.updateRoomTimes(roomId, receptionTime);
-			}else {
-				service.updateRoomTimes(roomId, receptionTime,leavingTime);
+			if (statusId == 3 || statusId == 2) { // 予約or受付済みの場合
+				if (room.getRes_receptionTime() != null && room.getRes_leavingTime() != null) {
+					service.updateRoomTimes(roomId, receptionTime);
+				} else {
+					service.updateRoomTimes(roomId, receptionTime, leavingTime);
+				}
 			}
-			
-
 			// 酒類・状態更新
 			RoomDao.updateAlcohol(roomId, alcohol);
 			RoomDao.updateStatus(roomId, statusId);

@@ -94,7 +94,7 @@ if (roomList == null) {
 							<td>
 								<%
 								// 予約あり.
-								if (room.getStatusId() == 2) {
+								if (room.getRes_receptionTime() != null) {
 								%> <input type="time" name="leavingTime"
 								value="<%=room.getLeavingTime().toLocalTime()%>" readonly>
 								<%
@@ -137,9 +137,6 @@ if (roomList == null) {
 					}
 					%>
 				</table>
-				<div class="link">
-					<a href="">次のページへ</a>
-				</div>
 				<div class="action-buttons">
 					<button type="button" class="btn-back"
 						onclick="location.href='front_top.jsp'">表示選択画面へ</button>
