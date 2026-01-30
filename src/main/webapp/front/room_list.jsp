@@ -51,13 +51,16 @@ if (roomList == null) {
 				<div></div>
 				<h2>部屋状況一覧</h2>
 				<div class="block">
-					<select name="extend">
-						<option value="30" selected>空き</option>
-						<option value="60">予約</option>
-						<option value="90">受付済み</option>
-						<option value="120">会計済み</option>
-					</select>
-					<button type="submit">絞り込み</button>
+					<form action="<%=request.getContextPath()%>/RoomListServlet" method="get">
+						<select name="statusId">
+							<option value="0" selected>すべて</option>
+							<option value="1">空き</option>
+							<option value="2">予約</option>
+							<option value="3">受付済み</option>
+							<option value="4">会計済み</option>
+						</select>
+						<button type="submit">絞り込み</button>
+					</form>
 					<button id="reloadButton">更新</button>
 
 				</div>
