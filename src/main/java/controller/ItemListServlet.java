@@ -1,7 +1,7 @@
 package controller;
 import dao.ItemDao;
 import model.Item;
-
+import model.Room;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
@@ -17,19 +17,20 @@ public class ItemListServlet extends HttpServlet {
 
         req.setCharacterEncoding("UTF-8");
 
-        Integer categoryId = null;
-        int page = 1;
         int pageSize = 6;
+        int page = 1;
 
-        // カテゴリ
+        Room room = (Room) req.getSession().getAttribute("room");
+
+        // ▼ category（デフォルト1）
         String catParam = req.getParameter("category");
-        if (catParam != null && !catParam.isEmpty()) {
-            categoryId = Integer.parseInt(catParam);
-        }
+        int categoryId = (catParam == null || catParam.isEmpty())
+                ? 1
+                : Integer.parseInt(catParam);
 
-        // ページ
+        // ▼ page（カテゴリ変更時は1）
         String pageParam = req.getParameter("page");
-        if (pageParam != null && !pageParam.isEmpty()) {
+        if (catParam == null && pageParam != null && !pageParam.isEmpty()) {
             page = Integer.parseInt(pageParam);
         }
 
@@ -39,21 +40,21 @@ public class ItemListServlet extends HttpServlet {
 
         try {
             int totalCount = dao.getItemCount(categoryId);
-            int totalPages = (int) Math.ceil((double) totalCount / pageSize);
+            int totalPages = Math.max(1,
+                    (int) Math.ceil((double) totalCount / pageSize));
 
             ArrayList<Item> itemList =
-                dao.getItemListByPage(categoryId, offset, pageSize);
+                    dao.getItemListByPage(categoryId, offset, pageSize);
 
             req.setAttribute("itemList", itemList);
             req.setAttribute("currentPage", page);
             req.setAttribute("totalPages", totalPages);
             req.setAttribute("categoryId", categoryId);
+            req.setAttribute("room", room);
 
-            req.getRequestDispatcher("/item_list.jsp")
-                   .forward(req, res);
+            req.getRequestDispatcher("/item_list.jsp").forward(req, res);
 
         } catch (Exception e) {
-            e.printStackTrace();
             throw new ServletException(e);
         }
     }

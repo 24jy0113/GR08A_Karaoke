@@ -1,9 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"
-    import="model.User"
+    import="model.User,model.Room"
 %>
 <%
 User user = (User) session.getAttribute("loginUser");
+%>
+<%
+Room room = (Room) session.getAttribute("room");
+Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 %>
 <!DOCTYPE html>
 <html lang=ja>
@@ -53,14 +57,14 @@ User user = (User) session.getAttribute("loginUser");
         </div>
 
         <div class="footer-wrap">
-            <h1>部屋番号　101</h1>
+            <h1>部屋番号　<%= room.getRoomNo() %></h1>
           <% if (user != null && user.isFront()) { %>
         	<button type="button" class="btn-back"
-                onclick="location.href='history.back()">
-            表示選択画面へ戻る
-        	</button>
-    	<% } %>
-            <h1>残り時間　50分</h1>
+                onclick="location.href='history.back()">表示選択画面へ戻る</button>
+    	 <% } %>
+         <% if (remainingMinutes != null) { %>
+        	 <h1>残り時間　<%= remainingMinutes %>　分</h1>
+         <% } %>
         </div>
     </main>
 

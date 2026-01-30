@@ -1,16 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="java.util.*, model.Item" %>
+<%@ page import="java.util.*, model.Item,model.Room" %>
 
 <%
 ArrayList<Item> itemList = (ArrayList<Item>)request.getAttribute("itemList");
 %>
 <%
-int currentPage = (Integer)request.getAttribute("currentPage");
-int totalPages = (Integer)request.getAttribute("totalPages");
-Integer categoryId = (Integer)request.getAttribute("categoryId");
+Integer currentPageObj = (Integer)request.getAttribute("currentPage");
+Integer totalPagesObj  = (Integer)request.getAttribute("totalPages");
+Integer categoryId     = (Integer)request.getAttribute("categoryId");
+int currentPage = (currentPageObj != null) ? currentPageObj : 1;
+int totalPages  = (totalPagesObj  != null) ? totalPagesObj  : 1;
 
 String catParam = categoryId != null ? "&category=" + categoryId : "";
+%>
+<%
+Room room = (Room) session.getAttribute("room");
+Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 %>
 <!doctype html>
 <html lang="ja">
@@ -92,8 +98,12 @@ String catParam = categoryId != null ? "&category=" + categoryId : "";
 
     </div>
     <div class="footer-wrap">
-      <h1>部屋番号　101</h1>
-      <h1>残り時間　50分</h1>
+      <% if (room != null) { %>
+  		<h1>部屋番号　<%= room.getRoomNo() %></h1>
+      <% } %>
+      <% if (remainingMinutes != null) { %>
+        	 <h1>残り時間　<%= remainingMinutes %>　分</h1>
+         <% } %>
     </div>
   </main>
   

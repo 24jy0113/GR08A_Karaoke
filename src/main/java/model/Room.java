@@ -10,20 +10,38 @@ public class Room {
 	private Time leavingTime; // 退室時間
 	private int statusId; // 状態ID
 	private String status; // 状態名
+	private int res_number; // 予約番号
 	private Time res_receptionTime; // 予約受付時間
 	private Time res_leavingTime; // 予約退室時間
 
 	public Room(int id, int roomNo, boolean alcohol, Time receptionTime, Time leavingTime, int statusId, String status,
+			int res_number,Time res_receptionTime, Time res_leavingTime) {
+		this.id = id;
+		this.roomNo = roomNo;
+		this.alcohol = alcohol;
+		this.receptionTime = receptionTime;
+		this.leavingTime = leavingTime;
+		this.statusId = statusId;
+		this.status = status;
+		this.res_number = res_number;
+		this.res_receptionTime = res_receptionTime;
+		this.res_leavingTime = res_leavingTime;
+	}
+	public Room(int id, int roomNo, boolean alcohol, Time receptionTime, Time leavingTime, int statusId, String status,
 			Time res_receptionTime, Time res_leavingTime) {
 		this.id = id;
 		this.roomNo = roomNo;
-		this.statusId = statusId;
-		this.status = status;
+		this.alcohol = alcohol;
 		this.receptionTime = receptionTime;
 		this.leavingTime = leavingTime;
-		this.alcohol = alcohol;
+		this.statusId = statusId;
+		this.status = status;
 		this.res_receptionTime = res_receptionTime;
 		this.res_leavingTime = res_leavingTime;
+	}
+	public Room(int id, int roomNo) {
+		this.id = id;
+		this.roomNo = roomNo;
 	}
 
 	public int getId() {
@@ -96,5 +114,13 @@ public class Room {
 
 	public void setRes_leavingTime(Time res_leavingTime) {
 		this.res_leavingTime = res_leavingTime;
+	}
+
+	public int getRes_number() {
+		return res_number;
+	}
+
+	public void setRes_number(int res_number) {
+		this.res_number = res_number;
 	}
 }
