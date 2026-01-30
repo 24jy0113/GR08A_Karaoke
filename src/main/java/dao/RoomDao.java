@@ -49,9 +49,9 @@ public class RoomDao {
 		String sql = "SELECT r.room_id,r.room_number,alcohol_provision,reception_time,leaving_time,"
 				+ "rus.status_id,st.status_name,reservation_reception_time,reservation_leaving_time"
 				+ " FROM room r"
-				+ " JOIN room_usage_status rus ON r.room_id = rus.room_id"
+				+ " LEFT JOIN room_usage_status rus ON r.room_id = rus.room_id"
 				+ " LEFT JOIN reservation res ON rus.reservation_number = res.reservation_number"
-				+ " JOIN status st ON rus.status_id = st.status_id"
+				+ " LEFT JOIN status st ON rus.status_id = st.status_id"
 				+ " WHERE rus.room_id = ?;";
 
 		try (Connection con = DatabaseManager.connect(); PreparedStatement preState = con.prepareStatement(sql);) {
@@ -236,6 +236,41 @@ public class RoomDao {
 	        }
 	    }
 	    return room;
+	}
+
+	// statusIdで絞り込み検索
+	public static List<Room> getRoomsByStatus(int statusId) throws Exception {
+		List<Room> list = new ArrayList<>();
+		// SQL文作成.
+		String sql = "SELECT r.room_id,r.room_number,alcohol_provision,reception_time,leaving_time,"
+				+ "rus.status_id,st.status_name,reservation_reception_time,reservation_leaving_time"
+				+ " FROM room r"
+				+ " LEFT JOIN room_usage_status rus ON r.room_id = rus.room_id"
+				+ " LEFT JOIN reservation res ON rus.reservation_number = res.reservation_number"
+				+ " LEFT JOIN status st ON rus.status_id = st.status_id"
+				+ " WHERE rus.status_id = ?;";
+		try (Connection con = DatabaseManager.connect(); PreparedStatement preState = con.prepareStatement(sql);) {
+			preState.setInt(1, statusId);
+			try (ResultSet resSet = preState.executeQuery()) {
+				if (resSet.next()) {
+					list.add(new Room(resSet.getInt("room_id"), resSet.getInt("room_number"),
+							resSet.getBoolean("alcohol_provision"), resSet.getTime("reception_time"),
+							resSet.getTime("leaving_time"), resSet.getInt("status_id"), resSet.getString("status_name"),
+							resSet.getInt("reservation_number"), resSet.getTime("reservation_reception_time"),
+							resSet.getTime("reservation_leaving_time")));
+				}
+			} catch (Exception e) {
+				// デバッグ用のスタックトレース.
+				e.printStackTrace();
+
+				// フロントエンド用のエラーメッセージ.
+				String errMsg = "DB接続に失敗しました！<br>管理者に連絡してください。";
+
+				// 例外を投げる.
+				throw new Exception(errMsg);
+			}
+		}
+		return list;
 	}
 
 }
