@@ -13,9 +13,8 @@ public class Item {
 	private boolean stock;
 	private ArrayList<Option> options;
 
-	public Item(String name, int categoryId, String category, int itemNo, int price, String image,
-			boolean stock) {
-		this(-1, name, categoryId, category, itemNo, price, image, stock);
+	public Item() {
+		this(-1, "", 0, "", 0, 0, "", false);
 	}
 
 	public Item(int id, String name, int categoryId, String category, int itemNo, int price, String image,
@@ -63,6 +62,10 @@ public class Item {
 			if (optId == options.get(i).getId())
 				options.remove(i);
 		}
+	}
+
+	public boolean hasId() {
+		return id < 1;
 	}
 
 	public int getId() {
