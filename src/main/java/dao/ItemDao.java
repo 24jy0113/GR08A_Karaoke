@@ -237,10 +237,10 @@ public class ItemDao {
 		String sql1 = "SELECT item_id,item_name,item.category_id,category_name,order_number,price,item_image,stock "
 				+ "FROM item INNER JOIN category ON item.category_id = category.category_id "
 				+ "WHERE item_id = ?;";
-		String sql2 = "SELECT `option`.option_id,option_name\r\n"
-				+ "FROM item_option\r\n"
-				+ "INNER JOIN `option`\r\n"
-				+ "ON item_option.option_id = `option`.option_id\r\n"
+		String sql2 = "SELECT `option`.option_id,option_name "
+				+ "FROM item_option "
+				+ "INNER JOIN `option` "
+				+ "ON item_option.option_id = `option`.option_id "
 				+ "WHERE item_option.item_id = ?;";
 		String sql3 = "SELECT option_detail_id,option_detail_name,price "
 				+ "FROM option_detail "
@@ -300,16 +300,54 @@ public class ItemDao {
 		return resItem;
 	}
 
-	// オプション一覧を取得する.
-	public ArrayList<Option> getOptionList() {
+	// オプションをオプションIDで探す.
+	public Option searchOptionById() {
 		// 返却値の参照変数を初期化.
-		ArrayList<Option> resList = new ArrayList<>();
+		Option resOpt = null;
 
 		// SQL文作成.
 
-		return resList;
+		return resOpt;
 	}
 
+	// オプションをカテゴリーIDで探す.
+	public ArrayList<Option> searchOptionByCategoryId(int category_id) throws Exception {
+		
+		// 返却値の参照変数を初期化.
+		ArrayList<Option> resList = new ArrayList<>();
+		
+		// SQL文作成.
+		String sql = "SELECT `option`.option_id, option_name "
+				+ "FROM `option` INNER JOIN category_option "
+				+ "ON `option`.option_id = category_option.option_id "
+				+ "WHERE category_id = ?;";
+		
+		try (Connection con = DatabaseManager.connect(); PreparedStatement preState = con.prepareStatement(sql);) {
+			
+			// プリペアードステートメントを使用.
+			preState.setInt(1, category_id);
+			
+			try (ResultSet resSet = preState.executeQuery();) {
+				//検索結果をmapに格納.
+				while (resSet.next()) {
+					resList
+				}
+			}
+			
+		} catch (Exception e) {
+			// デバッグ用のスタックトレース.
+			e.printStackTrace();
+			
+			// フロントエンド用のエラーメッセージ.
+			String errMsg = "DB接続に失敗しました！<br>管理者に連絡してください。";
+			
+			// 例外を投げる.
+			throw new Exception(errMsg);
+		}
+		
+		return resMap;
+	}
+	
 	// カテゴリー一覧を取得する.
 	public Map<Integer, String> getCategoryList() throws Exception {
 		// 返却値の参照変数を初期化.
@@ -341,7 +379,7 @@ public class ItemDao {
 		return resMap;
 	}
 
-	// 商品一覧を取得（全件 or カテゴリ指定 from さい）
+	// 商品一覧を取得（全件 or カテゴリ指定 from さい）.
 	public ArrayList<Item> getItemList(Integer categoryId) throws Exception {
 
 		ArrayList<Item> list = new ArrayList<>();
