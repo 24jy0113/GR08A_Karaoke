@@ -18,15 +18,27 @@ public class Room {
 			int res_number,Time res_receptionTime, Time res_leavingTime) {
 		this.id = id;
 		this.roomNo = roomNo;
-		this.statusId = statusId;
-		this.status = status;
+		this.alcohol = alcohol;
 		this.receptionTime = receptionTime;
 		this.leavingTime = leavingTime;
-		this.alcohol = alcohol;
+		this.statusId = statusId;
+		this.status = status;
+		this.res_number = res_number;
 		this.res_receptionTime = res_receptionTime;
 		this.res_leavingTime = res_leavingTime;
 	}
-
+	public Room(int id, int roomNo, boolean alcohol, Time receptionTime, Time leavingTime, int statusId, String status,
+			Time res_receptionTime, Time res_leavingTime) {
+		this.id = id;
+		this.roomNo = roomNo;
+		this.alcohol = alcohol;
+		this.receptionTime = receptionTime;
+		this.leavingTime = leavingTime;
+		this.statusId = statusId;
+		this.status = status;
+		this.res_receptionTime = res_receptionTime;
+		this.res_leavingTime = res_leavingTime;
+	}
 	public Room(int id, int roomNo) {
 		this.id = id;
 		this.roomNo = roomNo;
