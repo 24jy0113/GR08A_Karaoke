@@ -1,5 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" import="model.Item,model.Room, model.Option"%>
+<%
+Item item = (Item) request.getAttribute("item");
+%>
+<%
+Room room = (Room) session.getAttribute("room");
+Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
+%>
 <!DOCTYPE html>
 <html lang=ja>
 <head>
@@ -58,8 +65,12 @@
 
         </div>
         <div class="footer-wrap">
-            <h1>部屋番号　101</h1>
-            <h1>残り時間　50分</h1>
+            <% if (room != null) { %>
+  				<h1>部屋番号　<%= room.getRoomNo() %></h1>
+      　	　　<% } %>
+      	　　<% if (remainingMinutes != null) { %>
+        	 	<h1>残り時間　<%= remainingMinutes %>　分</h1>
+         　<% } %>
         </div>
     </main>
     
