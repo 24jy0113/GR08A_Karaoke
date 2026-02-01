@@ -51,9 +51,14 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
                 <!-- 右側：検索欄＋テンキー -->
                 <div class="right-box">  
                     <div class="pad">
-                        <button style="color: white; background-color: black;" onclick="location.href='item_option_pick.jsp'">カートに入れる</button>
-                        <button onclick="history.back()">メニュー一覧に戻る</button>
-                        <button onclick="location.href='item_search.jsp'">メニューを番号で探す</button>
+                    	<form action="ItemOptionServlet" method="get">
+						  <input type="hidden" name="itemId" value="<%= item.getId() %>">
+						  <br>
+						  <button  type="submit" style="color: white; background-color: black;">カートに入れる</button>
+						</form>
+                        
+                        <button type="button" onclick="history.back()">メニュー一覧に戻る</button>
+                        <button type="button" onclick="location.href='item_search.jsp'">メニューを番号で探す</button>
                     </div>
                 </div>
             </div>

@@ -4,13 +4,89 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
-import model.Order;
-import model.OrderItem;
+import model.*;
 import model.OrderItem.SelectedOption;
 
 public class OrderDao {
+	public int insertOrder(Order order) throws Exception {
+
+        String sqlOrder =
+            "INSERT INTO orders (total, room_id, receiving_number, pickup_method, item_creating_status_id) " +
+            "VALUES (?, ?, ?, ?, ?)";
+
+        String sqlItem =
+            "INSERT INTO order_items (order_id, item_id, item_name, item_price, count, sub_total) " +
+            "VALUES (?, ?, ?, ?, ?, ?)";
+
+        String sqlOption =
+            "INSERT INTO order_item_options (order_item_id, option_detail_id) " +
+            "VALUES (?, ?)";
+
+        try (Connection con = DatabaseManager.connect()) {
+
+            con.setAutoCommit(false);
+
+            try (
+                PreparedStatement psOrder =
+                    con.prepareStatement(sqlOrder, Statement.RETURN_GENERATED_KEYS);
+                PreparedStatement psItem =
+                    con.prepareStatement(sqlItem, Statement.RETURN_GENERATED_KEYS);
+                PreparedStatement psOpt =
+                    con.prepareStatement(sqlOption)
+            ) {
+                // --- orders ---
+                psOrder.setInt(1, order.getTotal());
+                psOrder.setInt(2, order.getRoomId());
+                psOrder.setInt(3, order.getReceivingNo());
+                psOrder.setString(4, order.getPickupMethod());
+                psOrder.setInt(5, order.getItemCreatingStatusId());
+                psOrder.executeUpdate();
+
+                int orderId;
+                try (ResultSet rs = psOrder.getGeneratedKeys()) {
+                    if (!rs.next()) throw new SQLException("order_id生成失败");
+                    orderId = rs.getInt(1);
+                }
+
+                // --- order_items ---
+                for (OrderItem oi : order.getItemList()) {
+
+                    psItem.setInt(1, orderId);
+                    psItem.setInt(2, oi.getItemId());
+                    psItem.setString(3, oi.getItemName());
+                    psItem.setInt(4, oi.getItemPrice());
+                    psItem.setInt(5, oi.getCount());
+                    psItem.setInt(6, oi.getTotal());
+                    psItem.executeUpdate();
+
+                    int orderItemId;
+                    try (ResultSet rs2 = psItem.getGeneratedKeys()) {
+                        rs2.next();
+                        orderItemId = rs2.getInt(1);
+                    }
+
+                    // --- options ---
+                    for (OrderItem.SelectedOption so : oi.getSelectedOptionList()) {
+                        psOpt.setInt(1, orderItemId);
+                        psOpt.setInt(2, so.selectionId());
+                        psOpt.addBatch();
+                    }
+                }
+
+                psOpt.executeBatch();
+                con.commit();
+                return orderId;
+
+            } catch (Exception e) {
+                con.rollback();
+                throw e;
+            }
+        }
+    }
+	/*
 	public void addOrder(Order order) throws Exception {
 
 		if (order.hasOptionUnselected()) {
@@ -19,7 +95,7 @@ public class OrderDao {
 			// フロントエンド用のエラーメッセージ.
 			String errMsg = "未選択のオプションがあるため注文の登録に失敗しました。<br>管理者に連絡してください。";
 
-			// 例外を投げる.
+			// 例外を投げる.	
 			throw new Exception(errMsg);
 		}
 
@@ -70,22 +146,23 @@ public class OrderDao {
 
 						for (OrderItem item : order.getItemList()) {
 							preState2.setInt(2, item.getItem().getId());
-							preState2.setInt(3, item.getTotal());
+							preState2.setInt(3, item.getCount());
 							preState2.setInt(4, item.getTotal());
 
 							// 商品をテーブルに追加.
 							preState2.executeUpdate();
 
 							// 選択したオプションがある場合のみその情報を登録.
-							if (item.getSelectedOptionList().isEmpty()) {
+							if (!item.getSelectedOptionList().isEmpty()) {
 
 								// 生成された注文詳細の主キーを取得して選択オプションのテーブルに登録する.
 								try (ResultSet resSet2 = preState2.getGeneratedKeys()) {
 									if (resSet2.next()) {
-										preState3.setInt(1, resSet2.getInt(1));
+										int orderDetailId = resSet2.getInt(1);
 
 										for (SelectedOption option : item.getSelectedOptionList()) {
-											preState2.setInt(2, option.selectionId());
+											preState3.setInt(1, orderDetailId);
+											preState3.setInt(2, option.selectionId());
 
 											// 複数行の挿入をするためバッチ処理に入れる.
 											preState3.addBatch();
@@ -126,7 +203,7 @@ public class OrderDao {
 
 		}
 	}
-
+*/
 	public void updateStatus(int orderId, OrderStatus status) throws Exception {
 
 		// SQL文の作成.
@@ -294,7 +371,7 @@ public class OrderDao {
 	//
 	//	}
 
-	public ArrayList<Order> searchOederByRoom(int roomId) throws Exception {
+	public ArrayList<Order> searchOrderByRoom(int roomId) throws Exception {
 
 		// 返却値の参照変数を初期化.
 		ArrayList<Order> resList = new ArrayList<>();
@@ -317,12 +394,28 @@ public class OrderDao {
 
 				// 検索結果からOrderインスタンスを生成.
 				while (resSet.next()) {
-					int orderId = resSet.getInt("order_id");
-					resList.add(new Order(orderId, searchOrderItem(orderId), resSet.getInt("total"),
-							resSet.getInt("orders.room_id"), resSet.getInt("room"), resSet.getInt("receiving_number"),
-							OrderStatus.fromId(resSet.getInt("orders.item_creating_status_id")),
-							resSet.getString("orders.item_creating_status_name")));
+
+				    int orderId = resSet.getInt("order_id");
+
+				    Order order = new Order();
+
+				    order.setId(orderId);
+				    order.setTotal(resSet.getInt("total"));
+				    order.setRoomId(resSet.getInt("orders.room_id"));
+				    order.setRoomNumber(resSet.getInt("room_number"));
+				    order.setReceivingNo(resSet.getInt("receiving_number"));
+				    order.setStatus(
+				        OrderStatus.fromId(
+				            resSet.getInt("orders.item_creating_status_id")
+				        )
+				    );
+
+				    // 子表查询（OrderItem）
+				    order.setItemList(searchOrderItem(orderId));
+
+				    resList.add(order);
 				}
+
 			}
 		} catch (IllegalArgumentException e) {
 
@@ -350,7 +443,7 @@ public class OrderDao {
 		return resList;
 	}
 
-	public ArrayList<Order> searchOederByStatus(OrderStatus status) throws Exception {
+	public ArrayList<Order> searchOrderByStatus(OrderStatus status) throws Exception {
 		// 返却値の参照変数を初期化.
 		ArrayList<Order> list = new ArrayList<>();
 
@@ -413,7 +506,7 @@ public class OrderDao {
 		ArrayList<OrderItem> resList = new ArrayList<>();
 
 		// SQL文の作成.
-		String sql1 = "SELECT item_id,`count`,sub_total,order_detail_id "
+		String sql1 = "SELECT order_id,item_id,`count`,sub_total,order_detail_id "
 				+ "FROM order_detail "
 				+ "WHERE order_id=?;";
 		String sql2 = "SELECT order_detail_id,option_detail_id "
@@ -435,7 +528,7 @@ public class OrderDao {
 					// プリペアードステートメントを使用.
 					// 商品単位でオプションの情報を取得.
 					preState2.setInt(1, resSet1.getInt("order_detail_id"));
-					try (ResultSet resSet2 = preState1.executeQuery();) {
+					try (ResultSet resSet2 = preState2.executeQuery();) {
 
 						// 結果をリストに格納.
 						while (resSet2.next()) {
@@ -467,4 +560,5 @@ public class OrderDao {
 
 		return resList;
 	}
+	
 }

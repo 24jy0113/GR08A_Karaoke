@@ -1,11 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" import="model.Item,model.Room, model.Option"%>
-<%
-Item item = (Item) request.getAttribute("item");
-%>
+    pageEncoding="UTF-8" import="model.Item,model.Room, model.Option,model.OrderItem"%>
+<%@ page import="java.util.ArrayList"%>
+
 <%
 Room room = (Room) session.getAttribute("room");
 Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
+%>
+<%
+OrderItem oi = (OrderItem) session.getAttribute("buildingItem");
+ArrayList<OrderItem> cart = (ArrayList<OrderItem>) session.getAttribute("cart");
 %>
 <!DOCTYPE html>
 <html lang=ja>
@@ -28,7 +31,7 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
                     <li><a href="<%= request.getContextPath() %>/item_search.jsp">メニューを番号で探す</a></li>
                     <li><a href="<%= request.getContextPath() %>/item_list.jsp">フード・ドリンク</a></li>
                     <li><a href="<%= request.getContextPath() %>/cus_purchase_history.jsp">注文履歴</a></li>
-                    <li><a class="gnav_botton" href="cart_detail.jsp">
+                    <li><a class="gnav_botton" href="<%= request.getContextPath() %>/cart_detail.jsp">
                             <img class="cart_img" src="<%= request.getContextPath() %>/img/cart.png" alt="cart" width="20" height="20">カート内容を確認
                         </a>
                     </li>
@@ -42,28 +45,33 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
             <div class="container">
                 <!-- 左側：画像領域 -->
                 <div>
-                    <div class="left-box"><img class="item-img" src="<%=request.getContextPath()%>/img/<%=item.getImage()%>" alt="product"></div>
+                    <div class="left-box"><img class="item-img" src="<%=request.getContextPath()%>/img/<%=oi.getItem().getImage()%>" alt="product"></div>
                     <br>
-                    <h1><%= item.getName() %>　　<%= item.getPrice() %>　円(税込)</h1>
+                    <h1><%= oi.getItem().getName() %>　　<%= oi.getItem().getPrice() %>　円(税込)</h1>
 
                 </div>
                 <!-- 右側 -->
                 <div class="right-box">
-                    <h2>オプション</h2>
-                    <h4>Mサイズ　　　30円</h4>
-                    <h2>個数</h2>
-                    <h4>1</h4>
-                    <h2>小計（税込）</h2>
-                    <h4>600円</h4>
+                    <ul>
+					<% for (OrderItem.SelectedOptionDetail d : oi.getSelectedOptionDetailList()) { %>
+					  <li><%=oi.getCount()%></li>
+					  <li><%= d.optName() %>：<%= d.selectionName() %></li>
+					  
+					<% } %>
+					</ul>
+
+					<p>小計：<%= oi.getTotal() %>円</p>
                     
                 </div>
             </div>
         </div>
-        <div class="action-buttons">
-            <button type="button" class="btn-back" onclick="history.back()">戻る</button>
-            <button type="submit" class="btn-next" onclick="location.href='item_detail.jsp'">カートに入れる</button>
+        <form action="<%= request.getContextPath() %>/CartConfirmServlet" method="post">
+		  <div class="action-buttons">
+		    <button type="button" class="btn-back" onclick="history.back()">戻る</button>
+		    <button type="submit" class="btn-next">カートに入れる</button>
+		  </div>
+		</form>
 
-        </div>
         <div class="footer-wrap">
             <% if (room != null) { %>
   				<h1>部屋番号　<%= room.getRoomNo() %></h1>

@@ -86,12 +86,12 @@ h1 {
 .pad {
   display: grid;
   grid-template-columns: 1fr;
-  /* 1列に設定 */
+
   gap: 10px;
-  /* ボタン間の間隔 */
+
 }
 
-.pad button {
+.pad button{
   padding: 16px 0;
   width: 50%;
   background: #ddd;

@@ -52,18 +52,28 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
                 <!-- 右側 -->
                 <div class="right-box">  
                     <div class="pad">
-                        <h3>Sサイズ</h3>
-                        <h3>Mサイズ+¥30</h3>
-                        <h3>Lサイズ+¥50</h3> 
+                        <form action="ItemNumServlet" method="post">
+						<% for (Option opt : item.getOptionList()) { %>
+						  <p><strong><%= opt.getName() %>（追加料金）</strong></p>
+						
+						  <% for (Option.Selection sel : opt.getSelectionList()) { %>
+						    <label>
+						      <input type="radio" name="opt_<%= opt.getId() %>" value="<%= sel.id() %>" required> 
+						      <%= sel.name() %>（<%= sel.price() %>円）
+						    </label><br>
+						  <% } %>
+						<% } %> 
+							<div class="action-buttons">
+					            <button type="button" class="btn-back" onclick="history.back()">戻る</button>
+					            <button type="submit" class="btn-next">次へ</button>
+					        </div>
+				        </form>
                     </div>
                 </div>
             </div>
             
         </div>
-        <div class="action-buttons">
-            <button type="button" class="btn-back" onclick="history.back()">戻る</button>
-            <button type="submit" class="btn-next" onclick="location.href='item_num_pick.jsp'">次へ</button>
-        </div>
+        
         <div class="footer-wrap">
             <% if (room != null) { %>
   				<h1>部屋番号　<%= room.getRoomNo() %></h1>

@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" import="model.Item,model.Room, model.Option"%>
+    pageEncoding="UTF-8" import="model.*"%>
 <%
 Item item = (Item) request.getAttribute("item");
 %>
@@ -7,6 +7,7 @@ Item item = (Item) request.getAttribute("item");
 Room room = (Room) session.getAttribute("room");
 Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 %>
+<% OrderItem oi = (OrderItem) session.getAttribute("buildingItem"); %>
 <!DOCTYPE html>
 <html lang=ja>
 <head>
@@ -28,7 +29,7 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
                     <li><a href="<%= request.getContextPath() %>/item_search.jsp">メニューを番号で探す</a></li>
                     <li><a href="<%= request.getContextPath() %>/item_list.jsp">フード・ドリンク</a></li>
                     <li><a href="<%= request.getContextPath() %>/cus_purchase_history.jsp">注文履歴</a></li>
-                    <li><a class="gnav_botton" href="cart_detail.jsp">
+                    <li><a class="gnav_botton" href="<%= request.getContextPath() %>/cart_detail.jsp">
                             <img class="cart_img" src="<%= request.getContextPath() %>/img/cart.png" alt="cart" width="20" height="20">カート内容を確認
                         </a>
                     </li>
@@ -48,15 +49,17 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
                 <!-- 右側 -->
                 <div class="right-box">
                     <h2>注文個数をお選びください</h2>
-                    <input type="number" value="1" min="1" class="quantity-input">
-                    
+                    <form action="CartAddServlet" method="post">
+					  	<input type="number" name="count" min="1" value="1" class="quantity-input" required>
+						<div class="action-buttons">
+				            <button type="button" class="btn-back" onclick="history.back()">戻る</button>
+				            <button type="submit" class="btn-next">次へ</button>
+				        </div>
+			        </form>
                 </div>
             </div>
         </div>
-        <div class="action-buttons">
-            <button type="button" class="btn-back" onclick="history.back()">戻る</button>
-            <button type="submit" class="btn-next" onclick="location.href='item_cart_confirm.jsp'">次へ</button>
-        </div>
+        
         <div class="footer-wrap">
             <% if (room != null) { %>
   				<h1>部屋番号　<%= room.getRoomNo() %></h1>

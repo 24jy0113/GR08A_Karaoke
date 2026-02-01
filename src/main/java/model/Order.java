@@ -2,37 +2,35 @@ package model;
 
 import java.util.ArrayList;
 
-import dao.OrderStatus;
 
 public class Order {
 	private int id;
-	private ArrayList<OrderItem> items;
+	private ArrayList<OrderItem> itemList = new ArrayList<>();
 	private int total;
 	private int roomId;
-	private int room;
+	private int roomNo;
 	private int receivingNo;
-	private OrderStatus statusId;
-	private String status;
-
-	public Order(int id, ArrayList<OrderItem> item, int total, int roomId, int room, int receivingNo, OrderStatus statusId,
+	private String pickupMethod;
+	private int itemCreatingStatusId;//飲食注文状況.
+	private String status;//部屋状況.
+	
+	public Order() {
+		this.itemList = new ArrayList<>();
+	}
+	public Order(int id, ArrayList<OrderItem> itemList, int total, int roomId, int roomNo, int receivingNo, int itemCreatingStatusId,
 			String status) {
 		this.id = id;
-		this.items = item;
+		this.itemList = itemList;
 		this.total = total;
-		this.room = room;
+		this.roomId = roomId;
+		this.roomNo = roomNo;
 		this.receivingNo = receivingNo;
-		this.statusId = statusId;
+		this.itemCreatingStatusId = itemCreatingStatusId;
 		this.status = status;
 	}
-
-	public Order(ArrayList<OrderItem> item, int roomId, int room, int receivingNo, OrderStatus statusId, String status) {
-		this(-1, item, 0, roomId, room, receivingNo, statusId, status);
-		int sum = 0;
-		for (int i = 0; i < item.size(); i++) {
-			sum += item.get(i).getTotal();
-		}
-		total = sum;
-	}
+	public void addItem(OrderItem oi) {
+        itemList.add(oi);
+    }
 
 	public int getId() {
 		return id;
@@ -41,17 +39,39 @@ public class Order {
 	public void setId(int id) {
 		this.id = id;
 	}
-
+	public Order(ArrayList<OrderItem> itemList) {
+        this.itemList = itemList;
+    }
 	public ArrayList<OrderItem> getItemList() {
-		return items;
+		return itemList;
 	}
-
+	public int getTotal() {
+		return total;
+	}
+	public int calculateTotal() {
+        int sum = 0;
+        for (OrderItem oi : itemList) {
+            sum += oi.getTotal();
+        }
+        return sum;
+    }
+	public void setReceivingNo(int receivingNo) {
+	    this.receivingNo = receivingNo;
+	}
 	public int getReceivingNo() {
 		return receivingNo;
 	}
-
-	public OrderStatus getStatusId() {
-		return statusId;
+	public void setPickupMethod(String pickupMethod) {
+	    this.pickupMethod = pickupMethod;
+	}
+	public String getPickupMethod() {
+		return pickupMethod;
+	}
+	public void setItemCreatingStatusId(int itemCreatingStatusId) {
+	    this.itemCreatingStatusId = itemCreatingStatusId;
+	}
+	public int getItemCreatingStatusId() {
+		return itemCreatingStatusId;
 	}
 
 	public String getStatus() {
@@ -65,19 +85,28 @@ public class Order {
 	public int getRoomId() {
 		return roomId;
 	}
-
-	public int getRoom() {
-		return room;
+	public void setItemList(ArrayList<OrderItem> itemList) {
+	    this.itemList = itemList;
 	}
 
-	public int getTotal() {
-		return total;
+	public void setTotal(int total) {
+	    this.total = total;
 	}
+
+	public void setRoomId(int roomId) {
+	    this.roomId = roomId;
+	}
+
+	public int getRoomNo() {
+		return roomNo;
+	}
+
+
 
 	// 未選択のオプションがあるかを返す.
 	public boolean hasOptionUnselected() {
 		boolean res = false;
-		for (OrderItem item : items) {
+		for (OrderItem item : itemList) {
 			if (item.hasOptionUnselected()) {
 				return true;
 			}
