@@ -34,10 +34,7 @@ public class ExtendAction {
 				: null;
 
 		// 延長可能か？
-		boolean canExtend = RoomTimeService.canExtend(
-				actualLeaving,
-				nextReception,
-				extendMinutes);
+		boolean canExtend = RoomTimeService.canExtend(actualLeaving, nextReception, extendMinutes);
 
 		if (!canExtend) {
 			throw new IllegalStateException("延長不可");
