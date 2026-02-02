@@ -13,6 +13,7 @@ public class Room {
 	private int res_number; // 予約番号
 	private Time res_receptionTime; // 予約受付時間
 	private Time res_leavingTime; // 予約退室時間
+	private Time nextReceptionTime; // 次の予約受付時間
 
 	public Room(int id, int roomNo, boolean alcohol, Time receptionTime, Time leavingTime, int statusId, String status,
 			int res_number,Time res_receptionTime, Time res_leavingTime) {
@@ -122,5 +123,11 @@ public class Room {
 
 	public void setRes_number(int res_number) {
 		this.res_number = res_number;
+	}
+	public Time getNextReceptionTime() {
+		return nextReceptionTime;
+	}
+	public void setNextReceptionTime(Time nextReceptionTime) {
+		this.nextReceptionTime = nextReceptionTime;
 	}
 }
