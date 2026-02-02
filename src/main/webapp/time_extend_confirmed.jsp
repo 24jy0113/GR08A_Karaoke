@@ -43,7 +43,7 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
             
                 
                 <div class="action-buttons">
-                    <button type="submit" class="btn-next" onclick="history.back()">トップページへ戻る</button>
+                    <button type="submit" class="btn-next" onclick="location.href='<%=request.getContextPath()%>/cus_top.jsp'">トップページへ戻る</button>
                 </div>
             </div>
         </div>

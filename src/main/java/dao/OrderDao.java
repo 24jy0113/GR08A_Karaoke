@@ -6,86 +6,110 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
-import model.*;
+import model.Order;
+import model.OrderItem;
 import model.OrderItem.SelectedOption;
+import model.OrderStatus;
 
 public class OrderDao {
 	public int insertOrder(Order order) throws Exception {
 
-        String sqlOrder =
-            "INSERT INTO orders (total, room_id, receiving_number, pickup_method, item_creating_status_id) " +
-            "VALUES (?, ?, ?, ?, ?)";
+        Connection con = null;
+        PreparedStatement psOrder = null;
+        PreparedStatement psDetail = null;
+        PreparedStatement psOption = null;
 
-        String sqlItem =
-            "INSERT INTO order_items (order_id, item_id, item_name, item_price, count, sub_total) " +
-            "VALUES (?, ?, ?, ?, ?, ?)";
-
-        String sqlOption =
-            "INSERT INTO order_item_options (order_item_id, option_detail_id) " +
-            "VALUES (?, ?)";
-
-        try (Connection con = DatabaseManager.connect()) {
-
+        try {
+            con = DatabaseManager.connect();
             con.setAutoCommit(false);
 
-            try (
-                PreparedStatement psOrder =
-                    con.prepareStatement(sqlOrder, Statement.RETURN_GENERATED_KEYS);
-                PreparedStatement psItem =
-                    con.prepareStatement(sqlItem, Statement.RETURN_GENERATED_KEYS);
-                PreparedStatement psOpt =
-                    con.prepareStatement(sqlOption)
-            ) {
-                // --- orders ---
-                psOrder.setInt(1, order.getTotal());
-                psOrder.setInt(2, order.getRoomId());
-                psOrder.setInt(3, order.getReceivingNo());
-                psOrder.setString(4, order.getPickupMethod());
-                psOrder.setInt(5, order.getItemCreatingStatusId());
-                psOrder.executeUpdate();
+            /* ① orders*/
+            String sqlOrder =
+                "INSERT INTO orders " +
+                "(total, receiving_number,item_creating_status_id,room_id,usage_history_id,pickup_method) " +
+                "VALUES (?, ?, ?, ?, ?,?)";
 
-                int orderId;
-                try (ResultSet rs = psOrder.getGeneratedKeys()) {
-                    if (!rs.next()) throw new SQLException("order_id生成失败");
-                    orderId = rs.getInt(1);
-                }
+            psOrder = con.prepareStatement(sqlOrder, Statement.RETURN_GENERATED_KEYS);
+            psOrder.setInt(1, order.getTotal());
+            psOrder.setInt(2, order.getReceivingNo());
+            psOrder.setInt(3, order.getItemCreatingStatusId());
+            psOrder.setInt(4, order.getRoomId());
+            psOrder.setInt(5, order.getUsageHistoryId());
+            psOrder.setString(6, order.getPickupMethod());
 
-                // --- order_items ---
-                for (OrderItem oi : order.getItemList()) {
+            psOrder.executeUpdate();
 
-                    psItem.setInt(1, orderId);
-                    psItem.setInt(2, oi.getItemId());
-                    psItem.setString(3, oi.getItemName());
-                    psItem.setInt(4, oi.getItemPrice());
-                    psItem.setInt(5, oi.getCount());
-                    psItem.setInt(6, oi.getTotal());
-                    psItem.executeUpdate();
-
-                    int orderItemId;
-                    try (ResultSet rs2 = psItem.getGeneratedKeys()) {
-                        rs2.next();
-                        orderItemId = rs2.getInt(1);
-                    }
-
-                    // --- options ---
-                    for (OrderItem.SelectedOption so : oi.getSelectedOptionList()) {
-                        psOpt.setInt(1, orderItemId);
-                        psOpt.setInt(2, so.selectionId());
-                        psOpt.addBatch();
-                    }
-                }
-
-                psOpt.executeBatch();
-                con.commit();
-                return orderId;
-
-            } catch (Exception e) {
-                con.rollback();
-                throw e;
+            ResultSet rsOrder = psOrder.getGeneratedKeys();
+            if (!rsOrder.next()) {
+                throw new SQLException("order_id の取得に失敗しました");
             }
+            int orderId = rsOrder.getInt(1);
+
+            /* =========================
+             * ② order_detail
+             * ========================= */
+            String sqlDetail =
+                "INSERT INTO order_detail " +
+                "(order_id, item_id, item_name, item_price, count, sub_total) " +
+                "VALUES (?, ?, ?, ?, ?, ?)";
+
+            psDetail = con.prepareStatement(sqlDetail, Statement.RETURN_GENERATED_KEYS);
+
+            /* =========================
+             * ③ order_detail_option
+             * ========================= */
+            String sqlOption =
+                "INSERT INTO order_detail_option " +
+                "(order_detail_id, option_detail_id) " +
+                "VALUES (?, ?)";
+
+            psOption = con.prepareStatement(sqlOption);
+
+            for (OrderItem oi : order.getItemList()) {
+
+                // --- order_detail insert
+                psDetail.setInt(1, orderId);
+                psDetail.setInt(2, oi.getItemId());
+                psDetail.setString(3, oi.getItemName());
+                psDetail.setInt(4, oi.getItemPrice());
+                psDetail.setInt(5, oi.getCount());
+                psDetail.setInt(6, oi.getTotal());
+                psDetail.executeUpdate();
+
+                ResultSet rsDetail = psDetail.getGeneratedKeys();
+                if (!rsDetail.next()) {
+                    throw new SQLException("order_detail_id の取得に失敗しました");
+                }
+                int orderDetailId = rsDetail.getInt(1);
+
+                //option insert
+                List<SelectedOption> options = oi.getSelectedOptions();
+                if (options != null) {
+                    for (SelectedOption opt : options) {
+                        psOption.setInt(1, orderDetailId);
+                        psOption.setInt(2, opt.selectionId());
+                        psOption.executeUpdate();
+                    }
+                }
+            }
+
+            con.commit(); // ★ 全成功
+            return orderId;
+
+        } catch (Exception e) {
+            if (con != null) con.rollback(); // ★ 途中失敗は全取消
+            throw e;
+
+        } finally {
+            if (psOption != null) psOption.close();
+            if (psDetail != null) psDetail.close();
+            if (psOrder != null) psOrder.close();
+            if (con != null) con.close();
         }
     }
+
 	/*
 	public void addOrder(Order order) throws Exception {
 

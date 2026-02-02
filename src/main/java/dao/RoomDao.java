@@ -273,4 +273,34 @@ public class RoomDao {
 		return list;
 	}
 
+	// 特定のルームの予約のうち一番近い予約受付時間を取得する.
+	public static Time getNextReceptionTime(int roomId) throws Exception {
+		Time time = null;
+		// SQL文作成.
+		String sql = "SELECT reception_time"
+				+ " FROM reservation"
+				+ " WHERE room_id = ? AND reception_time > CURRENT_TIME"
+				+ " ORDER BY reception_time"
+				+ " LIMIT 1;";
+		try (Connection con = DatabaseManager.connect(); PreparedStatement preState = con.prepareStatement(sql);) {
+			// プリペアードステートメントを使用.
+			preState.setInt(1, roomId);
+			// 検索結果からRoomインスタンスを生成.
+			try (ResultSet resSet = preState.executeQuery()) {
+				if (resSet.next()) {
+					time = resSet.getTime("reception_time");
+				}
+			} catch (Exception e) {
+				// デバッグ用のスタックトレース.
+				e.printStackTrace();
+
+				// フロントエンド用のエラーメッセージ.
+				String errMsg = "DB接続に失敗しました！<br>管理者に連絡してください。";
+
+				// 例外を投げる.
+				throw new Exception(errMsg);
+			}
+		}
+		return time;
+	}
 }
