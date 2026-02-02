@@ -32,27 +32,34 @@ public class ItemEditServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
-		int id = Integer.parseInt(request.getParameter("id"));
+		String action = request.getParameter("action");
 
-		try {
-			var dao = new ItemDao();
-			var item = dao.searchItemById(id);
-			var category = dao.getCategoryList();
-			var option = dao.searchOptionByCategoryId(item.getCategoryId());
-			
-			request.setAttribute("item", item);
-			request.setAttribute("categoryList", category);
-			request.setAttribute("optionlist", option);
+		if ("edit".equals(action)) {
+			int id = Integer.parseInt(request.getParameter("id"));
 
-		} catch (Exception e) {
-			// デバッグ用のスタックトレース.
-			e.printStackTrace();
+			try {
+				var dao = new ItemDao();
+				var item = dao.searchItemById(id);
+				var category = dao.getCategoryList();
+				var option = dao.searchOptionByCategoryId(item.getCategoryId());
 
-			// フロントエンド用のメッセージ.
-			request.setAttribute("errMsg", e.getMessage());
+				request.setAttribute("item", item);
+				request.setAttribute("categoryList", category);
+				request.setAttribute("optionList", option);
+
+			} catch (Exception e) {
+				// デバッグ用のスタックトレース.
+				e.printStackTrace();
+
+				// フロントエンド用のメッセージ.
+				request.setAttribute("errMsg", e.getMessage());
+			}
+			RequestDispatcher rd = request.getRequestDispatcher("/admin/modify_update.jsp");
+			rd.forward(request, response);
+		} else if ("confirm".equals(action)) {
+		} else if ("execute".equals(action)) {
+
 		}
-		RequestDispatcher rd = request.getRequestDispatcher("/admin/modify_update.jsp");
-		rd.forward(request, response);
 	}
 
 }
