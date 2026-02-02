@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import model.Item;
 import model.Option;
@@ -300,54 +301,78 @@ public class ItemDao {
 		return resItem;
 	}
 
-	// オプションをオプションIDで探す.
-	public Option searchOptionById() {
-		// 返却値の参照変数を初期化.
-		Option resOpt = null;
+	// 選択肢が入っていないオプションの動的配列を受け取り、それぞれに選択肢を入れて返す.
+	private void setSelectionsByOptions(Connection con, ArrayList<Option> optionList) throws SQLException {
+		if (optionList == null || optionList.isEmpty())
+			return;
+
+		Map<Integer, Option> optionMap = optionList.stream().collect(Collectors.toMap(Option::getId, o -> o));
+
+		String placeholders = optionList.stream()
+				.map(o -> "?")
+				.collect(Collectors.joining(","));
 
 		// SQL文作成.
+		String sql = "SELECT option_id, option_detail_id, option_detail_name, price "
+				+ "FROM option_detail "
+				+ "WHERE option_id IN (" + placeholders + ");";
 
-		return resOpt;
+		try (PreparedStatement preState = con.prepareStatement(sql);) {
+			// プリペアードステートメントを使用.
+			for (int i = 0; i < optionList.size(); i++) {
+				preState.setInt(i, optionList.get(i).getId());
+			}
+			try (ResultSet resSet = preState.executeQuery()) {
+				while (resSet.next()) {
+					int oid = resSet.getInt("option_id");
+					Option target = optionMap.get(oid);
+					target.setSelection(resSet.getInt("option_detail_id"), resSet.getString("option_detail_name"),
+							resSet.getInt("price"));
+				}
+			}
+		}
 	}
 
 	// オプションをカテゴリーIDで探す.
 	public ArrayList<Option> searchOptionByCategoryId(int category_id) throws Exception {
-		
+
 		// 返却値の参照変数を初期化.
 		ArrayList<Option> resList = new ArrayList<>();
-		
+
 		// SQL文作成.
 		String sql = "SELECT `option`.option_id, option_name "
 				+ "FROM `option` INNER JOIN category_option "
 				+ "ON `option`.option_id = category_option.option_id "
 				+ "WHERE category_id = ?;";
-		
+
 		try (Connection con = DatabaseManager.connect(); PreparedStatement preState = con.prepareStatement(sql);) {
-			
+
 			// プリペアードステートメントを使用.
 			preState.setInt(1, category_id);
-			
+
 			try (ResultSet resSet = preState.executeQuery();) {
 				//検索結果をmapに格納.
 				while (resSet.next()) {
-					resList
+					resList.add(new Option(resSet.getInt("option_id"), resSet.getString("option_name")));
 				}
 			}
-			
-		} catch (Exception e) {
+
+			setSelectionsByOptions(con, resList);
+
+		} catch (SQLException e) {
 			// デバッグ用のスタックトレース.
 			e.printStackTrace();
-			
+
 			// フロントエンド用のエラーメッセージ.
 			String errMsg = "DB接続に失敗しました！<br>管理者に連絡してください。";
-			
+
 			// 例外を投げる.
 			throw new Exception(errMsg);
 		}
-		
-		return resMap;
+
+		return resList;
 	}
-	
+
 	// カテゴリー一覧を取得する.
 	public Map<Integer, String> getCategoryList() throws Exception {
 		// 返却値の参照変数を初期化.
@@ -365,7 +390,7 @@ public class ItemDao {
 				}
 			}
 
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			// デバッグ用のスタックトレース.
 			e.printStackTrace();
 
