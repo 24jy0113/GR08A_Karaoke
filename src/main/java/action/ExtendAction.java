@@ -24,7 +24,7 @@ public class ExtendAction {
 			throw new IllegalStateException("部屋情報がDBに存在しません");
 		}
 		// 現在の退室時間
-		LocalTime currentLeaving = RoomTimeService.calcActualLeavingTime(room);
+		LocalTime actualLeaving = RoomTimeService.calcActualLeavingTime(room);
 
 		// 次の予約受付時間
 		Time nextRecTime = RoomDao.getNextReceptionTime(room.getId());
@@ -35,16 +35,13 @@ public class ExtendAction {
 
 		// 延長可能か？
 		boolean canExtend = RoomTimeService.canExtend(
-				currentLeaving,
+				actualLeaving,
 				nextReception,
 				extendMinutes);
 
 		if (!canExtend) {
 			throw new IllegalStateException("延長不可");
 		}
-
-		// --- 実際の退室時間を計算（共通ロジック） ---
-		LocalTime actualLeaving = RoomTimeService.calcActualLeavingTime(room);
 
 		// --- 延長分を加算 ---
 		LocalTime extendedLeaving = actualLeaving.plusMinutes(extendMinutes);

@@ -31,9 +31,8 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 					<li><a
 						href="<%=request.getContextPath()%>/cus_purchase_history.jsp">注文履歴</a></li>
 					<li><a class="gnav_botton" href="cart_detail.jsp"> <img
-							class="cart_img"
-							src="<%=request.getContextPath()%>/img/cart.png" alt="cart"
-							width="20" height="20">カート内容を確認
+							class="cart_img" src="<%=request.getContextPath()%>/img/cart.png"
+							alt="cart" width="20" height="20">カート内容を確認
 					</a></li>
 				</ul>
 			</nav>
@@ -55,9 +54,9 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 						</tr>
 						<!-- 1行目 -->
 						<tr>
-							<td>101</td>
-							<td>10:30</td>
-							<td>11:30</td>
+							<td><%=room.getRoomNo()%></td>
+							<td><%=room.getReceptionTime()%></td>
+							<td><%=room.getLeavingTime()%></td>
 							<td>
 								<!-- 延長（分） -->
 								<div class="block">
@@ -107,6 +106,5 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 			%>
 		</div>
 	</main>
-
 </body>
 </html>

@@ -21,6 +21,10 @@ public class ExtendConfirmServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		HttpSession session = request.getSession();
 
 		int extendMinutes = (Integer) session.getAttribute("extendMinutes");
@@ -34,12 +38,6 @@ public class ExtendConfirmServlet extends HttpServlet {
 			// 延長不可画面に行く.
 			response.sendRedirect(request.getContextPath() + "/time_extend_refuse.jsp");
 		}
-
-	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		doGet(request, response);
 	}
 
 }
