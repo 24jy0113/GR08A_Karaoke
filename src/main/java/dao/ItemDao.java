@@ -320,7 +320,7 @@ public class ItemDao {
 		try (PreparedStatement preState = con.prepareStatement(sql);) {
 			// プリペアードステートメントを使用.
 			for (int i = 0; i < optionList.size(); i++) {
-				preState.setInt(i, optionList.get(i).getId());
+				preState.setInt(i + 1, optionList.get(i).getId());
 			}
 			try (ResultSet resSet = preState.executeQuery()) {
 				while (resSet.next()) {
