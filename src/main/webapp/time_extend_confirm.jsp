@@ -57,6 +57,7 @@ Integer extendMinutes = (Integer) session.getAttribute("extendMinutes");
 					<!-- 1行目 -->
 					<tr>
 						<td><%=room.getRoomNo()%></td>
+						<td><%= room.getReceptionTime() %></td>
 						<td><%= request.getAttribute("currentLeaving") %></td>
 						<td><%= request.getAttribute("newLeaving") %></td>
 						<td><%= request.getAttribute("extendMinutes") %></td>
