@@ -51,7 +51,7 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
             </div>
             <div class="container">
                 <a class="button" href="<%= request.getContextPath() %>/cus_purchase_history.jsp">注文履歴</a>
-                <a class="button" href="<%= request.getContextPath() %>/time_extend.jsp">利用時間の延長申請</a>
+                <a class="button" href="<%= request.getContextPath() %>/ExtendCanServlet">利用時間の延長申請</a>
                 <a class="button" href="<%= request.getContextPath() %>/cart_detail.jsp">カート内容を確認</a>
             </div>
         </div>
