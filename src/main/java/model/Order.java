@@ -10,6 +10,7 @@ public class Order {
 	private int roomId;
 	private int roomNo;
 	private int receivingNo;
+	private int usageHistoryId;
 	private String pickupMethod;
 	private int itemCreatingStatusId;//飲食注文状況.
 	private String status;//部屋状況.
@@ -17,7 +18,21 @@ public class Order {
 	public Order() {
 		this.itemList = new ArrayList<>();
 	}
-	public Order(int id, ArrayList<OrderItem> itemList, int total, int roomId, int roomNo, int receivingNo, int itemCreatingStatusId,
+	public Order(int id, ArrayList<OrderItem> itemList, int total, int roomId, int roomNo, int receivingNo,
+			int usageHistoryId, String pickupMethod, int itemCreatingStatusId, String status) {
+		super();
+		this.id = id;
+		this.itemList = itemList;
+		this.total = total;
+		this.roomId = roomId;
+		this.roomNo = roomNo;
+		this.receivingNo = receivingNo;
+		this.usageHistoryId = usageHistoryId;
+		this.pickupMethod = pickupMethod;
+		this.itemCreatingStatusId = itemCreatingStatusId;
+		this.status = status;
+	}
+	/*public Order(int id, ArrayList<OrderItem> itemList, int total, int roomId, int roomNo, int receivingNo, int itemCreatingStatusId,
 			String status) {
 		this.id = id;
 		this.itemList = itemList;
@@ -27,7 +42,7 @@ public class Order {
 		this.receivingNo = receivingNo;
 		this.itemCreatingStatusId = itemCreatingStatusId;
 		this.status = status;
-	}
+	}*/
 	public void addItem(OrderItem oi) {
         itemList.add(oi);
     }
@@ -60,6 +75,12 @@ public class Order {
 	}
 	public int getReceivingNo() {
 		return receivingNo;
+	}
+	public int getUsageHistoryId() {
+		return usageHistoryId;
+	}
+	public void setUsageHistoryId(int usageHistoryId) {
+		this.usageHistoryId = usageHistoryId;
 	}
 	public void setPickupMethod(String pickupMethod) {
 	    this.pickupMethod = pickupMethod;

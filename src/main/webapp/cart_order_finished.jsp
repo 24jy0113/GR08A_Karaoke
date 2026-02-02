@@ -4,6 +4,13 @@
 Room room = (Room) session.getAttribute("room");
 Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 %>
+<%
+Integer orderNo = (Integer) session.getAttribute("orderNo");
+if (orderNo == null) {
+    response.sendRedirect(request.getContextPath() + "/cus_top.jsp");
+    return;
+}
+%>
 
 <!DOCTYPE html>
 <html lang="ja">
@@ -47,6 +54,9 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
                     <button type="button" class="btn-back" onclick="location.href='<%= request.getContextPath() %>/cus_top.jsp'">トップページへ戻る</button>
         
                 </div>
+                <%
+				session.removeAttribute("orderNo");
+				%>
             </div>
            
         </div>
