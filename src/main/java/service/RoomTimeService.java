@@ -14,6 +14,7 @@ public class RoomTimeService {
 			// 予約なし → 現在の leaving_time をそのまま使う.
 			return room.getLeavingTime().toLocalTime();
 		}
+		// 受付時間nullチェック
 		if (room.getReceptionTime() == null) {
 			throw new IllegalStateException("受付時間が未設定です");
 		}

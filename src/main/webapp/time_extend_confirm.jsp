@@ -50,15 +50,16 @@ Integer extendMinutes = (Integer) session.getAttribute("extendMinutes");
 					<tr>
 						<th>部屋番号</th>
 						<th>受付時間</th>
-						<th>退室時間</th>
+						<th>元の退室時間</th>
+						<th>延長後の退室時間</th>
 						<th>合計延長時間（分）</th>
 					</tr>
 					<!-- 1行目 -->
 					<tr>
 						<td><%=room.getRoomNo()%></td>
-						<td><%=room.getReceptionTime()%></td>
-						<td><%=room.getLeavingTime()%></td>
-						<td><%=extendMinutes%></td>
+						<td><%= request.getAttribute("currentLeaving") %></td>
+						<td><%= request.getAttribute("newLeaving") %></td>
+						<td><%= request.getAttribute("extendMinutes") %></td>
 					</tr>
 				</table>
 				<div class="action-buttons">
