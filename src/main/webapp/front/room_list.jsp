@@ -136,7 +136,7 @@ if (roomList == null) {
 				</table>
 				<div class="action-buttons">
 					<button type="button" class="btn-back"
-						onclick="location.href='front_top.jsp'">表示選択画面へ</button>
+						onclick="location.href='<%=request.getContextPath()%>/front/front_top.jsp'">表示選択画面へ</button>
 				</div>
 			</div>
 		</div>
