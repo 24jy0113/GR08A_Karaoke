@@ -49,9 +49,9 @@ public class RoomDao {
 		String sql = "SELECT r.room_id,r.room_number,alcohol_provision,reception_time,leaving_time,"
 				+ "rus.status_id,st.status_name,reservation_reception_time,reservation_leaving_time"
 				+ " FROM room r"
-				+ " JOIN room_usage_status rus ON r.room_id = rus.room_id"
+				+ " LEFT JOIN room_usage_status rus ON r.room_id = rus.room_id"
 				+ " LEFT JOIN reservation res ON rus.reservation_number = res.reservation_number"
-				+ " JOIN status st ON rus.status_id = st.status_id"
+				+ " LEFT JOIN status st ON rus.status_id = st.status_id"
 				+ " WHERE rus.room_id = ?;";
 
 		try (Connection con = DatabaseManager.connect(); PreparedStatement preState = con.prepareStatement(sql);) {
@@ -63,7 +63,7 @@ public class RoomDao {
 					room = new Room(resSet.getInt("room_id"), resSet.getInt("room_number"),
 							resSet.getBoolean("alcohol_provision"), resSet.getTime("reception_time"),
 							resSet.getTime("leaving_time"), resSet.getInt("status_id"), resSet.getString("status_name"),
-							resSet.getInt("reservation_number"), resSet.getTime("reservation_reception_time"),
+							resSet.getTime("reservation_reception_time"),
 							resSet.getTime("reservation_leaving_time"));
 				}
 			} catch (Exception e) {
@@ -201,41 +201,106 @@ public class RoomDao {
 			preState.executeUpdate();
 		}
 	}
+
 	public static Room getRoomByRoomNumber(int roomNumber) throws Exception {
 
-	    Room room = null;
+		Room room = null;
 
-	    String sql =
-	        "SELECT rus.room_id, r.room_number, alcohol_provision, reception_time, leaving_time, " +
-	        "rus.status_id, st.status_name, reservation_reception_time, reservation_leaving_time " +
-	        "FROM room r " +
-	        "JOIN room_usage_status rus ON r.room_id = rus.room_id " +
-	        "JOIN reservation res ON rus.reservation_number = res.reservation_number " +
-	        "JOIN status st ON rus.status_id = st.status_id " +
-	        "WHERE r.room_number = ?";
+		String sql = "SELECT rus.room_id, r.room_number, alcohol_provision, reception_time, leaving_time, " +
+				"rus.status_id, st.status_name, reservation_reception_time, reservation_leaving_time " +
+				"FROM room r " +
+				"JOIN room_usage_status rus ON r.room_id = rus.room_id " +
+				"JOIN reservation res ON rus.reservation_number = res.reservation_number " +
+				"JOIN status st ON rus.status_id = st.status_id " +
+				"WHERE r.room_number = ?";
 
-	    try (Connection con = DatabaseManager.connect();
-	         PreparedStatement ps = con.prepareStatement(sql)) {
+		try (Connection con = DatabaseManager.connect();
+				PreparedStatement ps = con.prepareStatement(sql)) {
 
-	        ps.setInt(1, roomNumber);
+			ps.setInt(1, roomNumber);
 
-	        try (ResultSet rs = ps.executeQuery()) {
-	            if (rs.next()) {
-	                room = new Room(
-	                    rs.getInt("room_id"),
-	                    rs.getInt("room_number"),
-	                    rs.getBoolean("alcohol_provision"),
-	                    rs.getTime("reception_time"),
-	                    rs.getTime("leaving_time"),
-	                    rs.getInt("status_id"),
-	                    rs.getString("status_name"),
-	                    rs.getTime("reservation_reception_time"),
-	                    rs.getTime("reservation_leaving_time")
-	                );
-	            }
-	        }
-	    }
-	    return room;
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					room = new Room(
+							rs.getInt("room_id"),
+							rs.getInt("room_number"),
+							rs.getBoolean("alcohol_provision"),
+							rs.getTime("reception_time"),
+							rs.getTime("leaving_time"),
+							rs.getInt("status_id"),
+							rs.getString("status_name"),
+							rs.getTime("reservation_reception_time"),
+							rs.getTime("reservation_leaving_time"));
+				}
+			}
+		}
+		return room;
 	}
 
+	// statusIdで絞り込み検索
+	public static List<Room> getRoomsByStatus(int statusId) throws Exception {
+		List<Room> list = new ArrayList<>();
+		// SQL文作成.
+		String sql = "SELECT r.room_id,r.room_number,alcohol_provision,reception_time,leaving_time,"
+				+ "rus.status_id,st.status_name,reservation_reception_time,reservation_leaving_time"
+				+ " FROM room r"
+				+ " LEFT JOIN room_usage_status rus ON r.room_id = rus.room_id"
+				+ " LEFT JOIN reservation res ON rus.reservation_number = res.reservation_number"
+				+ " LEFT JOIN status st ON rus.status_id = st.status_id"
+				+ " WHERE COALESCE(rus.status_id, 1) = ?;";
+
+		try (Connection con = DatabaseManager.connect(); PreparedStatement preState = con.prepareStatement(sql);) {
+			preState.setInt(1, statusId);
+			try (ResultSet resSet = preState.executeQuery()) {
+				while (resSet.next()) {
+					list.add(new Room(resSet.getInt("room_id"), resSet.getInt("room_number"),
+							resSet.getBoolean("alcohol_provision"), resSet.getTime("reception_time"),
+							resSet.getTime("leaving_time"), resSet.getInt("status_id"), resSet.getString("status_name"),
+							resSet.getTime("reservation_reception_time"),
+							resSet.getTime("reservation_leaving_time")));
+				}
+			} catch (Exception e) {
+				// デバッグ用のスタックトレース.
+				e.printStackTrace();
+
+				// フロントエンド用のエラーメッセージ.
+				String errMsg = "DB接続に失敗しました！<br>管理者に連絡してください。";
+
+				// 例外を投げる.
+				throw new Exception(errMsg);
+			}
+		}
+		return list;
+	}
+
+	// 特定のルームの予約のうち一番近い予約受付時間を取得する.
+	public static Time getNextReceptionTime(int roomId) throws Exception {
+		Time time = null;
+		// SQL文作成.
+		String sql = "SELECT reception_time"
+				+ " FROM reservation"
+				+ " WHERE room_id = ? AND reception_time > CURRENT_TIME"
+				+ " ORDER BY reception_time"
+				+ " LIMIT 1;";
+		try (Connection con = DatabaseManager.connect(); PreparedStatement preState = con.prepareStatement(sql);) {
+			// プリペアードステートメントを使用.
+			preState.setInt(1, roomId);
+			// 検索結果からRoomインスタンスを生成.
+			try (ResultSet resSet = preState.executeQuery()) {
+				if (resSet.next()) {
+					time = resSet.getTime("reception_time");
+				}
+			} catch (Exception e) {
+				// デバッグ用のスタックトレース.
+				e.printStackTrace();
+
+				// フロントエンド用のエラーメッセージ.
+				String errMsg = "DB接続に失敗しました！<br>管理者に連絡してください。";
+
+				// 例外を投げる.
+				throw new Exception(errMsg);
+			}
+		}
+		return time;
+	}
 }

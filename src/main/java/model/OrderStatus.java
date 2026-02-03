@@ -1,4 +1,4 @@
-package dao;
+package model;
 
 public enum OrderStatus {
 	/** 注文済み */

@@ -51,14 +51,18 @@ if (roomList == null) {
 				<div></div>
 				<h2>部屋状況一覧</h2>
 				<div class="block">
-					<select name="extend">
-						<option value="30" selected>空き</option>
-						<option value="60">予約</option>
-						<option value="90">受付済み</option>
-						<option value="120">会計済み</option>
-					</select>
-					<button type="submit">絞り込み</button>
-					<button id="reloadButton">更新</button>
+					<form action="<%=request.getContextPath()%>/RoomListServlet"
+						method="get">
+						<select name="statusId">
+							<option value="0" selected>すべて</option>
+							<option value="1">空き</option>
+							<option value="2">予約</option>
+							<option value="3">受付済み</option>
+							<option value="4">会計済み</option>
+						</select>
+						<button type="submit">絞り込み</button>
+						<button id="reloadButton">更新</button>
+					</form>
 
 				</div>
 				<table>
@@ -97,21 +101,8 @@ if (roomList == null) {
 							<td><input type="time" name="receptionTime"
 								value="<%=room.getReceptionTime() != null ? room.getReceptionTime().toLocalTime() : ""%>"></td>
 							<!-- 退室時間 -->
-							<td>
-								<%
-								// 予約あり.
-								if (room.getRes_receptionTime() != null) {
-								%> <input type="time" name="leavingTime"
-								value="<%=room.getLeavingTime().toLocalTime()%>" readonly>
-								<%
-								} else {
-								// 予約なし.
-								%><input type="time" name="leavingTime"
-								value="<%=room.getLeavingTime() != null ? room.getLeavingTime().toLocalTime() : ""%>">
-								<%
-								}
-								%>
-							</td>
+							<td><input type="time" name="leavingTime"
+								value="<%=room.getLeavingTime() != null ? room.getLeavingTime().toLocalTime() : ""%>"></td>
 							<!-- 状態 -->
 							<td><select name="statusId">
 									<option value="1"
@@ -145,7 +136,7 @@ if (roomList == null) {
 				</table>
 				<div class="action-buttons">
 					<button type="button" class="btn-back"
-						onclick="location.href='front_top.jsp'">表示選択画面へ</button>
+						onclick="location.href='<%=request.getContextPath()%>/front/front_top.jsp'">表示選択画面へ</button>
 				</div>
 			</div>
 		</div>

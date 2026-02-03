@@ -30,6 +30,10 @@ public class Item {
 		options = new ArrayList<>();
 	}
 
+	public boolean hasOption() {
+		return !options.isEmpty();
+	}
+
 	public ArrayList<Option> getOptionList() {
 		return options;
 	}
@@ -38,9 +42,9 @@ public class Item {
 		this.options = options;
 	}
 
-	// オプションIDに対応するOptionクラスを返す。見つからないとnullが出るのでnullチェックをすること.
+	// オプションIDに対応するOptionクラスを返す.
 	public Option findOptionById(int optId) {
-		Option resOpt = null;
+		Option resOpt = new Option(-1, "なし");
 		for (Option option : options) {
 			if (optId == option.getId()) {
 				resOpt = option;

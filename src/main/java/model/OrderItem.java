@@ -4,7 +4,14 @@ import java.util.ArrayList;
 
 public class OrderItem {
 	private int id;
+	//注文前
 	private Item item;
+	
+	//注文後
+	private int itemId;
+    private String itemName;
+    private int itemPrice;
+    
 	private ArrayList<SelectedOption> selectedOptions;
 	private int count;
 	private int total;
@@ -63,6 +70,38 @@ public class OrderItem {
 	public void setItem(Item item) {
 		this.item = item;
 		calcTotal();
+	}
+
+	public int getItemId() {
+		return itemId;
+	}
+
+	public void setItemId(int itemId) {
+		this.itemId = itemId;
+	}
+
+	public String getItemName() {
+		return itemName;
+	}
+
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
+	}
+
+	public int getItemPrice() {
+		return itemPrice;
+	}
+
+	public void setItemPrice(int itemPrice) {
+		this.itemPrice = itemPrice;
+	}
+
+	public ArrayList<SelectedOption> getSelectedOptions() {
+		return selectedOptions;
+	}
+
+	public void setSelectedOptions(ArrayList<SelectedOption> selectedOptions) {
+		this.selectedOptions = selectedOptions;
 	}
 
 	public ArrayList<SelectedOption> getSelectedOptionList() {
@@ -134,12 +173,15 @@ public class OrderItem {
 
 	// 小計を計算する
 	private void calcTotal() {
-		int optionPriceSum = 0;
-		for (SelectedOptionDetail selectedOptionDetail : getSelectedOptionDetailList()) {
-			optionPriceSum += selectedOptionDetail.price();
-		}
-		total = (item.getPrice() + optionPriceSum) * count;
+	    if (item == null) return;
+
+	    int optionPriceSum = 0;
+	    for (SelectedOptionDetail selectedOptionDetail : getSelectedOptionDetailList()) {
+	        optionPriceSum += selectedOptionDetail.price();
+	    }
+	    total = (item.getPrice() + optionPriceSum) * count;
 	}
+
 
 	public int getTotal() {
 		return total;
@@ -159,4 +201,37 @@ public class OrderItem {
 		}
 		return res;
 	}
+	public boolean isSameItemAndOption(OrderItem other) {
+		if (this.item.getId() != other.item.getId()) {
+			return false;
+		}
+
+		for (SelectedOption so : this.selectedOptions) {
+			SelectedOption otherSo = other.findSelectedOptionById(so.optId());
+			if (otherSo == null || so.selectionId() != otherSo.selectionId()) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	private void calcTotalBySnapshot() {
+	    int optionPriceSum = 0;
+	    for (SelectedOptionDetail d : getSelectedOptionDetailList()) {
+	        optionPriceSum += d.price();
+	    }
+	    total = (itemPrice + optionPriceSum) * count;
+	}
+
+	// 注文確定時に呼ぶ
+	public void freezeFromItem() {
+	    if (item == null) return;
+
+	    this.itemId = item.getId();
+	    this.itemName = item.getName();
+	    this.itemPrice = item.getPrice();
+
+	    calcTotalBySnapshot();
+	}
+
 }

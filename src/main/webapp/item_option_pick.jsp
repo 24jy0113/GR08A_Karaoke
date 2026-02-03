@@ -1,5 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" import="model.Item,model.Room, model.Option"%>
+<%
+Item item = (Item) request.getAttribute("item");
+%>
+<%
+Room room = (Room) session.getAttribute("room");
+Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
+%>
 <!DOCTYPE html>
 <html lang=ja>
 <head>
@@ -38,28 +45,42 @@
             <div class="container">
                 <!-- 左側：画像領域 -->
                 <div>
-                    <div class="left-box">画像</div>
-                    <h1>生ビール</h1>
-                    <h2>600円(税込)</h2>
+                    <div class="left-box"><img class="item-img" src="<%=request.getContextPath()%>/img/<%=item.getImage()%>" alt="product"></div>
+                    <h1><%= item.getName() %></h1>
+               		<h2><%= item.getPrice() %>　円(税込)</h2>
                 </div>
                 <!-- 右側 -->
                 <div class="right-box">  
                     <div class="pad">
-                        <h3>Sサイズ</h3>
-                        <h3>Mサイズ+¥30</h3>
-                        <h3>Lサイズ+¥50</h3> 
+                        <form action="ItemNumServlet" method="post">
+						<% for (Option opt : item.getOptionList()) { %>
+						  <p><strong><%= opt.getName() %>（追加料金）</strong></p>
+						
+						  <% for (Option.Selection sel : opt.getSelectionList()) { %>
+						    <label>
+						      <input type="radio" name="opt_<%= opt.getId() %>" value="<%= sel.id() %>" required> 
+						      <%= sel.name() %>（<%= sel.price() %>円）
+						    </label><br>
+						  <% } %>
+						<% } %> 
+							<div class="action-buttons">
+					            <button type="button" class="btn-back" onclick="history.back()">戻る</button>
+					            <button type="submit" class="btn-next">次へ</button>
+					        </div>
+				        </form>
                     </div>
                 </div>
             </div>
             
         </div>
-        <div class="action-buttons">
-            <button type="button" class="btn-back" onclick="history.back()">戻る</button>
-            <button type="submit" class="btn-next" onclick="location.href='item_num_pick.jsp'">次へ</button>
-        </div>
+        
         <div class="footer-wrap">
-            <h1>部屋番号　101</h1>
-            <h1>残り時間　50分</h1>
+            <% if (room != null) { %>
+  				<h1>部屋番号　<%= room.getRoomNo() %></h1>
+      		<% } %>
+      		<% if (remainingMinutes != null) { %>
+        	 	<h1>残り時間　<%= remainingMinutes %>　分</h1>
+        	<% } %>
         </div>
     </main>
     

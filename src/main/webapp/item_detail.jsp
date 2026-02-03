@@ -1,5 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" import="model.Item,model.Room, model.Option"%>
+<%
+Item item = (Item) request.getAttribute("item");
+%>
+<%
+Room room = (Room) session.getAttribute("room");
+Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
+%>
 <!DOCTYPE html>
 <html lang=ja>
 <head>
@@ -32,30 +39,39 @@
     <main>
         <div class="bodymsg">
             <div class="msg">
-                <h1>生ビール</h1>
-                <h2>600円(税込)</h2>
+                <h1><%= item.getName() %></h1>
+               <h2><%= item.getPrice() %>　円(税込)</h2>
             </div>
             <div class="container">
                 <!-- 左側：画像領域 -->
                 <div>
-                    <div class="left-box">画像</div>
+                    <div class="left-box"><img class="item-img" src="<%=request.getContextPath()%>/img/<%=item.getImage()%>" alt="product"></div>
                    
                 </div>
                 <!-- 右側：検索欄＋テンキー -->
                 <div class="right-box">  
                     <div class="pad">
-                        <button style="color: white; background-color: black;" onclick="location.href='item_option_pick.jsp'">カートに入れる</button>
-                        <button onclick="history.back()">メニュー一覧に戻る</button>
-                        <button onclick="location.href='item_search.jsp'">メニューを番号で探す</button>
+                    	<form action="ItemOptionServlet" method="get">
+						  <input type="hidden" name="itemId" value="<%= item.getId() %>">
+						  <br>
+						  <button  type="submit" style="color: white; background-color: black;">カートに入れる</button>
+						</form>
+                        
+                        <button type="button" onclick="history.back()">メニュー一覧に戻る</button>
+                        <button type="button" onclick="location.href='item_search.jsp'">メニューを番号で探す</button>
                     </div>
                 </div>
             </div>
             
         </div>
         <div class="footer-wrap">
-            <h1>部屋番号　101</h1>
-            <h1>残り時間　50分</h1>
-        </div>
+      	<% if (room != null) { %>
+  			<h1>部屋番号　<%= room.getRoomNo() %></h1>
+      	<% } %>
+      	<% if (remainingMinutes != null) { %>
+        	 <h1>残り時間　<%= remainingMinutes %>　分</h1>
+        <% } %>
+    </div>
     </main>
     
 </body>

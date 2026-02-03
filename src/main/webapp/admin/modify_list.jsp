@@ -36,9 +36,8 @@ if (user == null) {
 		<div class="bodymsg">
 			<div class="msg">
 				<h2>該当商品一覧</h2>
-				<form method="post">
+				<input type="hidden" name="action" value="edit">
 				<table>
-
 					<tr>
 						<th>商品画像</th>
 						<th>商品名</th>
@@ -59,7 +58,6 @@ if (user == null) {
 						</tr>
 						</c:forEach>
 				</table>
-				</form>
 
 				<div class="action-buttons">
 					<button type="button" class="btn-back"
