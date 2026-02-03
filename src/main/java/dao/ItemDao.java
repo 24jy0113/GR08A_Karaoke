@@ -189,7 +189,7 @@ public class ItemDao {
 		// SQL文作成.
 		String sql1 = "SELECT item_id,item_name,item.category_id,category_name,order_number,price,item_image,stock "
 				+ "FROM item INNER JOIN category ON item.category_id = category.category_id "
-				+ "WHERE "+condition;
+				+ "WHERE " + condition;
 		String sql2 = "SELECT `option`.option_id,option_name "
 				+ "FROM item_option "
 				+ "INNER JOIN `option` "
@@ -262,7 +262,6 @@ public class ItemDao {
 		return resList;
 	}
 
-
 	// 選択肢が入っていないオプションの動的配列を受け取り、それぞれに選択肢を入れて返す.
 	private void setSelectionsByOptions(Connection con, ArrayList<Option> optionList) throws SQLException {
 		if (optionList == null || optionList.isEmpty())
@@ -311,55 +310,6 @@ public class ItemDao {
 
 			// プリペアードステートメントを使用.
 			preState.setInt(1, category_id);
-	// 選択肢が入っていないオプションの動的配列を受け取り、それぞれに選択肢を入れて返す.
-	private void setSelectionsByOptions(Connection con, ArrayList<Option> optionList) throws SQLException {
-		if (optionList == null || optionList.isEmpty())
-			return;
-
-		Map<Integer, Option> optionMap = optionList.stream().collect(Collectors.toMap(Option::getId, o -> o));
-
-		String placeholders = optionList.stream()
-				.map(o -> "?")
-				.collect(Collectors.joining(","));
-
-		// SQL文作成.
-		String sql = "SELECT option_id, option_detail_id, option_detail_name, price "
-				+ "FROM option_detail "
-				+ "WHERE option_id IN (" + placeholders + ");";
-
-		try (PreparedStatement preState = con.prepareStatement(sql);) {
-			// プリペアードステートメントを使用.
-			for (int i = 0; i < optionList.size(); i++) {
-				preState.setInt(i + 1, optionList.get(i).getId());
-			}
-			try (ResultSet resSet = preState.executeQuery()) {
-				while (resSet.next()) {
-					int oid = resSet.getInt("option_id");
-					Option target = optionMap.get(oid);
-					target.setSelection(resSet.getInt("option_detail_id"), resSet.getString("option_detail_name"),
-							resSet.getInt("price"));
-				}
-			}
-		}
-	}
-
-	// オプションをカテゴリーIDで探す.
-	public ArrayList<Option> searchOptionByCategoryId(int category_id) throws Exception {
-
-		// 返却値の参照変数を初期化.
-		ArrayList<Option> resList = new ArrayList<>();
-
-		// SQL文作成.
-		String sql = "SELECT `option`.option_id, option_name "
-				+ "FROM `option` INNER JOIN category_option "
-				+ "ON `option`.option_id = category_option.option_id "
-				+ "WHERE category_id = ?;";
-
-		try (Connection con = DatabaseManager.connect(); PreparedStatement preState = con.prepareStatement(sql);) {
-
-			// プリペアードステートメントを使用.
-			preState.setInt(1, category_id);
-
 
 			try (ResultSet resSet = preState.executeQuery();) {
 				//検索結果をmapに格納.
