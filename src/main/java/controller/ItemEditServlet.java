@@ -1,4 +1,4 @@
-package action;
+package controller;
 
 import java.io.IOException;
 
@@ -8,6 +8,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import dao.ItemDao;
 
@@ -29,23 +30,24 @@ public class ItemEditServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
-		String action = request.getParameter("action");
 
-		if ("edit".equals(action)) {
-			int id = Integer.parseInt(request.getParameter("id"));
+		if (request.getParameter("edit") != null) {
+			int id = Integer.parseInt(request.getParameter("edit"));
+			var mapper = new ObjectMapper();
 
 			try {
 				var dao = new ItemDao();
 				var item = dao.searchItemById(id);
 				var category = dao.getCategoryList();
-				var option = dao.searchOptionByCategoryId(item.getCategoryId());
+				var option = dao.getAllOptionsGroupedByCategory();
+				String optionJson = mapper.writeValueAsString(option);
 
 				request.setAttribute("item", item);
 				request.setAttribute("categoryList", category);
-				request.setAttribute("optionList", option);
+				request.setAttribute("optionList", optionJson);
 
 			} catch (Exception e) {
 				// デバッグ用のスタックトレース.
@@ -56,10 +58,11 @@ public class ItemEditServlet extends HttpServlet {
 			}
 			RequestDispatcher rd = request.getRequestDispatcher("/admin/modify_update.jsp");
 			rd.forward(request, response);
-		} else if ("confirm".equals(action)) {
-		} else if ("execute".equals(action)) {
+		} else if (request.getParameter("confirm") != null) {
 
-		}
+		} /*else if ("execute".equals(action)) {
+			
+			}*/
 	}
 
 }

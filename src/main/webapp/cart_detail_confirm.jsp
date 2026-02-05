@@ -32,7 +32,7 @@ if (order == null) {
                     <li><a href="<%= request.getContextPath() %>/time_extend.jsp">延長申請</a></li>
                     <li><a href="<%= request.getContextPath() %>/item_search.jsp">メニューを番号で探す</a></li>
                     <li><a href="<%= request.getContextPath() %>/item_list.jsp">フード・ドリンク</a></li>
-                    <li><a href="<%= request.getContextPath() %>/cus_purchase_history.jsp">注文履歴</a></li>
+                    <li><a href="<%= request.getContextPath() %>/cusPurchaseHistory">注文履歴</a></li>
                     <li><a class="gnav_botton" href="<%= request.getContextPath() %>/cart_detail.jsp">
                             <img class="cart_img" src="<%= request.getContextPath() %>/img/cart.png" alt="cart" width="20" height="20">カート内容を確認
                         </a>
@@ -53,11 +53,11 @@ if (order == null) {
                 <h3>受取方法</h3>
                 <p>ご自身で受け取りに行くか、お部屋までお届けするか選択してください</p>
                     <label>
-					  <input type="radio" name="pickupMethod" value="SELF" checked>
+					  <input type="radio" name="pickupMethod" value="受取る" checked>
 					  受取に行く
 					</label>
 					<label>
-					  <input type="radio" name="pickupMethod" value="ROOM">
+					  <input type="radio" name="pickupMethod" value="お届け">
 					  部屋まで届ける
 					</label>
                 <h3>注文内容</h3>

@@ -51,8 +51,8 @@ public class OrderDao {
              * ========================= */
             String sqlDetail =
                 "INSERT INTO order_detail " +
-                "(order_id, item_id, item_name, item_price, count, sub_total) " +
-                "VALUES (?, ?, ?, ?, ?, ?)";
+                "(order_id, item_id,count,sub_total) " +
+                "VALUES (?, ?, ?, ?)";
 
             psDetail = con.prepareStatement(sqlDetail, Statement.RETURN_GENERATED_KEYS);
 
@@ -71,10 +71,9 @@ public class OrderDao {
                 // --- order_detail insert
                 psDetail.setInt(1, orderId);
                 psDetail.setInt(2, oi.getItemId());
-                psDetail.setString(3, oi.getItemName());
-                psDetail.setInt(4, oi.getItemPrice());
-                psDetail.setInt(5, oi.getCount());
-                psDetail.setInt(6, oi.getTotal());
+
+                psDetail.setInt(3, oi.getCount());
+                psDetail.setInt(4, oi.getTotal());
                 psDetail.executeUpdate();
 
                 ResultSet rsDetail = psDetail.getGeneratedKeys();
@@ -108,6 +107,33 @@ public class OrderDao {
             if (con != null) con.close();
         }
     }
+	public List<Order> findActiveOrdersByRoom(int roomId) throws Exception {
+	    List<Order> list = new ArrayList<>();//顧客側注文履歴取得
+
+	    String sql =
+	        "SELECT order_id, total, receiving_number, pickup_method " +
+	        "FROM orders " +
+	        "WHERE room_id = ? " +
+	        "AND usage_history_id IS NULL " +
+	        "ORDER BY receiving_number, order_id";
+
+	    try (Connection con = DatabaseManager.connect();
+	         PreparedStatement ps = con.prepareStatement(sql)) {
+
+	        ps.setInt(1, roomId);
+	        ResultSet rs = ps.executeQuery();
+
+	        while (rs.next()) {
+	            Order o = new Order();
+	            o.setId(rs.getInt("order_id"));
+	            o.setTotal(rs.getInt("total"));
+	            o.setReceivingNo(rs.getInt("receiving_number"));
+	            o.setPickupMethod(rs.getString("pickup_method"));
+	            list.add(o);
+	        }
+	    }
+	    return list;
+	}
 
 	/*
 	public void addOrder(Order order) throws Exception {

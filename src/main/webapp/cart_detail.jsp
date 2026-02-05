@@ -33,23 +33,13 @@ int totalSum = 0;
                     <li><a href="<%= request.getContextPath() %>/time_extend.jsp">延長申請</a></li>
                     <li><a href="<%= request.getContextPath() %>/item_search.jsp">メニューを番号で探す</a></li>
                     <li><a href="<%= request.getContextPath() %>/item_list.jsp">フード・ドリンク</a></li>
-                    <li><a href="<%= request.getContextPath() %>/cus_purchase_history.jsp">注文履歴</a></li>
+                    <li><a href="<%= request.getContextPath() %>/cusPurchaseHistory">注文履歴</a></li>
                     <li><a class="gnav_botton" href="<%= request.getContextPath() %>/cart_detail.jsp">
                             <img class="cart_img" src="<%= request.getContextPath() %>/img/cart.png" alt="cart" width="20" height="20">カート内容を確認
                         </a>
                     </li>
                 </ul>
-                <%
-				String cartMessage = (String) session.getAttribute("cartMessage");
-				if (cartMessage != null) {
-				%>
-				  <div class="cart-message">
-				    <%= cartMessage %>
-				  </div>
-				<%
-				  session.removeAttribute("cartMessage"); 
-				}
-				%>
+                
                 
             </nav>
         </div>
