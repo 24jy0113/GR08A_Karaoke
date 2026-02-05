@@ -20,13 +20,11 @@ public class ExtendCheckAction {
 		}
 		// 現在の退室時間.
 		LocalTime actualLeaving = room.getLeavingTime().toLocalTime();
-		System.out.println("actualLeaving: " + actualLeaving);
 
 		// 次の予約受付時間.
 		Time nextRecTime = RoomDao.getNextReceptionTime(roomId, Time.valueOf(actualLeaving));
 
 		LocalTime nextReception = nextRecTime != null ? nextRecTime.toLocalTime() : null;
-		System.out.println("nextReception: " + nextReception);
 		List<Integer> result = new ArrayList<>();
 		LocalTime extendedLeaving;
 		LocalTime limitTime;
@@ -46,7 +44,6 @@ public class ExtendCheckAction {
 				result.add(minutes);
 			}
 		}
-		System.out.println("availableMinutes: " + result);
 		return result;
 	}
 }
