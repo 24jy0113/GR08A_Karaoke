@@ -3,17 +3,21 @@ package action;
 import java.time.LocalTime;
 
 import dao.RoomDao;
-import model.ExtendResult;
 import model.Room;
 import service.RoomTimeService;
 
+// ※延長可否チェックはConfirm時に行う.
 public class ExtendPreviewAction {
-	public ExtendResult preview(int roomId, int extendMinutes) throws Exception {
-        Room room = RoomDao.getRoomById(roomId);
+	public ExtendPreviewResult preview(int roomId, int extendMinutes) throws Exception {
+		// DBから最新Roomを取得.
+		Room room = RoomDao.getRoomById(roomId);
 
-        LocalTime currentLeaving = RoomTimeService.calcActualLeavingTime(room);
-        LocalTime newLeaving = currentLeaving.plusMinutes(extendMinutes);
+		// 現在の退室時間を計算.
+		LocalTime currentLeaving = RoomTimeService.calcActualLeavingTime(room);
 
-        return new ExtendResult(currentLeaving, newLeaving);
-    }
+		// 延長後の退室時間を計算.
+		LocalTime newLeaving = currentLeaving.plusMinutes(extendMinutes);
+
+		return new ExtendPreviewResult(currentLeaving, newLeaving);
+	}
 }
