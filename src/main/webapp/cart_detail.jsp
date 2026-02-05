@@ -39,17 +39,7 @@ int totalSum = 0;
                         </a>
                     </li>
                 </ul>
-                <%
-				String cartMessage = (String) session.getAttribute("cartMessage");
-				if (cartMessage != null) {
-				%>
-				  <div class="cart-message">
-				    <%= cartMessage %>
-				  </div>
-				<%
-				  session.removeAttribute("cartMessage"); 
-				}
-				%>
+                
                 
             </nav>
         </div>

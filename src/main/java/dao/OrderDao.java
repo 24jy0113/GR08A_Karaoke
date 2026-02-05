@@ -51,8 +51,8 @@ public class OrderDao {
              * ========================= */
             String sqlDetail =
                 "INSERT INTO order_detail " +
-                "(order_id, item_id, item_name, item_price, count, sub_total) " +
-                "VALUES (?, ?, ?, ?, ?, ?)";
+                "(order_id, item_id,count,sub_total) " +
+                "VALUES (?, ?, ?, ?)";
 
             psDetail = con.prepareStatement(sqlDetail, Statement.RETURN_GENERATED_KEYS);
 
@@ -71,10 +71,9 @@ public class OrderDao {
                 // --- order_detail insert
                 psDetail.setInt(1, orderId);
                 psDetail.setInt(2, oi.getItemId());
-                psDetail.setString(3, oi.getItemName());
-                psDetail.setInt(4, oi.getItemPrice());
-                psDetail.setInt(5, oi.getCount());
-                psDetail.setInt(6, oi.getTotal());
+
+                psDetail.setInt(3, oi.getCount());
+                psDetail.setInt(4, oi.getTotal());
                 psDetail.executeUpdate();
 
                 ResultSet rsDetail = psDetail.getGeneratedKeys();
