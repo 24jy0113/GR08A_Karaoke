@@ -35,8 +35,6 @@ public class ExtendConfirmServlet extends HttpServlet {
 			response.sendRedirect(request.getContextPath() + "/time_extend_confirmed.jsp");
 		} catch (Exception e) {
 			e.printStackTrace();
-			// 延長不可画面に行く.
-			response.sendRedirect(request.getContextPath() + "/time_extend_refuse.jsp");
 		}
 	}
 
