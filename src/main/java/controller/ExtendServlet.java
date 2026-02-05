@@ -40,7 +40,7 @@ public class ExtendServlet extends HttpServlet {
 		// 延長後の退室時間を計算.
 		LocalTime newLeaving = currentLeaving.plusMinutes(extendMinutes);
 
-		// JSPに渡す
+		session.setAttribute("extendMinutes", extendMinutes);
 		request.setAttribute("currentLeaving", currentLeaving);
 		request.setAttribute("extendMinutes", extendMinutes);
 		request.setAttribute("newLeaving", newLeaving);
