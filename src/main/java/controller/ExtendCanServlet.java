@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -28,13 +29,14 @@ public class ExtendCanServlet extends HttpServlet {
 			throw new IllegalStateException("セッションに部屋情報がありません");
 		}
 		try {
-			boolean canExtend = new ExtendCheckAction().canExtend(sessionRoom.getId());
-
-			if (canExtend) {
-				request.getRequestDispatcher("/time_extend.jsp").forward(request, response);
-			} else {
+			ExtendCheckAction action = new ExtendCheckAction();
+			List<Integer> availableMinutes = action.getAvailableExtendMinutes(sessionRoom.getId());
+			if (availableMinutes.isEmpty()) {
 				request.getRequestDispatcher("/time_extend_refuse.jsp").forward(request, response);
+				return;
 			}
+			request.setAttribute("availableMinutes", availableMinutes);
+			request.getRequestDispatcher("/time_extend.jsp").forward(request, response);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
