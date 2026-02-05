@@ -1,7 +1,6 @@
 package model;
 
 import java.sql.Time;
-import java.time.LocalTime;
 
 public class Room {
 	private int id; // 部屋ID
@@ -14,7 +13,6 @@ public class Room {
 	private int res_number; // 予約番号
 	private Time res_receptionTime; // 予約受付時間
 	private Time res_leavingTime; // 予約退室時間
-	private LocalTime nextReceptionTime; // 次の予約受付時間
 
 	public Room(int id, int roomNo, boolean alcohol, Time receptionTime, Time leavingTime, int statusId, String status,
 			int res_number, Time res_receptionTime, Time res_leavingTime) {
@@ -126,13 +124,5 @@ public class Room {
 
 	public void setRes_number(int res_number) {
 		this.res_number = res_number;
-	}
-
-	public LocalTime getNextReceptionTime() {
-		return nextReceptionTime;
-	}
-
-	public void setNextReceptionTime(LocalTime nextReceptionTime) {
-		this.nextReceptionTime = nextReceptionTime;
 	}
 }
