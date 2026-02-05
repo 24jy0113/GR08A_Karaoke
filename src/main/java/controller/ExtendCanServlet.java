@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import action.ExtendCheckAction;
+import dao.RoomDao;
 import model.Room;
 
 @WebServlet("/ExtendCanServlet")
@@ -28,9 +29,14 @@ public class ExtendCanServlet extends HttpServlet {
 		if (sessionRoom == null) {
 			throw new IllegalStateException("セッションに部屋情報がありません");
 		}
+
 		try {
+			Room latestRoom = RoomDao.getRoomById(sessionRoom.getId());
+			session.setAttribute("room", latestRoom); // セッション更新.
+
 			ExtendCheckAction action = new ExtendCheckAction();
 			List<Integer> availableMinutes = action.getAvailableExtendMinutes(sessionRoom.getId());
+
 			if (availableMinutes.isEmpty()) {
 				request.getRequestDispatcher("/time_extend_refuse.jsp").forward(request, response);
 				return;
@@ -39,6 +45,7 @@ public class ExtendCanServlet extends HttpServlet {
 			request.getRequestDispatcher("/time_extend.jsp").forward(request, response);
 		} catch (Exception e) {
 			e.printStackTrace();
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "延長情報の取得に失敗しました");
 		}
 
 	}

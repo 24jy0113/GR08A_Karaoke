@@ -24,10 +24,10 @@ public class ExtendAction {
 			throw new IllegalStateException("部屋情報がDBに存在しません");
 		}
 		// 現在の退室時間
-		LocalTime actualLeaving = RoomTimeService.calcActualLeavingTime(room);
+		LocalTime actualLeaving = room.getLeavingTime().toLocalTime();
 
 		// 次の予約受付時間.
-		Time nextRecTime = RoomDao.getNextReceptionTime(room.getId());
+		Time nextRecTime = RoomDao.getNextReceptionTime(room.getId(), Time.valueOf(actualLeaving));
 
 		LocalTime nextReception = nextRecTime != null
 				? nextRecTime.toLocalTime()

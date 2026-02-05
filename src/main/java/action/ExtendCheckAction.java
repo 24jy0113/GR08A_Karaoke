@@ -7,7 +7,6 @@ import java.util.List;
 
 import dao.RoomDao;
 import model.Room;
-import service.RoomTimeService;
 
 public class ExtendCheckAction {
 	private static final int CLEANING_MINUTES = 30;
@@ -20,13 +19,14 @@ public class ExtendCheckAction {
 			throw new IllegalStateException("部屋情報が存在しません");
 		}
 		// 現在の退室時間.
-		LocalTime actualLeaving = RoomTimeService.calcActualLeavingTime(room);
+		LocalTime actualLeaving = room.getLeavingTime().toLocalTime();
+		System.out.println("actualLeaving: " + actualLeaving);
 
 		// 次の予約受付時間.
-		Time nextRecTime = RoomDao.getNextReceptionTime(roomId);
+		Time nextRecTime = RoomDao.getNextReceptionTime(roomId, Time.valueOf(actualLeaving));
 
 		LocalTime nextReception = nextRecTime != null ? nextRecTime.toLocalTime() : null;
-
+		System.out.println("nextReception: " + nextReception);
 		List<Integer> result = new ArrayList<>();
 		LocalTime extendedLeaving;
 		LocalTime limitTime;
@@ -46,7 +46,7 @@ public class ExtendCheckAction {
 				result.add(minutes);
 			}
 		}
-
+		System.out.println("availableMinutes: " + result);
 		return result;
 	}
 }
