@@ -26,23 +26,27 @@ public class ExtendCanServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		Room room = (Room) session.getAttribute("room");
-
-		if (room == null) {
-			response.sendRedirect("cus_top.jsp"); // ルーム情報がない場合はトップへ.
-			return;
+		Room sessionRoom = (Room) session.getAttribute("room");
+		if (sessionRoom == null) {
+			throw new IllegalStateException("セッションに部屋情報がありません");
 		}
+		Room room;
+		LocalTime actualLeaving;
+		Time nextRecTime;
 
 		// 延長時間の最小値.
 		int extendMinutes = 30;
 
-		// 現在の退室時間.
-		LocalTime actualLeaving = RoomTimeService.calcActualLeavingTime(room);
-
-		// 次の予約受付時間.
-		Time nextRecTime;
-
 		try {
+			// DBから最新の部屋情報を取得.
+			room = RoomDao.getRoomById(sessionRoom.getId());
+			if (room == null) {
+				throw new IllegalStateException("部屋情報がDBに存在しません");
+			}
+			// 現在の退室時間.
+			actualLeaving = RoomTimeService.calcActualLeavingTime(room);
+
+			// 次の予約受付時間.
 			nextRecTime = RoomDao.getNextReceptionTime(room.getId());
 
 			LocalTime nextReception = nextRecTime != null
