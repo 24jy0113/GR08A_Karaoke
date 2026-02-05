@@ -296,7 +296,7 @@ public class ItemDao {
 	}
 
 	// オプションをカテゴリーIDで探す.
-	public Map<Integer, List<Option>> searchOptionByCategoryId(int category_id) throws Exception {
+	public Map<Integer, List<Option>> getAllOptionsGroupedByCategory(int category_id) throws Exception {
 
 		// 返却値の参照変数を初期化.
 		Map<Integer, List<Option>> resMap = new HashMap<>();
