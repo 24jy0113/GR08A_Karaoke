@@ -1,8 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8" import="model.Room"%>
+	pageEncoding="UTF-8" import="model.Room,java.util.List"%>
 <%
 Room room = (Room) session.getAttribute("room");
 Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
+%>
+<%
+List<Integer> availableMinutes = (List<Integer>) request.getAttribute("availableMinutes");
 %>
 <!DOCTYPE html>
 <html lang="ja">
@@ -61,12 +64,14 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 								<!-- 延長（分） -->
 								<div class="block">
 									<select name="extendMinutes">
-										<option value="30" selected>30 分</option>
-										<option value="60">60 分</option>
-										<option value="90">90 分</option>
-										<option value="120">120 分</option>
-										<option value="150">150 分</option>
-										<option value="180">180 分</option>
+										<%
+										for (Integer m : availableMinutes) {
+										%>
+										<option value="<%=m%>"><%=m%> 分
+										</option>
+										<%
+										}
+										%>
 									</select>
 								</div> <!-- ＊料金設定詳細 -->
 								<div class="small-text">
@@ -77,7 +82,8 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 						</tr>
 					</table>
 					<div class="action-buttons">
-						<button type="submit" class="btn-next" onclick="location.href='<%=request.getContextPath()%>/cus_top.jsp'">トップページへ戻る</button>
+						<button type="button" class="btn-next"
+							onclick="location.href='<%=request.getContextPath()%>/cus_top.jsp'">トップページへ戻る</button>
 						<button type="submit">確認する</button>
 					</div>
 				</form>

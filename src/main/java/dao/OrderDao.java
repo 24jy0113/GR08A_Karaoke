@@ -28,16 +28,15 @@ public class OrderDao {
             /* ① orders*/
             String sqlOrder =
                 "INSERT INTO orders " +
-                "(total, receiving_number,item_creating_status_id,room_id,usage_history_id,pickup_method) " +
-                "VALUES (?, ?, ?, ?, ?,?)";
+                "(total, receiving_number,item_creating_status_id,room_id,pickup_method) " +
+                "VALUES (?, ?, ?, ?,?)";
 
             psOrder = con.prepareStatement(sqlOrder, Statement.RETURN_GENERATED_KEYS);
             psOrder.setInt(1, order.getTotal());
             psOrder.setInt(2, order.getReceivingNo());
             psOrder.setInt(3, order.getItemCreatingStatusId());
             psOrder.setInt(4, order.getRoomId());
-            psOrder.setInt(5, order.getUsageHistoryId());
-            psOrder.setString(6, order.getPickupMethod());
+            psOrder.setString(5, order.getPickupMethod());
 
             psOrder.executeUpdate();
 
@@ -52,8 +51,8 @@ public class OrderDao {
              * ========================= */
             String sqlDetail =
                 "INSERT INTO order_detail " +
-                "(order_id, item_id, item_name, item_price, count, sub_total) " +
-                "VALUES (?, ?, ?, ?, ?, ?)";
+                "(order_id, item_id,count,sub_total) " +
+                "VALUES (?, ?, ?, ?)";
 
             psDetail = con.prepareStatement(sqlDetail, Statement.RETURN_GENERATED_KEYS);
 
@@ -72,10 +71,9 @@ public class OrderDao {
                 // --- order_detail insert
                 psDetail.setInt(1, orderId);
                 psDetail.setInt(2, oi.getItemId());
-                psDetail.setString(3, oi.getItemName());
-                psDetail.setInt(4, oi.getItemPrice());
-                psDetail.setInt(5, oi.getCount());
-                psDetail.setInt(6, oi.getTotal());
+
+                psDetail.setInt(3, oi.getCount());
+                psDetail.setInt(4, oi.getTotal());
                 psDetail.executeUpdate();
 
                 ResultSet rsDetail = psDetail.getGeneratedKeys();

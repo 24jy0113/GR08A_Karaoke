@@ -4,9 +4,6 @@
 Room room = (Room) session.getAttribute("room");
 Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 %>
-<%
-Integer extendMinutes = (Integer) session.getAttribute("extendMinutes");
-%>
 <!DOCTYPE html>
 <html lang="ja">
 <head>

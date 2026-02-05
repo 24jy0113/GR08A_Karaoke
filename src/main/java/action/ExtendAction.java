@@ -26,20 +26,19 @@ public class ExtendAction {
 		// 現在の退室時間
 		LocalTime actualLeaving = RoomTimeService.calcActualLeavingTime(room);
 
-		// 次の予約受付時間
+		// 次の予約受付時間.
 		Time nextRecTime = RoomDao.getNextReceptionTime(room.getId());
 
 		LocalTime nextReception = nextRecTime != null
 				? nextRecTime.toLocalTime()
 				: null;
 
-		// 延長可能か？
+		// 延長可能か？.
 		boolean canExtend = RoomTimeService.canExtend(actualLeaving, nextReception, extendMinutes);
 
 		if (!canExtend) {
-			throw new IllegalStateException("延長不可");
+			throw new IllegalStateException("延長不可状態です");
 		}
-
 		// --- 延長分を加算 ---
 		LocalTime extendedLeaving = actualLeaving.plusMinutes(extendMinutes);
 

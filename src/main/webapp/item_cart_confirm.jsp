@@ -54,8 +54,8 @@ ArrayList<OrderItem> cart = (ArrayList<OrderItem>) session.getAttribute("cart");
                 <div class="right-box">
                     <ul>
 					<% for (OrderItem.SelectedOptionDetail d : oi.getSelectedOptionDetailList()) { %>
-					  <li><%=oi.getCount()%></li>
-					  <li><%= d.optName() %>：<%= d.selectionName() %></li>
+					  <li>個数　<%=oi.getCount()%></li>
+					  <li>オプション　<%= d.optName() %>：<%= d.selectionName() %></li>
 					  
 					<% } %>
 					</ul>
