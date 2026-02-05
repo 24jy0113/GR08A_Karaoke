@@ -277,10 +277,10 @@ public class RoomDao {
 	public static Time getNextReceptionTime(int roomId) throws Exception {
 		Time time = null;
 		// SQL文作成.
-		String sql = "SELECT reception_time"
+		String sql = "SELECT reservation_reception_time"
 				+ " FROM reservation"
-				+ " WHERE room_id = ? AND reception_time > CURRENT_TIME"
-				+ " ORDER BY reception_time"
+				+ " WHERE room_id = ? AND reservation_reception_time > CURRENT_TIME"
+				+ " ORDER BY reservation_reception_time"
 				+ " LIMIT 1;";
 		try (Connection con = DatabaseManager.connect(); PreparedStatement preState = con.prepareStatement(sql);) {
 			// プリペアードステートメントを使用.
@@ -288,7 +288,7 @@ public class RoomDao {
 			// 検索結果からRoomインスタンスを生成.
 			try (ResultSet resSet = preState.executeQuery()) {
 				if (resSet.next()) {
-					time = resSet.getTime("reception_time");
+					time = resSet.getTime("reservation_reception_time");
 				}
 			} catch (Exception e) {
 				// デバッグ用のスタックトレース.
