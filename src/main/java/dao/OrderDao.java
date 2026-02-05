@@ -28,16 +28,15 @@ public class OrderDao {
             /* ① orders*/
             String sqlOrder =
                 "INSERT INTO orders " +
-                "(total, receiving_number,item_creating_status_id,room_id,usage_history_id,pickup_method) " +
-                "VALUES (?, ?, ?, ?, ?,?)";
+                "(total, receiving_number,item_creating_status_id,room_id,pickup_method) " +
+                "VALUES (?, ?, ?, ?,?)";
 
             psOrder = con.prepareStatement(sqlOrder, Statement.RETURN_GENERATED_KEYS);
             psOrder.setInt(1, order.getTotal());
             psOrder.setInt(2, order.getReceivingNo());
             psOrder.setInt(3, order.getItemCreatingStatusId());
             psOrder.setInt(4, order.getRoomId());
-            psOrder.setInt(5, order.getUsageHistoryId());
-            psOrder.setString(6, order.getPickupMethod());
+            psOrder.setString(5, order.getPickupMethod());
 
             psOrder.executeUpdate();
 
