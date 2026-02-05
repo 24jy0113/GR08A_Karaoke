@@ -27,10 +27,11 @@ public class ExtendConfirmServlet extends HttpServlet {
 			throws ServletException, IOException {
 		HttpSession session = request.getSession();
 
-		int extendMinutes = (Integer) session.getAttribute("extendMinutes");
+		Integer extendMinutes = (Integer) session.getAttribute("extendMinutes");
 
 		try {
 			new ExtendAction().execute(extendMinutes, session);
+			session.removeAttribute("extendMinutes"); // sessionの後始末.
 			// 完了画面へ行く.
 			response.sendRedirect(request.getContextPath() + "/time_extend_confirmed.jsp");
 		} catch (Exception e) {
