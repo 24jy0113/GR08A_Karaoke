@@ -15,9 +15,6 @@ import dao.RoomDao;
 import model.Room;
 import service.RoomTimeService;
 
-/**
- * Servlet implementation class ExtendCanServlet
- */
 @WebServlet("/ExtendCanServlet")
 public class ExtendCanServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -32,17 +29,17 @@ public class ExtendCanServlet extends HttpServlet {
 		Room room = (Room) session.getAttribute("room");
 
 		if (room == null) {
-			response.sendRedirect("cus_top.jsp"); // ルーム情報がない場合はトップへ
+			response.sendRedirect("cus_top.jsp"); // ルーム情報がない場合はトップへ.
 			return;
 		}
 
-		// 延長時間の初期値（選択肢の最小値など）
+		// 延長時間の最小値.
 		int extendMinutes = 30;
 
-		// 現在の退室時間
+		// 現在の退室時間.
 		LocalTime actualLeaving = RoomTimeService.calcActualLeavingTime(room);
 
-		// 次の予約受付時間
+		// 次の予約受付時間.
 		Time nextRecTime;
 
 		try {
@@ -52,7 +49,7 @@ public class ExtendCanServlet extends HttpServlet {
 					? nextRecTime.toLocalTime()
 					: null;
 
-			// 延長可能か？
+			// 延長可能か？.
 			boolean canExtend = RoomTimeService.canExtend(actualLeaving, nextReception, extendMinutes);
 
 			if (canExtend) {
@@ -61,7 +58,6 @@ public class ExtendCanServlet extends HttpServlet {
 				request.getRequestDispatcher("/time_extend_refuse.jsp").forward(request, response);
 			}
 		} catch (Exception e) {
-			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
 		}
 
@@ -71,5 +67,4 @@ public class ExtendCanServlet extends HttpServlet {
 			throws ServletException, IOException {
 		doGet(request, response);
 	}
-
 }
