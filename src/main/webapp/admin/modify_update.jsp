@@ -130,8 +130,8 @@ if (user == null) {
 
 						        html += `
 						            <label>
-						                <input type="checkbox" name="option" value="${opt.id}" ${isChecked}>
-						                ${opt.name}
+						                <input type="checkbox" name="option" value="\${opt.id}" \${isChecked}>
+						                \${opt.name}
 						            </label>
 						        `;
 						    });
