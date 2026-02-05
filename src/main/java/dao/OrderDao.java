@@ -107,6 +107,33 @@ public class OrderDao {
             if (con != null) con.close();
         }
     }
+	public List<Order> findActiveOrdersByRoom(int roomId) throws Exception {
+	    List<Order> list = new ArrayList<>();//顧客側注文履歴取得
+
+	    String sql =
+	        "SELECT order_id, total, receiving_number, pickup_method " +
+	        "FROM orders " +
+	        "WHERE room_id = ? " +
+	        "AND usage_history_id IS NULL " +
+	        "ORDER BY receiving_number, order_id";
+
+	    try (Connection con = DatabaseManager.connect();
+	         PreparedStatement ps = con.prepareStatement(sql)) {
+
+	        ps.setInt(1, roomId);
+	        ResultSet rs = ps.executeQuery();
+
+	        while (rs.next()) {
+	            Order o = new Order();
+	            o.setId(rs.getInt("order_id"));
+	            o.setTotal(rs.getInt("total"));
+	            o.setReceivingNo(rs.getInt("receiving_number"));
+	            o.setPickupMethod(rs.getString("pickup_method"));
+	            list.add(o);
+	        }
+	    }
+	    return list;
+	}
 
 	/*
 	public void addOrder(Order order) throws Exception {
