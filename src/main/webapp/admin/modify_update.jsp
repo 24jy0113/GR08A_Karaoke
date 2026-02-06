@@ -12,7 +12,7 @@ if (user == null) {
 <html lang=ja>
 <head>
 <meta charset="UTF-8">
-<title>商品更新入力画面-管理者</title>
+<title>商品${item.id<1?追加:更新 }入力画面-管理者</title>
 <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath()%>/css/08_03.css">
 <link rel="stylesheet" type="text/css"
@@ -39,17 +39,18 @@ if (user == null) {
 	</header>
 	<main>
 		<div class="bodymsg">
-			<h1>商品情報更新入力</h1>
+			<h1>商品情報${item.id<1?追加:更新 }入力</h1>
 		</div>
 		<form method="get"
 			action="<%=request.getContextPath()%>/ItemEditServlet">
 			<div class="container">
 
-				<input type="hidden" name="action" value="edit">
+				<input type="hidden" name="cmd" value="confirm">
 				<div class="right-box">
+					<input type="hidden" name="id" value="${item.id }">
 					<div class="input-row">
 						<label>商品名</label> <input class="menuInput" type="text"
-							name="item_name" value="${item.name }" />
+							name="name" value="${item.name }" />
 					</div>
 					<div class="input-row">
 						<label>単価</label> <input class="menuInput" type="text"
@@ -130,7 +131,7 @@ if (user == null) {
 
 						        html += `
 						            <label>
-						                <input type="checkbox" name="option" value="\${opt.id}" \${isChecked}>
+						                <input type="checkbox" name="option[]" value="\${opt.id}" \${isChecked}>
 						                \${opt.name}
 						            </label>
 						        `;
