@@ -300,6 +300,9 @@ public class ItemDao {
 				+ "WHERE option_id IN (" + placeholders + ");";
 
 		try (PreparedStatement preState = con.prepareStatement(sql)) {
+			for (int i = 0; i < optionIdList.size(); i++) {
+				preState.setInt(i + 1, optionIdList.get(i));
+			}
 			try (ResultSet resSet = preState.executeQuery();) {
 				while (resSet.next()) {
 
