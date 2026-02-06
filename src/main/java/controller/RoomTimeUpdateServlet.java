@@ -27,7 +27,7 @@ public class RoomTimeUpdateServlet extends HttpServlet {
 			RoomTimeService service = new RoomTimeService();
 			service.updateRoomTimes(roomId, receptionTimeStr);
 
-			// 処理成功後は一覧画面にリダイレクト
+			// 処理成功後は一覧画面にリダイレクト.
 			response.sendRedirect("room_list.jsp");
 		} catch (Exception e) {
 			e.printStackTrace();

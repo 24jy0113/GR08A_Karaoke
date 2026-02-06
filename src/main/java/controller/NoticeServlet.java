@@ -25,24 +25,29 @@ public class NoticeServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// 既存Sessionのみ取得
+		// 既存Sessionのみ取得.
 		HttpSession session = request.getSession(false);
 
-		// Sessionチェック
+		// Sessionチェック.
 		if (session == null || session.getAttribute("room") == null) {
 			response.setContentType("application/json;charset=UTF-8");
-			response.getWriter().write("{\"sessionExpired\":true}");// セッション切れ情報(true)をJSON形式で文字列として送る
+			// セッション切れ情報(true)をJSON形式で文字列として送る.
+			response.getWriter().write("{\"sessionExpired\":true}");
 			return;
 		}
-		// Room情報取得
+		// Room情報取得.
 		Room room = (Room) session.getAttribute("room");
 		try {
 			RoomTimeService service = new RoomTimeService();
-			room = service.refreshRoomFromDB(room.getId()); // DBから最新のRoom情報取得
-			// Action呼び出し
+
+			// DBから最新のRoom情報取得.
+			room = service.refreshRoomFromDB(room.getId());
+
+			// Action呼び出し.
 			NoticeAction action = new NoticeAction();
 			NoticeResult result = action.execute(room, session);
-			// JSONで返却
+
+			// JSONで返却.
 			response.setContentType("application/json;charset=UTF-8");
 			response.getWriter().write(result.toJson());
 		} catch (Exception e) {

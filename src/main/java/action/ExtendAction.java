@@ -18,12 +18,12 @@ public class ExtendAction {
 			throw new IllegalStateException("セッションに部屋情報がありません");
 		}
 
-		// --- DBから最新の部屋情報を取得 ---
+		// DBから最新の部屋情報を取得.
 		Room room = RoomDao.getRoomById(sessionRoom.getId());
 		if (room == null) {
 			throw new IllegalStateException("部屋情報がDBに存在しません");
 		}
-		// 現在の退室時間
+		// 現在の退室時間.
 		LocalTime actualLeaving = room.getLeavingTime().toLocalTime();
 
 		// 次の予約受付時間.
@@ -33,26 +33,26 @@ public class ExtendAction {
 				? nextRecTime.toLocalTime()
 				: null;
 
-		// 延長可能か？.
+		// 延長可能チェック.
 		boolean canExtend = RoomTimeService.canExtend(actualLeaving, nextReception, extendMinutes);
 
 		if (!canExtend) {
 			throw new IllegalStateException("延長不可状態です");
 		}
-		// --- 延長分を加算 ---
+		// 延長分を加算.
 		LocalTime extendedLeaving = actualLeaving.plusMinutes(extendMinutes);
 
-		// --- DBとセッションに反映 ---
+		// DBとセッションに反映.
 		Time newLeavingTime = Time.valueOf(extendedLeaving);
 		room.setLeavingTime(newLeavingTime);
 		RoomDao.updateLeavingTime(room.getId(), newLeavingTime);
 
-		// --- 通知フラグをリセット ---
-		// 延長後は再度15分・10分通知を出すため
+		// 通知フラグをリセット.
+		// 延長後は再度15分・10分通知を出すため.
 		session.removeAttribute("notice15Shown");
 		session.removeAttribute("notice10Shown");
 
-		// --- セッション更新 ---
+		// セッション更新.
 		session.setAttribute("room", room);
 	}
 }

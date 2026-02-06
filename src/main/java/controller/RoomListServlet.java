@@ -23,15 +23,15 @@ public class RoomListServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		try {
-			// フォームから送られてくる絞り込みパラメータを取得
+			// フォームから送られてくる絞り込みパラメータを取得.
 			String statusParam = request.getParameter("statusId");
 			List<Room> roomList;
 
 			if (statusParam == null || statusParam.equals("0")) {
-				// 絞り込みなし → 全部屋取得
+				// 絞り込みなし(全部屋取得).
 				roomList = RoomDao.getAllRooms();
 			} else {
-				// 絞り込みあり → 特定ステータスの部屋だけ取得
+				// 絞り込みあり(特定ステータスの部屋だけ取得).
 				int statusId = Integer.parseInt(statusParam);
 				roomList = RoomDao.getRoomsByStatus(statusId);
 			}

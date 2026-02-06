@@ -27,7 +27,7 @@ public class ExtendServlet extends HttpServlet {
 			return;
 		}
 
-		// 延長分（分）.
+		// 延長分(分).
 		int extendMinutes = Integer.parseInt(request.getParameter("extendMinutes"));
 
 		// セッションからルーム情報を取得.
