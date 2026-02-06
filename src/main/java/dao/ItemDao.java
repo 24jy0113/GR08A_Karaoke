@@ -281,7 +281,7 @@ public class ItemDao {
 		}
 	}
 
-	// オプションをカテゴリーIDで探す.
+	// オプションをカテゴリーIDで仕分けて取得する.
 	public Map<Integer, List<Option>> getAllOptionsGroupedByCategory() throws Exception {
 
 		// 返却値の参照変数を初期化.
