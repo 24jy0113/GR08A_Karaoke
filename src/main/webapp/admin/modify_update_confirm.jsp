@@ -11,7 +11,7 @@ if (user == null) {
 <html lang=ja>
 <head>
 <meta charset="UTF-8">
-<title>商品情報確認画面-変更-管理者</title>
+<title>商品情報確認画面-${item.id<1?追加:更新 }-管理者</title>
 <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath()%>/css/08_04.css">
 <link rel="stylesheet" type="text/css"
@@ -74,7 +74,7 @@ if (user == null) {
 				<div class="action-buttons">
 					<form method="get"
 						action="<%=request.getContextPath()%>/ItemEditServlet">
-						<input type="hidden" name="action" value="execute">
+						<input type="hidden" name="cmd" value="execute">
 						<button type="button" class="btn-back" onclick="history.back()">修正する</button>
 						<input type="submit" class="btn-next" value="確認する">
 					</form>
