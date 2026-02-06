@@ -44,6 +44,7 @@ if (user == null) {
 				<h2>該当商品一覧</h2>
 				<form method="get"
 					action="${pageContext.request.contextPath}/ItemEditServlet">
+					<input type="hidden" name="q" value="${query }">
 					<table>
 						<tr>
 							<th>商品画像</th>
@@ -55,20 +56,20 @@ if (user == null) {
 
 						<c:forEach var="item" items="${searchResult}">
 							<tr>
-								<td><img
+								<td><img width=200
 									src="${pageContext.request.contextPath}/img/${item.image}"
 									alt="${item.name }"></td>
 								<td>${item.name }</td>
 								<td>${item.price }円（税込）</td>
 								<td>${item.isStock() ? "あり" : "なし"}</td>
-								<td><button type="submit" name="edit" value="${item.id }">"変更</button></td>
+								<td><button type="submit" name="id" value="${item.id }">変更</button></td>
 							</tr>
 						</c:forEach>
 					</table>
 
 					<div class="action-buttons">
-						<button type="button" class="btn-back" onclick="history.back()">商品検索画面へ戻る</button>
-						<button name="cmd" value="add" type="submit" class="btn-next">商品新規追加</button>
+						<button type="button" class="btn-back" onclick="location.href='${pageContext.request.contextPath}/admin/modify_search.jsp'">商品検索画面へ戻る</button>
+						<button type="submit" class="btn-next">商品新規追加</button>
 					</div>
 				</form>
 
