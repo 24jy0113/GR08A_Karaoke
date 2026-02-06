@@ -43,32 +43,32 @@ if (user == null) {
 				<table>
 					<tr>
 						<th>商品名</th>
-						<td>サラダ</td>
+						<td>${item.name }</td>
 					</tr>
 					<tr>
 						<th>価格(税込)</th>
-						<td>300円（税込）</td>
+						<td>${item.price }円（税込）</td>
 					</tr>
 					<tr>
 						<th>商品画像</th>
-						<td><img src="./img/salad.png" alt="salad" width="30px"
+						<td><img src="<%=request.getContextPath()%>/img/${item.image}" alt="${item.name }" width="30px"
 							height="30px"></td>
 					</tr>
 					<tr>
 						<th>注文番号</th>
-						<td>001</td>
+						<td>${item.itemNo }</td>
 					</tr>
 					<tr>
 						<th>カテゴリー</th>
-						<td>フードメニュー</td>
+						<td>${item.category }</td>
 					</tr>
 					<tr>
 						<th>在庫</th>
-						<td>なし</td>
+						<td>${item.stock ? "あり":"なし" }</td>
 					</tr>
 					<tr>
 						<th>オプション</th>
-						<td>なし</td>
+						<td>${item.hasOption() ? "あり":"なし" }</td>
 					</tr>
 				</table>
 				<div class="action-buttons">

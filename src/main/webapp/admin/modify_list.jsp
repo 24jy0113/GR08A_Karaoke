@@ -54,7 +54,7 @@ if (user == null) {
 					<form method="get">
 						<c:forEach var="item" items="${searchResult}">
 							<tr>
-								<td><img src="${item.getImage()}" alt="${item.name }"></td>
+								<td><img src="<%=request.getContextPath()%>/img/${item.getImage()}" alt="${item.name }"></td>
 								<td>${item.name }</td>
 								<td>${item.price }円（税込）</td>
 								<td>${item.isStock() ? "あり" : "なし"}</td>
