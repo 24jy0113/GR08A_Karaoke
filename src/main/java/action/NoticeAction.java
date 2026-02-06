@@ -37,27 +37,18 @@ public class NoticeAction {
 			boolean notice = false;
 			int minutes = 0;
 
-			// 残り15分通知.
-			// 15〜11分のどこかで1回だけ表示.
-			if (minutesLeft <= 15 && minutesLeft > 10
-					&& session.getAttribute("notice15Shown") == null) {
-
+			if (minutesLeft <= 15 && minutesLeft > 10 && session.getAttribute("notice15Shown") == null) {
+				// 残り15分通知(15〜11分のどこかで1回だけ表示).
 				notice = true;
 				minutes = 15;
 				session.setAttribute("notice15Shown", true);
-
-				// 残り10分通知.
-				// 10〜6分のどこかで1回だけ表示.
-			} else if (minutesLeft <= 10 && minutesLeft > 5
-					&& session.getAttribute("notice10Shown") == null) {
-
+			} else if (minutesLeft <= 10 && minutesLeft > 5 && session.getAttribute("notice10Shown") == null) {
+				// 残り10分通知(10〜6分のどこかで1回だけ表示).
 				notice = true;
 				minutes = 10;
 				session.setAttribute("notice10Shown", true);
 			}
-
 			return new NoticeResult(notice, minutes);
-
 		} catch (Exception e) {
 			// DBエラー等が発生した場合は安全側に倒す.
 			e.printStackTrace();
