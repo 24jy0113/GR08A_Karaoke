@@ -72,10 +72,10 @@ document.addEventListener("DOMContentLoaded", () => {
 					const remainingEl = document.getElementById("remainingTime");
 					if (remainingEl) {
 						const [minStr] = remainingEl.innerText.split(":");
-						const remainingMinutes = parseInt(minStr, 10);
-
+						const remainingMinutes1 = parseInt(minStr, 10);
+						const remainingMinutes2 = parseInt(minStr, 15);
 						// 実際の残り時間が通知対象になった場合だけ表示
-						if (remainingMinutes <= data.minutes) {
+						if (remainingMinutes1 <= data.minutes || remainingMinutes2 <= data.minutes) {
 							showNotice(data.minutes);
 						}
 					}
