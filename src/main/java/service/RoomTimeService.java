@@ -98,5 +98,4 @@ public class RoomTimeService {
 
 		return !extendedLeaving.isAfter(limitTime);
 	}
-
 }
