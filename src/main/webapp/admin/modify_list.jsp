@@ -42,37 +42,36 @@ if (user == null) {
 		<div class="bodymsg">
 			<div class="msg">
 				<h2>該当商品一覧</h2>
-				<table>
-					<tr>
-						<th>商品画像</th>
-						<th>商品名</th>
-						<th>単価</th>
-						<th>在庫</th>
-						<th></th>
-						<th></th>
-					</tr>
-					<form method="get">
+				<form method="get"
+					action="${pageContext.request.contextPath}/ItemEditServlet">
+					<table>
+						<tr>
+							<th>商品画像</th>
+							<th>商品名</th>
+							<th>単価</th>
+							<th>在庫</th>
+							<th></th>
+						</tr>
+
 						<c:forEach var="item" items="${searchResult}">
 							<tr>
-								<td><img src="<%=request.getContextPath()%>/img/${item.getImage()}" alt="${item.name }"></td>
+								<td><img
+									src="${pageContext.request.contextPath}/img/${item.image}"
+									alt="${item.name }"></td>
 								<td>${item.name }</td>
 								<td>${item.price }円（税込）</td>
 								<td>${item.isStock() ? "あり" : "なし"}</td>
-								<td><button type="submit" name="edit" value="${item.id }"
-										formaction="<%=request.getContextPath()%>/ItemEditServlet">変更</button></td>
-								<td><button type="submit" name="delete" value="${item.id }"
-										formaction="modify_delete.jsp">削除</button></td>
+								<td><button type="submit" name="edit" value="${item.id }">"変更</button></td>
 							</tr>
 						</c:forEach>
-					</form>
-				</table>
+					</table>
 
-				<div class="action-buttons">
-					<button type="button" class="btn-back" onclick="history.back()">商品検索画面へ戻る</button>
-					<button type="submit" class="btn-next"
-						onclick="location.href='modify_add.jsp'">商品新規追加</button>
+					<div class="action-buttons">
+						<button type="button" class="btn-back" onclick="history.back()">商品検索画面へ戻る</button>
+						<button name="cmd" value="add" type="submit" class="btn-next">商品新規追加</button>
+					</div>
+				</form>
 
-				</div>
 			</div>
 
 		</div>
