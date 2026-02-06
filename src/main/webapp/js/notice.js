@@ -1,8 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
 	console.log("notice.js loaded");
-	// 部屋IDを取得（hidden input などから）
-	const roomIdInput = document.getElementById("roomId");
-	const roomId = roomIdInput ? roomIdInput.value : "";
 
 	let leaveDateTime = null;
 	let countdownInterval = null;
@@ -24,7 +21,6 @@ document.addEventListener("DOMContentLoaded", () => {
 					const m = parseInt(parts[1], 10);
 					const s = parts[2] ? parseInt(parts[2], 10) : 0; // ←秒がなければ0にする
 					leaveDateTime = new Date(today.getFullYear(), today.getMonth(), today.getDate(), h, m, s);
-					console.log("leaveDateTime set to:", leaveDateTime);
 					// カウントダウンがまだ始まっていなければ開始
 					if (!countdownInterval) {
 						startCountdown();
