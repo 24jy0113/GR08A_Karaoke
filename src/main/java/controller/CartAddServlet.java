@@ -1,13 +1,12 @@
 package controller;
 
-import model.OrderItem;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
+import model.*;
+
 import java.io.IOException;
 import java.util.ArrayList;
-
-
 @WebServlet("/CartAddServlet")
 public class CartAddServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse res)
