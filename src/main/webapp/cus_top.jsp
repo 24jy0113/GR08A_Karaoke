@@ -79,7 +79,7 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 			if (remainingMinutes != null) {
 			%>
 			<h1>
-				残り時間 <span id="remainingTime">--:--</span> 分
+				残り時間 <span id="remainingTime">--:--</span>
 			</h1>
 			<%
 			}

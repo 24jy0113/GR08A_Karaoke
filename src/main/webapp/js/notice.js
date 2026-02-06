@@ -1,8 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
 	console.log("notice.js loaded");
-	// 部屋IDを取得（hidden input などから）
-	const roomIdInput = document.getElementById("roomId");
-	const roomId = roomIdInput ? roomIdInput.value : "";
 
 	let leaveDateTime = null;
 	let countdownInterval = null;
@@ -24,7 +21,6 @@ document.addEventListener("DOMContentLoaded", () => {
 					const m = parseInt(parts[1], 10);
 					const s = parts[2] ? parseInt(parts[2], 10) : 0; // ←秒がなければ0にする
 					leaveDateTime = new Date(today.getFullYear(), today.getMonth(), today.getDate(), h, m, s);
-					console.log("leaveDateTime set to:", leaveDateTime);
 					// カウントダウンがまだ始まっていなければ開始
 					if (!countdownInterval) {
 						startCountdown();
@@ -45,11 +41,16 @@ document.addEventListener("DOMContentLoaded", () => {
 				clearInterval(countdownInterval); // タイマー停止
 				countdownInterval = null;
 			}
-			const min = Math.floor(diffSec / 60);
-			const sec = diffSec % 60;
+			const hours = Math.floor(diffSec / 3600);
+			const minutes = Math.floor((diffSec % 3600) / 60);
+			const seconds = diffSec % 60;
 			const el = document.getElementById("remainingTime");
 			if (el) {
-				el.innerText = `${min}:${String(sec).padStart(2, "0")}`;
+				// 常に HH:MM:SS 形式
+				el.innerText =
+					String(hours).padStart(2, "0") + ":" +
+					String(minutes).padStart(2, "0") + ":" +
+					String(seconds).padStart(2, "0");
 			}
 		}, 1000);
 	}
@@ -68,17 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 				// 通知がある場合、モーダル表示
 				if (data.notice) {
-					// ここで残り時間をチェック
-					const remainingEl = document.getElementById("remainingTime");
-					if (remainingEl) {
-						const [minStr] = remainingEl.innerText.split(":");
-						const remainingMinutes1 = parseInt(minStr, 10);
-						const remainingMinutes2 = parseInt(minStr, 15);
-						// 実際の残り時間が通知対象になった場合だけ表示
-						if (remainingMinutes1 <= data.minutes || remainingMinutes2 <= data.minutes) {
-							showNotice(data.minutes);
-						}
-					}
+					showNotice(data.minutes);
 				}
 			})
 			.catch(err => console.error("通知取得エラー:", err));
@@ -88,14 +79,20 @@ document.addEventListener("DOMContentLoaded", () => {
 	function showNotice(minutes) {
 		const modal = document.getElementById("noticeModal");
 		const text = document.getElementById("noticeText");
+		const note = document.getElementById("noticeNote");
 		text.innerText = minutes + "分前になりました";
+		if (note) {
+			note.style.display = "block";
+		}
 		modal.classList.remove("hidden");
 	}
 
 	// モーダルを閉じる関数（確認ボタン用）
 	window.closeNotice = function() {
 		const modal = document.getElementById("noticeModal");
+		const note = document.getElementById("noticeNote");
 		modal.classList.add("hidden");
+		if (note) note.style.display = "none";
 	}
 
 	// 初回実行
