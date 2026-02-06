@@ -30,6 +30,10 @@ public class ItemNameSearchServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		// 不要なセッションを掃除してから一覧を表示
+	    request.getSession().removeAttribute("editingItem"); 
+	    
+	    
 		request.setCharacterEncoding("UTF-8");
 		String query = request.getParameter("q");
 
@@ -48,6 +52,12 @@ public class ItemNameSearchServlet extends HttpServlet {
 		}
 		RequestDispatcher rd= request.getRequestDispatcher("/admin/modify_list.jsp");
 		rd.forward(request, response);
+	}
+	
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		doGet(request, response);
 	}
 
 }
