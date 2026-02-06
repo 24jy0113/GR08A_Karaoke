@@ -1,0 +1,29 @@
+@charset "UTF-8";
+
+.btn-next,
+.btn-back {
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: 1px solid;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-height: 32px;
+}
+.btn-next {
+  background-color: black;
+  border-color: black;
+  color: white;
+}
+
+.btn-back {
+  background-color: white;
+  border-color: black;
+  color: black;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}

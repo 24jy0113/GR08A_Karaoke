@@ -18,6 +18,7 @@ if (user == null) {
     <title>アカウント登録完了画面</title>
     <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/01_02_01.css">
     <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/header.css">
+    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/default.css">
 </head>
 <body>
     <!-- Header -->
