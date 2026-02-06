@@ -134,6 +134,26 @@ public class OrderDao {
 	    }
 	    return list;
 	}
+	public int getActiveOrderTotalByRoom(int roomId) throws Exception {
+
+	    String sql =
+	        "SELECT COALESCE(SUM(total), 0) AS sum_total " +
+	        "FROM orders " +
+	        "WHERE room_id = ? " +
+	        "AND usage_history_id IS NULL";
+
+	    try (Connection con = DatabaseManager.connect();
+	         PreparedStatement ps = con.prepareStatement(sql)) {
+
+	        ps.setInt(1, roomId);
+	        ResultSet rs = ps.executeQuery();
+
+	        if (rs.next()) {
+	            return rs.getInt("sum_total");
+	        }
+	    }
+	    return 0;
+	}
 
 	/*
 	public void addOrder(Order order) throws Exception {

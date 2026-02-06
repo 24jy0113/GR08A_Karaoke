@@ -25,7 +25,7 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 			<nav class="gnav">
 				<ul class="gnav_list">
 					<li><a href="<%=request.getContextPath()%>/cus_top.jsp">トップへ</a></li>
-					<li><a href="<%=request.getContextPath()%>/time_extend.jsp">延長申請</a></li>
+					<li><a href="<%=request.getContextPath()%>/ExtendCanServlet">延長申請</a></li>
 					<li><a href="<%=request.getContextPath()%>/item_search.jsp">メニューを番号で探す</a></li>
 					<li><a href="<%=request.getContextPath()%>/item_list.jsp">フード・ドリンク</a></li>
 					<li><a href="<%= request.getContextPath() %>/cusPurchaseHistory">注文履歴</a></li>
