@@ -2,6 +2,7 @@ package action;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -12,8 +13,11 @@ public class ItemUpdateAction implements Action {
 
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) {
-		String id = request.getParameter("edit");
+		String id = request.getParameter("id");
 		var mapper = new ObjectMapper();
+
+		// セッションの取得（なければ新規作成、あれば既存のものを返す）
+		HttpSession session = request.getSession();
 
 		try {
 			var dao = new ItemDao();
@@ -21,8 +25,11 @@ public class ItemUpdateAction implements Action {
 			var category = dao.getCategoryList();
 			var option = dao.getAllOptionsGroupedByCategory();
 			String optionJson = mapper.writeValueAsString(option);
+			if (request.getParameter("query") != null)
+				request.setAttribute("q", request.getParameter("query"));
 
-			request.setAttribute("item", item);
+			if (session.getAttribute("editItem") == null)
+				session.setAttribute("editItem", item);
 			request.setAttribute("categoryList", category);
 			request.setAttribute("optionList", optionJson);
 

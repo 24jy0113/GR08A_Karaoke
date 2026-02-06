@@ -112,7 +112,7 @@ public class ItemDao {
 			preState1.setBoolean(6, item.isStock());
 			preState1.setInt(7, item.getId());
 			try {
-				preState1.executeUpdate();
+
 				// 商品テーブルに商品を登録.
 				preState1.executeUpdate();
 
@@ -221,8 +221,14 @@ public class ItemDao {
 							optionIdList.add(resSet2.getInt("option_id"));
 						}
 					}
-					// オプションをItemインスタンスに追加.
-					item.setOptionList(searchOptionByOptionIdList(con, optionIdList));
+					// オプションがある場合のみ取得
+					if (!optionIdList.isEmpty()) {
+					    item.setOptionList(
+					        searchOptionByOptionIdList(con, optionIdList)
+					    );
+					} else {
+					    item.setOptionList(new ArrayList<>());
+					}
 
 					// 作成したItemオブジェクトを返却値に入れる.
 					resList.add(item);
@@ -300,6 +306,10 @@ public class ItemDao {
 				+ "WHERE option_id IN (" + placeholders + ");";
 
 		try (PreparedStatement preState = con.prepareStatement(sql)) {
+			for (int i = 0; i < optionIdList.size(); i++) {
+		        preState.setInt(i + 1, optionIdList.get(i));
+		    }
+			
 			try (ResultSet resSet = preState.executeQuery();) {
 				while (resSet.next()) {
 

@@ -11,7 +11,7 @@ if (user == null) {
 <html lang=ja>
 <head>
 <meta charset="UTF-8">
-<title>商品情報確認画面-${item.id<1?追加:更新 }-管理者</title>
+<title>商品情報確認画面-${editItem.id<1?追加:更新 }-管理者</title>
 <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath()%>/css/08_04.css">
 <link rel="stylesheet" type="text/css"
@@ -43,40 +43,39 @@ if (user == null) {
 				<table>
 					<tr>
 						<th>商品名</th>
-						<td>${item.name }</td>
+						<td>${editItem.name }</td>
 					</tr>
 					<tr>
 						<th>価格(税込)</th>
-						<td>${item.price }円（税込）</td>
+						<td>${editItem.price }円（税込）</td>
 					</tr>
 					<tr>
 						<th>商品画像</th>
-						<td><img src="<%=request.getContextPath()%>/img/${item.image}" alt="${item.name }" width="30px"
+						<td><img src="${pageContext.request.contextPath}/img/${editItem.image}" alt="${editItem.name }" width="30px"
 							height="30px"></td>
 					</tr>
 					<tr>
 						<th>注文番号</th>
-						<td>${item.itemNo }</td>
+						<td>${editItem.itemNo }</td>
 					</tr>
 					<tr>
 						<th>カテゴリー</th>
-						<td>${item.category }</td>
+						<td>${editItem.category }</td>
 					</tr>
 					<tr>
 						<th>在庫</th>
-						<td>${item.stock ? "あり":"なし" }</td>
+						<td>${editItem.stock ? "あり":"なし" }</td>
 					</tr>
 					<tr>
 						<th>オプション</th>
-						<td>${item.hasOption() ? "あり":"なし" }</td>
+						<td>${editItem.hasOption() ? "あり":"なし" }</td>
 					</tr>
 				</table>
 				<div class="action-buttons">
 					<form method="get"
-						action="<%=request.getContextPath()%>/ItemEditServlet">
-						<input type="hidden" name="cmd" value="execute">
-						<button type="button" class="btn-back" onclick="history.back()">修正する</button>
-						<input type="submit" class="btn-next" value="確認する">
+						action="${pageContext.request.contextPath}/ItemEditServlet">
+						<button name="cmd" value="edit" type="submit" class="btn-next">修正する</button>
+						<button name="cmd" value="execute" type="submit" class="btn-next">確認する</button>
 					</form>
 				</div>
 			</div>

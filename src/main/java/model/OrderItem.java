@@ -162,7 +162,13 @@ public class OrderItem {
 			}
 		}
 	}
-
+	public int getOptionPriceSum() {//注文履歴表示用
+	    int sum = 0;
+	    for (SelectedOptionDetail d : getSelectedOptionDetailList()) {
+	        sum += d.price();
+	    }
+	    return sum;
+	}
 	public int getCount() {
 		return count;
 	}

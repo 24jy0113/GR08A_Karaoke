@@ -12,7 +12,7 @@ if (user == null) {
 <html lang=ja>
 <head>
 <meta charset="UTF-8">
-<title>商品${item.id<1?追加:更新 }入力画面-管理者</title>
+<title>商品${editItem.id<1?追加:更新 }入力画面-管理者</title>
 <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath()%>/css/08_03.css">
 <link rel="stylesheet" type="text/css"
@@ -39,60 +39,61 @@ if (user == null) {
 	</header>
 	<main>
 		<div class="bodymsg">
-			<h1>商品情報${item.id<1?追加:更新 }入力</h1>
+			<h1>商品情報${editItem.id<1?追加:更新 }入力</h1>
 		</div>
-		<form method="get"
-			action="<%=request.getContextPath()%>/ItemEditServlet">
+		<form method="post" enctype="multipart/form-data">
 			<div class="container">
-
-				<input type="hidden" name="cmd" value="confirm">
+				<input type="hidden" name="q" value="${query }">
 				<div class="right-box">
 					<div class="input-row">
 						<label>商品名</label> <input class="menuInput" type="text"
-							name="name" value="${item.name }" />
+							name="name" value="${editItem.name }" />
 					</div>
 					<div class="input-row">
 						<label>単価</label> <input class="menuInput" type="text"
-							name="price" value="${item.price }" />円 ＊税込価格
+							name="price" value="${editItem.price }" />円 ＊税込価格
 					</div>
 					<div class="input-row">
 						<label>商品画像</label> <input type="file" name="image"
 							accept=".png, .jpg, .jpeg">
-						<p>＊JPG, JPEG, PNGのみ</p>
+						<p>
+							＊JPG, JPEG, PNGのみ<br>現在の商品画像:${editItem.image}
+						</p>
 					</div>
 					<div class="input-row">
 
 						<label>注文番号</label> <input class="menuInput" type="text"
-							name="order_number" value="${item.itemNo }" readonly />
+							name="order_number" value="${editItem.itemNo }" readonly />
 					</div>
 					<div class="input-row">
 						<label>カテゴリー</label> <select id="category-select"
 							class="category-select" name="category">
 							<c:forEach var="category" items="${categoryList}">
 								<option value="${category.key }"
-									${item.categoryId == category.key ? "selected" : ""}>${category.value}</option>
+									${editItem.categoryId == category.key ? "selected" : ""}>${category.value}</option>
 							</c:forEach>
 						</select>
 
 					</div>
 					<div class="input-row">
 						<label>在庫</label> <label><input type="radio" name="stock"
-							value="あり" ${item.isStock() ? "checked" : ""}> あり</label> <label><input
+							value="あり" ${editItem.isStock() ? "checked" : ""}> あり</label> <label><input
 							type="radio" name="stock" value="なし"
 							${!item.isStock() ? "checked" : ""}> なし</label>
 					</div>
 					<div class="input-row">
 						<label>オプション</label> <label><input type="radio"
-							id="radioOption" value="あり" ${item.hasOption() ? "checked" : ""}>
-							あり</label> <label><input type="radio" id="radioNonOption"
-							value="なし" ${!item.hasOption() ? "checked" : ""}> なし</label>
+							id="radioOption" value="あり"
+							${editItem.hasOption() ? "checked" : ""}> あり</label> <label><input
+							type="radio" id="radioNonOption" value="なし"
+							${!item.hasOption() ? "checked" : ""}> なし</label>
 					</div>
 					<!-- オプション全体 -->
 					<div id="optionArea"></div>
 					<script type="text/javascript">
 						const resMap = JSON.parse('${optionList}');
 						const initialSelectedIds = [
-							<c:forEach items="${item.getOptionList()}" var="o" varStatus="s">
+							<c:forEach items="${editItem.getOptionList()}" var="o" varStatus="s">
 					            ${o.id}${!s.last ? ',' : ''}
 					        </c:forEach>
 					        ];
@@ -148,13 +149,15 @@ if (user == null) {
 
 						// ページ読み込み時の初期状態を反映.
 						updateDisplay();
-						updateOptionArea(${item.categoryId});
+						updateOptionArea(${editItem.categoryId});
 					</script>
 				</div>
 			</div>
 			<div class="action-buttons">
-				<button type="button" class="btn-back" onclick="history.back()">該当商品一覧へ戻る</button>
-				<input type="submit" class="btn-next" value="確認する">
+				<button type="submit" class="btn-back"
+					formaction="${pageContext.request.contextPath}/SearchItemByName">該当商品一覧へ戻る</button>
+				<button name="cmd" value="confirm" type="submit" class="btn-next"
+					formaction="${pageContext.request.contextPath}/ItemEditServlet">確認する</button>
 			</div>
 		</form>
 	</main>
