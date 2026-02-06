@@ -196,14 +196,10 @@ public class ItemDao {
 				+ "INNER JOIN `option` "
 				+ "ON item_option.option_id = `option`.option_id "
 				+ "WHERE item_option.item_id = ?;";
-		String sql3 = "SELECT option_detail_id,option_detail_name,price "
-				+ "FROM option_detail "
-				+ "WHERE option_id = ?;";
 
 		try (Connection con = DatabaseManager.connect();
 				PreparedStatement preState1 = con.prepareStatement(sql1);
-				PreparedStatement preState2 = con.prepareStatement(sql2);
-				PreparedStatement preState3 = con.prepareStatement(sql3);) {
+				PreparedStatement preState2 = con.prepareStatement(sql2);) {
 
 			// プリペアードステートメントを使用.
 			for (int i = 0; i < args.length; i++) {
@@ -227,21 +223,11 @@ public class ItemDao {
 							// Optionインスタンスを生成.
 							Option option = new Option(resSet2.getInt("option_id"), resSet2.getString("option_name"));
 
-							// オプションの主キーを取得して選択肢を検索.
-							preState3.setInt(1, resSet2.getInt("option_id"));
-							try (ResultSet resSet3 = preState3.executeQuery();) {
-								while (resSet3.next()) {
-
-									//　オプションの選択肢をOptionインスタンスに追加.
-									option.setSelection(resSet3.getInt("option_detail_id"),
-											resSet3.getString("option_detail_name"), resSet3.getInt("price"));
-								}
-							}
-
 							// オプションをItemインスタンスに追加.
 							item.setOption(option);
 						}
 					}
+					setSelectionsByOptions(con, item.getOptionList());
 
 					// 作成したItemオブジェクトを返却値に入れる.
 					resList.add(item);
@@ -295,7 +281,7 @@ public class ItemDao {
 		}
 	}
 
-	// オプションをカテゴリーIDで探す.
+	// オプションをカテゴリーIDで仕分けて取得する.
 	public Map<Integer, List<Option>> getAllOptionsGroupedByCategory() throws Exception {
 
 		// 返却値の参照変数を初期化.

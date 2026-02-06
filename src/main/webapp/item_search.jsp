@@ -38,6 +38,11 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
     </header>
     <main>
         <div class="bodymsg">
+        <% String error = (String) request.getAttribute("error"); %>
+		<% if (error != null) { %>
+		    <p style="color:red;"><%= error %></p>
+		<% } %>
+        
             <div class="msg">
                 <h1>メニュー番号で商品を探す</h1>
             </div>
@@ -45,14 +50,16 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
             <div class="container">
                 <!-- 左側：画像領域 -->
                 <div>
-                    <div class="left-box">画像</div>
+                    <div class="left-box"><img class="campaign" src="<%= request.getContextPath() %>/img/campaign.png" alt="campaign" width="300" height="300"></div>
                     <button class="back-btn" onclick="history.back()">トップページへ</button>
                 </div>
                 <!-- 右側：検索欄＋テンキー -->
                 <div class="right-box">
                     <div class="input-row">
-                        <input id="menuInput" type="text" maxlength="4" readonly/>
-                        <button id="searchBtn" onclick="location.href='item_detail.jsp'">検索</button>
+                    	<form action="<%=request.getContextPath()%>/ItemSearchServlet" method="get">
+	                        <input id="menuInput" name="orderNumber" type="text" maxlength="4" readonly/>
+	                        <button id="searchBtn" type="submit">検索</button>
+	                    </form>
                     </div>
                     <div class="pad">
                         <button>1</button>

@@ -6,17 +6,18 @@ import jakarta.servlet.http.HttpServletResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import dao.ItemDao;
+import model.Item;
 
 public class ItemUpdateAction implements Action {
 
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) {
-		int id = Integer.parseInt(request.getParameter("edit"));
+		String id = request.getParameter("edit");
 		var mapper = new ObjectMapper();
 
 		try {
 			var dao = new ItemDao();
-			var item = dao.searchItemById(id);
+			var item = id != null ? dao.searchItemById(Integer.parseInt(id)) : new Item();
 			var category = dao.getCategoryList();
 			var option = dao.getAllOptionsGroupedByCategory();
 			String optionJson = mapper.writeValueAsString(option);
