@@ -8,7 +8,6 @@ import jakarta.servlet.http.HttpSession;
 import dao.RoomDao;
 import model.NoticeResult;
 import model.Room;
-import service.RoomTimeService;
 
 public class NoticeAction {
 
@@ -26,8 +25,8 @@ public class NoticeAction {
 				return new NoticeResult(true);
 			}
 
-			// 実際の退室時間を計算（ExtendActionと共通）.
-			LocalTime leaving = RoomTimeService.calcActualLeavingTime(room);
+			// 実際の退室時間を計算.
+			LocalTime leaving = room.getLeavingTime().toLocalTime();
 
 			// 現在時刻.
 			LocalTime now = LocalTime.now();
