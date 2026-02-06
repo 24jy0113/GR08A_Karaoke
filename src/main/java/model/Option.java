@@ -1,13 +1,14 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Option {
 	private int id;
 	private String name;
-	private ArrayList<Selection> selections;
+	private List<Selection> selections;
 
-	public Option(int id, String name, ArrayList<Selection> selections) {
+	public Option(int id, String name, List<Selection> selections) {
 		this.id = id;
 		this.name = name;
 		this.selections = selections;
@@ -40,7 +41,7 @@ public class Option {
 		return resSel;
 	}
 
-	public ArrayList<Selection> getSelectionList() {
+	public List<Selection> getSelectionList() {
 		return selections;
 	}
 

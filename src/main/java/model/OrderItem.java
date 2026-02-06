@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class OrderItem {
 	private int id;
@@ -12,7 +13,7 @@ public class OrderItem {
     private String itemName;
     private int itemPrice;
     
-	private ArrayList<SelectedOption> selectedOptions;
+	private List<SelectedOption> selectedOptions;
 	private int count;
 	private int total;
 
@@ -27,16 +28,16 @@ public class OrderItem {
 		}
 	}
 
-	public OrderItem(Item item, ArrayList<SelectedOption> selectedOptions) {
+	public OrderItem(Item item, List<SelectedOption> selectedOptions) {
 		this(item, 1, selectedOptions);
 	}
 
-	public OrderItem(Item item, int count, ArrayList<SelectedOption> selectedOptions) {
+	public OrderItem(Item item, int count, List<SelectedOption> selectedOptions) {
 		this(-1, item, count, selectedOptions, 0);
 		calcTotal();
 	}
 
-	public OrderItem(int id, Item item, int count, ArrayList<SelectedOption> selectedOptions, int total) {
+	public OrderItem(int id, Item item, int count, List<SelectedOption> selectedOptions, int total) {
 		this.id = id;
 		this.item = item;
 		this.count = count;
@@ -96,15 +97,15 @@ public class OrderItem {
 		this.itemPrice = itemPrice;
 	}
 
-	public ArrayList<SelectedOption> getSelectedOptions() {
+	public List<SelectedOption> getSelectedOptions() {
 		return selectedOptions;
 	}
 
-	public void setSelectedOptions(ArrayList<SelectedOption> selectedOptions) {
+	public void setSelectedOptions(List<SelectedOption> selectedOptions) {
 		this.selectedOptions = selectedOptions;
 	}
 
-	public ArrayList<SelectedOption> getSelectedOptionList() {
+	public List<SelectedOption> getSelectedOptionList() {
 		return selectedOptions;
 	}
 
@@ -121,7 +122,7 @@ public class OrderItem {
 	}
 
 	// SelectedOptionDetailのリストを返す.
-	public ArrayList<SelectedOptionDetail> getSelectedOptionDetailList() {
+	public List<SelectedOptionDetail> getSelectedOptionDetailList() {
 		ArrayList<SelectedOptionDetail> resSelectedOptionDetailList = new ArrayList<>();
 		for (SelectedOption selectedOption : selectedOptions) {
 			resSelectedOptionDetailList.add(findSelectedOptionDetailById(selectedOption.optId()));
@@ -141,7 +142,7 @@ public class OrderItem {
 
 	}
 
-	public void setSelectedOptionList(ArrayList<SelectedOption> option) {
+	public void setSelectedOptionList(List<SelectedOption> option) {
 		this.selectedOptions = option;
 		calcTotal();
 	}
