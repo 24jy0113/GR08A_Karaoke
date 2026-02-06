@@ -47,7 +47,6 @@ if (user == null) {
 
 				<input type="hidden" name="cmd" value="confirm">
 				<div class="right-box">
-					<input type="hidden" name="id" value="${item.id }">
 					<div class="input-row">
 						<label>商品名</label> <input class="menuInput" type="text"
 							name="name" value="${item.name }" />
