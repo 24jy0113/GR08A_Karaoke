@@ -8,9 +8,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
-import dao.ItemDao;
+import action.Action;
+import action.ItemUpdateAction;
 
 /**
  * Servlet implementation class ItemEditServlet
@@ -26,43 +26,30 @@ public class ItemEditServlet extends HttpServlet {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
+		Action action = null;
 
 		if (request.getParameter("edit") != null) {
-			int id = Integer.parseInt(request.getParameter("edit"));
-			var mapper = new ObjectMapper();
-
-			try {
-				var dao = new ItemDao();
-				var item = dao.searchItemById(id);
-				var category = dao.getCategoryList();
-				var option = dao.getAllOptionsGroupedByCategory();
-				String optionJson = mapper.writeValueAsString(option);
-
-				request.setAttribute("item", item);
-				request.setAttribute("categoryList", category);
-				request.setAttribute("optionList", optionJson);
-
-			} catch (Exception e) {
-				// デバッグ用のスタックトレース.
-				e.printStackTrace();
-
-				// フロントエンド用のメッセージ.
-				request.setAttribute("errMsg", e.getMessage());
-			}
-			RequestDispatcher rd = request.getRequestDispatcher("/admin/modify_update.jsp");
-			rd.forward(request, response);
+			action = new ItemUpdateAction();
 		} else if (request.getParameter("confirm") != null) {
-
-		} /*else if ("execute".equals(action)) {
 			
+		} /*else if ("execute".equals(action)) {
+			postに書く
 			}*/
+
+		String view = action.execute(request, response);
+		RequestDispatcher rd = request.getRequestDispatcher(view);
+		rd.forward(request, response);
 	}
+	
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO 自動生成されたメソッド・スタブ
+		super.doPost(request, response);
+	}
+	
 
 }
