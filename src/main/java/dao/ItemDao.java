@@ -112,7 +112,7 @@ public class ItemDao {
 			preState1.setBoolean(6, item.isStock());
 			preState1.setInt(7, item.getId());
 			try {
-				preState1.executeUpdate();
+
 				// 商品テーブルに商品を登録.
 				preState1.executeUpdate();
 
@@ -191,11 +191,9 @@ public class ItemDao {
 		String sql1 = "SELECT item_id,item_name,item.category_id,category_name,order_number,price,item_image,stock "
 				+ "FROM item INNER JOIN category ON item.category_id = category.category_id "
 				+ "WHERE " + condition;
-		String sql2 = "SELECT `option`.option_id,option_name "
+		String sql2 = "SELECT option_id "
 				+ "FROM item_option "
-				+ "INNER JOIN `option` "
-				+ "ON item_option.option_id = `option`.option_id "
-				+ "WHERE item_option.item_id = ?;";
+				+ "WHERE item_id = ?;";
 
 		try (Connection con = DatabaseManager.connect();
 				PreparedStatement preState1 = con.prepareStatement(sql1);
@@ -217,17 +215,20 @@ public class ItemDao {
 
 					// 商品の主キーを取得してオプションを検索.
 					preState2.setInt(1, resSet1.getInt("item_id"));
+					List<Integer> optionIdList = new ArrayList<>();
 					try (ResultSet resSet2 = preState2.executeQuery();) {
 						while (resSet2.next()) {
-
-							// Optionインスタンスを生成.
-							Option option = new Option(resSet2.getInt("option_id"), resSet2.getString("option_name"));
-
-							// オプションをItemインスタンスに追加.
-							item.setOption(option);
+							optionIdList.add(resSet2.getInt("option_id"));
 						}
 					}
-					setSelectionsByOptions(con, item.getOptionList());
+					// オプションがある場合のみ取得
+					if (!optionIdList.isEmpty()) {
+					    item.setOptionList(
+					        searchOptionByOptionIdList(con, optionIdList)
+					    );
+					} else {
+					    item.setOptionList(new ArrayList<>());
+					}
 
 					// 作成したItemオブジェクトを返却値に入れる.
 					resList.add(item);
@@ -251,11 +252,14 @@ public class ItemDao {
 
 	// 選択肢が入っていないオプションの動的配列を受け取り、それぞれに選択肢を入れて返す.
 	private void setSelectionsByOptions(Connection con, List<Option> optionList) throws SQLException {
+
+		// 引数のリストがnullか空なら何もせず戻る.
 		if (optionList == null || optionList.isEmpty())
 			return;
 
 		Map<Integer, Option> optionMap = optionList.stream().collect(Collectors.toMap(Option::getId, o -> o));
 
+		// 引数のリストの長さ分、?をカンマ区切りにしたものを生成.
 		String placeholders = optionList.stream()
 				.map(o -> "?")
 				.collect(Collectors.joining(","));
@@ -279,6 +283,69 @@ public class ItemDao {
 				}
 			}
 		}
+	}
+
+	// オプションをオプションIDのリストから取得する.
+	private List<Option> searchOptionByOptionIdList(Connection con, List<Integer> optionIdList) throws SQLException {
+
+		// 返却値の参照変数を初期化.
+		List<Option> resList = new ArrayList<>();
+
+		// 引数のリストがnullか空なら空のListを返す.
+		if (optionIdList == null || optionIdList.isEmpty())
+			return resList;
+
+		// 引数の長さ分、?をカンマ区切りにしたものを生成.
+		String placeholders = optionIdList.stream()
+				.map(o -> "?")
+				.collect(Collectors.joining(","));
+
+		// SQL文作成.
+		String sql = "SELECT option_id, option_name "
+				+ "FROM `option` "
+				+ "WHERE option_id IN (" + placeholders + ");";
+
+		try (PreparedStatement preState = con.prepareStatement(sql)) {
+			for (int i = 0; i < optionIdList.size(); i++) {
+		        preState.setInt(i + 1, optionIdList.get(i));
+		    }
+			
+			try (ResultSet resSet = preState.executeQuery();) {
+				while (resSet.next()) {
+
+					// Optionインスタンスを生成.
+					Option option = new Option(resSet.getInt("option_id"), resSet.getString("option_name"));
+
+					// オプションをItemインスタンスに追加.
+					resList.add(option);
+				}
+			}
+		}
+		setSelectionsByOptions(con, resList);
+
+		// 結果を返却.
+		return resList;
+	}
+
+	public List<Option> searchOptionByOptionIdList(List<Integer> optionIdList) throws Exception {
+
+		// 返却値の参照変数を初期化.
+		List<Option> resList = new ArrayList<>();
+
+		try (Connection con = DatabaseManager.connect();) {
+			resList = searchOptionByOptionIdList(con, optionIdList);
+		} catch (SQLException e) {
+			// デバッグ用のスタックトレース.
+			e.printStackTrace();
+
+			// フロントエンド用のエラーメッセージ.
+			String errMsg = "DB接続に失敗しました！<br>管理者に連絡してください。";
+
+			// 例外を投げる.
+			throw new Exception(errMsg);
+		}
+
+		return resList;
 	}
 
 	// オプションをカテゴリーIDで仕分けて取得する.
@@ -319,6 +386,7 @@ public class ItemDao {
 			throw new Exception(errMsg);
 		}
 
+		// 結果を返却.
 		return resMap;
 	}
 

@@ -4,7 +4,6 @@ import java.time.LocalTime;
 
 import dao.RoomDao;
 import model.Room;
-import service.RoomTimeService;
 
 // ※延長可否チェックはConfirm時に行う.
 public class ExtendPreviewAction {
@@ -13,7 +12,7 @@ public class ExtendPreviewAction {
 		Room room = RoomDao.getRoomById(roomId);
 
 		// 現在の退室時間を計算.
-		LocalTime currentLeaving = RoomTimeService.calcActualLeavingTime(room);
+		LocalTime currentLeaving = room.getLeavingTime().toLocalTime();
 
 		// 延長後の退室時間を計算.
 		LocalTime newLeaving = currentLeaving.plusMinutes(extendMinutes);

@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Item {
 	private int id;
@@ -11,7 +12,7 @@ public class Item {
 	private int price;
 	private String image;
 	private boolean stock;
-	private ArrayList<Option> options;
+	private List<Option> options;
 
 	public Item() {
 		this(-1, "", 0, "", 0, 0, "", false);
@@ -34,11 +35,11 @@ public class Item {
 		return !options.isEmpty();
 	}
 
-	public ArrayList<Option> getOptionList() {
+	public List<Option> getOptionList() {
 		return options;
 	}
 
-	public void setOptionList(ArrayList<Option> options) {
+	public void setOptionList(List<Option> options) {
 		this.options = options;
 	}
 

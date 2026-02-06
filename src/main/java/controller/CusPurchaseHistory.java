@@ -31,9 +31,12 @@ public class CusPurchaseHistory extends HttpServlet{
 
 	    try {
 	        OrderDao dao = new OrderDao();
-	        List<Order> orderList = dao.findActiveOrdersByRoom(room.getRoomNo());
+	        int roomId = room.getId();
+	        List<Order> orderList = dao.findActiveOrdersByRoom(roomId);
+	        int totalSum = dao.getActiveOrderTotalByRoom(roomId);
 
 	        req.setAttribute("orderList", orderList);
+	        req.setAttribute("totalSum", totalSum);
 	        req.getRequestDispatcher("/cus_purchase_history.jsp")
 	               .forward(req, res);
 
