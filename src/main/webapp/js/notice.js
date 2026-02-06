@@ -1,43 +1,110 @@
-// 部屋IDを取得（hidden input などから）
-const roomIdInput = document.getElementById("roomId");
-const roomId = roomIdInput ? roomIdInput.value : "";
+document.addEventListener("DOMContentLoaded", () => {
+	console.log("notice.js loaded");
+	// 部屋IDを取得（hidden input などから）
+	const roomIdInput = document.getElementById("roomId");
+	const roomId = roomIdInput ? roomIdInput.value : "";
 
-// サーバーに通知を問い合わせる関数
-function fetchNotice() {
-	fetch("/NoticeServlet")
-		.then(res => res.json())
-		.then(data => {
-			// セッション切れ時の処理
-			if (data.sessionExpired) {
-				alert("セッションが切れました。初期画面に戻ります。");
-				location.href = "/room_search.jsp";
-				return;
+	let leaveDateTime = null;
+	let countdownInterval = null;
+
+	// サーバーから退室時刻を取得
+	function fetchLeaveTime() {
+		fetch(`${CONTEXT_PATH}/RemainingTimeServlet`)
+			.then(res => res.json())
+			.then(data => {
+				if (data.sessionExpired) {
+					alert("セッションが切れました。初期画面に戻ります。");
+					location.href = `${CONTEXT_PATH}/room_search.jsp`;
+					return;
+				}
+				if (data.leaveTime) {
+					const today = new Date();
+					const parts = data.leaveTime.split(":");
+					const h = parseInt(parts[0], 10);
+					const m = parseInt(parts[1], 10);
+					const s = parts[2] ? parseInt(parts[2], 10) : 0; // ←秒がなければ0にする
+					leaveDateTime = new Date(today.getFullYear(), today.getMonth(), today.getDate(), h, m, s);
+					console.log("leaveDateTime set to:", leaveDateTime);
+					// カウントダウンがまだ始まっていなければ開始
+					if (!countdownInterval) {
+						startCountdown();
+					}
+				}
+			})
+			.catch(err => console.error("退室時刻取得エラー:", err));
+	}
+
+	// 秒ごとのカウントダウン開始
+	function startCountdown() {
+		countdownInterval = setInterval(() => {
+			if (!leaveDateTime) return;
+			const now = new Date();
+			let diffSec = Math.floor((leaveDateTime - now) / 1000);
+			if (diffSec <= 0) {
+				diffSec = 0;
+				clearInterval(countdownInterval); // タイマー停止
+				countdownInterval = null;
 			}
-
-			// 通知がある場合、モーダル表示
-			if (data.notice) {
-				showNotice(data.minutes);
+			const min = Math.floor(diffSec / 60);
+			const sec = diffSec % 60;
+			const el = document.getElementById("remainingTime");
+			if (el) {
+				el.innerText = `${min}:${String(sec).padStart(2, "0")}`;
 			}
-		})
-		.catch(err => console.error("通知取得エラー:", err));
-}
+		}, 1000);
+	}
 
-// 1分ごとに通知チェック
-setInterval(fetchNotice, 60000);
+	// 通知取得
+	function fetchNotice() {
+		fetch(`${CONTEXT_PATH}/NoticeServlet`)
+			.then(res => res.json())
+			.then(data => {
+				// セッション切れ時の処理
+				if (data.sessionExpired) {
+					alert("セッションが切れました。初期画面に戻ります。");
+					location.href = `${CONTEXT_PATH}/room_search.jsp`;
+					return;
+				}
 
-// ページ読み込み時に初回チェック
-fetchNotice();
+				// 通知がある場合、モーダル表示
+				if (data.notice) {
+					// ここで残り時間をチェック
+					const remainingEl = document.getElementById("remainingTime");
+					if (remainingEl) {
+						const [minStr] = remainingEl.innerText.split(":");
+						const remainingMinutes1 = parseInt(minStr, 10);
+						const remainingMinutes2 = parseInt(minStr, 15);
+						// 実際の残り時間が通知対象になった場合だけ表示
+						if (remainingMinutes1 <= data.minutes || remainingMinutes2 <= data.minutes) {
+							showNotice(data.minutes);
+						}
+					}
+				}
+			})
+			.catch(err => console.error("通知取得エラー:", err));
+	}
 
-// モーダル表示関数
-function showNotice(minutes) {
-	const modal = document.getElementById("noticeModal");
-	const text = document.getElementById("noticeText");
-	text.innerText = minutes + "分前になりました";
-	modal.classList.remove("hidden");
-}
+	// モーダル表示関数
+	function showNotice(minutes) {
+		const modal = document.getElementById("noticeModal");
+		const text = document.getElementById("noticeText");
+		text.innerText = minutes + "分前になりました";
+		modal.classList.remove("hidden");
+	}
 
-// モーダルを閉じる関数（確認ボタン用）
-function closeNotice() {
-	const modal = document.getElementById("noticeModal");
-	modal.classList.add("hidden");
-}
+	// モーダルを閉じる関数（確認ボタン用）
+	window.closeNotice = function() {
+		const modal = document.getElementById("noticeModal");
+		modal.classList.add("hidden");
+	}
+
+	// 初回実行
+	fetchLeaveTime();
+	fetchNotice();
+
+	// 1分ごとにサーバー再同期
+	setInterval(() => {
+		fetchLeaveTime();
+		fetchNotice();
+	}, 60000);
+});
