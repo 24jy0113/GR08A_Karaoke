@@ -54,7 +54,7 @@ public class ExtendConfirmServlet extends HttpServlet {
 			}
 			new ExtendAction().execute(extendMinutes, session);
 
-			// DBから最新の部屋情報を取得
+			// DBから最新の部屋情報を取得.
 			Room latestRoom = RoomDao.getRoomById(sessionRoom.getId());
 			session.setAttribute("room", latestRoom);
 

@@ -13,6 +13,7 @@ public class ExtendCheckAction {
 	private static final int[] EXTEND_OPTIONS = { 30, 60, 90, 120, 150, 180 };
 
 	public List<Integer> getAvailableExtendMinutes(int roomId) throws Exception {
+
 		// DBから最新の部屋情報を取得.
 		Room room = RoomDao.getRoomById(roomId);
 		if (room == null) {
@@ -30,7 +31,7 @@ public class ExtendCheckAction {
 		LocalTime limitTime;
 		for (int minutes : EXTEND_OPTIONS) {
 
-			// 次予約がないなら全部OK
+			// 次予約がないなら全部OK.
 			if (nextReception == null) {
 				result.add(minutes);
 				continue;

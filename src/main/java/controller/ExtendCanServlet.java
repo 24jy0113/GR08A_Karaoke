@@ -31,10 +31,16 @@ public class ExtendCanServlet extends HttpServlet {
 		}
 
 		try {
+
+			//最新のRoom情報を取得.
 			Room latestRoom = RoomDao.getRoomById(sessionRoom.getId());
-			session.setAttribute("room", latestRoom); // セッション更新.
+
+			// セッション更新.
+			session.setAttribute("room", latestRoom);
 
 			ExtendCheckAction action = new ExtendCheckAction();
+
+			// 延長可能時間の範囲.
 			List<Integer> availableMinutes = action.getAvailableExtendMinutes(sessionRoom.getId());
 
 			if (availableMinutes.isEmpty()) {

@@ -41,19 +41,20 @@ public class RoomUpdateServlet extends HttpServlet {
 				RoomDao.insertRoomUsageStatus(roomId);
 			}
 
-			// 受付時間・退室時間更新
-			if (statusId == 3 || statusId == 2) { // 予約or受付済みの場合
+			// 受付時間・退室時間更新.
+			if (statusId == 3 || statusId == 2) {
+				// 予約or受付済みの場合.
 				if (room.getRes_receptionTime() != null && room.getRes_leavingTime() != null) {
 					service.updateRoomTimes(roomId, receptionTime);
 				} else {
 					service.updateRoomTimes(roomId, receptionTime, leavingTime);
 				}
 			}
-			// 酒類・状態更新
+			// 酒類・状態更新.
 			RoomDao.updateAlcohol(roomId, alcohol);
 			RoomDao.updateStatus(roomId, statusId);
 
-			// 完了画面へ
+			// 完了画面へ.
 			request.setAttribute("message", "更新できました");
 			request.getRequestDispatcher("/front/room_updated.jsp").forward(request, response);
 
