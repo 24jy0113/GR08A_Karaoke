@@ -40,7 +40,7 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
         <div class="bodymsg">
             <div class="msg">
                 
-                <h2>ドリンクのサイズをお選びください</h2>
+                <h2>オプションをお選びください（オプションがなければ「次へ」）</h2>
             </div>
             <div class="container">
                 <!-- 左側：画像領域 -->
