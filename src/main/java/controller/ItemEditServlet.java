@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import action.Action;
 import action.ItemUpdateAction;
+import action.ItemUpdateConfirm;
 
 /**
  * Servlet implementation class ItemEditServlet
@@ -26,7 +27,7 @@ public class ItemEditServlet extends HttpServlet {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
@@ -34,22 +35,35 @@ public class ItemEditServlet extends HttpServlet {
 
 		if (request.getParameter("edit") != null) {
 			action = new ItemUpdateAction();
-		} else if (request.getParameter("confirm") != null) {
-			
-		} /*else if ("execute".equals(action)) {
-			postに書く
-			}*/
+		} else {
+			String cmd = request.getParameter("cmd");
+			switch (cmd) {
+			case "confirm":
+				action = new ItemUpdateConfirm();
+				break;
+			case "add":
+				break;
 
-		String view = action.execute(request, response);
-		RequestDispatcher rd = request.getRequestDispatcher(view);
-		rd.forward(request, response);
+			default:
+				break;
+			}
+		}
+		if (action != null) {
+			String view = action.execute(request, response);
+			RequestDispatcher rd = request.getRequestDispatcher(view);
+			rd.forward(request, response);
+		} else {
+			// エラーハンドリング：一覧に戻すなど
+			response.sendRedirect("/admin/modify_search.jsp");
+		}
 	}
-	
-	
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO 自動生成されたメソッド・スタブ
-		super.doPost(request, response);
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		if ("execute".equals("")) {
+			// SQLの更新処理
+		}
 	}
-	
 
 }
