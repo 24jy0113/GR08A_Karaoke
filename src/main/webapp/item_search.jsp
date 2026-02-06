@@ -51,7 +51,7 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
                 <!-- 左側：画像領域 -->
                 <div>
                     <div class="left-box"><img class="campaign" src="<%= request.getContextPath() %>/img/campaign.png" alt="campaign" width="300" height="300"></div>
-                    <button class="back-btn" onclick="history.back()">トップページへ</button>
+                    <button class="back-btn" onclick="<%= request.getContextPath() %>/cus_top.jsp">トップページへ</button>
                 </div>
                 <!-- 右側：検索欄＋テンキー -->
                 <div class="right-box">
