@@ -12,19 +12,16 @@ import model.Room;
 public class NoticeAction {
 
 	public NoticeResult execute(Room sessionRoom, HttpSession session) {
-
 		if (sessionRoom == null) {
 			// セッション切れ時.
 			return new NoticeResult(true);
 		}
-
 		try {
 			// DBから最新の部屋情報を取得.
 			Room room = RoomDao.getRoomById(sessionRoom.getId());
 			if (room == null) {
 				return new NoticeResult(true);
 			}
-
 			// 実際の退室時間を計算.
 			LocalTime leaving = room.getLeavingTime().toLocalTime();
 
