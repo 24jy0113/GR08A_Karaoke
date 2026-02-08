@@ -17,10 +17,8 @@ if (orderList == null) {
 <head>
 <meta charset="UTF-8">
 <title>注文履歴一覧画面</title>
-<link rel="stylesheet" type="text/css"
-	href="<%=request.getContextPath()%>/css/05_01.css">
-<link rel="stylesheet" type="text/css"
-	href="<%=request.getContextPath()%>/css/header.css">
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/05_01.css">
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/header.css">
 </head>
 <body>
 	<!-- Header -->
@@ -50,69 +48,71 @@ if (orderList == null) {
 		<div class="bodymsg">
 			<div class="msg">
 				<h2>注文履歴一覧</h2>
-				
-				<%
-				for (Order o : orderList) {
-				%>
-				
-				<h3>受取番号_<%=o.getReceivingNo()%></h3>
-				
-				<h4>
-				<%= "ROOM".equals(o.getPickupMethod())
-				    ? "スタッフがお部屋までお届け"
-				    : "カウンター受取" %>
-				</h4>
-				
-				<table>
-				    <tr>
-				        <th>商品名</th>
-				        <th>単価</th>
-				        <th>オプション</th>
-				        <th>個数</th>
-				        <th>小計</th>
-				    </tr>
-				
-				<%
-				    for (OrderItem oi : o.getItemList()) {
-				%>
-				    <tr>
-				        <td><%=oi.getItem().getName()%></td>
-				        <td><%=oi.getItem().getPrice()%>円</td>
-				        <td>
-				        <%
-				            List<OrderItem.SelectedOptionDetail> opts = oi.getSelectedOptionDetailList();
-				            if (opts.isEmpty()) {
-				        %>
-				            なし
-				        <%
-				            } else {
-				                for (OrderItem.SelectedOptionDetail d : opts) {
-				        %>
-				            <%= d.optName() %>(+<%= d.price() %>円)<br>
-				        <%
-				                }
-				            }
-				        %>
-				        </td>
-				        <td><%=oi.getCount()%></td>
-				        <td><%=oi.getTotal()%>円</td>
-				    </tr>
-				<%
-				    }
-				%>
-				</table>
-				
-				<h4>注文小計：<%=o.calculateTotal()%>円（税込）</h4>
-				<hr>
-				
-				<%
-				}
-				%>
-				
-				<h4>
-					合計
-					<%=request.getAttribute("totalSum")%>（税込）＋ 室料他
-				</h4>
+					<%
+					for (Order o : orderList) {
+					%>
+					
+					<h3>受取番号_<%=o.getReceivingNo()%></h3>
+					
+					<h4>
+					<%= "お部屋までお届け".equals(o.getPickupMethod())
+					    ? "お部屋までお届け"
+					    : "カウンター受取" %>
+					</h4>
+
+					<table>
+					<tr>
+					    <th>商品名</th>
+					    <th>単価</th>
+					    <th>オプション</th>
+					    <th>個数</th>
+					    <th>小計</th>
+					</tr>
+					
+					<%
+					for (OrderItem oi : o.getItemList()) {
+					%>
+					<tr>
+					    <td><%=oi.getItemName()%></td>
+					    <td><%=oi.getItemPrice()%>円</td>
+					
+					    <td>
+					    <%
+					        List<OrderItem.SelectedOptionDetail> opts =
+					            oi.getSelectedOptionDetails();
+					
+					        if (opts == null || opts.isEmpty()) {
+					    %>
+					        なし
+					    <%
+					        } else {
+					            for (OrderItem.SelectedOptionDetail d : opts) {
+					    %>
+					        <%=d.selectionName()%>（<%=d.price()%>円）<br>
+					    <%
+					            }
+					        }
+					    %>
+					    </td>
+					
+					    <td><%=oi.getCount()%></td>
+					    <td><%=oi.getTotal()%>円</td>
+					</tr>
+					<%
+					}
+					%>
+					</table>
+					
+					<h4>注文小計：<%=o.calculateTotal()%>円（税込）</h4>
+					<hr>
+					
+					<%
+					}
+					%>
+					
+					<h4>
+					合計 <%=request.getAttribute("totalSum")%> 円（税込）＋ 室料他
+					</h4>
 				<div class="action-buttons">
 
 					<button type="button" class="btn-back" onclick="history.back()">トップページへ戻る</button>

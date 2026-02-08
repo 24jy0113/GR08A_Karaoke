@@ -51,8 +51,9 @@ public class OrderDao {
              * ========================= */
             String sqlDetail =
                 "INSERT INTO order_detail " +
-                "(order_id, item_id,count,sub_total) " +
-                "VALUES (?, ?, ?, ?)";
+                "(order_id, item_id,item_name,\n"
+                + "  item_price,count,sub_total) " +
+                "VALUES (?, ?, ?,?,?, ?)";
 
             psDetail = con.prepareStatement(sqlDetail, Statement.RETURN_GENERATED_KEYS);
 
@@ -71,9 +72,10 @@ public class OrderDao {
                 // --- order_detail insert
                 psDetail.setInt(1, orderId);
                 psDetail.setInt(2, oi.getItemId());
-
-                psDetail.setInt(3, oi.getCount());
-                psDetail.setInt(4, oi.getTotal());
+                psDetail.setString(3, oi.getItemName());
+                psDetail.setInt(4, oi.getItemPrice());
+                psDetail.setInt(5, oi.getCount());
+                psDetail.setInt(6, oi.getTotal());
                 psDetail.executeUpdate();
 
                 ResultSet rsDetail = psDetail.getGeneratedKeys();
@@ -394,7 +396,7 @@ public class OrderDao {
 	//		}
 	//	}
 
-	//	// 注文IDに対応する注文をDBから取得してOrderクラスとして返す。見つからないとnullが出るのでnullチェックをすること.
+		// 注文IDに対応する注文をDBから取得してOrderクラスとして返す。見つからないとnullが出るのでnullチェックをすること.
 	//	private Order searchOrderById(int orderId) throws Exception {
 	//
 	//		// 返却値の参照変数を初期化.
@@ -439,6 +441,89 @@ public class OrderDao {
 	//		return resOrder;
 	//
 	//	}
+	public List<OrderItem> findOrderItemsByOrderId(int orderId)//注文履歴用.
+	        throws Exception {
+
+	    List<OrderItem> list = new ArrayList<>();
+
+	    String sql = """
+	        SELECT
+	          order_detail_id,
+	          item_id,
+	          item_name,
+	    	  item_price,
+	          count,
+	          sub_total
+	        FROM order_detail
+	        WHERE order_id = ?
+	    """;
+
+	    try (Connection con = DatabaseManager.connect();
+	         PreparedStatement ps = con.prepareStatement(sql)) {
+
+	        ps.setInt(1, orderId);
+
+	        ResultSet rs = ps.executeQuery();
+	        while (rs.next()) {
+
+	            OrderItem oi = new OrderItem(
+	                rs.getInt("order_detail_id"),
+	                null, 
+	                rs.getInt("count"),
+	                new ArrayList<>(),
+	                rs.getInt("sub_total")
+	            );
+
+	            oi.setItemId(rs.getInt("item_id"));
+	            oi.setItemName(rs.getString("item_name"));
+	            oi.setItemPrice(rs.getInt("item_price"));
+	            
+	            list.add(oi);
+	        }
+	    }
+	    return list;
+	}
+
+	public List<OrderItem.SelectedOptionDetail> //注文履歴用.
+	findOptionsByOrderDetailId(int orderDetailId) throws Exception {
+
+	    List<OrderItem.SelectedOptionDetail> list = new ArrayList<>();
+
+	    String sql = """
+	        SELECT
+	          o.option_id,
+	          o.option_name,
+	          od.option_detail_id,
+	          od.option_detail_name,
+	          od.price
+	        FROM order_detail_option odo
+	        JOIN option_detail od
+	          ON odo.option_detail_id = od.option_detail_id
+	        JOIN `option` o
+	          ON od.option_id = o.option_id
+	        WHERE odo.order_detail_id = ?
+	    """;
+
+	    try (Connection con = DatabaseManager.connect();
+	         PreparedStatement ps = con.prepareStatement(sql)) {
+
+	        ps.setInt(1, orderDetailId);
+
+	        ResultSet rs = ps.executeQuery();
+	        while (rs.next()) {
+	            list.add(
+	                new OrderItem.SelectedOptionDetail(
+	                    rs.getInt("option_id"),
+	                    rs.getString("option_name"),
+	                    rs.getInt("option_detail_id"),
+	                    rs.getString("option_detail_name"),
+	                    rs.getInt("price")
+	                )
+	            );
+	        }
+	    }
+	    return list;
+	}
 
 	public ArrayList<Order> searchOrderByRoom(int roomId) throws Exception {
 

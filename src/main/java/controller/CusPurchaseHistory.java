@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpSession;
 
 import dao.OrderDao;
 import model.Order;
+import model.OrderItem;
 import model.Room;
 
 
@@ -34,6 +35,21 @@ public class CusPurchaseHistory extends HttpServlet{
 	        int roomId = room.getId();
 	        List<Order> orderList = dao.findActiveOrdersByRoom(roomId);
 	        int totalSum = dao.getActiveOrderTotalByRoom(roomId);
+	        
+	        for (Order o : orderList) {
+
+	            List<OrderItem> itemList =
+	                dao.findOrderItemsByOrderId(o.getId());
+
+	            for (OrderItem oi : itemList) {
+	            	List<OrderItem.SelectedOptionDetail> optionDetails =
+	            		    dao.findOptionsByOrderDetailId(oi.getId());
+	            	oi.setSelectedOptionDetails(optionDetails);
+	            }
+	            o.setItemList(itemList);
+	            
+	        }
+
 
 	        req.setAttribute("orderList", orderList);
 	        req.setAttribute("totalSum", totalSum);

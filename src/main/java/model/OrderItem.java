@@ -14,6 +14,8 @@ public class OrderItem {
     private int itemPrice;
     
 	private List<SelectedOption> selectedOptions;
+	// 注文履歴表示用
+	private List<SelectedOptionDetail> selectedOptionDetails;
 	private int count;
 	private int total;
 
@@ -169,6 +171,14 @@ public class OrderItem {
 	    }
 	    return sum;
 	}
+	public List<SelectedOptionDetail> getSelectedOptionDetails() {
+		return selectedOptionDetails;
+	}
+
+	public void setSelectedOptionDetails(List<SelectedOptionDetail> list) {
+	    this.selectedOptionDetails = list;
+	}
+
 	public int getCount() {
 		return count;
 	}

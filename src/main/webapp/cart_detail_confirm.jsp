@@ -53,11 +53,11 @@ if (order == null) {
                 <h3>受取方法</h3>
                 <p>ご自身で受け取りに行くか、お部屋までお届けするか選択してください</p>
                     <label>
-					  <input type="radio" name="pickupMethod" value="受取る" checked>
+					  <input type="radio" name="pickupMethod" value="カウンター受取" checked>
 					  受取に行く
 					</label>
 					<label>
-					  <input type="radio" name="pickupMethod" value="お届け">
+					  <input type="radio" name="pickupMethod" value="お部屋までお届け">
 					  部屋まで届ける
 					</label>
                 <h3>注文内容</h3>
