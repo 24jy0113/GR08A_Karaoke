@@ -1,5 +1,6 @@
 package action;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,7 +27,6 @@ public class ItemUpdateConfirmAction implements Action {
 		// パラメータの受け取り.
 		String name = request.getParameter("name");
 		int price = Integer.parseInt(request.getParameter("price"));
-		String image = request.getParameter("image");
 		int orderNumber = Integer.parseInt(request.getParameter("order_number"));
 		int categoryId = Integer.parseInt(request.getParameter("category"));
 		boolean stock = Boolean.parseBoolean(request.getParameter("stock"));
@@ -58,9 +58,23 @@ public class ItemUpdateConfirmAction implements Action {
 			item.setStock(stock);
 			item.setOptionList(optionList);
 
+			// ファイルの受け取り.
 			var imagePart = request.getPart("image");
-			if (imagePart != null && imagePart.getSize() != 0)
-				item.setImage(image);
+
+			// ファイルがある場合.
+			if (imagePart != null && imagePart.getSize() != 0) {
+				// ファイル名を取得する.
+				String fileName = imagePart.getSubmittedFileName();
+
+				// 物理保存用のパス（これはフルパスが必要）.
+				String uploadPath = request.getServletContext().getRealPath("/img/items");
+
+				// 物理保存実行
+				imagePart.write(uploadPath + File.separator + fileName);
+				
+				// 商品オブジェクトに新しいファイル名を入れる.
+				item.setImage(fileName);
+			}
 
 		} catch (Exception e) {
 			// デバッグ用のスタックトレース.
