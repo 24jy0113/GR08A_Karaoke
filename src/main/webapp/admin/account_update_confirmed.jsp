@@ -42,7 +42,7 @@ if (user == null) {
 		<div class="text-center">
 			<h1 class="bodytitle">アカウント情報の変更完了</h1>
 			<h1 class="bodymsg">アカウント情報の変更が完了しました！</h1>
-			<div class="action-buttons">
+			<div class="action-buttons flex-center">
 				<button type="button" class="btn-back"
 					onclick="location.href='account_search.jsp'">アカウント検索へ戻る</button>
 			</div>
