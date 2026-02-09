@@ -24,7 +24,7 @@ String roleName = (String) session.getAttribute("SIGNUP_ROLE_NAME");
 <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath()%>/css/default.css">
 <link rel="stylesheet" type="text/css"
-	href="<%=request.getContextPath()%>/css/01_02.css">
+	href="<%=request.getContextPath()%>/css/01.css">
 </head>
 <body>
 	<!-- Header -->

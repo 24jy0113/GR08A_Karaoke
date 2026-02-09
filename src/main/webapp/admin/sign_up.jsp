@@ -18,7 +18,7 @@ if (user == null) {
 <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath()%>/css/default.css">
 <link rel="stylesheet" type="text/css"
-	href="<%=request.getContextPath()%>/css/01_01.css">
+	href="<%=request.getContextPath()%>/css/01.css">
 
 </head>
 <body>
@@ -60,7 +60,6 @@ if (user == null) {
 			<h2>アカウント情報</h2>
 			<form action="<%=request.getContextPath()%>/SignUpConfirmServlet"
 				method="post" onsubmit="return validateForm()">
-
 				<div class="form-row">
 					<label>役割</label>
 					<div class="required-badge required">必須</div>
@@ -71,15 +70,11 @@ if (user == null) {
 							name="roleName" value="フロア"> フロア</label> <label><input
 							type="radio" name="roleName" value="管理者"> 管理者</label>
 					</div>
-
-
 				</div>
-
 				<div class="form-row">
 					<label>アカウント名</label>
 					<div class="required-badge required">必須</div>
 					<input type="text" name="userName">
-
 				</div>
 				<div class="form-row">
 					<label>パスワード</label>
@@ -97,8 +92,7 @@ if (user == null) {
 					<label></label> <input type="checkbox" onclick="togglePassword()">
 					パスワードを表示
 				</div>
-				<span id="errorMessage"
-					style="text-align: center; color: chocolate;"></span><br>
+				<span id="errorMessage"></span><br>
 				<div class="action-buttons flex-center">
 					<button type="button" class="btn-back" onclick="history.back()">キャンセル</button>
 					<button type="submit" class="btn-next">確認する</button>

@@ -21,8 +21,10 @@ if (u == null) {
 <head>
     <meta charset="UTF-8">
     <title>アカウント情報の変更確認</title>
-    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/01_07.css">
+    
     <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/header.css">
+    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/default.css">
+    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/01.css">
 </head>
 <body>
     <!-- Header -->
@@ -51,8 +53,8 @@ if (u == null) {
     
     <main>
         <div>
-            <h1 class="bodymsg">アカウント情報の変更確認</h1>
-            <p class="bodymsg">下記の情報を確認してください</p>
+            <h1 class="bodytitle text-center">アカウント情報の変更確認</h1>
+            <p class="bodymsg text-center">下記の情報を確認してください</p>
             <table class="tbstyle">
                 <tbody>
                     <tr>
@@ -75,7 +77,7 @@ if (u == null) {
                 </tbody>
             </table>
             
-            <div class="action-buttons">
+            <div class="action-buttons flex-center">
                 <button type="button" class="btn-back" onclick="history.back()">修正する</button>
                 <form action="<%= request.getContextPath() %>/AccountUpdateConfirmServlet" method="post">
 				    <button type="submit" class="btn-next">変更を完了する</button>
