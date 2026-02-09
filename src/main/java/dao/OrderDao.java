@@ -558,7 +558,7 @@ public class OrderDao {
 				    order.setId(orderId);
 				    order.setTotal(resSet.getInt("total"));
 				    order.setRoomId(resSet.getInt("orders.room_id"));
-				    order.setRoomNumber(resSet.getInt("room_number"));
+				    order.setRoomNo(resSet.getInt("room_number"));
 				    order.setReceivingNo(resSet.getInt("receiving_number"));
 				    order.setStatus(
 				        OrderStatus.fromId(

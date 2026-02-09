@@ -13,14 +13,14 @@ public class Order {
 	private int usageHistoryId;
 	private String pickupMethod;
 	private int itemCreatingStatusId;//飲食注文状況.
-	private String status;//部屋状況.
+	private OrderStatus status;//部屋状況.
 
 	public Order() {
-		this(0, new ArrayList<>(), 0, 0, 0, 0, 0, "", 0, "");
+		this(0, new ArrayList<>(), 0, 0, 0, 0, 0, "", 0, OrderStatus.ORDERED);
 	}
 
 	public Order(int id, List<OrderItem> itemList, int total, int roomId, int roomNo, int receivingNo,
-			int usageHistoryId, String pickupMethod, int itemCreatingStatusId, String status) {
+			int usageHistoryId, String pickupMethod, int itemCreatingStatusId, OrderStatus status) {
 		this.id = id;
 		this.itemList = itemList;
 		this.total = total;
@@ -108,11 +108,11 @@ public class Order {
 		return itemCreatingStatusId;
 	}
 
-	public String getStatus() {
+	public OrderStatus getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(OrderStatus status) {
 		this.status = status;
 	}
 
