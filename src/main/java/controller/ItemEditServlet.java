@@ -33,44 +33,26 @@ public class ItemEditServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		request.setCharacterEncoding("UTF-8");
-		Action action = null;
-		if (request.getParameter("q") != null)
-			request.setAttribute("query", request.getParameter("q"));
-
-		if (request.getParameter("id") != null) {
-			action = new ItemUpdateAction();
-		} else {
-			action = new ItemUpdateAction();
-			/*
-			String cmd = request.getParameter("cmd");
-			switch (cmd) {
-			case "add":
-				break;
-			
-			default:
-				break;
-			}*/
-		}
-		if (action != null) {
-			String view = action.execute(request, response);
-			RequestDispatcher rd = request.getRequestDispatcher(view);
-			rd.forward(request, response);
-		} else {
-			// エラーハンドリング：一覧に戻すなど
-			response.sendRedirect("/admin/modify_search.jsp");
-		}
+		processRequest(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		processRequest(request, response);
+	}
+
+	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		Action action = null;
-		if (request.getParameter("q") != null)
-			request.setAttribute("query", request.getParameter("q"));
 
-		if ("execute".equals("")) {
-			// SQLの更新処理
+		// GET/POST共通のクエリ保持
+		if (request.getParameter("q") != null) {
+			request.setAttribute("query", request.getParameter("q"));
+		}
+
+		if ("GET".equalsIgnoreCase(request.getMethod())) {
+			action = new ItemUpdateAction();
 		} else {
 			String cmd = request.getParameter("cmd");
 			switch (cmd) {
@@ -82,6 +64,7 @@ public class ItemEditServlet extends HttpServlet {
 				break;
 			}
 		}
+
 		if (action != null) {
 			String view = action.execute(request, response);
 			RequestDispatcher rd = request.getRequestDispatcher(view);
