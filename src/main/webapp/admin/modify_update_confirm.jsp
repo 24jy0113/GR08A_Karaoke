@@ -82,7 +82,7 @@ if (user == null) {
 					</c:if>
 				</table>
 				<div class="action-buttons">
-					<form method="get"
+					<form method="post"
 						action="${pageContext.request.contextPath}/ItemEditServlet">
 						<button name="cmd" value="edit" type="submit" class="btn-next">修正する</button>
 						<button name="cmd" value="execute" type="submit" class="btn-next">確認する</button>
