@@ -1,5 +1,6 @@
 @charset "UTF-8";
 
+/* ボタン設定 */
 .btn-next,
 .btn-back {
   padding: 12px 24px;
@@ -26,4 +27,12 @@
   display: flex;
   gap: 20px;
   justify-content: center;
+  margin-top: 40px;
+}
+
+/*  */
+.bodymsg {
+  text-align: center;
+  margin-top: 40px;
+  font-size: 18px;
 }
