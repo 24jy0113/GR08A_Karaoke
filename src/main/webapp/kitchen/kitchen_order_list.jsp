@@ -81,7 +81,7 @@ List<Order> orderList =
 	</div>
     
     <div class="footer-buttons">
-        <button type="button" onclick="location.href='modify_search_kitchen.jsp'">在庫状況の更新</button>
+        <button type="button" onclick="location.href='<%=request.getContextPath()%>/admin/modify_search.jsp">在庫状況の更新</button>
         <button type="button" onclick="location.href='<%= request.getContextPath() %>/KitchenOrderFinished'">調理済み一覧</button>
     </div>
     <button class="select" onclick="location.href='<%= request.getContextPath() %>/index_select.jsp'">担当選択画面へ戻る</button>
