@@ -30,10 +30,9 @@
 	margin-top: 30px;
 }
 
-/* タイトル等 */
+/* テキスト関連 */
 .bodytitle {
 	font-weight: bold;
-
 	margin-top: 30px;
 	font-size: 30px;
 }
@@ -41,6 +40,13 @@
 .bodymsg {
 	margin-top: 30px;
 	font-size: 20px;
+}
+
+.warning {
+	/*警告文字*/
+	font-size: 20px;
+	color: red;
+	
 }
 
 /* 中央ぞろえ */
