@@ -1,13 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"
-    import="model.User"
-%>
-<%@ taglib prefix="auth" uri="/auth" %>
+	pageEncoding="UTF-8" import="model.User"%>
+<%@ taglib prefix="auth" uri="/auth"%>
 <%
 User user = (User) session.getAttribute("loginUser");
 if (user == null) {
-    response.sendRedirect(request.getContextPath() + "/index.jsp");
-    return;
+	response.sendRedirect(request.getContextPath() + "/index.jsp");
+	return;
 }
 %>
 <!DOCTYPE html>
@@ -15,49 +13,56 @@ if (user == null) {
 <head>
 <meta charset="UTF-8">
 <title>フロントアカウント確認画面</title>
-<link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/01_03.css">
-<link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/header.css">
+
+<link rel="stylesheet" type="text/css"
+	href="<%=request.getContextPath()%>/css/header.css">
+<link rel="stylesheet" type="text/css"
+	href="<%=request.getContextPath()%>/css/default.css">
+<link rel="stylesheet" type="text/css"
+	href="<%=request.getContextPath()%>/css/login.css">
 
 </head>
 <body>
 	<!-- Header -->
 	<header>
 		<div class="header_inner">
-			<img class="title_img" src="<%= request.getContextPath() %>/img/logo.png" alt="logo" width="60"
-				height="60">
+			<img class="title_img"
+				src="<%=request.getContextPath()%>/img/logo.png" alt="logo"
+				width="60" height="60">
 			<h1 class="title_name">七福サウンド</h1>
 			<nav class="gnav">
 				<ul class="gnav_list">
-					 <li><img class="user_img" src="<%= request.getContextPath() %>/img/user.png" alt="cart" width="25" height="25"><%= user.getUserName() %></li>
-                    <li><a class="gnav_botton" href="<%= request.getContextPath() %>/LogoutServlet">ログアウト</a></li>
+					<li><img class="user_img"
+						src="<%=request.getContextPath()%>/img/user.png" alt="cart"
+						width="25" height="25"><%=user.getUserName()%></li>
+					<li><a class="gnav_botton"
+						href="<%=request.getContextPath()%>/LogoutServlet">ログアウト</a></li>
 				</ul>
 			</nav>
 		</div>
 	</header>
-	<main>
 
+	<main>
 		<h2>セキュリティのため再度ログインしてください</h2>
 		<h3>アカウントログイン</h3>
-		<form method="post" action="<%= request.getContextPath() %>/AccountSecureServlet">
+		<form method="post"
+			action="<%=request.getContextPath()%>/AccountSecureServlet">
 			<table>
 				<tr>
 					<th>アカウントID</th>
 					<td><input type="text" name="userId" value="" required
 						placeholder="例：000001"></td>
-					<td></td>
 				</tr>
 				<tr>
 					<th>パスワード</th>
 					<td><input type="password" name="password" required></td>
-					<td></td>
 				</tr>
-				<tr class="action-buttons">
-					<td><input class="back" type="button" value="戻る"
-						onclick="history.back()"></td>
-					<td><input class="submit" type="submit" value="ログイン"></td>
-				</tr>
-
 			</table>
+			<div class="action-buttons">
+				<input class="btn-back" type="button" value="戻る"
+					onclick="history.back()"> <input class="btn-next"
+					type="submit" value="ログイン">
+			</div>
 		</form>
 		<%
 		String error = (String) request.getAttribute("error");
