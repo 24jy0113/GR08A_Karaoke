@@ -36,11 +36,11 @@ public class ItemSearchServlet extends HttpServlet {
                 return;
             }
 
-            // ④ 売り切れ判定（boolean 運用）
+            // ④ 売り切れ判定
             if (!item.isStock()) {
-                req.setAttribute("error", "こちらの商品は売り切れです");
-                req.getRequestDispatcher("/item_search.jsp")
-                       .forward(req, res);
+                req.setAttribute("item", item);
+                req.setAttribute("error", "売り切れのため注文できません");
+                req.getRequestDispatcher("/item_detail.jsp").forward(req, res);
                 return;
             }
 

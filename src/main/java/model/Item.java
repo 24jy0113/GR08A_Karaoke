@@ -106,7 +106,7 @@ public class Item {
 	}
 
 	public boolean isStock() {
-		return stock;
+	    return stock;
 	}
 
 	public void setStock(boolean stock) {

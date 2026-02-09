@@ -115,7 +115,7 @@ if (orderList == null) {
 					</h4>
 				<div class="action-buttons">
 
-					<button type="button" class="btn-back" onclick="history.back()">トップページへ戻る</button>
+					<button type="button" class="btn-back" onclick="location.href='<%=request.getContextPath()%>/cus_top.jsp'">トップページへ戻る</button>
 				</div>
 			</div>
 		</div>

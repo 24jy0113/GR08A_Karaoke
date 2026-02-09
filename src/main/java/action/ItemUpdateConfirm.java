@@ -29,7 +29,7 @@ public class ItemUpdateConfirm implements Action {
 		String image = request.getParameter("image");
 		int orderNumber = Integer.parseInt(request.getParameter("order_number"));
 		int categoryId = Integer.parseInt(request.getParameter("category"));
-		boolean stock = Boolean.parseBoolean(request.getParameter("stock"));
+		int stock = Integer.parseInt(request.getParameter("stock"));
 		String[] optionIdsStr = request.getParameterValues("option");
 		List<Option> optionList = new ArrayList<>();
 
