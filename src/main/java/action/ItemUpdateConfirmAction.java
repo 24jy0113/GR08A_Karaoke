@@ -13,7 +13,7 @@ import dao.ItemDao;
 import model.Item;
 import model.Option;
 
-public class ItemUpdateConfirm implements Action {
+public class ItemUpdateConfirmAction implements Action {
 
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) {
