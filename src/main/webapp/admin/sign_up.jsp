@@ -55,8 +55,8 @@ if (user == null) {
 	%>
 	<main>
 		<div class="main-container">
-			<h1 class="bodytitle">アカウント登録</h1>
-			<p class="bodymsg">下記の情報を入力してください</p>
+			<h1 class="bodytitle text-center">アカウント登録</h1>
+			<p class="bodymsg text-center">下記の情報を入力してください</p>
 			<h2>アカウント情報</h2>
 			<form action="<%=request.getContextPath()%>/SignUpConfirmServlet"
 				method="post" onsubmit="return validateForm()">

@@ -35,8 +35,8 @@ if (user == null) {
     </header>
     <main>
         <div>
-            <h1 class="bodytitle">アカウント登録完了</h1>
-            <p class="bodymsg">アカウント登録が完了しました</p>
+            <h1 class="bodytitle text-center">アカウント登録完了</h1>
+            <p class="bodymsg text-center">アカウント登録が完了しました</p>
             
             <div class="action-buttons flex-center">
                 <button type="button" class="btn-back" onclick="location.href='account_search.jsp'">アカウント検索へ戻る</button>

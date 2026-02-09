@@ -47,8 +47,8 @@ String roleName = (String) session.getAttribute("SIGNUP_ROLE_NAME");
 	</header>
 	<main>
 		<div>
-			<h1 class="bodytitle">アカウント登録情報の確認</h1>
-			<p class="bodymsg">下記の情報を確認してください</p>
+			<h1 class="bodytitle text-center">アカウント登録情報の確認</h1>
+			<p class="bodymsg text-center">下記の情報を確認してください</p>
 			<table class="tbstyle">
 				<tbody>
 					<tr>
