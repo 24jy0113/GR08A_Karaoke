@@ -7,8 +7,7 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 <%
 ArrayList<OrderItem> cart =(ArrayList<OrderItem>) session.getAttribute("cart");
 if (cart == null || cart.isEmpty()) {
-    response.sendRedirect(request.getContextPath() + "/cus_top.jsp");
-    return;
+	cart = new ArrayList<>();
 }
 int totalSum = 0;
 %>
@@ -47,6 +46,17 @@ int totalSum = 0;
     <main>
         <div class="bodymsg">
             <div class="msg">
+            <% if (cart.isEmpty()) { %>
+
+			    <h2>カート内容</h2>
+			    <p style="color:red;">カートの中身は空です。</p>
+			
+			    <button type="button" onclick="location.href='<%=request.getContextPath()%>/cus_top.jsp'">
+			        トップへ戻る
+			    </button>
+			
+			<% } else { %>
+            
                 <h2>カート内容</h2>
                 <p>カートの内容を確認し、注文へ進む場合は「注文へ進む」を押してください</p>
                 <form action="CartDetailServlet" method="post">
@@ -87,7 +97,7 @@ int totalSum = 0;
 	                    <button type="submit" class="btn-next">注文へ進む</button>        
 	                </div>
                 </form>
-               
+            <% } %>
             </div>
            
         </div>

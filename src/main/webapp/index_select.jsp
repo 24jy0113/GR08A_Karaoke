@@ -56,9 +56,9 @@ if (user == null) {
 			<div class="container">
 
 			    <auth:hasPermission code="VIEW_KITCHEN">
-			        <a class="button" href="${pageContext.request.contextPath}/kitchen/kitchen_order_list.jsp">
-			            キッチン用
-			        </a>
+			    	<form action="${pageContext.request.contextPath}/KitchenOrderList" method="get">
+					    <button type="submit" class="button">キッチン用</button>
+					</form>
 			    </auth:hasPermission>
 				<auth:hasPermission code="VIEW_CUS">
 			    <a class="button" href="${pageContext.request.contextPath}/room_search.jsp">顧客用</a>

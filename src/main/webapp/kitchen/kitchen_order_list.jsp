@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"
-    import="model.User"
+    import="model.*,java.util.*"
 %>
 <%
 User user = (User) session.getAttribute("loginUser");
@@ -9,7 +9,10 @@ if (user == null) {
     return;
 }
 %>
-
+<%
+List<Order> orderList =
+    (List<Order>) request.getAttribute("orderList");
+%>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -33,64 +36,53 @@ if (user == null) {
     </header>
     <h1>注文一覧</h1>
     <div class="card-container">
-        <div class="card">
-            <strong>101室</strong><br>
-            生ビール　M　x1<br>
-            サラダ　　 x2<br>
-            ポテト S　 x1<br>
-            <br>
-            受取番号：S110101<br>
-            <button>調理済み</button>
-        </div>
-        <div class="card">
-            <strong>102室</strong><br>
-            生ビール　L　x1<br>
-            サラダ　　 x2<br>
-            ポテト S　 x1<br>
-            <br>
-            受取番号：S110102<br>
-            <button>調理済み</button>
-        </div>
-        <div class="card">
-            <strong>103室</strong><br>
-            生ビール　L　x1<br>
-            サラダ　　 x2<br>
-            ポテト S　 x1<br>
-            <br>
-            受取番号：S110103<br>
-            <button>調理済み</button>
-        </div>
-        <div class="card">
-            <strong>104室</strong><br>
-            生ビール　 x1<br>
-            サラダ　　 x2<br>
-            ポテト S　 x1<br>
-            <br>
-            受取番号：S110104<br>
-            <button>調理済み</button>
-        </div>
-        <div class="card">
-            <strong>105室</strong><br>
-            生ビール　S x1<br>
-            サラダ　　 x2<br>
-            ポテト S　 x1<br>
-            <br>
-            受取番号：S110105<br>
-            <button>調理済み</button>
-        </div>
-        <div class="card">
-            <strong>106室</strong><br>
-            生ビール　S x1<br>
-            サラダ　　 x2<br>
-            ポテト S　 x1<br>
-            <br>
-            受取番号：S110106<br>
-            <button>調理済み</button>
-        </div>
-    </div>
+
+	<% if (orderList != null && !orderList.isEmpty()) { %>
+	    <% for (Order o : orderList) { %>
+	
+	    <div class="card">
+	        <strong><%= o.getRoomNo() %>室</strong><br>
+	
+	        <% for (OrderItem oi : o.getItemList()) { %>
+
+			    <%= oi.getItemName() %>
+
+			    <% if (oi.getSelectedOptionDetails() != null
+			          && !oi.getSelectedOptionDetails().isEmpty()) { %>
+			        （
+			        <% for (int i = 0; i < oi.getSelectedOptionDetails().size(); i++) {
+			               OrderItem.SelectedOptionDetail d =
+			                   oi.getSelectedOptionDetails().get(i);
+			        %>
+			            <%= d.selectionName() %>
+			            <% if (i < oi.getSelectedOptionDetails().size() - 1) { %> / <% } %>
+			        <% } %>
+			        ）
+			    <% } %>
+			
+			    × <%= oi.getCount() %><br>
+			
+			<% } %>
+			<br>
+	
+	        受取番号：<%= o.getReceivingNo() %><br>
+	
+	        <form action="<%= request.getContextPath() %>/KitchenOrderDone" method="post">
+	            <input type="hidden" name="orderId" value="<%= o.getId() %>">
+	            <button type="submit" onclick="this.disabled=true; this.form.submit();">調理済み</button>
+	        </form>
+	    </div>
+	
+	    <% } %>
+	<% } else { %>
+	    <p>現在、注文はありません。</p>
+	<% } %>
+	
+	</div>
+    
     <div class="footer-buttons">
         <button type="button" onclick="location.href='modify_search_kitchen.jsp'">在庫状況の更新</button>
-        <button type="button" onclick="location.href='kitchen_order_finished.jsp'">調理済み一覧</button>
+        <button type="button" onclick="location.href='<%= request.getContextPath() %>/KitchenOrderFinished'">調理済み一覧</button>
     </div>
     <button class="select" onclick="location.href='<%= request.getContextPath() %>/index_select.jsp'">担当選択画面へ戻る</button>
 </body>

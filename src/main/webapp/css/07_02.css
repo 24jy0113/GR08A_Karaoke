@@ -2,26 +2,6 @@ body {
     font-family: Arial, sans-serif;
     margin: 20px;
 }
-/* Header*/
-
-.header-container {
-    display: flex;
-    height: 54px;
-    margin-top: 10px;
-    align-items: center;
-    border-bottom: 1px solid rgba(217, 217, 217, 1);
-}
-
-.logo-text {
-    white-space: nowrap;
-    margin-right: 60px;
-    color: black;
-    font-size: 16px;
-    font-weight: normal;
-    line-height: 22.4px;
-    text-decoration: none;
-}
-
 
 .bodymsg {
     text-align: left;
