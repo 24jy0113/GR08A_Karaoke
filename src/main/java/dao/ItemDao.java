@@ -215,7 +215,7 @@ public class ItemDao {
 					Item item = new Item(resSet1.getInt("item_id"), resSet1.getString("item_name"),
 							resSet1.getInt("category_id"), resSet1.getString("category_name"),
 							resSet1.getInt("order_number"), resSet1.getInt("price"),
-							"items/" + resSet1.getString("item_image"), resSet1.getBoolean("stock"));
+							resSet1.getString("item_image"), resSet1.getBoolean("stock"));
 
 					// 商品の主キーを取得してオプションを検索.
 					preState2.setInt(1, resSet1.getInt("item_id"));
