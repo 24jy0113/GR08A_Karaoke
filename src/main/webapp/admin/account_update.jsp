@@ -1,73 +1,84 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"
-    import="model.User"
-%>
+	pageEncoding="UTF-8" import="model.User"%>
 <%
 User user = (User) session.getAttribute("loginUser");
 if (user == null) {
-    response.sendRedirect(request.getContextPath() + "/index.jsp");
-    return;
+	response.sendRedirect(request.getContextPath() + "/index.jsp");
+	return;
 }
 %>
 <%
 User u = (User) session.getAttribute("UPDATE_USER");
 if (u == null) {
-    response.sendRedirect(request.getContextPath() + "/admin/account_search.jsp");
-    return;
+	response.sendRedirect(request.getContextPath() + "/admin/account_search.jsp");
+	return;
 }
 %>
 
 <!DOCTYPE html>
 <html lang=ja>
 <head>
-    <meta charset="UTF-8">
-    <title>アカウント登録</title>
-    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/01_06.css">
-    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/header.css">
-    
+<meta charset="UTF-8">
+<title>アカウント登録</title>
+
+<link rel="stylesheet" type="text/css"
+	href="<%=request.getContextPath()%>/css/header.css">
+<link rel="stylesheet" type="text/css"
+	href="<%=request.getContextPath()%>/css/default.css">
+<link rel="stylesheet" type="text/css"
+	href="<%=request.getContextPath()%>/css/01.css">
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <div class="header_inner">
-            <img class="title_img" src="<%= request.getContextPath() %>/img/logo.png" alt="logo" width="60" height="60">
-            <h1 class="title_name">七福サウンド</h1>
-            <nav class="gnav">
-                <ul class="gnav_list">
-                     <li><img class="user_img" src="<%= request.getContextPath() %>/img/user.png" alt="cart" width="25" height="25"><%= user.getUserName() %></li>
-                    <li><a class="gnav_botton" href="<%= request.getContextPath() %>/LogoutServlet">ログアウト</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
-    <main>
-        <div class="main-container">
-            <h1 class="bodymsg">アカウント情報の変更</h1>
-            <p style="text-align: center;margin-bottom: 30px;">変更するアカウント情報を入力してください</p>
-            <h1>アカウント情報</h1>
-            <form action="<%= request.getContextPath() %>/AccountUpdateServlet" method="post"  onsubmit="return validateForm()">
-                <input type="hidden" name="userId" value="<%= u.getUserId() %>">
-
+	<!-- Header -->
+	<header>
+		<div class="header_inner">
+			<img class="title_img"
+				src="<%=request.getContextPath()%>/img/logo.png" alt="logo"
+				width="60" height="60">
+			<h1 class="title_name">七福サウンド</h1>
+			<nav class="gnav">
+				<ul class="gnav_list">
+					<li><img class="user_img"
+						src="<%=request.getContextPath()%>/img/user.png" alt="cart"
+						width="25" height="25"><%=user.getUserName()%></li>
+					<li><a class="gnav_botton"
+						href="<%=request.getContextPath()%>/LogoutServlet">ログアウト</a></li>
+				</ul>
+			</nav>
+		</div>
+	</header>
+	<main>
+		<div class="main-container">
+			<h1 class="bodytitle text-center">アカウント情報の変更</h1>
+			<p class="bodymsg text-center">変更するアカウント情報を入力してください</p>
+			<h2>アカウント情報</h2>
+			<form action="<%=request.getContextPath()%>/AccountUpdateServlet"
+				method="post" onsubmit="return validateForm()">
+				<input type="hidden" name="userId" value="<%=u.getUserId()%>">
 				<div class="form-row">
-					<label>アカウント名</label>
-					<input type="text" name="userName" value="<%= u.getUserName() %>">
-
+					<label>アカウント名</label> <input type="text" name="userName"
+						value="<%=u.getUserName()%>">
 				</div>
 				<div class="form-row">
 					<label>役割</label>
 					<div class="required-badge required">必須</div>
 					<div class="radio-group">
-					  <label><input type="radio" name="roleName" value="キッチン" <%= "キッチン".equals(u.getRoleName())?"checked":"" %>> キッチン</label>
-					  <label><input type="radio" name="roleName" value="フロント" <%= "フロント".equals(u.getRoleName())?"checked":"" %>> フロント</label>
-					  <label><input type="radio" name="roleName" value="フロア" <%= "フロア".equals(u.getRoleName())?"checked":"" %>> フロア</label>
-					  <label><input type="radio" name="roleName" value="管理者" <%= "管理者".equals(u.getRoleName())?"checked":"" %>> 管理者</label>
+						<label><input type="radio" name="roleName" value="キッチン"
+							<%="キッチン".equals(u.getRoleName()) ? "checked" : ""%>>
+							キッチン</label> <label><input type="radio" name="roleName"
+							value="フロント" <%="フロント".equals(u.getRoleName()) ? "checked" : ""%>>
+							フロント</label> <label><input type="radio" name="roleName"
+							value="フロア" <%="フロア".equals(u.getRoleName()) ? "checked" : ""%>>
+							フロア</label> <label><input type="radio" name="roleName"
+							value="管理者" <%="管理者".equals(u.getRoleName()) ? "checked" : ""%>>
+							管理者</label>
 					</div>
-
 				</div>
 				<div class="form-row">
 					<label>パスワード</label>
 					<div class="required-badge required">必須</div>
-					<input type="password" id="password" name="password" placeholder="半角英数字のみ、8 桁以上、12 桁以下">
+					<input type="password" id="password" name="password"
+						placeholder="半角英数字のみ、8 桁以上、12 桁以下">
 				</div>
 				<div class="form-row">
 					<label>パスワード（再入力）</label>
@@ -79,17 +90,15 @@ if (u == null) {
 					<label></label> <input type="radio" onclick="togglePassword()">
 					パスワードを表示
 				</div>
-				<span id="errorMessage"
-					style="text-align: center; color: chocolate;"></span><br>
-					
-				<div class="action-buttons">
+				<span id="errorMessage"></span><br>
+				<div class="action-buttons flex-center">
 					<button type="button" class="btn-back" onclick="history.back()">キャンセル</button>
 					<button type="submit" class="btn-next">確認する</button>
 				</div>
-            </form>
-        </div>
-    </main>
-    <script>
+			</form>
+		</div>
+	</main>
+	<script>
 
       function togglePassword() {
           var passwordField = document.getElementById("password");

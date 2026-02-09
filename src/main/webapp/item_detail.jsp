@@ -38,9 +38,14 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
     </header>
     <main>
         <div class="bodymsg">
+        <% String error = (String) request.getAttribute("error"); %>
+		<% if (error != null) { %>
+		    <p style="color:red;"><%= error %></p>
+		<% } %>
+        <br>
             <div class="msg">
-                <h1><%= item.getName() %></h1>
-               <h2><%= item.getPrice() %>　円(税込)</h2>
+                <h1 class="item-name"><%= item.getName() %></h1>
+               <h2 class="item-price"><%= item.getPrice() %>　円(税込)</h2>
             </div>
             <div class="container">
                 <!-- 左側：画像領域 -->
@@ -51,12 +56,23 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
                 <!-- 右側：検索欄＋テンキー -->
                 <div class="right-box">  
                     <div class="pad">
-                    	<form action="ItemOptionServlet" method="get">
-						  <input type="hidden" name="itemId" value="<%= item.getId() %>">
-						  <br>
-						  <button  type="submit" style="color: white; background-color: black;">カートに入れる</button>
-						</form>
-                        
+                    	<% if (!item.isStock()) { %>
+					        
+					        <!-- 押せないボタン -->
+					        <button 
+					            type="button" 
+					            style="color:#aaa; background-color:#ddd; cursor:not-allowed;"
+					            disabled>
+					            カートに入れる
+					        </button>
+					
+					    <% } else { %>
+					        <!-- 在庫あり：通常ボタン -->
+	                    	<form action="ItemOptionServlet" method="get">
+							  <input type="hidden" name="itemId" value="<%= item.getId() %>">
+							  <button  type="submit" style="color: white; background-color: black;">カートに入れる</button>
+							</form>
+                        <% } %>
                         <button type="button" onclick="history.back()">メニュー一覧に戻る</button>
                         <button type="button" onclick="location.href='item_search.jsp'">メニューを番号で探す</button>
                     </div>

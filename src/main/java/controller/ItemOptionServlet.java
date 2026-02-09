@@ -24,13 +24,20 @@ public class ItemOptionServlet extends HttpServlet {
 		} catch (Exception e) {
 			throw new ServletException(e);
 		}
-
-     OrderItem oi = new OrderItem(item);
-     HttpSession session = req.getSession();
-     session.setAttribute("buildingItem", oi);
-
-     req.setAttribute("item", item);
-     req.getRequestDispatcher("/item_option_pick.jsp").forward(req, res);
+		
+		// ★ 在庫チェック.
+	    if (!item.isStock()) {
+	        req.setAttribute("item", item);
+	        req.setAttribute("error", "売り切れのため注文できません");
+	        req.getRequestDispatcher("/item_detail.jsp").forward(req, res);
+	        return;
+	    }
+	     OrderItem oi = new OrderItem(item);
+	     HttpSession session = req.getSession();
+	     session.setAttribute("buildingItem", oi);
+	
+	     req.setAttribute("item", item);
+	     req.getRequestDispatcher("/item_option_pick.jsp").forward(req, res);
 
     }
 }

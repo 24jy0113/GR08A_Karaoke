@@ -1,15 +1,11 @@
 @charset "UTF-8";
-
-main {
-	margin-left: 60px;
+main{
+  margin-left: 60px;
 }
-
-form {
+form{
 	margin-top: 30px;
 }
-
-input[type="text"],
-input[type="password"] {
+input[type="text"], input[type="password"] {
 	width: 300px;
 	height: 30px;
 	margin-top: 10px;

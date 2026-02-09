@@ -42,15 +42,12 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
     </header>
     <main>
         <div class="bodymsg">
-            <div class="msg">
-                <h1><%= item.getName() %></h1>
-               <h2><%= item.getPrice() %>　円(税込)</h2>
-            </div>
+
             <div class="container">
                 <!-- 左側：画像領域 -->
                 <div>
-                    <div class="left-box">画像</div>
-                   
+                    <div class="left-box"><img class="item-img" src="<%=request.getContextPath()%>/img/<%=item.getImage()%>" alt="product"></div>
+                    <h2><%= item.getPrice() %>　円(税込)</h2>
                 </div>
                 <!-- 右側：検索欄＋テンキー -->
                 <div class="right-box">  

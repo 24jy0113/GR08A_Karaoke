@@ -6,17 +6,22 @@
 <head>
 <meta charset="UTF-8">
 <title>ログイン</title>
+
 <link rel="stylesheet" type="text/css"
-	href="<%=request.getContextPath()%>/css/index.css">
+	href="<%=request.getContextPath()%>/css/header.css">
+<link rel="stylesheet" type="text/css"
+	href="<%=request.getContextPath()%>/css/default.css">
+<link rel="stylesheet" type="text/css"
+	href="<%=request.getContextPath()%>/css/login.css">
 </head>
 <body>
 	<!-- Header -->
 	<header>
-		<div class="header-container">
-			<a href="<%=request.getContextPath()%>/index.jsp"> <img
+		<div class="header_inner">
+			<img class="title_img"
 				src="<%=request.getContextPath()%>/img/logo.png" alt="logo"
-				width="44" height="44">
-			</a> <a href="index.jsp" class="logo-text">七福サウンド</a>
+				width="60" height="60">
+			<h1 class="title_name">七福サウンド</h1>
 		</div>
 	</header>
 	<%
@@ -32,8 +37,8 @@
 	%>
 
 	<main>
-		<p>アカウントIDとパスワードを入力し、ログインしてください</p>
-		<h2>アカウントログイン</h2>
+		<h2>アカウントIDとパスワードを入力し、ログインしてください</h2>
+		<h3>アカウントログイン</h3>
 		<form method="post"
 			action="<%=request.getContextPath()%>/LoginServlet">
 			<table>
@@ -46,16 +51,8 @@
 					<th>パスワード</th>
 					<td><input type="password" name="password" required></td>
 				</tr>
-				<tr>
-					<td></td>
-					<td><input class="button" type="submit" value="ログイン">
-					</td>
-				</tr>
-				<tr>
-					<td></td>
-					<td><a href="#">パスワードをお忘れの方はフロント担当にお聞きください。</a></td>
-				</tr>
 			</table>
+			<input class="btn-next" type="submit" value="ログイン">
 		</form>
 
 		<%
