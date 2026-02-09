@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import action.Action;
 import action.ItemUpdateAction;
 import action.ItemUpdateConfirmAction;
+import action.ItemUpdateExecuteAction;
 
 /**
  * Servlet implementation class ItemEditServlet
@@ -46,7 +47,7 @@ public class ItemEditServlet extends HttpServlet {
 			switch (cmd) {
 			case "add":
 				break;
-
+			
 			default:
 				break;
 			}*/
@@ -77,7 +78,7 @@ public class ItemEditServlet extends HttpServlet {
 				action = new ItemUpdateConfirmAction();
 				break;
 			case "execute":
-				//action new 
+				action = new ItemUpdateExecuteAction();
 				break;
 			}
 		}

@@ -76,23 +76,23 @@ if (user == null) {
 					</div>
 					<div class="input-row">
 						<label>在庫</label> <label><input type="radio" name="stock"
-							value="あり" ${editItem.isStock() ? "checked" : ""}> あり</label> <label><input
-							type="radio" name="stock" value="なし"
-							${!item.isStock() ? "checked" : ""}> なし</label>
+							value="true" ${editItem.isStock() ? "checked" : ""}> あり</label> <label><input
+							type="radio" name="stock" value="false"
+							${!editItem.isStock() ? "checked" : ""}> なし</label>
 					</div>
 					<div class="input-row">
 						<label>オプション</label> <label><input type="radio"
-							id="radioOption" value="あり"
+							id="radioOption"
 							${editItem.hasOption() ? "checked" : ""}> あり</label> <label><input
-							type="radio" id="radioNonOption" value="なし"
-							${!item.hasOption() ? "checked" : ""}> なし</label>
+							type="radio" id="radioNonOption"
+							${!editItem.hasOption() ? "checked" : ""}> なし</label>
 					</div>
 					<!-- オプション全体 -->
 					<div id="optionArea"></div>
 					<script type="text/javascript">
 						const resMap = JSON.parse('${optionList}');
 						const initialSelectedIds = [
-							<c:forEach items="${editItem.getOptionList()}" var="o" varStatus="s">
+							<c:forEach items="${editItem.optionList}" var="o" varStatus="s">
 					            ${o.id}${!s.last ? ',' : ''}
 					        </c:forEach>
 					        ];
@@ -130,7 +130,7 @@ if (user == null) {
 
 						        html += `
 						            <label>
-						                <input type="checkbox" name="option[]" value="\${opt.id}" \${isChecked}>
+						                <input type="checkbox" name="option" value="\${opt.id}" \${isChecked}>
 						                \${opt.name}
 						            </label>
 						        `;

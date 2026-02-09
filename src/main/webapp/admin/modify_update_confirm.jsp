@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" import="model.User"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <%
 User user = (User) session.getAttribute("loginUser");
 if (user == null) {
@@ -51,8 +52,9 @@ if (user == null) {
 					</tr>
 					<tr>
 						<th>商品画像</th>
-						<td><img src="${pageContext.request.contextPath}/img/${editItem.image}" alt="${editItem.name }" width="30px"
-							height="30px"></td>
+						<td><img
+							src="${pageContext.request.contextPath}/img/${editItem.image}"
+							alt="${editItem.name }" width="30px" height="30px"></td>
 					</tr>
 					<tr>
 						<th>注文番号</th>
@@ -70,6 +72,14 @@ if (user == null) {
 						<th>オプション</th>
 						<td>${editItem.hasOption() ? "あり":"なし" }</td>
 					</tr>
+					<c:if test="${editItem.hasOption() }">
+						<c:forEach var="option" items="${editItem.optionList}">
+							<tr>
+								<th></th>
+								<td>${option.name }</td>
+							</tr>
+						</c:forEach>
+					</c:if>
 				</table>
 				<div class="action-buttons">
 					<form method="get"
