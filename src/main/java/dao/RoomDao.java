@@ -105,6 +105,75 @@ public class RoomDao {
 		return room;
 	}
 
+	// statusIdで絞り込み検索.
+	public static List<Room> getRoomsByStatus(int statusId) throws Exception {
+		List<Room> list = new ArrayList<>();
+		// SQL文作成.
+		String sql = "SELECT r.room_id,r.room_number,alcohol_provision,reception_time,leaving_time,"
+				+ " rus.status_id,st.status_name,reservation_reception_time,reservation_leaving_time"
+				+ " FROM room r"
+				+ " LEFT JOIN room_usage_status rus ON r.room_id = rus.room_id"
+				+ " LEFT JOIN reservation res ON rus.reservation_number = res.reservation_number"
+				+ " LEFT JOIN status st ON rus.status_id = st.status_id"
+				+ " WHERE COALESCE(rus.status_id, 1) = ?;";
+
+		try (Connection con = DatabaseManager.connect(); PreparedStatement preState = con.prepareStatement(sql);) {
+			// プリペアードステートメントを使用.
+			preState.setInt(1, statusId);
+			try (ResultSet resSet = preState.executeQuery()) {
+				while (resSet.next()) {
+					list.add(new Room(resSet.getInt("room_id"), resSet.getInt("room_number"),
+							resSet.getBoolean("alcohol_provision"), resSet.getTime("reception_time"),
+							resSet.getTime("leaving_time"), resSet.getInt("status_id"), resSet.getString("status_name"),
+							resSet.getTime("reservation_reception_time"), resSet.getTime("reservation_leaving_time")));
+				}
+			} catch (Exception e) {
+				// デバッグ用のスタックトレース.
+				e.printStackTrace();
+
+				// フロントエンド用のエラーメッセージ.
+				String errMsg = "DB接続に失敗しました！<br>管理者に連絡してください。";
+
+				// 例外を投げる.
+				throw new Exception(errMsg);
+			}
+		}
+		return list;
+	}
+
+	// 特定のルームの予約のうち一番近い予約受付時間を取得する.
+	public static Time getNextReceptionTime(int roomId, Time leavingTime) throws Exception {
+		Time time = null;
+		// SQL文作成.
+		String sql = "SELECT reservation_reception_time"
+				+ " FROM reservation"
+				+ " WHERE room_id = ? AND reservation_reception_time > ?"
+				+ " ORDER BY reservation_reception_time"
+				+ " LIMIT 1;";
+
+		try (Connection con = DatabaseManager.connect(); PreparedStatement preState = con.prepareStatement(sql);) {
+			// プリペアードステートメントを使用.
+			preState.setInt(1, roomId);
+			preState.setTime(2, leavingTime);
+			// 検索結果からRoomインスタンスを生成.
+			try (ResultSet resSet = preState.executeQuery()) {
+				if (resSet.next()) {
+					time = resSet.getTime("reservation_reception_time");
+				}
+			} catch (Exception e) {
+				// デバッグ用のスタックトレース.
+				e.printStackTrace();
+
+				// フロントエンド用のエラーメッセージ.
+				String errMsg = "DB接続に失敗しました！<br>管理者に連絡してください。";
+
+				// 例外を投げる.
+				throw new Exception(errMsg);
+			}
+		}
+		return time;
+	}
+
 	// room_usage_statusにroom_idがあるかチェックする.
 	public static boolean existsRoomUsageStatus(int roomId) throws Exception {
 		// SQL文作成.
@@ -245,74 +314,5 @@ public class RoomDao {
 			// 例外を投げる.
 			throw new Exception(errMsg);
 		}
-	}
-
-	// statusIdで絞り込み検索.
-	public static List<Room> getRoomsByStatus(int statusId) throws Exception {
-		List<Room> list = new ArrayList<>();
-		// SQL文作成.
-		String sql = "SELECT r.room_id,r.room_number,alcohol_provision,reception_time,leaving_time,"
-				+ " rus.status_id,st.status_name,reservation_reception_time,reservation_leaving_time"
-				+ " FROM room r"
-				+ " LEFT JOIN room_usage_status rus ON r.room_id = rus.room_id"
-				+ " LEFT JOIN reservation res ON rus.reservation_number = res.reservation_number"
-				+ " LEFT JOIN status st ON rus.status_id = st.status_id"
-				+ " WHERE COALESCE(rus.status_id, 1) = ?;";
-
-		try (Connection con = DatabaseManager.connect(); PreparedStatement preState = con.prepareStatement(sql);) {
-			// プリペアードステートメントを使用.
-			preState.setInt(1, statusId);
-			try (ResultSet resSet = preState.executeQuery()) {
-				while (resSet.next()) {
-					list.add(new Room(resSet.getInt("room_id"), resSet.getInt("room_number"),
-							resSet.getBoolean("alcohol_provision"), resSet.getTime("reception_time"),
-							resSet.getTime("leaving_time"), resSet.getInt("status_id"), resSet.getString("status_name"),
-							resSet.getTime("reservation_reception_time"), resSet.getTime("reservation_leaving_time")));
-				}
-			} catch (Exception e) {
-				// デバッグ用のスタックトレース.
-				e.printStackTrace();
-
-				// フロントエンド用のエラーメッセージ.
-				String errMsg = "DB接続に失敗しました！<br>管理者に連絡してください。";
-
-				// 例外を投げる.
-				throw new Exception(errMsg);
-			}
-		}
-		return list;
-	}
-
-	// 特定のルームの予約のうち一番近い予約受付時間を取得する.
-	public static Time getNextReceptionTime(int roomId, Time leavingTime) throws Exception {
-		Time time = null;
-		// SQL文作成.
-		String sql = "SELECT reservation_reception_time"
-				+ " FROM reservation"
-				+ " WHERE room_id = ? AND reservation_reception_time > ?"
-				+ " ORDER BY reservation_reception_time"
-				+ " LIMIT 1;";
-
-		try (Connection con = DatabaseManager.connect(); PreparedStatement preState = con.prepareStatement(sql);) {
-			// プリペアードステートメントを使用.
-			preState.setInt(1, roomId);
-			preState.setTime(2, leavingTime);
-			// 検索結果からRoomインスタンスを生成.
-			try (ResultSet resSet = preState.executeQuery()) {
-				if (resSet.next()) {
-					time = resSet.getTime("reservation_reception_time");
-				}
-			} catch (Exception e) {
-				// デバッグ用のスタックトレース.
-				e.printStackTrace();
-
-				// フロントエンド用のエラーメッセージ.
-				String errMsg = "DB接続に失敗しました！<br>管理者に連絡してください。";
-
-				// 例外を投げる.
-				throw new Exception(errMsg);
-			}
-		}
-		return time;
 	}
 }
