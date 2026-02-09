@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import action.Action;
 import action.ItemUpdateAction;
-import action.ItemUpdateConfirm;
+import action.ItemUpdateConfirmAction;
 
 /**
  * Servlet implementation class ItemEditServlet
@@ -34,8 +34,8 @@ public class ItemEditServlet extends HttpServlet {
 			throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		Action action = null;
-		if (request.getParameter("query") != null)
-			request.setAttribute("q", request.getParameter("query"));
+		if (request.getParameter("q") != null)
+			request.setAttribute("query", request.getParameter("q"));
 
 		if (request.getParameter("id") != null) {
 			action = new ItemUpdateAction();
@@ -65,8 +65,8 @@ public class ItemEditServlet extends HttpServlet {
 			throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		Action action = null;
-		if (request.getParameter("query") != null)
-			request.setAttribute("q", request.getParameter("query"));
+		if (request.getParameter("q") != null)
+			request.setAttribute("query", request.getParameter("q"));
 
 		if ("execute".equals("")) {
 			// SQLの更新処理
@@ -74,7 +74,10 @@ public class ItemEditServlet extends HttpServlet {
 			String cmd = request.getParameter("cmd");
 			switch (cmd) {
 			case "confirm":
-				action = new ItemUpdateConfirm();
+				action = new ItemUpdateConfirmAction();
+				break;
+			case "execute":
+				//action new 
 				break;
 			}
 		}

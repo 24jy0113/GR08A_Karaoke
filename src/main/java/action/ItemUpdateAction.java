@@ -25,8 +25,6 @@ public class ItemUpdateAction implements Action {
 			var category = dao.getCategoryList();
 			var option = dao.getAllOptionsGroupedByCategory();
 			String optionJson = mapper.writeValueAsString(option);
-			if (request.getParameter("query") != null)
-				request.setAttribute("q", request.getParameter("query"));
 
 			if (session.getAttribute("editItem") == null)
 				session.setAttribute("editItem", item);

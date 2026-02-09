@@ -43,7 +43,6 @@ if (user == null) {
 		</div>
 		<form method="post" enctype="multipart/form-data">
 			<div class="container">
-				<input type="hidden" name="q" value="${query }">
 				<div class="right-box">
 					<div class="input-row">
 						<label>商品名</label> <input class="menuInput" type="text"
@@ -154,8 +153,8 @@ if (user == null) {
 				</div>
 			</div>
 			<div class="action-buttons">
-				<button type="submit" class="btn-back"
-					formaction="${pageContext.request.contextPath}/SearchItemByName">該当商品一覧へ戻る</button>
+				<button type="button" class="btn-back"
+					onclick="location.href='${pageContext.request.contextPath}/SearchItemByName?q=${query}'">該当商品一覧へ戻る</button>
 				<button name="cmd" value="confirm" type="submit" class="btn-next"
 					formaction="${pageContext.request.contextPath}/ItemEditServlet">確認する</button>
 			</div>
