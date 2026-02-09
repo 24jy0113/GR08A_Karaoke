@@ -15,9 +15,9 @@ if (user == null) {
 <head>
 <meta charset="UTF-8">
 <title>アカウント登録</title>
-<link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/01_01.css">
 <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/header.css">
 <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/default.css">
+<link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/01_01.css">
 
 </head>
 <body>
@@ -88,7 +88,7 @@ if (user == null) {
 				</div>
 				<span id="errorMessage"
 					style="text-align: center; color: chocolate;"></span><br>
-				<div class="action-buttons">
+				<div class="action-buttons flex-center">
 					<button type="button" class="btn-back"
 						onclick="history.back()">キャンセル</button>
 					<button type="submit" class="btn-next">確認する</button>

@@ -21,9 +21,9 @@ String roleName = (String) session.getAttribute("SIGNUP_ROLE_NAME");
 <head>
     <meta charset="UTF-8">
     <title>アカウント登録確認</title>
-    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/01_02.css">
     <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/header.css">
     <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/default.css">
+    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/01_02.css">
 </head>
 <body>
     <!-- Header -->
@@ -66,7 +66,7 @@ String roleName = (String) session.getAttribute("SIGNUP_ROLE_NAME");
                 </tbody>
             </table>
             
-            <div class="action-buttons">
+            <div class="action-buttons flex-center">
                 <button type="button" class="btn-back" onclick="location.href='sign_up.jsp'">修正する</button>
                 <form action="<%=request.getContextPath()%>/SignUpCompleteServlet" method="post">
 				    <button type="submit" class="btn-next">ユーザ登録を完了する</button>
