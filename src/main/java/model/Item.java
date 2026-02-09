@@ -97,8 +97,10 @@ public class Item {
 		this.price = price;
 	}
 
+	// サーバー側の商品画像の保存場所を付ける.
+	// ルートはimgファイル.
 	public String getImage() {
-		return image;
+		return "items/" + image;
 	}
 
 	public void setImage(String image) {

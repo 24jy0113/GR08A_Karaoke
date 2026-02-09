@@ -158,7 +158,7 @@ public class ItemDao {
 	// 商品を名前の部分一致で探す.
 	public List<Item> searchItemByName(String name) throws Exception {
 		// 返却値の参照変数.
-		var list = searchItem("item_name LIKE ?;", "%" + name + "%");
+		var list = searchItem("WHERE item_name LIKE ?;", "%" + name + "%");
 
 		// 結果を返却.
 		return list;
@@ -168,7 +168,7 @@ public class ItemDao {
 	// 商品を注文番号(order_number)で探す.
 	public Item searchItemByNumber(int num) throws Exception {
 		// 返却値の参照変数.
-		var list = searchItem("order_number = ?;", num);
+		var list = searchItem("WHERE order_number = ?;", num);
 
 		// 結果を返却.
 		return list.isEmpty() ? null : list.get(0);
@@ -177,7 +177,7 @@ public class ItemDao {
 	// 商品を商品IDで探す.
 	public Item searchItemById(int id) throws Exception {
 		// 返却値の参照変数.
-		var list = searchItem("item_id = ?;", id);
+		var list = searchItem("WHERE item_id = ?;", id);
 
 		// 結果を返却.
 		return list.isEmpty() ? null : list.get(0);
@@ -187,10 +187,13 @@ public class ItemDao {
 		// 返却値の参照変数を初期化.
 		ArrayList<Item> resList = new ArrayList<>();
 
+		// 条件に含まれるプレースホルダの個数を取得する.
+		int placeholderCount = condition.length() - condition.replace("?", "").length();
+
 		// SQL文作成.
 		String sql1 = "SELECT item_id,item_name,item.category_id,category_name,order_number,price,item_image,stock "
 				+ "FROM item INNER JOIN category ON item.category_id = category.category_id "
-				+ "WHERE " + condition;
+				+ condition;
 		String sql2 = "SELECT option_id "
 				+ "FROM item_option "
 				+ "WHERE item_id = ?;";
@@ -199,9 +202,10 @@ public class ItemDao {
 				PreparedStatement preState1 = con.prepareStatement(sql1);
 				PreparedStatement preState2 = con.prepareStatement(sql2);) {
 
-			// プリペアードステートメントを使用.
+			// 引数に受け取ったオブジェクトをプレースホルダにセットする.
 			for (int i = 0; i < args.length; i++) {
-				preState1.setObject(i + 1, args[i]);
+				if (i < placeholderCount)
+					preState1.setObject(i + 1, args[i]);
 			}
 
 			try (ResultSet resSet1 = preState1.executeQuery();) {
@@ -223,11 +227,10 @@ public class ItemDao {
 					}
 					// オプションがある場合のみ取得
 					if (!optionIdList.isEmpty()) {
-					    item.setOptionList(
-					        searchOptionByOptionIdList(con, optionIdList)
-					    );
+						item.setOptionList(
+								searchOptionByOptionIdList(con, optionIdList));
 					} else {
-					    item.setOptionList(new ArrayList<>());
+						item.setOptionList(new ArrayList<>());
 					}
 
 					// 作成したItemオブジェクトを返却値に入れる.
@@ -307,9 +310,9 @@ public class ItemDao {
 
 		try (PreparedStatement preState = con.prepareStatement(sql)) {
 			for (int i = 0; i < optionIdList.size(); i++) {
-		        preState.setInt(i + 1, optionIdList.get(i));
-		    }
-			
+				preState.setInt(i + 1, optionIdList.get(i));
+			}
+
 			try (ResultSet resSet = preState.executeQuery();) {
 				while (resSet.next()) {
 
@@ -421,94 +424,52 @@ public class ItemDao {
 		return resMap;
 	}
 
-	// 商品一覧を取得（全件 or カテゴリ指定 from さい）.
+	// 全件またはカテゴリーで絞って商品一覧を取得する（from さい）.
 	public ArrayList<Item> getItemList(Integer categoryId) throws Exception {
 
-		ArrayList<Item> list = new ArrayList<>();
+		// 返却値の参照変数を初期化.
+		ArrayList<Item> resList = new ArrayList<>();
 
-		String sql = "SELECT i.item_id, i.item_name, i.category_id, c.category_name, " +
-				"i.order_number, i.price, i.item_image, i.stock " +
-				"FROM item i " +
-				"INNER JOIN category c ON i.category_id = c.category_id ";
+		// 条件を指定する.
+		String condition = "";
 
+		// categoryIdがあればWHERE句を追加する.
 		if (categoryId != null) {
-			sql += " WHERE i.category_id = ?";
+			condition += " WHERE item.category_id = ?";
 		}
 
-		try (Connection con = DatabaseManager.connect();
-				PreparedStatement ps = con.prepareStatement(sql)) {
+		// 検索を実行して返却用変数に格納.
+		resList = (ArrayList<Item>) searchItem(condition, categoryId);
 
-			if (categoryId != null) {
-				ps.setInt(1, categoryId);
-			}
-
-			try (ResultSet rs = ps.executeQuery()) {
-				while (rs.next()) {
-					Item item = new Item(
-							rs.getInt("item_id"),
-							rs.getString("item_name"),
-							rs.getInt("category_id"),
-							rs.getString("category_name"),
-							rs.getInt("order_number"),
-							rs.getInt("price"),
-							rs.getString("item_image"),
-							rs.getBoolean("stock"));
-					list.add(item);
-				}
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new Exception("商品一覧の取得に失敗しました");
-		}
-
-		return list;
+		return resList;
 	}
 
+	// 全件またはカテゴリーで絞って、件数を指定して、商品一覧を取得する（from さい）.
 	public ArrayList<Item> getItemListByPage(Integer categoryId, int offset, int limit)
 			throws Exception {
+		// 返却値の参照変数を初期化.
+		ArrayList<Item> resList = new ArrayList<>();
 
-		ArrayList<Item> list = new ArrayList<>();
+		// 条件を指定する.
+		String condition = "";
 
-		String sql = "SELECT i.item_id, i.item_name, i.category_id, c.category_name, " +
-				"i.order_number, i.price, i.item_image, i.stock " +
-				"FROM item i " +
-				"INNER JOIN category c ON i.category_id = c.category_id ";
+		// プレースホルダ用のリスト.
+		List<Object> paramList = new ArrayList<>();
 
+		// categoryIdがあればWHERE句を追加する.
 		if (categoryId != null) {
-			sql += " WHERE i.category_id = ? ";
+			condition += " WHERE item.category_id = ? ";
+			paramList.add(categoryId);
 		}
 
-		sql += " ORDER BY i.item_id LIMIT ? OFFSET ?";
+		// 件数の指定を条件に追加する.
+		condition += " ORDER BY item_id LIMIT ? OFFSET ?";
+		paramList.add(limit);
+		paramList.add(offset);
 
-		try (Connection con = DatabaseManager.connect();
-				PreparedStatement ps = con.prepareStatement(sql)) {
+		resList = (ArrayList<Item>) searchItem(condition, paramList.toArray());
 
-			int index = 1;
-
-			if (categoryId != null) {
-				ps.setInt(index++, categoryId);
-			}
-
-			ps.setInt(index++, limit);
-			ps.setInt(index, offset);
-
-			try (ResultSet rs = ps.executeQuery()) {
-				while (rs.next()) {
-					Item item = new Item(
-							rs.getInt("item_id"),
-							rs.getString("item_name"),
-							rs.getInt("category_id"),
-							rs.getString("category_name"),
-							rs.getInt("order_number"),
-							rs.getInt("price"),
-							rs.getString("item_image"),
-							rs.getBoolean("stock"));
-					list.add(item);
-				}
-			}
-		}
-
-		return list;
+		return resList;
 	}
 
 	public int getItemCount(Integer categoryId) throws Exception {
