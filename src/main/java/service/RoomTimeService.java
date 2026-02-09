@@ -8,28 +8,6 @@ import dao.RoomDao;
 import model.Room;
 
 public class RoomTimeService {
-	// 受け取ったRoomオブジェクト情報で時間を計算し返す.
-	public static LocalTime calcActualLeavingTime(Room room) {
-		if (room.getRes_receptionTime() == null || room.getRes_leavingTime() == null) {
-			// 予約なし(現在の leaving_time をそのまま使う).
-			return room.getLeavingTime().toLocalTime();
-		}
-		// 受付時間nullチェック.
-		if (room.getReceptionTime() == null) {
-			throw new IllegalStateException("受付時間が未設定です");
-		}
-
-		// 予約受付時間・予約退室時間・実際受付時間を取得.
-		LocalTime plannedReception = room.getRes_receptionTime().toLocalTime();
-		LocalTime plannedLeaving = room.getRes_leavingTime().toLocalTime();
-		LocalTime actualReception = room.getReceptionTime().toLocalTime();
-
-		// 差分計算.
-		long diffMinutes = ChronoUnit.MINUTES.between(plannedReception, actualReception);
-
-		// 実際の退室時間を計算.
-		return plannedLeaving.plusMinutes(diffMinutes);
-	}
 
 	// 受付時間＆退室時間(予約ありの場合)を更新.
 	public void updateRoomTimes(int roomId, String receptionTimeStr) throws Exception {
