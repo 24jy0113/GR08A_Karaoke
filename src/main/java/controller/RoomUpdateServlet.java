@@ -20,14 +20,10 @@ public class RoomUpdateServlet extends HttpServlet {
 		super();
 	}
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-
-	}
-
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
 		try {
 			int roomId = Integer.parseInt(request.getParameter("roomId"));
 			boolean alcohol = request.getParameter("alcohol").equals("1");
