@@ -23,6 +23,7 @@ String roleName = (String) session.getAttribute("SIGNUP_ROLE_NAME");
     <title>アカウント登録確認</title>
     <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/01_02.css">
     <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/header.css">
+    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/default.css">
 </head>
 <body>
     <!-- Header -->
