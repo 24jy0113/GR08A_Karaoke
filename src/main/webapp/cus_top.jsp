@@ -71,7 +71,7 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 			if (user != null && user.isFront()) {
 			%>
 			<button type="button" class="btn-back"
-				onclick="location.href='history.back()">表示選択画面へ戻る</button>
+				onclick="location.href='<%=request.getContextPath()%>/front/front_top.jsp'">表示選択画面へ戻る</button>
 			<%
 			}
 			%>

@@ -116,10 +116,7 @@ public class Order {
 		this.status = status;
 	}
 
-	public int getRoomId() {
-		return roomId;
-	}
-
+	
 	public void setItemList(List<OrderItem> itemList) {
 		this.itemList = itemList;
 	}
@@ -127,11 +124,15 @@ public class Order {
 	public void setTotal(int total) {
 		this.total = total;
 	}
-
+	public int getRoomId() {
+		return roomId;
+	}
 	public void setRoomId(int roomId) {
 		this.roomId = roomId;
 	}
-
+	public void setRoomNo(int roomNo) {
+		this.roomNo = roomNo;
+	}
 	public int getRoomNo() {
 		return roomNo;
 	}
