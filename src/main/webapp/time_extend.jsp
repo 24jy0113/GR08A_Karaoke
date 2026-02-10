@@ -12,10 +12,13 @@ List<Integer> availableMinutes = (List<Integer>) request.getAttribute("available
 <head>
 <meta charset="UTF-8">
 <title>延長時間選択画面</title>
-<link rel="stylesheet" type="text/css"
-	href="<%=request.getContextPath()%>/css/04_01.css">
+
 <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath()%>/css/header.css">
+<link rel="stylesheet" type="text/css"
+	href="<%=request.getContextPath()%>/css/default.css">
+<link rel="stylesheet" type="text/css"
+	href="<%=request.getContextPath()%>/css/04.css">
 </head>
 <body>
 	<!-- Header -->
@@ -31,7 +34,7 @@ List<Integer> availableMinutes = (List<Integer>) request.getAttribute("available
 					<li><a href="<%=request.getContextPath()%>/ExtendCanServlet">延長申請</a></li>
 					<li><a href="<%=request.getContextPath()%>/item_search.jsp">メニューを番号で探す</a></li>
 					<li><a href="<%=request.getContextPath()%>/item_list.jsp">フード・ドリンク</a></li>
-					<li><a href="<%= request.getContextPath() %>/cusPurchaseHistory">注文履歴</a></li>
+					<li><a href="<%=request.getContextPath()%>/cusPurchaseHistory">注文履歴</a></li>
 					<li><a class="gnav_botton" href="cart_detail.jsp"> <img
 							class="cart_img" src="<%=request.getContextPath()%>/img/cart.png"
 							alt="cart" width="20" height="20">カート内容を確認
@@ -41,52 +44,50 @@ List<Integer> availableMinutes = (List<Integer>) request.getAttribute("available
 		</div>
 	</header>
 	<main>
-		<div class="bodymsg">
-			<div class="msg">
-				<h2>延長が可能です！</h2>
-				<h2>ご希望の延長時間を選択し、確認ボタンを押してください</h2>
-				<form action="<%=request.getContextPath()%>/ExtendServlet"
-					method="post">
-					<table>
-						<tr>
-							<th>部屋番号</th>
-							<th>受付時間</th>
-							<th>退室時間</th>
-							<th>延長（分）</th>
-						</tr>
-						<!-- 1行目 -->
-						<tr>
-							<td><%=room.getRoomNo()%></td>
-							<td><%=room.getReceptionTime()%></td>
-							<td><%=room.getLeavingTime()%></td>
-							<td>
-								<!-- 延長（分） -->
-								<div class="block">
-									<select name="extendMinutes">
-										<%
-										for (Integer m : availableMinutes) {
-										%>
-										<option value="<%=m%>"><%=m%> 分
-										</option>
-										<%
-										}
-										%>
-									</select>
-								</div> <!-- ＊料金設定詳細 -->
-								<div class="small-text">
-									＊<a href="time_extend_fee.jsp">料金設定詳細</a>
-								</div>
-							</td>
+		<div class="container text-center">
+			<h1 class="bodymsg">延長が可能です！</h1>
+			<h2 class="bodymsg">ご希望の延長時間を選択し、確認ボタンを押してください</h2>
+			<form action="<%=request.getContextPath()%>/ExtendServlet"
+				method="post">
+				<table>
+					<tr>
+						<th>部屋番号</th>
+						<th>受付時間</th>
+						<th>退室時間</th>
+						<th>延長（分）</th>
+					</tr>
+					<!-- 1行目 -->
+					<tr>
+						<td><%=room.getRoomNo()%></td>
+						<td><%=room.getReceptionTime()%></td>
+						<td><%=room.getLeavingTime()%></td>
+						<td>
+							<!-- 延長（分） -->
+							<div class="block">
+								<select name="extendMinutes">
+									<%
+									for (Integer m : availableMinutes) {
+									%>
+									<option value="<%=m%>"><%=m%> 分
+									</option>
+									<%
+									}
+									%>
+								</select>
+							</div> <!-- ＊料金設定詳細 -->
+							<div class="small-text">
+								＊<a href="time_extend_fee.jsp">料金設定詳細</a>
+							</div>
+						</td>
 
-						</tr>
-					</table>
-					<div class="action-buttons">
-						<button type="button" class="btn-next"
-							onclick="location.href='<%=request.getContextPath()%>/cus_top.jsp'">トップページへ戻る</button>
-						<button type="submit">確認する</button>
-					</div>
-				</form>
-			</div>
+					</tr>
+				</table>
+				<div class="action-buttons flex-center">
+					<button type="button" class="btn-back"
+						onclick="location.href='<%=request.getContextPath()%>/cus_top.jsp'">トップページへ戻る</button>
+					<button type="submit" class="btn-next">確認する</button>
+				</div>
+			</form>
 		</div>
 		<div class="footer-wrap">
 			<%

@@ -526,7 +526,140 @@ public class OrderDao {
 	    }
 	    return list;
 	}
+<<<<<<< HEAD
 	public List<Order> findByStatus(int statusId) throws Exception {
+=======
+
+	public ArrayList<Order> searchOrderByRoom(int roomId) throws Exception {
+
+		// 返却値の参照変数を初期化.
+		ArrayList<Order> resList = new ArrayList<>();
+
+		// SQL文の作成.
+		String sql = "SELECT order_id,total,orders.room_id,room_number,receiving_number,"
+				+ "orders.item_creating_status_id,item_creating_status_name "
+				+ "FROM orders "
+				+ "INNER JOIN item_creating_status "
+				+ "ON orders.item_creating_status_id = item_creating_status.item_creating_status_id "
+				+ "INNER JOIN room "
+				+ "ON orders.room_id = room.room_id "
+				+ "WHERE orders.room_id=?;";
+
+		try (Connection con = DatabaseManager.connect(); PreparedStatement preState = con.prepareStatement(sql);) {
+
+			// プリペアードステートメントを使用.
+			preState.setInt(1, roomId);
+			try (ResultSet resSet = preState.executeQuery();) {
+
+				// 検索結果からOrderインスタンスを生成.
+				while (resSet.next()) {
+
+				    int orderId = resSet.getInt("order_id");
+
+				    Order order = new Order();
+
+				    order.setId(orderId);
+				    order.setTotal(resSet.getInt("total"));
+				    order.setRoomId(resSet.getInt("orders.room_id"));
+				    order.setRoomNo(resSet.getInt("room_number"));
+				    order.setReceivingNo(resSet.getInt("receiving_number"));
+				    order.setStatus(
+				        OrderStatus.fromId(
+				            resSet.getInt("orders.item_creating_status_id")
+				        )
+				    );
+
+				    // 子表查询（OrderItem）
+				    order.setItemList(searchOrderItem(orderId));
+
+				    resList.add(order);
+				}
+
+			}
+		} catch (IllegalArgumentException e) {
+
+			// デバッグ用のスタックトレース.
+			e.printStackTrace();
+
+			// フロントエンド用のエラーメッセージ.
+			String errMsg = "状態IDが不正です。";
+
+			// 例外を投げる.
+			throw new Exception(errMsg);
+
+		} catch (SQLException e) {
+
+			// デバッグ用のスタックトレース.
+			e.printStackTrace();
+
+			// フロントエンド用のエラーメッセージ.
+			String errMsg = "DB接続に失敗しました！<br>管理者に連絡してください。";
+
+			// 例外を投げる.
+			throw new Exception(errMsg);
+
+		}
+		return resList;
+	}
+
+	/*public ArrayList<Order> searchOrderByStatus(OrderStatus status) throws Exception {
+		// 返却値の参照変数を初期化.
+		ArrayList<Order> list = new ArrayList<>();
+
+		// SQL文の作成.
+		String sql = "SELECT order_id,total,orders.room_id,room_number,receiving_number,"
+				+ "orders.item_creating_status_id,item_creating_status_name "
+				+ "FROM orders "
+				+ "INNER JOIN item_creating_status "
+				+ "ON orders.item_creating_status_id = item_creating_status.item_creating_status_id "
+				+ "INNER JOIN room "
+				+ "ON orders.room_id = room.room_id "
+				+ "WHERE orders.item_creating_status_id=?;";
+
+		try (Connection con = DatabaseManager.connect(); PreparedStatement preState = con.prepareStatement(sql);) {
+
+			// プリペアードステートメントを使用.
+			preState.setInt(1, status.getId());
+			try (ResultSet resSet = preState.executeQuery();) {
+
+				// 検索結果からOrderインスタンスを生成.
+				while (resSet.next()) {
+					int orderId = resSet.getInt("order_id");
+					list.add(new Order(orderId, searchOrderItem(orderId), resSet.getInt("total"),
+							resSet.getInt("orders.room_id"), resSet.getInt("room"), resSet.getInt("receiving_number"),
+							OrderStatus.fromId(resSet.getInt("orders.item_creating_status_id")),
+							resSet.getString("orders.item_creating_status_name")));
+				}
+			}
+
+		} catch (IllegalArgumentException e) {
+
+			// デバッグ用のスタックトレース.
+			e.printStackTrace();
+
+			// フロントエンド用のエラーメッセージ.
+			String errMsg = "状態IDが不正です。";
+
+			// 例外を投げる.
+			throw new Exception(errMsg);
+
+		} catch (SQLException e) {
+
+			// デバッグ用のスタックトレース.
+			e.printStackTrace();
+
+			// フロントエンド用のエラーメッセージ.
+			String errMsg = "DB接続に失敗しました！<br>管理者に連絡してください。";
+
+			// 例外を投げる.
+			throw new Exception(errMsg);
+
+		}
+		return list;
+
+	}*/
+	public List<Order> findOrderedList() throws Exception {// 注文済み一覧
+>>>>>>> refs/remotes/origin/master
 
 	    List<Order> list = new ArrayList<>();
 
