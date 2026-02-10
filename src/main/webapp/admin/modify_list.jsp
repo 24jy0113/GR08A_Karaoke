@@ -12,7 +12,7 @@ if (user == null) {
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>該当商品詳細画面-管理者</title>
+<title>該当商品詳細画面-${sessionScope.admin ? "管理者" : "キッチン" }</title>
 <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath()%>/css/08_02.css">
 <link rel="stylesheet" type="text/css"
@@ -44,7 +44,6 @@ if (user == null) {
 				<h2>該当商品一覧</h2>
 				<form method="get"
 					action="${pageContext.request.contextPath}/ItemEditServlet">
-					<input type="hidden" name="q" value="${query }">
 					<table>
 						<tr>
 							<th>商品画像</th>
@@ -68,8 +67,11 @@ if (user == null) {
 					</table>
 
 					<div class="action-buttons">
-						<button type="button" class="btn-back" onclick="location.href='${pageContext.request.contextPath}/admin/modify_search.jsp'">商品検索画面へ戻る</button>
-						<button type="submit" class="btn-next">商品新規追加</button>
+						<button type="button" class="btn-back"
+							onclick="location.href='${pageContext.request.contextPath}/SearchItemByName?go_top=1'">商品検索画面へ戻る</button>
+						<c:if test="${sessionScope.admin }">
+							<button type="submit" class="btn-next">商品新規追加</button>
+						</c:if>
 					</div>
 				</form>
 

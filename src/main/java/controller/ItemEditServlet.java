@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -46,16 +47,14 @@ public class ItemEditServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		Action action = null;
 
-		// GET/POST共通のクエリ保持
-		if (request.getParameter("q") != null) {
-			request.setAttribute("query", request.getParameter("q"));
-		}
-
 		if ("GET".equalsIgnoreCase(request.getMethod())) {
 			action = new ItemUpdateAction();
 		} else {
 			String cmd = request.getParameter("cmd");
 			switch (cmd) {
+			case "edit":
+				action = new ItemUpdateAction();
+				break;
 			case "confirm":
 				action = new ItemUpdateConfirmAction();
 				break;
@@ -67,11 +66,22 @@ public class ItemEditServlet extends HttpServlet {
 
 		if (action != null) {
 			String view = action.execute(request, response);
-			RequestDispatcher rd = request.getRequestDispatcher(view);
+			RequestDispatcher rd = request.getRequestDispatcher("/admin/" + view);
 			rd.forward(request, response);
 		} else {
 			// エラーハンドリング：一覧に戻すなど
-			response.sendRedirect("/admin/modify_search.jsp");
+			response.sendRedirect("/SearchItemByName");
+		}
+
+		// errMsgがある時.
+		String errMsg = ((String) (request.getAttribute("errMsg")));
+		if (errMsg != null && !errMsg.isEmpty()) {
+			// フロントエンド用のメッセージ.
+			String message = URLEncoder.encode(errMsg, "UTF-8");
+
+			// 検索フォームに返却.
+			response.sendRedirect(request.getContextPath() + "/admin/modify_search.jsp?e=" + message);
+			return;
 		}
 	}
 

@@ -16,20 +16,20 @@ public class ItemUpdateExecuteAction implements Action {
 
 		// セッションに編集中の商品オブジェクトを格納する.
 		Item item = (Item) (session.getAttribute("editItem"));
-		
+
 		try {
 			ItemDao dao = new ItemDao();
-			if(item.getId()<1) {
+			if (item.getId() < 1) {
 				dao.addItem(item);
-			}else {
+			} else {
 				dao.updateItem(item);
 			}
 		} catch (Exception e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
 		}
-		
-		return "/admin/modify_updated.jsp";
+
+		return "modify_updated.jsp";
 	}
 
 }

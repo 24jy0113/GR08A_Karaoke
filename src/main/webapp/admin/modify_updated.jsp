@@ -12,7 +12,7 @@ if (user == null) {
 
 <head>
 <meta charset="UTF-8">
-<title>商品${editItem.id<1?追加:更新 }完了画面-管理者</title>
+<title>商品${editItem.id<1 ? "追加" : "更新" }完了画面-${sessionScope.admin ? "管理者" : "キッチン" }</title>
 <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath()%>/css/08_05.css">
 <link rel="stylesheet" type="text/css"
@@ -41,8 +41,8 @@ if (user == null) {
 	<main>
 		<div class="bodymsg">
 			<div class="msg">
-				<h2>商品情報${editItem.id<1?追加:更新 }完了</h2>
-				<p>下記の内容で商品${editItem.id<1?追加:更新 }を更新しました</p>
+				<h2>商品情報${editItem.id<1 ? "追加" : "更新" }完了</h2>
+				<p>下記の内容で商品${editItem.id<1 ? "追加" : "更新" }を更新しました</p>
 				<table>
 					<tr>
 						<th>商品名</th>
@@ -58,38 +58,40 @@ if (user == null) {
 							src="${pageContext.request.contextPath}/img/${editItem.image}"
 							alt="${editItem.name }" width="30px" height="30px"></td>
 					</tr>
-					<tr>
-						<th>注文番号</th>
-						<td>${editItem.itemNo }</td>
-					</tr>
-					<tr>
-						<th>カテゴリー</th>
-						<td>${editItem.category }</td>
-					</tr>
+					<c:if test='${sessionScope.admin}'>
+						<tr>
+							<th>注文番号</th>
+							<td>${editItem.itemNo }</td>
+						</tr>
+						<tr>
+							<th>カテゴリー</th>
+							<td>${editItem.category }</td>
+						</tr>
+					</c:if>
 					<tr>
 						<th>在庫</th>
 						<td>${editItem.stock ? "あり":"なし" }</td>
 					</tr>
-					<tr>
-						<th>オプション</th>
-						<td>${editItem.hasOption() ? "あり":"なし" }</td>
-					</tr>
-
-					<c:forEach var="option" items="${editItem.optionList}">
+					<c:if test='${sessionScope.admin}'>
 						<tr>
-							<th></th>
-							<td>${option.name }</td>
+							<th>オプション</th>
+							<td>${editItem.hasOption() ? "あり":"なし" }</td>
 						</tr>
-					</c:forEach>
+						<c:forEach var="option" items="${editItem.optionList}">
+							<tr>
+								<th></th>
+								<td>${option.name }</td>
+							</tr>
+						</c:forEach>
+					</c:if>
 
 				</table>
 
 				<div class="action-buttons">
-
-					<button type="button" class="btn-back"
-						onclick="location.href='<%=request.getContextPath()%>/manage_top.jsp'">表示選択画面へ戻る</button>
 					<button type="submit" class="btn-next"
-						onclick="location.href='<%=request.getContextPath()%>/admin/modify_search.jsp'">商品検索画面へ戻る</button>
+						onclick="location.href='${pageContext.request.contextPath}/SearchItemByName';return false;">該当商品一覧へ戻る</button>
+					<button type="button" class="btn-back"
+						onclick="location.href='${pageContext.request.contextPath}/SearchItemByName?go_top=1'">商品検索画面へ戻る</button>
 				</div>
 			</div>
 

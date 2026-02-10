@@ -35,7 +35,7 @@ public class ItemDao {
 			preState1.setInt(2, item.getCategoryId());
 			preState1.setInt(3, item.getItemNo());
 			preState1.setInt(4, item.getPrice());
-			preState1.setString(5, item.getImage());
+			preState1.setString(5, item.getImage().replace("items/", ""));
 			preState1.setBoolean(6, item.isStock());
 
 			try {
@@ -108,7 +108,7 @@ public class ItemDao {
 			preState1.setInt(2, item.getCategoryId());
 			preState1.setInt(3, item.getItemNo());
 			preState1.setInt(4, item.getPrice());
-			preState1.setString(5, item.getImage());
+			preState1.setString(5, item.getImage().replace("items/", ""));
 			preState1.setBoolean(6, item.isStock());
 			preState1.setInt(7, item.getId());
 			try {
