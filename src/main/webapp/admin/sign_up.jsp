@@ -92,7 +92,7 @@ if (user == null) {
 					<label></label> <input type="checkbox" onclick="togglePassword()">
 					パスワードを表示
 				</div>
-				<span class="errormsg"></span><br>
+				<span id="errorMessage"></span><br>
 				<div class="action-buttons flex-center">
 					<button type="button" class="btn-back" onclick="history.back()">キャンセル</button>
 					<button type="submit" class="btn-next">確認する</button>
