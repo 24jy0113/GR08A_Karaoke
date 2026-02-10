@@ -10,17 +10,14 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.Order;
-
-@WebServlet("/KitchenOrderFinished")
-public class KitchenOrderFinished extends HttpServlet {
-
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse res)
+@WebServlet("/FrontOrderFinishedList")
+public class FrontOrderFinishedList extends HttpServlet {
+	protected void doGet(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
 
         try {
             OrderDao dao = new OrderDao();
-            List<Order> orderList = dao.findByStatus(2);
+            List<Order> orderList = dao.findByStatus(3);
 
          // ② 各注文に明細を詰める
             for (Order o : orderList) {
@@ -32,7 +29,7 @@ public class KitchenOrderFinished extends HttpServlet {
             req.setAttribute("orderList", orderList);
 
             req.getRequestDispatcher(
-                "/kitchen/kitchen_order_finished.jsp"
+                "/front/front_order_finished_list.jsp"
             ).forward(req, res);
 
         } catch (Exception e) {

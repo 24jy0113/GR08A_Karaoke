@@ -17,8 +17,8 @@ List<Order> orderList =
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>伝票一覧-キッチン</title>
-    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/12_03.css">
+    <title>完了した注文一覧-フロント</title>
+    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/12_04.css">
     <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/header.css">
 </head>
 <body>
@@ -34,9 +34,9 @@ List<Order> orderList =
             </nav>
         </div>
     </header>
-    <h1>調理済み一覧</h1>
+    <h1>完了した注文一覧</h1>
     <div class="card-container">
-    <% if (orderList != null && !orderList.isEmpty()) { %>
+        <% if (orderList != null && !orderList.isEmpty()) { %>
 	    <% for (Order o : orderList) { %>
     <div class="card">
 	        <strong><%= o.getRoomNo() %>室</strong><br>
@@ -65,24 +65,16 @@ List<Order> orderList =
 	
 	        受取番号：<%= o.getReceivingNo() %><br>
 
-	        <form action="<%= request.getContextPath() %>/KitchenOrderBack"
-	              method="post">
-	            <input type="hidden" name="orderId"
-	                   value="<%= o.getId() %>">
-	            <button type="submit">戻す</button>
-	        </form>
+	        
 	    </div>
 	
 	    <% } %>
 	<% } else { %>
-	    <p>調理済みの注文はありません。</p>
+	    <p>完了した注文はありません。</p>
 	<% } %>
-	</div>
-	
-    <div class="footer-buttons">
-        
-        <button type="button" onclick="location.href='<%= request.getContextPath() %>/KitchenOrderList'">注文情報画面へ戻る</button>
-      
     </div>
+    <div class="action-buttons">
+	     <button type="button" class="btn-back" onclick="location.href='<%= request.getContextPath() %>/FrontOrderReady'">調理済み一覧に戻る</button>
+	</div>
 </body>
 </html>
