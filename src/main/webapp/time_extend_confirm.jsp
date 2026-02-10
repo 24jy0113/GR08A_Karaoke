@@ -10,9 +10,11 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 <meta charset="UTF-8">
 <title>延長内容のご確認</title>
 <link rel="stylesheet" type="text/css"
-	href="<%=request.getContextPath()%>/css/04_02.css">
-<link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath()%>/css/header.css">
+<link rel="stylesheet" type="text/css"
+	href="<%=request.getContextPath()%>/css/default.css">
+<link rel="stylesheet" type="text/css"
+	href="<%=request.getContextPath()%>/css/04.css">
 </head>
 <body>
 	<!-- Header -->
@@ -28,7 +30,7 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 					<li><a href="<%=request.getContextPath()%>/ExtendCanServlet">延長申請</a></li>
 					<li><a href="<%=request.getContextPath()%>/item_search.jsp">メニューを番号で探す</a></li>
 					<li><a href="<%=request.getContextPath()%>/item_list.jsp">フード・ドリンク</a></li>
-					<li><a href="<%= request.getContextPath() %>/cusPurchaseHistory">注文履歴</a></li>
+					<li><a href="<%=request.getContextPath()%>/cusPurchaseHistory">注文履歴</a></li>
 					<li><a class="gnav_botton" href="cart_detail.jsp"> <img
 							class="cart_img" src="<%=request.getContextPath()%>/img/cart.png"
 							alt="cart" width="20" height="20">カート内容を確認
@@ -38,34 +40,31 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 		</div>
 	</header>
 	<main>
-		<div class="bodymsg">
-			<div class="msg">
-				<h2>下記の延長内容を確認してください</h2>
-
-				<table>
-					<tr>
-						<th>部屋番号</th>
-						<th>受付時間</th>
-						<th>元の退室時間</th>
-						<th>延長後の退室時間</th>
-						<th>合計延長時間（分）</th>
-					</tr>
-					<!-- 1行目 -->
-					<tr>
-						<td><%=room.getRoomNo()%></td>
-						<td><%= room.getReceptionTime() %></td>
-						<td><%= request.getAttribute("currentLeaving") %></td>
-						<td><%= request.getAttribute("newLeaving") %></td>
-						<td><%= request.getAttribute("extendMinutes") %></td>
-					</tr>
-				</table>
-				<div class="action-buttons">
-					<form action="<%=request.getContextPath()%>/ExtendConfirmServlet"
-						method="post">
-						<button type="button" class="btn-back" onclick="history.back()">戻る</button>
-						<button type="submit">延長申請を完了する</button>
-					</form>
-				</div>
+		<div class="container text-center">
+			<h2 class="bodymsg">下記の延長内容を確認し、完了ボタンを押してください</h2>
+			<table>
+				<tr>
+					<th>部屋番号</th>
+					<th>受付時間</th>
+					<th>元の退室時間</th>
+					<th>延長後の退室時間</th>
+					<th>合計延長時間（分）</th>
+				</tr>
+				<!-- 1行目 -->
+				<tr>
+					<td><%=room.getRoomNo()%></td>
+					<td><%=room.getReceptionTime()%></td>
+					<td><%=request.getAttribute("currentLeaving")%></td>
+					<td><%=request.getAttribute("newLeaving")%></td>
+					<td><%=request.getAttribute("extendMinutes")%></td>
+				</tr>
+			</table>
+			<div class="action-buttons flex-center">
+				<form action="<%=request.getContextPath()%>/ExtendConfirmServlet"
+					method="post">
+					<button type="button" class="btn-back" onclick="history.back()">戻る</button>
+					<button type="submit" class="btn-next">延長申請を完了する</button>
+				</form>
 			</div>
 		</div>
 		<div class="footer-wrap">

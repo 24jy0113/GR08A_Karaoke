@@ -10,7 +10,8 @@
 	</div>
 </div>
 
-<!-- ===== 通知用JavaScript ===== -->
+<!-- 通知＆時間表示のJavascript -->
+<script>const CONTEXT_PATH = "<%=request.getContextPath()%>";</script>
 <script src="<%=request.getContextPath()%>/js/notice.js"></script>
 
 <!-- ===== 簡易CSS（なければ最低限） ===== -->

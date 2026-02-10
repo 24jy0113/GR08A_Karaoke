@@ -1,19 +1,14 @@
 package controller;
-
 import java.io.IOException;
-import java.util.List;
-
 import dao.OrderDao;
-import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import model.Order;
 
-@WebServlet("/KitchenOrderDone")
-public class KitchenOrderDone extends HttpServlet {
+@WebServlet("/FrontOrderFinished")
+public class FrontOrderFinished extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res)
@@ -25,11 +20,11 @@ public class KitchenOrderDone extends HttpServlet {
 
             OrderDao dao = new OrderDao();
 
-            // 注文済み(1) → 調理済み(2)
-            dao.updateStatus(orderId, 2);
+            // 調理済み(2) → 完了(3)
+            dao.updateStatus(orderId, 3);
 
             res.sendRedirect(
-                req.getContextPath() + "/KitchenOrderList"
+                req.getContextPath() + "/FrontOrderReady"
             );
 
         } catch (Exception e) {
