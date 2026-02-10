@@ -14,10 +14,9 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath()%>/css/default.css">
 <link rel="stylesheet" type="text/css"
-	href="<%=request.getContextPath()%>/css/04_01.css">
+	href="<%=request.getContextPath()%>/css/04.css">
 </head>
 <body>
-	<!-- Header -->
 	<header>
 		<div class="header_inner">
 			<img class="title_img"
@@ -41,8 +40,8 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 	</header>
 	<main>
 		<div class="container text-center">
-			<h2>申し訳ありませんが延長はできません</h2>
-			<h2>お時間になりましたら、ご退室ください</h2>
+			<h1 class="bodymsg">申し訳ありませんが延長はできません</h1>
+			<h1 class="bodymsg">お時間になりましたら、ご退室ください</h1>
 			<table>
 				<tr>
 					<th>部屋番号</th>
