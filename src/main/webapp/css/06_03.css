@@ -1,15 +1,5 @@
 @charset "UTF-8";
 
-.bodymsg {
-	text-align: center;
-	margin-top: 40px;
-	font-size: 18px;
-}
-
-.msg {
-	margin-bottom: 30px;
-}
-
 body {
 	margin: 0;
 	padding: 24px;
@@ -27,7 +17,6 @@ body {
 .left-box {
 	width: 200px;
 	height: 200px;
-	background: #eaeaea;
 	border-radius: 12px;
 	display: flex;
 	justify-content: center;
@@ -49,7 +38,7 @@ body {
 }
 
 .item-price {
-	font-size: 36px;
+	font-size: 24px;
 	font-weight: 800;
 	margin-bottom: 40px;
 }
@@ -61,14 +50,6 @@ body {
 	align-items: center;
 	justify-content: center;
 }
-
-h1 {
-	font-size: 20px;
-	font-weight: 700;
-	margin-bottom: 16px;
-	text-align: center;
-}
-
 
 .pad {
 	width: 100%;
@@ -82,17 +63,9 @@ h1 {
 	width: 100%;
 }
 
-.pad button {
+.btn-next,
+.btn-back {
 	width: 100%;
-	padding: 10px 0;
-	border-radius: 20px;
-	font-size: 22px;
-	border: none;
-	cursor: pointer;
-}
-
-.pad button:active {
-	transform: translateY(2px);
 }
 
 .footer-wrap {
