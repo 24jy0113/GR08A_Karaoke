@@ -24,8 +24,10 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 <head>
   <meta charset="utf-8" />
   <title>商品一覧画面</title>
-  <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/06_02.css">
+  
   <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/header.css">
+  <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/default.css">
+  <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/06_02.css">
 </head>
 
 <body>
