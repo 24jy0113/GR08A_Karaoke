@@ -51,7 +51,7 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 			<h1 class="bodytitle text-center">サービス一覧</h1>
 			<p class="bodymsg text-center">ご利用するサービスをお選びください</p>
 			<div class="container">
-				<a class="button" href="<%=request.getContextPath()%>/item_list.jsp">一覧から商品を探す</a>
+				<a class="button" href="<%=request.getContextPath()%>/item_list">一覧から商品を探す</a>
 				<a class="button"
 					href="<%=request.getContextPath()%>/item_search.jsp">メニュー番号から商品を探す</a>
 

@@ -445,7 +445,7 @@ public class ItemDao {
 	}
 
 	// 全件またはカテゴリーで絞って、件数を指定して、商品一覧を取得する（from さい）.
-	public ArrayList<Item> getItemListByPage(Integer categoryId, int offset, int limit)
+	public ArrayList<Item> getItemListByPage(Integer categoryId, int offset, int limit, boolean alcohol)
 			throws Exception {
 		// 返却値の参照変数を初期化.
 		ArrayList<Item> resList = new ArrayList<>();
@@ -458,12 +458,22 @@ public class ItemDao {
 
 		// categoryIdがあればWHERE句を追加する.
 		if (categoryId != null) {
-			condition += " WHERE item.category_id = ? ";
+			condition += "WHERE item.category_id = ? ";
 			paramList.add(categoryId);
 		}
 
+		// 酒類の提供がないなら条件を増やす.
+		if (!alcohol) {
+			if (categoryId == null) {
+				condition += "WHERE ";
+			} else {
+				condition += "AND ";
+			}
+			condition += "NOT (item.category_id = 1) ";
+		}
+
 		// 件数の指定を条件に追加する.
-		condition += " ORDER BY item_id LIMIT ? OFFSET ?";
+		condition += "ORDER BY item_id LIMIT ? OFFSET ?;";
 		paramList.add(limit);
 		paramList.add(offset);
 

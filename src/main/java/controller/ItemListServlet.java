@@ -28,9 +28,7 @@ public class ItemListServlet extends HttpServlet {
 
 		// ▼ category（デフォルト1）
 		String catParam = req.getParameter("category");
-		int categoryId = (catParam == null || catParam.isEmpty())
-				? 1
-				: Integer.parseInt(catParam);
+		Integer selCategoryId = (catParam == null || catParam.isEmpty()) ? null : Integer.parseInt(catParam);
 
 		// ▼ page（カテゴリ変更時は1）
 		String pageParam = req.getParameter("page");
@@ -43,16 +41,16 @@ public class ItemListServlet extends HttpServlet {
 		ItemDao dao = new ItemDao();
 
 		try {
-			int totalCount = dao.getItemCount(categoryId);
+			int totalCount = dao.getItemCount(selCategoryId);
 			int totalPages = Math.max(1,
 					(int) Math.ceil((double) totalCount / pageSize));
 
-			ArrayList<Item> itemList = dao.getItemListByPage(categoryId, offset, pageSize);
+			ArrayList<Item> itemList = dao.getItemListByPage(selCategoryId, offset, pageSize, room.isAlcohol());
 
 			req.setAttribute("itemList", itemList);
 			req.setAttribute("currentPage", page);
 			req.setAttribute("totalPages", totalPages);
-			req.setAttribute("categoryId", categoryId);
+			req.setAttribute("categoryId", selCategoryId);
 			req.setAttribute("room", room);
 
 			req.getRequestDispatcher("/item_list.jsp").forward(req, res);
