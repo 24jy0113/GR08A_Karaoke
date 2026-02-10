@@ -1,90 +1,113 @@
+@charset "UTF-8";
+
 body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-}
-/* Header*/
-
-.header-container {
-    display: flex;
-    height: 54px;
-    margin-top: 10px;
-    align-items: center;
-    border-bottom: 1px solid rgba(217, 217, 217, 1);
+	font-family: Arial, sans-serif;
+	margin: 20px;
 }
 
-.logo-text {
-    white-space: nowrap;
-    margin-right: 60px;
-    color: black;
-    font-size: 16px;
-    font-weight: normal;
-    line-height: 22.4px;
-    text-decoration: none;
-}
-
-
-.bodymsg {
-    text-align: center;
-    display: flex;
-    justify-content: center;
+.container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 	align-items: center;
-    font-size: 18px;
-}
-h3{
-    text-align: left;
-    margin-top: 10px;
-}
-h4{
-    text-align: right;
-    margin-top: 20px;
-}
-table {
-    margin-top: 10px;
-    border-collapse: collapse;
-    border: #020311 1px solid;
-    width: 100%;
-}
-th, td {  
-    padding: 8px 12px;
-    
-}
-td {
-    border-bottom: 1px solid rgba(217, 217, 217, 1);
+	font-size: 18px;
 }
 
-.small-text {
-    font-size: 14px;
-    margin-top: 3px;
+/* ヘッダー部分(テーブルの)設定 */
+.order-card {
+	width: 100%;
+	max-width: 900px;
+	border: 1px solid #ddd;
+	border-radius: 12px;
+	padding: 20px;
+	margin: 30px 0;
+	background: #fff;
 }
 
-a {
-    text-decoration: underline;
+.order-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 15px;
+}
+
+.order-no {
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.pickup {
+	padding: 6px 14px;
+	border-radius: 20px;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.pickup.delivery {
+	background: #e0f2ff;
+	color: #007acc;
+}
+
+.pickup.counter {
+	background: #fff3cd;
+	color: #856404;
 }
 
 
-.btn-back {
-    padding: 12px 24px;
-    border-radius: 8px;
-    border: 1px solid;
-    font-size: 16px;
-    cursor: pointer;
-    transition: all 0.2s;
-    min-height: 32px;
+/* テーブル設定 */
+.order-table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 16px;
 }
 
-.btn-back {
-    border-color: #020211;
-    color: #050505;
+.order-table th {
+	background: #f5f5f5;
+	padding: 10px;
 }
+
+.order-table td {
+	padding: 10px;
+	border-bottom: 1px solid #eee;
+}
+
+.order-table td:last-child {
+	font-weight: bold;
+}
+
+
+/* 注文小計 */
+.order-total {
+	text-align: right;
+	font-size: 18px;
+	margin-top: 15px;
+}
+
+.order-total span {
+	font-size: 22px;
+	font-weight: bold;
+}
+
+/* 全体合計 */
+.grand-total {
+	margin-top: 10px;
+	padding: 20px;
+	background: black;
+	color: white;
+	font-size: 22px;
+	border-radius: 12px;
+}
+
+.grand-total span {
+	font-size: 28px;
+	font-weight: bold;
+}
+
+
 .footer-wrap {
-    display: flex;
-    justify-content: space-around;
-    border-top: 1px solid rgba(217, 217, 217, 1);
-    padding-top: 10px;
-    margin-top: 30px;
-  }
-/* Footer Styles */
-footer {
-    text-align: center;
-    margin-top: 30px;
+	display: flex;
+	justify-content: space-around;
+	border-top: 1px solid rgba(217, 217, 217, 1);
+	padding-top: 10px;
+	margin-top: 30px;
 }
