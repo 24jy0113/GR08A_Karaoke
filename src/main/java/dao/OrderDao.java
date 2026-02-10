@@ -526,6 +526,9 @@ public class OrderDao {
 	    }
 	    return list;
 	}
+<<<<<<< HEAD
+	public List<Order> findByStatus(int statusId) throws Exception {
+=======
 
 	public ArrayList<Order> searchOrderByRoom(int roomId) throws Exception {
 
@@ -656,78 +659,66 @@ public class OrderDao {
 
 	}*/
 	public List<Order> findOrderedList() throws Exception {// 注文済み一覧
+>>>>>>> refs/remotes/origin/master
 
 	    List<Order> list = new ArrayList<>();
 
 	    String sql = """
 	        SELECT
-            o.order_id,
-            o.total,
-            o.receiving_number,
-            o.item_creating_status_id,
-            o.room_id,
-            r.room_number,
-            o.usage_history_id,
-            o.pickup_method
-        FROM orders o
-        JOIN room r
-          ON o.room_id = r.room_id
-        WHERE o.item_creating_status_id = 1
-        ORDER BY o.order_id ASC
+	            o.order_id,
+	            o.total,
+	            o.receiving_number,
+	            o.item_creating_status_id,
+	            o.room_id,
+	            r.room_number,
+	            o.usage_history_id,
+	            o.pickup_method
+	        FROM orders o
+	        JOIN room r
+	          ON o.room_id = r.room_id
+	        WHERE o.item_creating_status_id = ?
+	        ORDER BY o.order_id ASC
 	    """;
 
 	    try (
 	        Connection con = DatabaseManager.connect();
-	        PreparedStatement ps = con.prepareStatement(sql);
-	        ResultSet rs = ps.executeQuery();
+	        PreparedStatement ps = con.prepareStatement(sql)
 	    ) {
-	        while (rs.next()) {
-	            Order o = new Order();
-	            o.setId(rs.getInt("order_id"));
-	            o.setTotal(rs.getInt("total"));
-	            o.setReceivingNo(rs.getInt("receiving_number"));
-	            o.setItemCreatingStatusId(rs.getInt("item_creating_status_id"));
-	            o.setRoomId(rs.getInt("room_id"));
-	            o.setRoomNo(rs.getInt("room_number"));
-	            o.setUsageHistoryId(rs.getInt("usage_history_id"));
-	            o.setPickupMethod(rs.getString("pickup_method"));
-	            list.add(o);
+	        ps.setInt(1, statusId);
+
+	        try (ResultSet rs = ps.executeQuery()) {
+	            while (rs.next()) {
+	                Order o = new Order();
+	                o.setId(rs.getInt("order_id"));
+	                o.setTotal(rs.getInt("total"));
+	                o.setReceivingNo(rs.getInt("receiving_number"));
+	                o.setItemCreatingStatusId(rs.getInt("item_creating_status_id"));
+	                o.setRoomId(rs.getInt("room_id"));
+	                o.setRoomNo(rs.getInt("room_number"));
+	                o.setUsageHistoryId(rs.getInt("usage_history_id"));
+	                o.setPickupMethod(rs.getString("pickup_method"));
+	                list.add(o);
+	            }
 	        }
 	    }
 	    return list;
 	}
 
-	public List<Order> findCookingFinishedList() throws Exception {//調理済み一覧
-
-	    List<Order> list = new ArrayList<>();
-
-	    String sql = """
-	        SELECT *
-	        FROM orders
-	        WHERE item_creating_status_id = 2
-	        ORDER BY order_id ASC
-	    """;
-
-	    try (
-	        Connection con = DatabaseManager.connect();
-	        PreparedStatement ps = con.prepareStatement(sql);
-	        ResultSet rs = ps.executeQuery();
-	    ) {
-	        while (rs.next()) {
-	            Order o = new Order();
-	            o.setId(rs.getInt("order_id"));
-	            o.setTotal(rs.getInt("total"));
-	            o.setReceivingNo(rs.getInt("receiving_number"));
-	            o.setItemCreatingStatusId(rs.getInt("item_creating_status_id"));
-	            o.setRoomId(rs.getInt("room_id"));
-	            o.setUsageHistoryId(rs.getInt("usage_history_id"));
-	            o.setPickupMethod(rs.getString("pickup_method"));
-
-	            list.add(o);
-	        }
-	    }
-	    return list;
+	// 注文済み
+	public List<Order> findOrderedList() throws Exception {
+	    return findByStatus(1);
 	}
+
+	// 調理済み
+	public List<Order> findCookingFinishedList() throws Exception {
+	    return findByStatus(2);
+	}
+
+	// 完了
+	public List<Order> findCompletedList() throws Exception {
+	    return findByStatus(3);
+	}
+
 	public int getItemCreatingStatus(int orderId) throws Exception {//キッチン調理状態変更用
 
 	    String sql = """

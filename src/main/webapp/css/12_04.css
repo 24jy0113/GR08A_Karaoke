@@ -31,19 +31,31 @@ h1 {
 
 
 
-.footer-buttons {
+.action-buttons {
     display: flex;
+    gap: 20px;
     justify-content: center;
-    gap: 50px;
-    margin-top: 20px;
+    margin-top: 50px;
 }
 
-.footer-buttons button {
-    width: 180px;
-    height: 40px;
-    border-radius: 5px;
-    border: 1px solid #000;
-    background: #f5f5f5;
-    cursor: pointer;
+.btn-next,
+.btn-back {
+    padding: 12px 24px;
+    border-radius: 8px;
+    border: 1px solid;
     font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    min-height: 32px;
+}
+
+.btn-next {
+    background-color: #02020c;
+    border-color: #020311;
+    color: black;
+}
+
+.btn-back {
+    border-color: #02020c;
+    color: #080808;
 }

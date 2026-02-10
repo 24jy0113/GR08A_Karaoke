@@ -42,7 +42,7 @@ if (user == null) {
 				
 			</div>
 			<div class="container">
-				<a class="button" href="front_order_list.jsp">伝票一覧</a>
+				<a class="button" href="<%= request.getContextPath() %>/FrontOrderReady">伝票一覧</a>
 				<a class="button" href="../room_search.jsp">部屋番号</a>
 			</div>
 		</div>

@@ -22,7 +22,7 @@ public class KitchenOrderList extends HttpServlet {
             OrderDao dao = new OrderDao();
 
             //注文済み（status = 1）
-            List<Order> orderList = dao.findOrderedList();
+            List<Order> orderList = dao.findByStatus(1);
 
             //商品 + option
             for (Order o : orderList) {
