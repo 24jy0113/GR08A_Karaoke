@@ -12,7 +12,7 @@ if (user == null) {
 <html lang=ja>
 <head>
 <meta charset="UTF-8">
-<title>商品${editItem.id<1?追加:更新 }入力画面-管理者</title>
+<title>商品${editItem.id<1 ? "追加" : "更新" }入力画面-${sessionScope.admin ? "管理者" : "キッチン" }</title>
 <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath()%>/css/08_03.css">
 <link rel="stylesheet" type="text/css"
@@ -39,122 +39,128 @@ if (user == null) {
 	</header>
 	<main>
 		<div class="bodymsg">
-			<h1>商品情報${editItem.id<1?追加:更新 }入力</h1>
+			<h1>商品情報${editItem.id<1 ? "追加" : "更新" }入力</h1>
 		</div>
 		<form method="post" enctype="multipart/form-data">
 			<div class="container">
 				<div class="right-box">
 					<div class="input-row">
 						<label>商品名</label> <input class="menuInput" type="text"
-							name="name" value="${editItem.name }" />
+							value="${editItem.name }"
+							${sessionScope.admin ? ' name="name"' : ' readonly' }>
 					</div>
 					<div class="input-row">
 						<label>単価</label> <input class="menuInput" type="text"
-							name="price" value="${editItem.price }" />円 ＊税込価格
+							value="${editItem.price }"
+							${sessionScope.admin ? ' name="price"' : ' readonly' }>円
+						＊税込価格
 					</div>
 					<div class="input-row">
-						<label>商品画像</label> <input type="file" name="image"
-							accept=".png, .jpg, .jpeg">
+						<label>商品画像</label><c:if test="${sessionScope.admin }"> <input type="file" name="image"
+							accept=".png, .jpg, .jpeg"></c:if>
 						<p>
-							＊JPG, JPEG, PNGのみ<br>現在の商品画像:${editItem.image}
+							＊JPG, JPEG, PNGのみ<br>現在の商品画像:${editItem.image.replace("items/", "")}
 						</p>
 					</div>
-					<div class="input-row">
+					<c:if test='${sessionScope.admin }'>
+						<div class="input-row">
 
-						<label>注文番号</label> <input class="menuInput" type="text"
-							name="order_number" value="${editItem.itemNo }" readonly />
-					</div>
-					<div class="input-row">
-						<label>カテゴリー</label> <select id="category-select"
-							class="category-select" name="category">
-							<c:forEach var="category" items="${categoryList}">
-								<option value="${category.key }"
-									${editItem.categoryId == category.key ? "selected" : ""}>${category.value}</option>
-							</c:forEach>
-						</select>
+							<label>注文番号</label> <input class="menuInput" type="text"
+								name="order_number" value="${editItem.itemNo }" readonly />
+						</div>
+						<div class="input-row">
+							<label>カテゴリー</label> <select id="category-select"
+								class="category-select" name="category">
+								<c:forEach var="category" items="${categoryList}">
+									<option value="${category.key }"
+										${editItem.categoryId == category.key ? "selected" : ""}>${category.value}</option>
+								</c:forEach>
+							</select>
 
-					</div>
+						</div>
+					</c:if>
 					<div class="input-row">
 						<label>在庫</label> <label><input type="radio" name="stock"
 							value="true" ${editItem.isStock() ? "checked" : ""}> あり</label> <label><input
 							type="radio" name="stock" value="false"
 							${!editItem.isStock() ? "checked" : ""}> なし</label>
 					</div>
-					<div class="input-row">
-						<label>オプション</label> <label><input type="radio"
-							id="radioOption"
-							${editItem.hasOption() ? "checked" : ""}> あり</label> <label><input
-							type="radio" id="radioNonOption"
-							${!editItem.hasOption() ? "checked" : ""}> なし</label>
-					</div>
-					<!-- オプション全体 -->
-					<div id="optionArea"></div>
-					<script type="text/javascript">
-						const resMap = JSON.parse('${optionList}');
-						const initialSelectedIds = [
-							<c:forEach items="${editItem.optionList}" var="o" varStatus="s">
-					            ${o.id}${!s.last ? ',' : ''}
-					        </c:forEach>
-					        ];
-						let radio1 = document.getElementById("radioOption");
-						let radio2 = document.getElementById("radioNonOption");
-						let optionArea = document.getElementById("optionArea");
-						let category = document.getElementById("category-select");
-
-						function updateDisplay() {
-							let checkboxes = optionArea.querySelectorAll('input[type="checkbox"]');
-							if (radio1.checked) {
-								optionArea.style.display = "block";
-								checkboxes.forEach(cb => cb.disabled = false);
-							} else {
-								optionArea.style.display = "none";
-								checkboxes.forEach(cb => cb.disabled = true);
+					<c:if test='${sessionScope.admin }'>
+						<div class="input-row">
+							<label>オプション</label> <label><input type="radio"
+								id="radioOption" ${editItem.hasOption() ? "checked" : ""}>
+								あり</label> <label><input type="radio" id="radioNonOption"
+								${!editItem.hasOption() ? "checked" : ""}> なし</label>
+						</div>
+						<!-- オプション全体 -->
+						<div id="optionArea"></div>
+						<script type="text/javascript">
+							const resMap = JSON.parse('${optionList}');
+							const initialSelectedIds = [
+								<c:forEach items="${editItem.optionList}" var="opt" varStatus="s">
+						            ${opt.id}${!s.last ? ',' : ''}
+						        </c:forEach>
+						        ];
+							let radio1 = document.getElementById("radioOption");
+							let radio2 = document.getElementById("radioNonOption");
+							let optionArea = document.getElementById("optionArea");
+							let category = document.getElementById("category-select");
+	
+							function updateDisplay() {
+								let checkboxes = optionArea.querySelectorAll('input[type="checkbox"]');
+								if (radio1.checked) {
+									optionArea.style.display = "block";
+									checkboxes.forEach(cb => cb.disabled = false);
+								} else {
+									optionArea.style.display = "none";
+									checkboxes.forEach(cb => cb.disabled = true);
+								}
+	
 							}
-
-						}
-
-						function updateOptionArea(categoryId) {
-						    
-							optionArea.innerHTML = '';
-						    const options = resMap[String(categoryId).trim()];
-
-						    if (!options || options.length === 0) {
-						    	optionArea.innerHTML = '<div class="option-block">オプションはありません</div>';
-						        return;
-						    }
-
-						    let html = '<div class="option-block">オプションを選択してください<br>';
-						    
-						    options.forEach(opt => {
-						        const isChecked = initialSelectedIds.includes(opt.id) ? 'checked' : '';
-
-						        html += `
-						            <label>
-						                <input type="checkbox" name="option" value="\${opt.id}" \${isChecked}>
-						                \${opt.name}
-						            </label>
-						        `;
-						    });
-
-						    html += '</div>';
-
-						    optionArea.insertAdjacentHTML('afterbegin', html);
-						}
-						
-						// クリックイベントの設定.
-						radio1.addEventListener("change", () => { if(radio1.checked) radio2.checked = false; updateDisplay(); });
-						radio2.addEventListener("change", () => { if(radio2.checked) radio1.checked = false; updateDisplay(); });
-						category.addEventListener("change", () => { updateOptionArea(category.value); });
-
-						// ページ読み込み時の初期状態を反映.
-						updateDisplay();
-						updateOptionArea(${editItem.categoryId});
-					</script>
+	
+							function updateOptionArea(categoryId) {
+							    
+								optionArea.innerHTML = '';
+							    const options = resMap[String(categoryId).trim()];
+	
+							    if (!options || options.length === 0) {
+							    	optionArea.innerHTML = '<div class="option-block">オプションはありません</div>';
+							        return;
+							    }
+	
+							    let html = '<div class="option-block">オプションを選択してください<br>';
+							    
+							    options.forEach(opt => {
+							        const isChecked = initialSelectedIds.includes(opt.id) ? 'checked' : '';
+	
+							        html += `
+							            <label>
+							                <input type="checkbox" name="option" value="\${opt.id}" \${isChecked}>
+							                \${opt.name}
+							            </label>
+							        `;
+							    });
+	
+							    html += '</div>';
+	
+							    optionArea.insertAdjacentHTML('afterbegin', html);
+							}
+							
+							// クリックイベントの設定.
+							radio1.addEventListener("change", () => { if(radio1.checked) radio2.checked = false; updateDisplay(); });
+							radio2.addEventListener("change", () => { if(radio2.checked) radio1.checked = false; updateDisplay(); });
+							category.addEventListener("change", () => { updateOptionArea(category.value); });
+	
+							// ページ読み込み時の初期状態を反映.
+							updateDisplay();
+							updateOptionArea(${editItem.categoryId});
+						</script>
+					</c:if>
 				</div>
 			</div>
 			<div class="action-buttons">
 				<button type="button" class="btn-back"
-					onclick="location.href='${pageContext.request.contextPath}/SearchItemByName?q=${query}'">該当商品一覧へ戻る</button>
+					onclick="location.href='${pageContext.request.contextPath}/SearchItemByName';return false;">該当商品一覧へ戻る</button>
 				<button name="cmd" value="confirm" type="submit" class="btn-next"
 					formaction="${pageContext.request.contextPath}/ItemEditServlet">確認する</button>
 			</div>

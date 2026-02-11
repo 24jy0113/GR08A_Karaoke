@@ -38,7 +38,7 @@ public class ItemUpdateAction implements Action {
 			// フロントエンド用のメッセージ.
 			request.setAttribute("errMsg", e.getMessage());
 		}
-		return "/admin/modify_update.jsp";
+		return "modify_update.jsp";
 	}
 
 }

@@ -12,7 +12,7 @@ if (user == null) {
 <html lang=ja>
 <head>
 <meta charset="UTF-8">
-<title>商品情報確認画面-${editItem.id<1?追加:更新 }-管理者</title>
+<title>商品情報確認画面-${editItem.id<1 ? "追加" : "更新" }-管理者</title>
 <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath()%>/css/08_04.css">
 <link rel="stylesheet" type="text/css"
@@ -56,29 +56,33 @@ if (user == null) {
 							src="${pageContext.request.contextPath}/img/${editItem.image}"
 							alt="${editItem.name }" width="30px" height="30px"></td>
 					</tr>
-					<tr>
-						<th>注文番号</th>
-						<td>${editItem.itemNo }</td>
-					</tr>
-					<tr>
-						<th>カテゴリー</th>
-						<td>${editItem.category }</td>
-					</tr>
+					<c:if test='${sessionScope.admin}'>
+						<tr>
+							<th>注文番号</th>
+							<td>${editItem.itemNo }</td>
+						</tr>
+						<tr>
+							<th>カテゴリー</th>
+							<td>${editItem.category }</td>
+						</tr>
+					</c:if>
 					<tr>
 						<th>在庫</th>
 						<td>${editItem.stock ? "あり":"なし" }</td>
 					</tr>
-					<tr>
-						<th>オプション</th>
-						<td>${editItem.hasOption() ? "あり":"なし" }</td>
-					</tr>
-					<c:if test="${editItem.hasOption() }">
-						<c:forEach var="option" items="${editItem.optionList}">
-							<tr>
-								<th></th>
-								<td>${option.name }</td>
-							</tr>
-						</c:forEach>
+					<c:if test='${sessionScope.admin}'>
+						<tr>
+							<th>オプション</th>
+							<td>${editItem.hasOption() ? "あり":"なし" }</td>
+						</tr>
+						<c:if test="${editItem.hasOption() }">
+							<c:forEach var="option" items="${editItem.optionList}">
+								<tr>
+									<th></th>
+									<td>${option.name }</td>
+								</tr>
+							</c:forEach>
+						</c:if>
 					</c:if>
 				</table>
 				<div class="action-buttons">

@@ -41,7 +41,7 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 					<li><a href="<%=request.getContextPath()%>/item_search.jsp">メニューを番号で探す</a></li>
 					<li><a href="<%=request.getContextPath()%>/item_list.jsp">フード・ドリンク</a></li>
 					<li><a href="<%=request.getContextPath()%>/cusPurchaseHistory">注文履歴</a></li>
-					<li><a class="gnav_botton"
+					<li><a class="gnav_button"
 						href="<%=request.getContextPath()%>/cart_detail.jsp"> <img
 							class="cart_img" src="<%=request.getContextPath()%>/img/cart.png"
 							alt="cart" width="20" height="20">カート内容を確認
@@ -55,7 +55,7 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 			<h1 class="bodytitle text-center">サービス一覧</h1>
 			<p class="bodymsg text-center">ご利用するサービスをお選びください</p>
 			<div class="container">
-				<a class="button" href="<%=request.getContextPath()%>/item_list.jsp">一覧から商品を探す</a>
+				<a class="button" href="<%=request.getContextPath()%>/item_list">一覧から商品を探す</a>
 				<a class="button"
 					href="<%=request.getContextPath()%>/item_search.jsp">メニュー番号から商品を探す</a>
 

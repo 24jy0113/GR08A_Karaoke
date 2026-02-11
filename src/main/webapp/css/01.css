@@ -87,6 +87,11 @@ main {
 	flex: 0.5;
 }
 
+#errorMessage {
+	text-align: center;
+	color: red;
+}
+
 .tbstyle {
 	text-align: center;
 	display: flex;
