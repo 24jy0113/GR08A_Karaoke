@@ -42,9 +42,9 @@ if (user == null) {
 
 			</div>
 			<div class="container">
-
-				<a class="button" href="../front/res_list_manager.jsp">予約情報</a>
-
+				<a class="button" href="<%= request.getContextPath() %>/ResListManagerServlet">
+				    予約情報
+				</a>
 			</div>
 			<div class="container">
 

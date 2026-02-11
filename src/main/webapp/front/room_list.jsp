@@ -86,7 +86,7 @@ if (roomList == null) {
 							<input type="hidden" name="roomId" value="<%=room.getId()%>">
 							<td>
 								<button type="button"
-									onclick="location.href='front_cus_top.jsp?roomId=<%=room.getId()%>'"
+									onclick="location.href='<%=request.getContextPath()%>/CusTopServlet?roomId=<%=room.getId()%>'"
 									style="background-color: black; color: aliceblue;">
 									延長・注文</button>
 							</td>

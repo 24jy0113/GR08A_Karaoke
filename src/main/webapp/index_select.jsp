@@ -46,7 +46,7 @@ if (user == null) {
 			    </auth:hasPermission>
 			
 			    <auth:hasPermission code="VIEW_FLOOR">
-			        <a class="button" href="${pageContext.request.contextPath}/floor/floor_order_list.jsp">
+			        <a class="button" href="${pageContext.request.contextPath}/FrontOrderReady">
 			            フロア用
 			        </a>
 			    </auth:hasPermission>

@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"
-    import="model.User"
+    import="model.*"
 %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <%
 User user = (User) session.getAttribute("loginUser");
 if (user == null) {
@@ -37,15 +39,18 @@ if (user == null) {
             <div>
                 <div></div>
                 <h2>予約一覧</h2>
-                <div class="block">
-                    <select name="extend">
-                        <option value="30" selected>空き</option>
-                        <option value="60">予約</option>
-                        <option value="90">受付済み</option>
-                        <option value="120">キャンセル</option>
-                    </select>
-                    <button type="submit">絞り込み</button>
-                </div>
+                <form method="get" action="<%= request.getContextPath() %>/ResListManagerServlet" class="block">
+				    <select name="statusId">
+				        <option value="">すべて</option>
+				        <option value="1">空き</option>
+				        <option value="2">予約</option>
+				        <option value="3">受付済み</option>
+				        <option value="4">会計済み</option>
+				    </select>
+				
+				    <button type="submit">絞り込み</button>
+				</form>
+
                 <table>
                     <tr>
                         <th>予約番号</th>
@@ -55,40 +60,27 @@ if (user == null) {
                         <th>予約退室時間</th>
                         <th>状態</th>
                     </tr>
-                    <!-- 1行目 -->
-                    <tr>
-                        <td>SF20251108</td>
-                        <td>101</td>
-                        <td>01/11</td>
-                        <td>10:30</td>
-                        <td>11:30</td>
-                        <td>予約</td>
-                    </tr>
-                    <tr>
-                        <td>SF20251109</td>
-                        <td>102</td>
-                        <td>01/11</td>
-                        <td>10:30</td>
-                        <td>11:30</td>
-                        <td>受付済み</td>
-                    </tr>
-                    <tr>
-                        <td>SF20251110</td>
-                        <td>103</td>
-                        <td>01/11</td>
-                        <td>10:30</td>
-                        <td>11:30</td>
-                        <td>キャンセル</td>
-                    </tr>
+                    <c:forEach var="r" items="${reservationList}">
+					<tr>
+					    <td>${r.reservationNumber}</td>
+					    <td>${r.roomNumber}</td>
+					    <td>${r.date}</td>
+					    <td>${r.receptionTime}</td>
+					    <td>${r.leavingTime}</td>
+					    <td>${r.statusName}</td>
+					</tr>
+					</c:forEach>
+
+                    
                 </table>
                 <div class="link">
                     <a href="">次のページへ</a>
                 </div>
                 <div class="action-buttons">
                     
-                    <button type="button" class="btn-back" onclick="location.href='../admin/manage_top.jsp'">表示選択画面へ</button>
+                    <button type="button" class="btn-back" onclick="location.href='<%= request.getContextPath() %>/admin/manage_top.jsp'">表示選択画面へ</button>
                    
-                   <button type="button" class="btn-next" onclick="location.href='res_msg_upload.jsp'">予約情報読み込み</button> 
+                   <button type="button" class="btn-next" onclick="location.href='<%= request.getContextPath() %>/admin/res_msg_upload.jsp'">予約情報読み込み</button> 
                     
                 </div>
             </div>

@@ -5,6 +5,10 @@ User user = (User) session.getAttribute("loginUser");
 %>
 <%
 Room room = (Room) session.getAttribute("room");
+if (room == null) {
+    response.sendRedirect(request.getContextPath() + "/RoomListServlet");
+    return;
+}
 Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 %>
 <!DOCTYPE html>
