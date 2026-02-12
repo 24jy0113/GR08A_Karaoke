@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"
-    import="model.User"
+    import="model.*"
 %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%
 User user = (User) session.getAttribute("loginUser");
 if (user == null) {
@@ -36,116 +38,68 @@ if (user == null) {
             <div>
                 <div></div>
                 <h2>予約一覧</h2>
-                <div class="block">
-                    <select name="extend">
-                        <option value="30" selected>空き</option>
-                        <option value="60">予約</option>
-                        <option value="90">受付済み</option>
-                        <option value="120">キャンセル</option>
-                    </select>
-                    <button type="submit">絞り込み</button>
-                </div>
-                <table>
-                    <tr>
-                        <th>予約番号</th>
-                        <th>部屋番号</th>
-                        <th>日付</th>
-                        <th>予約受付時間</th>
-                        <th>予約退室時間</th>
-                        <th>状態</th>
-                    </tr>
-                    <!-- 1行目 -->
-                    <tr>
-                        <td>SF20251108</td>
-                        <td>101</td>
-                        <td>01/11</td>
-                        <td><input
-                            type="time"
-                            id="appointment"
-                            name="appointment"
-                            min="09:00"
-                            max="18:00"
-                            required />
-                        </td>
-                        <td><input
-                            type="time"
-                            id="appointment"
-                            name="appointment"
-                            min="09:00"
-                            max="18:00"
-                            required />
-                        </td>
-                        <td>
-                            <select name="extend">
-                                <option value="30" selected>空き</option>
-                                <option value="60">予約</option>
-                                <option value="90">受付済み</option>
-                                <option value="120">キャンセル</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>SF20251109</td>
-                        <td>102</td>
-                        <td>01/11</td>
-                        <td><input
-                            type="time"
-                            id="appointment"
-                            name="appointment"
-                            required />
-                        </td>
-                        <td><input
-                            type="time"
-                            id="appointment"
-                            name="appointment"
-                            required />
-                        </td>
-                        <td>
-                            <select name="extend">
-                                <option value="30" selected>空き</option>
-                                <option value="60">予約</option>
-                                <option value="90">受付済み</option>
-                                <option value="120">キャンセル</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>SF20251110</td>
-                        <td>103</td>
-                        <td>01/11</td>
-                        <td><input
-                            type="time"
-                            id="appointment"
-                            name="appointment"
-                            required />
-                        </td>
-                        <td><input
-                            type="time"
-                            id="appointment"
-                            name="appointment"
-                            required />
-                        </td>
-                        <td>
-                            <select name="extend">
-                                <option value="30" selected>空き</option>
-                                <option value="60">予約</option>
-                                <option value="90">受付済み</option>
-                                <option value="120">キャンセル</option>
-                            </select>
-                        </td>
-                    </tr>
-                </table>
-                <div class="link">
-                    <a href="">次のページへ</a>
-                </div>
+                <form method="get" action="<%= request.getContextPath() %>/ResListFrontServlet" class="block">
+				    <select name="statusId">
+				        <option value="">すべて</option>
+				        <option value="1">空き</option>
+				        <option value="2">予約</option>
+				        <option value="3">受付済み</option>
+				        <option value="4">会計済み</option>
+				    </select>
+				
+				    <button type="submit">絞り込み</button>
+				</form>
+                <form method="post" action="<%= request.getContextPath() %>/ResListUpdateServlet">
+					<table>
+					<tr>
+					  <th>予約番号</th>
+					  <th>部屋番号</th>
+					  <th>日付</th>
+					  <th>予約受付時間</th>
+					  <th>予約退室時間</th>
+					  <th>状態</th>
+					</tr>
+					
+					<c:forEach var="r" items="${reservationList}">
+					<tr>
+					  <td>
+					    ${r.reservationNumber}
+					    <input type="hidden" name="reservationNumber" value="${r.reservationNumber}">
+					  </td>
+					
+					  <td>${r.roomNumber}</td>
+					  <td>${r.date}</td>
+					
+					  <td>
+					    <input type="time" name="startTime" value="${fn:substring(r.receptionTime,0,5)}">
+					  </td>
+					
+					  <td>
+					    <input type="time" name="endTime" value="${fn:substring(r.leavingTime,0,5)}">
+					  </td>
+					
+					  <td>
+					    <select name="statusId">
+					      <option value="1" ${r.statusName=="空き"?"selected":""}>空き</option>
+					      <option value="2" ${r.statusName=="予約"?"selected":""}>予約</option>
+					      <option value="3" ${r.statusName=="受付済み"?"selected":""}>受付済み</option>
+					      <option value="4" ${r.statusName=="会計済み"?"selected":""}>会計済み</option>
+					    </select>
+					  </td>
+					</tr>
+					</c:forEach>
+					</table>
+
+	                <div class="link">
+	                    <a href="">次のページへ</a>
+	                </div>
+	  
+	                <div class="action-buttons">  
+	                    <button type="button" class="btn-back" onclick="location.href='<%= request.getContextPath() %>/front/front_top.jsp'">表示選択画面へ</button>
+	                    <button type="submit" class="btn-next">変更の確定</button>  
+	                </div>
                 
-                <div class="action-buttons">
-                    
-                    <button type="button" class="btn-back" onclick="location.href='front_top.jsp'">表示選択画面へ</button>
-                    <button type="submit" class="btn-next" onclick="location.href='res_list_updated.jsp'">変更の確定</button>
-                    <!-- <button type="button" class="btn-update" onclick="location.href=''">予約情報読み込み</button> -->
-                    
-                </div>
+                </form>
             </div>
         </div>
         

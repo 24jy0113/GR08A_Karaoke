@@ -42,7 +42,7 @@ if (user == null) {
 			<p class="bodymsg">利用する項目を選択してください</p>
 			<div class="container">
 				<a class="button" href="room_list.jsp">部屋状況</a> <a class="button"
-					href="res_list_front.jsp">予約情報</a>
+					href="<%= request.getContextPath() %>/ResListFrontServlet">予約情報</a>
 
 			</div>
 			<div class="container">

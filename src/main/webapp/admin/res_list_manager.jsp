@@ -39,18 +39,6 @@ if (user == null) {
             <div>
                 <div></div>
                 <h2>予約一覧</h2>
-                <form method="get" action="<%= request.getContextPath() %>/ResListManagerServlet" class="block">
-				    <select name="statusId">
-				        <option value="">すべて</option>
-				        <option value="1">空き</option>
-				        <option value="2">予約</option>
-				        <option value="3">受付済み</option>
-				        <option value="4">会計済み</option>
-				    </select>
-				
-				    <button type="submit">絞り込み</button>
-				</form>
-
                 <table>
                     <tr>
                         <th>予約番号</th>
@@ -58,7 +46,7 @@ if (user == null) {
                         <th>日付</th>
                         <th>予約受付時間</th>
                         <th>予約退室時間</th>
-                        <th>状態</th>
+
                     </tr>
                     <c:forEach var="r" items="${reservationList}">
 					<tr>
@@ -67,7 +55,6 @@ if (user == null) {
 					    <td>${r.date}</td>
 					    <td>${r.receptionTime}</td>
 					    <td>${r.leavingTime}</td>
-					    <td>${r.statusName}</td>
 					</tr>
 					</c:forEach>
 

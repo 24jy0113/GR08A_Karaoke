@@ -10,19 +10,16 @@ public class CsvReservationRow {
     private Date date;
     private Time startTime;
     private Time endTime;
-    private int statusId;
-    private boolean alcohol;
+
 
     public CsvReservationRow(int reservationNumber, int roomId,
-                             Date date, Time startTime, Time endTime,
-                             int statusId, boolean alcohol) {
+                             Date date, Time startTime, Time endTime) {
         this.reservationNumber = reservationNumber;
         this.roomId = roomId;
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.statusId = statusId;
-        this.alcohol = alcohol;
+
     }
 
 
@@ -31,6 +28,5 @@ public class CsvReservationRow {
     public Date getDate() { return date; }
     public Time getStartTime() { return startTime; }
     public Time getEndTime() { return endTime; }
-    public int getStatusId() { return statusId; }
-    public boolean isAlcohol() { return alcohol; }
+
 }

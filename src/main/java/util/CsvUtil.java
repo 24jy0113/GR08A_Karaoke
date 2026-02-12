@@ -38,9 +38,8 @@ public class CsvUtil {
                     Integer.parseInt(cols[1].trim()), // room_id
                     Date.valueOf(cols[2].trim()),     // date
                     Time.valueOf(cols[3].trim() + ":00"), // start_time
-                    Time.valueOf(cols[4].trim() + ":00"), // end_time
-                    Integer.parseInt(cols[5].trim()), // status_id
-                    cols[6].trim().equals("1")        // alcohol
+                    Time.valueOf(cols[4].trim() + ":00") // end_time
+                    
                 );
 
                 list.add(row);

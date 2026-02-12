@@ -37,10 +37,9 @@ if (user == null) {
                 <div></div>
                 <h2>予約更新完了</h2>
                 <h3>予約情報の更新が完了しました</h3>
-                
-                
+
                 <div class="action-buttons">
-                    <button type="button" class="btn-back" onclick="location.href='res_list_front.jsp'">予約情報画面へ戻る</button>
+                    <button type="button" class="btn-back" onclick="location.href='<%= request.getContextPath() %>/ResListFrontServlet'">予約情報画面へ戻る</button>
                 </div>
             </div>
         </div>
