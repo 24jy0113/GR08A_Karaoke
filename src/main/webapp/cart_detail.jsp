@@ -51,14 +51,14 @@ int totalSum = 0;
 		</div>
 	</header>
 	<main>
-		<div class="bodymsg">
+		<div class="text-center">
 			<div class="msg">
 				<%
 				if (cart.isEmpty()) {
 				%>
 				<h2>カート内容</h2>
 				<p class="errermsg">カートの中身は空です。</p>
-				<button type="button"
+				<button type="button" class="btn-back"
 					onclick="location.href='<%=request.getContextPath()%>/cus_top.jsp'">
 					トップへ戻る</button>
 				<%
