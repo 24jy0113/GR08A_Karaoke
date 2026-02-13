@@ -72,3 +72,13 @@
 .text-center {
 	text-align: center;
 }
+
+
+/* 顧客用フッターの設定 */
+.footer-wrap {
+	display: flex;
+	justify-content: space-around;
+	border-top: 1px solid rgba(217, 217, 217, 1);
+	padding-top: 10px;
+	margin-top: 30px;
+}
