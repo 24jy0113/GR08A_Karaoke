@@ -12,7 +12,7 @@ if (user == null) {
 <html lang=ja>
 <head>
 <meta charset="UTF-8">
-<title>商品情報確認画面-${editItem.id<1 ? "追加" : "更新" }-管理者</title>
+<title>商品情報確認画面-${editItem.id<1 ? "追加" : "更新" }-${isAdmin ? "管理者" : "キッチン" }</title>
 <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath()%>/css/08_04.css">
 <link rel="stylesheet" type="text/css"
@@ -40,7 +40,7 @@ if (user == null) {
 							src="${pageContext.request.contextPath}/img/${editItem.image}"
 							alt="${editItem.name }" width="30px" height="30px"></td>
 					</tr>
-					<c:if test='${sessionScope.admin}'>
+					<c:if test='${isAdmin}'>
 						<tr>
 							<th>注文番号</th>
 							<td>${editItem.itemNo }</td>
@@ -54,7 +54,7 @@ if (user == null) {
 						<th>在庫</th>
 						<td>${editItem.stock ? "あり":"なし" }</td>
 					</tr>
-					<c:if test='${sessionScope.admin}'>
+					<c:if test='${isAdmin}'>
 						<tr>
 							<th>オプション</th>
 							<td>${editItem.hasOption() ? "あり":"なし" }</td>

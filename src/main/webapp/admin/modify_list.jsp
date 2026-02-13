@@ -54,7 +54,7 @@ if (user == null) {
 						<button type="button" class="btn-back"
 							onclick="location.href='${pageContext.request.contextPath}/SearchItemByName?go_top=1'">商品検索画面へ戻る</button>
 						<c:if test="${sessionScope.admin }">
-							<button type="submit" class="btn-next">商品新規追加</button>
+							<button type="submit" class="btn-next" onclick="location.href='<%= request.getContextPath() %>/ItemEditServlet'">商品新規追加</button>
 						</c:if>
 					</div>
 				</form>

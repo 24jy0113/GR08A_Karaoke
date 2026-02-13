@@ -12,7 +12,7 @@ if (user == null) {
 <html lang=ja>
 <head>
 <meta charset="UTF-8">
-<title>商品${editItem.id<1 ? "追加" : "更新" }入力画面-${sessionScope.admin ? "管理者" : "キッチン" }</title>
+<title>商品${editItem.id<1 ? "追加" : "更新" }入力画面-${isAdmin ? "管理者" : "キッチン" }</title>
 <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath()%>/css/08_03.css">
 <link rel="stylesheet" type="text/css"
@@ -31,12 +31,12 @@ if (user == null) {
 					<div class="input-row">
 						<label>商品名</label> <input class="menuInput" type="text"
 							value="${editItem.name }"
-							${sessionScope.admin ? ' name="name"' : ' readonly' }>
+							${isAdmin ? ' name="name"' : ' readonly' }>
 					</div>
 					<div class="input-row">
 						<label>単価</label> <input class="menuInput" type="text"
 							value="${editItem.price }"
-							${sessionScope.admin ? ' name="price"' : ' readonly' }>円
+							${isAdmin ? ' name="price"' : ' readonly' }>円
 						＊税込価格
 					</div>
 					<div class="input-row">
@@ -46,7 +46,7 @@ if (user == null) {
 							＊JPG, JPEG, PNGのみ<br>現在の商品画像:${editItem.image.replace("items/", "")}
 						</p>
 					</div>
-					<c:if test='${sessionScope.admin }'>
+					<c:if test='${isAdmin }'>
 						<div class="input-row">
 
 							<label>注文番号</label> <input class="menuInput" type="text"
@@ -69,7 +69,7 @@ if (user == null) {
 							type="radio" name="stock" value="false"
 							${!editItem.isStock() ? "checked" : ""}> なし</label>
 					</div>
-					<c:if test='${sessionScope.admin }'>
+					<c:if test='${isAdmin }'>
 						<div class="input-row">
 							<label>オプション</label> <label><input type="radio"
 								id="radioOption" ${editItem.hasOption() ? "checked" : ""}>
@@ -143,8 +143,16 @@ if (user == null) {
 				</div>
 			</div>
 			<div class="action-buttons">
-				<button type="button" class="btn-back"
-					onclick="location.href='${pageContext.request.contextPath}/SearchItemByName';return false;">該当商品一覧へ戻る</button>
+				<c:choose>
+					<c:when test="${editItem.id<1 }">
+						<button type="button" class="btn-back"
+							onclick="location.href='${pageContext.request.contextPath}/SearchItemByName?go_top=1';return false;">商品検索画面へ戻る</button>
+					</c:when>
+					<c:otherwise>
+						<button type="button" class="btn-back"
+							onclick="location.href='${pageContext.request.contextPath}/SearchItemByName';return false;">該当商品一覧へ戻る</button>
+					</c:otherwise>
+				</c:choose>
 				<button name="cmd" value="confirm" type="submit" class="btn-next"
 					formaction="${pageContext.request.contextPath}/ItemEditServlet">確認する</button>
 			</div>
