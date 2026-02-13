@@ -482,11 +482,23 @@ public class ItemDao {
 		return resList;
 	}
 
-	public int getItemCount(Integer categoryId) throws Exception {
+	public int getItemCount(Integer categoryId, boolean alcohol) throws Exception {
 
 		String sql = "SELECT COUNT(*) FROM item";
+
+		// categoryIdがあればWHERE句を追加する.
 		if (categoryId != null) {
 			sql += " WHERE category_id = ?";
+		}
+
+		// 酒類の提供がないなら条件を増やす.
+		if (!alcohol) {
+			if (categoryId == null) {
+				sql += "WHERE ";
+			} else {
+				sql += "AND ";
+			}
+			sql += "NOT (item.category_id = 1) ";
 		}
 
 		try (Connection con = DatabaseManager.connect();
