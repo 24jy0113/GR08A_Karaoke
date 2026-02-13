@@ -1,33 +1,15 @@
+@charset "UTF-8";
 
-.bodymsg {
-  text-align: center;
-  margin-top: 40px;
-  font-size: 18px;
+.action-buttons {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 20px 60px;
+	max-width: 500px;
+	margin: 0 auto;
 }
 
-.container {
-
-  display: flex;
-  justify-content: center;
+.action-buttons button {
+	margin-top: 40px;
+	width: 200px;
 }
-
-.button {
-  display: inline-block;
-  width: 150px;
-  padding: 10px 20px;
-  margin: 50px;
-  font-size: 16px;
-  color: white;
-  background-color: #0c0c0c;
-  text-decoration: none;
-  text-align: center;
-  border-radius: 5px;
-}
-
-/* Footer Styles */
-footer {
-  text-align: center;
-	margin-top: 300px;
-}
-
-

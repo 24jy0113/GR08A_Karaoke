@@ -25,18 +25,17 @@ if (user == null) {
 <body>
 	<%@ include file="/shered/biz_header.jsp"%>
 	<main class="text-center">
-			<h1 class="bodytitle">利用する項目を選択してください</h1>
-			<div class="action-buttons">
-				<button type="button" class="btn-next"
-					onclick="location.href='modify_search.jsp'">商品情報</button>
-				<button type="button" class="btn-next"
-					onclick="location.href='<%=request.getContextPath()%>/ResListManagerServlet'">予約情報
-				</button>
-				<button type="button" class="btn-next"
-					onclick="location.href='<%=request.getContextPath()%>/AccountSecureServlet'">アカウント情報</button>
-				<button type="button" class="btn-back"
-					onclick="location.href='<%=request.getContextPath()%>/index_select.jsp'">担当選択画面に戻る</button>
-			</div>
+		<h1 class="bodytitle">利用する項目を選択してください</h1>
+		<div class="action-buttons">
+			<button type="button" class="btn-next"
+				onclick="location.href='modify_search.jsp'">商品情報</button>
+			<button type="button" class="btn-next"
+				onclick="location.href='<%=request.getContextPath()%>/ResListManagerServlet'">予約情報</button>
+			<button type="button" class="btn-next"
+				onclick="location.href='<%=request.getContextPath()%>/AccountSecureServlet'">アカウント情報</button>
+			<button type="button" class="btn-back"
+				onclick="location.href='<%=request.getContextPath()%>/index_select.jsp'">担当選択画面に戻る</button>
+		</div>
 	</main>
 
 </body>
