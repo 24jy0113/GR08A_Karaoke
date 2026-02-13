@@ -24,7 +24,9 @@ public class OrderDao {
         try {
             con = DatabaseManager.connect();
             con.setAutoCommit(false);
-
+            
+            int receivingNo = generateReceivingNo(con);
+            order.setReceivingNo(receivingNo);
             /* ① orders*/
             String sqlOrder =
                 "INSERT INTO orders " +
@@ -109,6 +111,34 @@ public class OrderDao {
             if (con != null) con.close();
         }
     }
+	private int generateReceivingNo(Connection con) throws Exception {
+
+        String selectSql =
+            "SELECT current_no FROM receiving_no WHERE id = 1 FOR UPDATE";
+        String updateSql =
+            "UPDATE receiving_no SET current_no = ? WHERE id = 1";
+
+        int nextNo;
+
+        try (
+            PreparedStatement ps = con.prepareStatement(selectSql);
+            ResultSet rs = ps.executeQuery()
+        ) {
+            rs.next();
+            nextNo = rs.getInt("current_no") + 1;
+            if (nextNo > 9999) {
+                nextNo = 1;
+            }
+        }
+
+        try (PreparedStatement ps = con.prepareStatement(updateSql)) {
+            ps.setInt(1, nextNo);
+            ps.executeUpdate();
+        }
+
+        return nextNo;
+    }
+
 	public List<Order> findActiveOrdersByRoom(int roomId) throws Exception {
 	    List<Order> list = new ArrayList<>();//顧客側注文履歴取得
 

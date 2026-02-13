@@ -1,14 +1,19 @@
 package controller;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.*;
-
-import model.*;
-import dao.OrderDao;
-
 import java.io.IOException;
 import java.util.ArrayList;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
+import dao.OrderDao;
+import model.Order;
+import model.OrderItem;
+import model.Room;
 
 @WebServlet("/CartDetailConfirmServlet")
 public class CartDetailConfirmServlet extends HttpServlet {
@@ -53,7 +58,7 @@ public class CartDetailConfirmServlet extends HttpServlet {
         order.setItemList(cart);
         order.setTotal(total);
         order.setRoomId(room.getId());
-        order.setReceivingNo(generateReceivingNo());
+
         order.setPickupMethod(pickupMethod);
         order.setItemCreatingStatusId(1); 
 
@@ -75,8 +80,5 @@ public class CartDetailConfirmServlet extends HttpServlet {
         }
     }
 
-    // 受取番号生成
-    private int generateReceivingNo() {
-        return (int)(System.currentTimeMillis() % 100000);
-    }
+    
 }
