@@ -36,13 +36,14 @@ if (user == null) {
 		<c:if test="${!e.isEmpty }">
 			<p class="errormsg">${param.e }</p>
 		</c:if>
-
+		
 		<div class="action-buttons flex-center">
-			<button type="button" class="btn-back"
-				onclick="location.href='<%=request.getContextPath()%>/admin/manage_top.jsp'">表示選択画面へ戻る</button>
-			<button type="submit" class="btn-next"
+
+				<button type="button" class="btn-back"
+					onclick="location.href='<%= request.getContextPath() %>/admin/manage_top.jsp'">表示選択画面へ戻る</button>
+				<button type="submit" class="btn-next"
 					onclick="location.href='<%= request.getContextPath() %>/ItemEditServlet'">商品新規追加</button>
-		</div>
+			</div>
 	</main>
 
 </body>

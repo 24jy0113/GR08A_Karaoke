@@ -37,8 +37,8 @@ public class ItemNameSearchServlet extends HttpServlet {
 
 		// 不要なセッションを掃除してから一覧を表示
 		session.removeAttribute("editItem");
-		Object currentMode = session.getAttribute("mode");
-		session.removeAttribute("mode");
+		Object currentMode = session.getAttribute("isAdmin");
+		session.removeAttribute("isAdmin");
 
 		request.setCharacterEncoding("UTF-8");
 
@@ -59,9 +59,15 @@ public class ItemNameSearchServlet extends HttpServlet {
 		}
 
 		if (adminMode) {
-			session.setAttribute("mode", true);
+			session.setAttribute("isAdmin", true);
 		} else {
-			session.setAttribute("mode", false);
+			session.setAttribute("isAdmin", false);
+		}
+
+		String insertItem = request.getParameter("insertItem");
+		if (insertItem != null && insertItem.equals("true")) {
+			response.sendRedirect(request.getContextPath() + "/ItemEditServlet");
+			return;
 		}
 
 		String query = request.getParameter("q");

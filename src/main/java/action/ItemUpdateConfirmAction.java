@@ -29,7 +29,7 @@ public class ItemUpdateConfirmAction implements Action {
 		// セッションからログイン中のユーザの権限情報を取得する.
 		Object rawPermissions = session.getAttribute("permissions");
 		Set<String> permissions = (rawPermissions instanceof Set) ? (Set<String>) rawPermissions : new HashSet<>();
-		Object rawAdmin = session.getAttribute("admin");
+		Object rawAdmin = session.getAttribute("isAdmin");
 		boolean admin = (boolean) rawAdmin;
 
 		// パラメータの受け取り.

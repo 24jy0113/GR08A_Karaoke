@@ -12,7 +12,7 @@ if (user == null) {
 
 <head>
 <meta charset="UTF-8">
-<title>商品${editItem.id<1 ? "追加" : "更新" }完了画面-${sessionScope.admin ? "管理者" : "キッチン" }</title>
+<title>商品${editItem.id<1 ? "追加" : "更新" }完了画面-${isAdmin ? "管理者" : "キッチン" }</title>
 <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath()%>/css/header.css">
 <link rel="stylesheet" type="text/css"
@@ -42,7 +42,7 @@ if (user == null) {
 						src="${pageContext.request.contextPath}/img/${editItem.image}"
 						alt="${editItem.name }" width="30px" height="30px"></td>
 				</tr>
-				<c:if test='${sessionScope.admin}'>
+				<c:if test='${isAdmin}'>
 					<tr>
 						<th>注文番号</th>
 						<td>${editItem.itemNo }</td>
@@ -56,7 +56,7 @@ if (user == null) {
 					<th>在庫</th>
 					<td>${editItem.stock ? "あり":"なし" }</td>
 				</tr>
-				<c:if test='${sessionScope.admin}'>
+				<c:if test='${isAdmin}'>
 					<tr>
 						<th>オプション</th>
 						<td>${editItem.hasOption() ? "あり":"なし" }</td>
@@ -71,8 +71,10 @@ if (user == null) {
 			</table>
 		</div>
 		<div class="action-buttons flex-center">
-			<button type="submit" class="btn-back"
-				onclick="location.href='${pageContext.request.contextPath}/SearchItemByName';return false;">該当商品一覧へ戻る</button>
+			<c:if test="${editItem.id>1 }">
+				<button type="submit" class="btn-back"
+					onclick="location.href='${pageContext.request.contextPath}/SearchItemByName';return false;">該当商品一覧へ戻る</button>
+			</c:if>
 			<button type="button" class="btn-back"
 				onclick="location.href='${pageContext.request.contextPath}/SearchItemByName?go_top=1'">商品検索画面へ戻る</button>
 		</div>

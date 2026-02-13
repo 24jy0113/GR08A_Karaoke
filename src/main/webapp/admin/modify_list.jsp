@@ -36,27 +36,28 @@ if (user == null) {
 						<th>在庫</th>
 						<th></th>
 					</tr>
-					<c:forEach var="item" items="${searchResult}">
-						<tr>
-							<td><img width=200
-								src="${pageContext.request.contextPath}/img/${item.image}"
-								alt="${item.name }"></td>
-							<td>${item.name }</td>
-							<td>${item.price }円（税込）</td>
-							<td>${item.isStock() ? "あり" : "なし"}</td>
+
+						<c:forEach var="item" items="${searchResult}">
+							<tr>
+								<td><img width=200
+									src="${pageContext.request.contextPath}/img/${item.image}"
+									alt="${item.name }"></td>
+								<td>${item.name }</td>
+								<td>${item.price }円（税込）</td>
+								<td>${item.isStock() ? "あり" : "なし"}</td>
 							<td><button type="submit" name="id" value="${item.id }"
 									class="btn-next">変更</button></td>
-						</tr>
-					</c:forEach>
-				</table>
+							</tr>
+						</c:forEach>
+					</table>
 				<div class="action-buttons flex-center">
-					<button type="button" class="btn-back"
-						onclick="location.href='${pageContext.request.contextPath}/SearchItemByName?go_top=1'">商品検索画面へ戻る</button>
-					<c:if test="${sessionScope.admin }">
-						<button type="submit" class="btn-next">商品新規追加</button>
-					</c:if>
-				</div>
-			</form>
+						<button type="button" class="btn-back"
+							onclick="location.href='${pageContext.request.contextPath}/SearchItemByName?go_top=1'">商品検索画面へ戻る</button>
+						<c:if test="${sessionScope.admin }">
+							<button type="submit" class="btn-next" onclick="location.href='<%= request.getContextPath() %>/ItemEditServlet'">商品新規追加</button>
+						</c:if>
+					</div>
+				</form>
 		</div>
 	</main>
 
