@@ -26,12 +26,7 @@ public class ItemDetailServlet extends HttpServlet {
             Item item = dao.searchItemById(itemId);
 
 
-            if (item == null) {
-                request.setAttribute("error", "商品が見つかりません");
-                request.getRequestDispatcher("/error.jsp")
-                       .forward(request, response);
-                return;
-            }
+            
 
             request.setAttribute("item", item);
             request.getRequestDispatcher("/item_detail.jsp")
