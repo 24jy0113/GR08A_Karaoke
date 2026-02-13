@@ -30,7 +30,7 @@ List<Order> orderList =
             <nav class="gnav">
                 <ul class="gnav_list">
                      <li><img class="user_img" src="<%= request.getContextPath() %>/img/user.png" alt="cart" width="25" height="25"><%= user.getUserName() %></li>
-                    <li><a class="gnav_botton" href="<%= request.getContextPath() %>/LogoutServlet">ログアウト</a></li>
+                    <li><a class="gnav_button" href="<%= request.getContextPath() %>/LogoutServlet">ログアウト</a></li>
                 </ul>
             </nav>
         </div>

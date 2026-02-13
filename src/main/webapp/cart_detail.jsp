@@ -19,7 +19,7 @@ int totalSum = 0;
 <title>カート内容</title>
 <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath()%>/css/header.css">
-	<link rel="stylesheet" type="text/css"
+<link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath()%>/css/default.css">
 <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath()%>/css/07_01.css">
@@ -27,15 +27,14 @@ int totalSum = 0;
 </head>
 <body>
 	<%@ include file="/shered/cus_header.jsp" %>
-	<main>
-		<div class="bodymsg">
+	<main class="container">
 			<div class="msg">
 				<%
 				if (cart.isEmpty()) {
 				%>
 				<h2>カート内容</h2>
 				<p class="errermsg">カートの中身は空です。</p>
-				<button type="button"
+			<button type="button" class="btn-back"
 					onclick="location.href='<%=request.getContextPath()%>/cus_top.jsp'">
 					トップへ戻る</button>
 				<%
@@ -81,7 +80,6 @@ int totalSum = 0;
 				}
 				%>
 			</div>
-		</div>
 
 		
 	</main>

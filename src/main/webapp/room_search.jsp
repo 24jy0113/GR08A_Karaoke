@@ -32,7 +32,7 @@ if (user == null) {
 					<li><img class="user_img"
 						src="<%=request.getContextPath()%>/img/user.png" alt="cart"
 						width="25" height="25"><%=user.getUserName()%></li>
-					<li><a class="gnav_botton"
+					<li><a class="gnav_button"
 						href="<%=request.getContextPath()%>/LogoutServlet">ログアウト</a></li>
 				</ul>
 			</nav>
