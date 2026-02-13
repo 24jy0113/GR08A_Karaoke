@@ -46,12 +46,17 @@ public class ItemListServlet extends HttpServlet {
 					(int) Math.ceil((double) totalCount / pageSize));
 
 			ArrayList<Item> itemList = dao.getItemListByPage(selCategoryId, offset, pageSize, room.isAlcohol());
+			var categoryMap = dao.getCategoryList();
+			if(!room.isAlcohol()) {
+				categoryMap.remove(1);
+			}
 
 			req.setAttribute("itemList", itemList);
 			req.setAttribute("currentPage", page);
 			req.setAttribute("totalPages", totalPages);
 			req.setAttribute("categoryId", selCategoryId);
 			req.setAttribute("room", room);
+			req.setAttribute("categoryMap", categoryMap);
 
 			req.getRequestDispatcher("/item_list.jsp").forward(req, res);
 

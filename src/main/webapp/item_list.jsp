@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.*, model.Item,model.Room" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
 
 <%
 ArrayList<Item> itemList = (ArrayList<Item>)request.getAttribute("itemList");
@@ -54,11 +55,9 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
   <main>
     <!-- ▼ カテゴリタブ -->
     <div class="tabs">
-	    <a href="<%=request.getContextPath()%>/item_list?category=1" class="tab">アルコール</a>
-		<a href="<%=request.getContextPath()%>/item_list?category=2" class="tab">ソフトドリンク</a>
-		<a href="<%=request.getContextPath()%>/item_list?category=3" class="tab">フードメニュー</a>
-		<a href="<%=request.getContextPath()%>/item_list?category=4" class="tab">サイドメニュー</a>
-		<a href="<%=request.getContextPath()%>/item_list?category=5" class="tab">デザート</a>
+    	<c:forEach var="category" items="${categoryMap }">
+		    <a href="<%=request.getContextPath()%>/item_list?category=${category.key }" class="tab">${category.value }</a>
+    	</c:forEach>
 	</div>
     <!-- ▼ メニュー表示部分 -->
     <div class="wrapper">
