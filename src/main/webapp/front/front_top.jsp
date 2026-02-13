@@ -35,6 +35,7 @@ if (user == null) {
 					href="<%=request.getContextPath()%>/FrontOrderReady">伝票一覧</a> <a
 					class="button" href="../room_search.jsp">部屋番号</a>
 			</div>
+			<button type="button" class="btn-back" onclick="location.href='<%=request.getContextPath()%>/index_select.jsp'">担当選択画面に戻る</button>
 		</div>
 	</main>
 
