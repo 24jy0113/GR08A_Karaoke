@@ -63,7 +63,15 @@ List<Order> orderList =
 			<% } %>
 			<br>
 	
-	        受取番号：<%= o.getReceivingNo() %><br>
+	        <%
+			Integer receivingNo = o.getReceivingNo();
+			%>
+			
+			<% if (receivingNo == null || receivingNo == 0) { %>
+			    部屋までお届け
+			<% } else { %>
+			    受取番号：<%= String.format("%04d", receivingNo) %>
+			<% } %><br>
 
 	        <form action="<%= request.getContextPath() %>/KitchenOrderBack"
 	              method="post">

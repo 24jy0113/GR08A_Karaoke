@@ -57,9 +57,23 @@ if (orderList == null) {
 				<div class="order-card">
 					<div class="order-header">
 						<div class="order-no">
-							受取番号_<%=o.getReceivingNo()%></div>
-						<div
-							class="pickup <%="お部屋までお届け".equals(o.getPickupMethod()) ? "delivery" : "counter"%>">
+						<%
+			Integer receivingNo = o.getReceivingNo();
+			
+			if (receivingNo == null || receivingNo == 0) {
+			%>
+			    部屋までお届け
+			<%
+			} else {
+			%>
+			    受取番号：<%= String.format("%04d", receivingNo) %>
+			<%
+			}
+			%>
+
+						</div>
+						
+						<div class="pickup <%="お部屋までお届け".equals(o.getPickupMethod()) ? "delivery" : "counter"%>">
 							<%=o.getPickupMethod()%>
 						</div>
 					</div>
@@ -89,9 +103,9 @@ if (orderList == null) {
 									} else {
 									for (OrderItem.SelectedOptionDetail d : opts) {
 									%> <%=d.selectionName()%>（<%=d.price()%>円）<br> <%
- }
- }
- %>
+									 }
+									 }
+									 %>
 								</td>
 								<td><%=oi.getCount()%></td>
 								<td><%=oi.getTotal()%>円</td>
