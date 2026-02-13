@@ -27,29 +27,7 @@ if (room == null) {
 </head>
 
 <body>
-	<!-- Header -->
-	<header>
-		<div class="header_inner">
-			<img class="title_img"
-				src="<%=request.getContextPath()%>/img/logo.png" alt="logo"
-				width="60" height="60">
-			<h1 class="title_name">七福サウンド</h1>
-			<nav class="gnav">
-				<ul class="gnav_list">
-					<li><a href="<%=request.getContextPath()%>/cus_top.jsp">トップへ</a></li>
-					<li><a href="<%=request.getContextPath()%>/ExtendCanServlet">延長申請</a></li>
-					<li><a href="<%=request.getContextPath()%>/item_search.jsp">メニューを番号で探す</a></li>
-					<li><a href="<%=request.getContextPath()%>/item_list.jsp">フード・ドリンク</a></li>
-					<li><a href="<%=request.getContextPath()%>/cusPurchaseHistory">注文履歴</a></li>
-					<li><a class="gnav_button"
-						href="<%=request.getContextPath()%>/cart_detail.jsp"> <img
-							class="cart_img" src="<%=request.getContextPath()%>/img/cart.png"
-							alt="cart" width="20" height="20">カート内容を確認
-					</a></li>
-				</ul>
-			</nav>
-		</div>
-	</header>
+	<%@ include file="/shered/cus_header.jsp" %>
 	<main>
 		<div>
 			<h1 class="bodytitle text-center">サービス一覧</h1>
@@ -70,20 +48,8 @@ if (room == null) {
 			</div>
 		</div>
 
-		<div class="footer-wrap">
-			<h1>部屋番号${room.getRoomNo() }</h1>
-			<c:if test="${user != null && user.isFront() }">
-				<button type="button" class="btn-back"
-					onclick="location.href='<%=request.getContextPath()%>/front/front_top.jsp'">表示選択画面へ戻る</button>
-			</c:if>
-			<c:if test="${remainingMinutes != null }">
-				<h1>
-					残り時間 <span id="remainingTime">--:--</span>
-				</h1>
-			</c:if>
-		</div>
 	</main>
-	<jsp:include page="common.jsp" />
+	<%@ include file="/shered/cus_footer.jsp" %>
 
 </body>
 
