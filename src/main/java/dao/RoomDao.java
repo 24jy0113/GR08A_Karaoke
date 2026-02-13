@@ -315,4 +315,10 @@ public class RoomDao {
 			throw new Exception(errMsg);
 		}
 	}
+	
+	// 利用を利用履歴に移動する.
+	public void archiveRoomUsage() {
+		// SQL作成.
+		
+	}
 }
