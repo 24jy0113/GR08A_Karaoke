@@ -31,7 +31,7 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 			<%
 			if (error != null) {
 			%>
-			<p class="errermsg"><%=error%></p>
+			<p class="errormsg"><%=error%></p>
 			<%
 			}
 			%>

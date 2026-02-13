@@ -30,7 +30,7 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 			<%
 			if (error != null) {
 			%>
-			<p class="errermsg"><%=error%></p>
+			<p class="errormsg"><%=error%></p>
 			<%
 			}
 			%>
@@ -53,7 +53,7 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 						<%
 						if (!item.isStock()) {
 						%>
-						<h3 class="errermsg">この商品は現在売切れです</h3>
+						<h3 class="errormsg">この商品は現在売切れです</h3>
 						<!-- 押せないボタン -->
 						<button type="button" class="btn-next is-disabled" disabled>カートに入れる</button>
 						<%
