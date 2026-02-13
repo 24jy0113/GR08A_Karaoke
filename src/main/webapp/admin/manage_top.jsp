@@ -38,6 +38,7 @@ if (user == null) {
 
 				<a class="button" href="<%= request.getContextPath() %>/AccountSecureServlet">アカウント情報</a>
 			</div>
+			<button type="button" class="btn-back" onclick="location.href='<%=request.getContextPath()%>/index_select.jsp'">担当選択画面に戻る</button>
 		</div>
 	</main>
 

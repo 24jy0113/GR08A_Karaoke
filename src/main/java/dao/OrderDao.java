@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,8 +26,13 @@ public class OrderDao {
             con = DatabaseManager.connect();
             con.setAutoCommit(false);
             
-            int receivingNo = generateReceivingNo(con);
-            order.setReceivingNo(receivingNo);
+            if ("カウンター受取".equals(order.getPickupMethod())) {
+                int receivingNo = generateReceivingNo(con);
+                order.setReceivingNo(receivingNo);
+            } else {
+                // 部屋まで届ける
+                order.setReceivingNo(null);
+            }
             /* ① orders*/
             String sqlOrder =
                 "INSERT INTO orders " +
@@ -35,7 +41,11 @@ public class OrderDao {
 
             psOrder = con.prepareStatement(sqlOrder, Statement.RETURN_GENERATED_KEYS);
             psOrder.setInt(1, order.getTotal());
-            psOrder.setInt(2, order.getReceivingNo());
+            if (order.getReceivingNo() != null) {
+                psOrder.setInt(2, order.getReceivingNo());
+            } else {
+                psOrder.setNull(2, Types.INTEGER);
+            }
             psOrder.setInt(3, order.getItemCreatingStatusId());
             psOrder.setInt(4, order.getRoomId());
             psOrder.setString(5, order.getPickupMethod());
