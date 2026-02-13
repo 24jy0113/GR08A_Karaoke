@@ -22,64 +22,61 @@ if (user == null) {
 	href="<%=request.getContextPath()%>/css/08_04.css">
 </head>
 <body>
-	<!-- Header -->
 	<%@ include file="/shered/biz_header.jsp"%>
-	<main>
-		<div class="bodymsg">
-			<div class="msg">
-				<h2>商品情報確認</h2>
-				<table>
+	<main class="text-center">
+		<h2 class="bodytitle">商品情報確認</h2>
+		<div class="container">
+			<table>
+				<tr>
+					<th>商品名</th>
+					<td>${editItem.name }</td>
+				</tr>
+				<tr>
+					<th>価格(税込)</th>
+					<td>${editItem.price }円（税込）</td>
+				</tr>
+				<tr>
+					<th>商品画像</th>
+					<td><img
+						src="${pageContext.request.contextPath}/img/${editItem.image}"
+						alt="${editItem.name }" width="30px" height="30px"></td>
+				</tr>
+				<c:if test='${sessionScope.admin}'>
 					<tr>
-						<th>商品名</th>
-						<td>${editItem.name }</td>
+						<th>注文番号</th>
+						<td>${editItem.itemNo }</td>
 					</tr>
 					<tr>
-						<th>価格(税込)</th>
-						<td>${editItem.price }円（税込）</td>
+						<th>カテゴリー</th>
+						<td>${editItem.category }</td>
 					</tr>
+				</c:if>
+				<tr>
+					<th>在庫</th>
+					<td>${editItem.stock ? "あり":"なし" }</td>
+				</tr>
+				<c:if test='${sessionScope.admin}'>
 					<tr>
-						<th>商品画像</th>
-						<td><img
-							src="${pageContext.request.contextPath}/img/${editItem.image}"
-							alt="${editItem.name }" width="30px" height="30px"></td>
+						<th>オプション</th>
+						<td>${editItem.hasOption() ? "あり":"なし" }</td>
 					</tr>
-					<c:if test='${sessionScope.admin}'>
-						<tr>
-							<th>注文番号</th>
-							<td>${editItem.itemNo }</td>
-						</tr>
-						<tr>
-							<th>カテゴリー</th>
-							<td>${editItem.category }</td>
-						</tr>
+					<c:if test="${editItem.hasOption() }">
+						<c:forEach var="option" items="${editItem.optionList}">
+							<tr>
+								<th></th>
+								<td>${option.name }</td>
+							</tr>
+						</c:forEach>
 					</c:if>
-					<tr>
-						<th>在庫</th>
-						<td>${editItem.stock ? "あり":"なし" }</td>
-					</tr>
-					<c:if test='${sessionScope.admin}'>
-						<tr>
-							<th>オプション</th>
-							<td>${editItem.hasOption() ? "あり":"なし" }</td>
-						</tr>
-						<c:if test="${editItem.hasOption() }">
-							<c:forEach var="option" items="${editItem.optionList}">
-								<tr>
-									<th></th>
-									<td>${option.name }</td>
-								</tr>
-							</c:forEach>
-						</c:if>
-					</c:if>
-				</table>
-				<div class="action-buttons">
-					<form method="post"
-						action="${pageContext.request.contextPath}/ItemEditServlet">
-						<button name="cmd" value="edit" type="submit" class="btn-next">修正する</button>
-						<button name="cmd" value="execute" type="submit" class="btn-next">確認する</button>
-					</form>
-				</div>
-			</div>
+				</c:if>
+			</table>
+		</div>
+		<div class="action-buttons flex-center">
+			<form method="post"
+				action="${pageContext.request.contextPath}/ItemEditServlet">
+				<button name="cmd" value="edit" type="submit" class="btn-back">修正する</button>
+				<button name="cmd" value="execute" type="submit" class="btn-next">確定する</button>
+			</form>
 		</div>
 	</main>
 
