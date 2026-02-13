@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" import="model.*"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
-    
+
 <%
 Room room = (Room) session.getAttribute("room");
 Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
@@ -35,13 +35,10 @@ if (orderNo == null) {
 		<p class="bodymsg">ご注文いただき、誠にありがとうございました</p>
 		<h1 class="order-number">
 			<c:if test="${not empty orderNo}">
-							    受取番号：
-							    <fmt:formatNumber value="${orderNo}" pattern="0000" />
-								</c:if>
-							
-								<c:if test="${empty orderNo}">
-								    部屋までお届けします
-								</c:if></h1>
+			受取番号：<fmt:formatNumber value="${orderNo}" pattern="0000" />
+			</c:if>
+			<c:if test="${empty orderNo}">部屋までお届けします</c:if>
+		</h1>
 		<p class="bodymsg">商品を受け取る際に、受取番号をスタッフにお伝えください</p>
 		<div class="action-buttons flex-center">
 			<button type="button" class="btn-back"
