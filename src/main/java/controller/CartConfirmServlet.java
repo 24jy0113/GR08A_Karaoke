@@ -1,8 +1,12 @@
 package controller;
+import java.io.IOException;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.*;
-import java.io.IOException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 @WebServlet("/CartConfirmServlet")
 public class CartConfirmServlet extends HttpServlet {
 
@@ -14,6 +18,6 @@ public class CartConfirmServlet extends HttpServlet {
         // フラッシュメッセージ（1回だけ表示）.
         session.setAttribute("cartMessage", "カートに入れました");
 
-        res.sendRedirect(req.getContextPath() + "/cart_detail.jsp");
+        res.sendRedirect(req.getContextPath() + "/cus_top.jsp");
     }
 }

@@ -21,23 +21,7 @@ if (user == null) {
 </head>
 <body>
 	<!-- Header -->
-	<header>
-		<div class="header_inner">
-			<img class="title_img"
-				src="<%=request.getContextPath()%>/img/logo.png" alt="logo"
-				width="60" height="60">
-			<h1 class="title_name">七福サウンド</h1>
-			<nav class="gnav">
-				<ul class="gnav_list">
-					<li><img class="user_img"
-						src="<%=request.getContextPath()%>/img/user.png" alt="cart"
-						width="25" height="25"><%=user.getUserName()%></li>
-					<li><a class="gnav_botton"
-						href="<%=request.getContextPath()%>/LogoutServlet">ログアウト</a></li>
-				</ul>
-			</nav>
-		</div>
-	</header>
+	<%@ include file="/shered/biz_header.jsp" %>
 	<main>
 		<div class="text-center">
 			<h1 class="bodytitle">部屋番号を入力してください</h1>
@@ -46,7 +30,7 @@ if (user == null) {
 				<input type="search" name="roomNumber" required />
 		</div>
 		<div class="action-buttons flex-center">
-			<button type="button" class="btn-back" onclick="history.back()">戻る</button>
+			<button type="button" class="btn-back" onclick="location.href='<%=request.getContextPath()%>/index_select.jsp'">担当選択画面に戻る</button>
 			<button type="submit" class="btn-next">次へ</button>
 		</div>
 		</form>

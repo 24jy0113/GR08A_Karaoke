@@ -16,14 +16,7 @@
 </head>
 <body>
 	<!-- Header -->
-	<header>
-		<div class="header_inner">
-			<img class="title_img"
-				src="<%=request.getContextPath()%>/img/logo.png" alt="logo"
-				width="60" height="60">
-			<h1 class="title_name">七福サウンド</h1>
-		</div>
-	</header>
+	<%@ include file="/shered/biz_header.jsp" %>
 	<%
 	String logoutMsg = (String) session.getAttribute("logoutMsg");
 	if (logoutMsg != null) {
