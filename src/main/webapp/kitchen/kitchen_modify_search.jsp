@@ -35,7 +35,7 @@ if (user == null) {
 			<p class="errormsg">${param.e }</p>
 			</c:if>
 
-			<div class="action-buttons">
+			<div class="action-buttons flex-center">
 				<button type="button" class="btn-back"
 						onclick="location.href='<%=request.getContextPath()%>/KitchenOrderList'">注文情報画面へ戻る</button>
 			</div>

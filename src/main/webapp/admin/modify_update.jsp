@@ -144,7 +144,7 @@ if (user == null) {
 					</c:if>
 				</div>
 			</div>
-			<div class="action-buttons">
+			<div class="action-buttons flex-center">
 				<c:choose>
 					<c:when test="${editItem.id<1 }">
 						<button type="button" class="btn-back"
