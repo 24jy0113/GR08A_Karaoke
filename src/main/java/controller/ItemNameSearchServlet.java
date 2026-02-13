@@ -1,4 +1,4 @@
-package action;
+package controller;
 
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -38,16 +38,16 @@ public class ItemNameSearchServlet extends HttpServlet {
 		// 不要なセッションを掃除してから一覧を表示
 		session.removeAttribute("editItem");
 		Object currentMode = session.getAttribute("mode");
-		session.removeAttribute("admin");
+		session.removeAttribute("mode");
 
 		request.setCharacterEncoding("UTF-8");
 
-		String rawAdminMode = request.getParameter("admin");
+		String rawAdminMode = request.getParameter("isAdmin");
 		boolean adminMode = false;
 
 		if (rawAdminMode == null && currentMode != null) {
 			adminMode = ((Boolean) currentMode).booleanValue();
-		} else if (rawAdminMode != null && rawAdminMode.isEmpty()) {
+		} else if (rawAdminMode != null && rawAdminMode.equals("true")) {
 			adminMode = true;
 		}
 
@@ -59,9 +59,9 @@ public class ItemNameSearchServlet extends HttpServlet {
 		}
 
 		if (adminMode) {
-			session.setAttribute("admin", true);
+			session.setAttribute("mode", true);
 		} else {
-			session.setAttribute("admin", false);
+			session.setAttribute("mode", false);
 		}
 
 		String query = request.getParameter("q");

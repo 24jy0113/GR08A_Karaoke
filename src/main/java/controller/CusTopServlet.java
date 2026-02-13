@@ -1,4 +1,5 @@
 package controller;
+
 import java.io.IOException;
 
 import jakarta.servlet.ServletException;
@@ -7,21 +8,29 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import dao.RoomDao;
 import model.Room;
-import dao.*;
+
 @WebServlet("/CusTopServlet")
 public class CusTopServlet extends HttpServlet {
 
-    protected void doGet(HttpServletRequest req, HttpServletResponse res)
+	protected void doGet(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
+		
+		var session = req.getSession();
 
         String roomIdStr = req.getParameter("roomId");
         if (roomIdStr == null) {
             res.sendRedirect(req.getContextPath() + "/RoomListServlet");
             return;
         }
-
+        
         int roomId = Integer.parseInt(roomIdStr);
+        
+        boolean isStaffAction = Boolean.parseBoolean(req.getParameter("isStaffAction"));
+        if(isStaffAction) {
+        	session.setAttribute("isStaffAction", true);
+        }
 
         try {
             RoomDao dao = new RoomDao();
@@ -31,7 +40,7 @@ public class CusTopServlet extends HttpServlet {
                 res.sendRedirect(req.getContextPath() + "/RoomListServlet");
                 return;
             }
-            req.getSession().setAttribute("room", room);
+            session.setAttribute("room", room);
             req.getRequestDispatcher("/cus_top.jsp").forward(req, res);
 
         } catch (Exception e) {
@@ -39,4 +48,3 @@ public class CusTopServlet extends HttpServlet {
         }
     }
 }
-

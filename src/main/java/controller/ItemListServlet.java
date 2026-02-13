@@ -41,7 +41,7 @@ public class ItemListServlet extends HttpServlet {
 		ItemDao dao = new ItemDao();
 
 		try {
-			int totalCount = dao.getItemCount(selCategoryId);
+			int totalCount = dao.getItemCount(selCategoryId,room.isAlcohol());
 			int totalPages = Math.max(1,
 					(int) Math.ceil((double) totalCount / pageSize));
 

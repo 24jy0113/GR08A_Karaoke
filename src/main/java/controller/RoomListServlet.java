@@ -22,6 +22,8 @@ public class RoomListServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		var session = request.getSession();
+		session.removeAttribute("isStaffAction");
 		try {
 			// フォームから送られてくる絞り込みパラメータを取得.
 			String statusParam = request.getParameter("statusId");

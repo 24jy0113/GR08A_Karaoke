@@ -41,7 +41,7 @@ if (user == null) {
 			<button type="button" class="btn-back"
 				onclick="location.href='<%=request.getContextPath()%>/admin/manage_top.jsp'">表示選択画面へ戻る</button>
 			<button type="submit" class="btn-next"
-				onclick="location.href='modify_add.jsp'">商品新規追加</button>
+					onclick="location.href='<%= request.getContextPath() %>/ItemEditServlet'">商品新規追加</button>
 		</div>
 	</main>
 
