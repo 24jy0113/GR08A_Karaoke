@@ -27,7 +27,7 @@ if (user == null) {
 				<h3>変更する商品名を入力してください</h3>
 			</div>
 			<form action="<%=request.getContextPath()%>/SearchItemByName"
-				method="GET"><input type="hidden" name="admin" value=""> <input type="search" name="q"> <input
+				method="GET"><input type="hidden" name="isAdmin" value="true"> <input type="search" name="q"> <input
 				type="submit" class="search" value="検索">
 			</form>
 			
@@ -39,7 +39,7 @@ if (user == null) {
 				<button type="button" class="btn-back"
 					onclick="location.href='<%= request.getContextPath() %>/admin/manage_top.jsp'">表示選択画面へ戻る</button>
 				<button type="submit" class="btn-next"
-					onclick="location.href='modify_add.jsp'">商品新規追加</button>
+					onclick="location.href='<%= request.getContextPath() %>/ItemEditServlet'">商品新規追加</button>
 			</div>
 		</div>
 	</main>
