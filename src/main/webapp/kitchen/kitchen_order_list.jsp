@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"
     import="model.*,java.util.*"
 %>
+
 <%
 User user = (User) session.getAttribute("loginUser");
 if (user == null) {
@@ -54,8 +55,21 @@ List<Order> orderList =
 			<% } %>
 			<br>
 	
-	        受取番号：<%= o.getReceivingNo() %><br>
-	
+	        			<%
+						Integer receivingNo = o.getReceivingNo();
+						
+						if (receivingNo == null || receivingNo == 0) {
+						%>
+						    部屋までお届け
+						<%
+						} else {
+						%>
+						    受取番号：<%= String.format("%04d", receivingNo) %>
+						<%
+						}
+						%>
+
+
 	        <form action="<%= request.getContextPath() %>/KitchenOrderDone" method="post">
 	            <input type="hidden" name="orderId" value="<%= o.getId() %>">
 	            <button type="submit" onclick="this.disabled=true; this.form.submit();">調理済み</button>

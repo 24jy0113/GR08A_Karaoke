@@ -9,7 +9,7 @@ public class Order {
 	private int total;
 	private int roomId;
 	private int roomNo;
-	private int receivingNo;
+	private Integer receivingNo;
 	private int usageHistoryId;
 	private String pickupMethod;
 	private int itemCreatingStatusId;//飲食注文状況.
@@ -19,7 +19,7 @@ public class Order {
 		this(0, new ArrayList<>(), 0, 0, 0, 0, 0, "", 0, OrderStatus.ORDERED);
 	}
 
-	public Order(int id, List<OrderItem> itemList, int total, int roomId, int roomNo, int receivingNo,
+	public Order(int id, List<OrderItem> itemList, int total, int roomId, int roomNo, Integer receivingNo,
 			int usageHistoryId, String pickupMethod, int itemCreatingStatusId, OrderStatus status) {
 		this.id = id;
 		this.itemList = itemList;
@@ -76,11 +76,11 @@ public class Order {
 		return sum;
 	}
 
-	public void setReceivingNo(int receivingNo) {
+	public void setReceivingNo(Integer receivingNo) {
 		this.receivingNo = receivingNo;
 	}
 
-	public int getReceivingNo() {
+	public Integer getReceivingNo() {
 		return receivingNo;
 	}
 

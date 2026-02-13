@@ -63,7 +63,7 @@
 	color: red;
 }
 
-/* 中央ぞろえ */
+/* 配置 */
 .flex-center {
 	display: flex;
 	justify-content: center;
@@ -73,6 +73,13 @@
 	text-align: center;
 }
 
+.text-left {
+	text-align: left;
+}
+
+text-right {
+	text-align: right;
+}
 
 /* 顧客用フッターの設定 */
 .footer-wrap {
