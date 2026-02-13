@@ -38,30 +38,6 @@ h1 {
     cursor: pointer;
 }
 
-.select {
-    width: 200px;
-    height: 40px;
-    border-radius: 5px;
-    border: 1px solid #000;
-    background: #f5f5f5;
-    cursor: pointer;
-    font-size: 16px;
-    margin-top: 20px;
-}
-
-.footer-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 50px;
-    margin-top: 20px;
-}
-
-.footer-buttons button {
-    width: 180px;
-    height: 40px;
-    border-radius: 5px;
-    border: 1px solid #000;
-    background: #f5f5f5;
-    cursor: pointer;
-    font-size: 16px;
+.action-buttons .btn-next{
+	margin-bottom: 10px;
 }
