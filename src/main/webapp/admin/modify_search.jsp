@@ -13,35 +13,37 @@ if (user == null) {
 <head>
 <meta charset="UTF-8">
 <title>商品変更検索画面-管理者</title>
-<link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/08_01.css">
-<link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/header.css">
+<link rel="stylesheet" type="text/css"
+	href="<%=request.getContextPath()%>/css/header.css">
+<link rel="stylesheet" type="text/css"
+	href="<%=request.getContextPath()%>/css/default.css">
+<link rel="stylesheet" type="text/css"
+	href="<%=request.getContextPath()%>/css/08_01.css">
 </head>
 
 <body>
-	<!-- Header -->
-	<%@ include file="/shered/biz_header.jsp" %>
-	<main>
-		<div class="bodymsg">
-			<div class="msg">
-				<h1>商品検索</h1>
-				<h3>変更する商品名を入力してください</h3>
-			</div>
-			<form action="<%=request.getContextPath()%>/SearchItemByName"
-				method="GET"><input type="hidden" name="isAdmin" value="true"> <input type="search" name="q"> <input
-				type="submit" class="search" value="検索">
-			</form>
-			
-			<c:if test="${!e.isEmpty }">
-			<p class="errormsg">${param.e }</p>
-			</c:if>
+	<%@ include file="/shered/biz_header.jsp"%>
+	<main class="text-center">
+		<h1 class="bodytitle">商品検索</h1>
+		<h3 class="bodymsg">変更する商品名を入力してください</h3>
+		<form action="<%=request.getContextPath()%>/SearchItemByName"
+			method="GET">
+			<input type="hidden" name="admin" value=""> <input
+				type="search" name="q" class="searchbox"> <input
+				type="submit" class="search-btn" value="検索">
+		</form>
 
-			<div class="action-buttons">
+		<c:if test="${!e.isEmpty }">
+			<p class="errormsg">${param.e }</p>
+		</c:if>
+		
+		<div class="action-buttons flex-center">
+
 				<button type="button" class="btn-back"
 					onclick="location.href='<%= request.getContextPath() %>/admin/manage_top.jsp'">表示選択画面へ戻る</button>
 				<button type="submit" class="btn-next"
-					onclick="location.href='<%= request.getContextPath() %>/SearchItemByName?isAdmin=true&insertItem=true'">商品新規追加</button>
+					onclick="location.href='<%= request.getContextPath() %>/ItemEditServlet'">商品新規追加</button>
 			</div>
-		</div>
 	</main>
 
 </body>

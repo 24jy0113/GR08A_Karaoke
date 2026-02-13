@@ -33,7 +33,7 @@ int totalSum = 0;
 			if (cart.isEmpty()) {
 			%>
 			<h2 class="bodytitle">カート内容</h2>
-			<p class="errermsg">カートの中身は空です。</p>
+			<p class="errormsg">カートの中身は空です。</p>
 			<button type="button" class="btn-back"
 				onclick="location.href='<%=request.getContextPath()%>/cus_top.jsp'">
 				トップページへ戻る</button>

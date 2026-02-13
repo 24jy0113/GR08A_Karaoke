@@ -13,35 +13,38 @@ if (user == null) {
 <head>
 <meta charset="UTF-8">
 <title>商品${editItem.id<1 ? "追加" : "更新" }入力画面-${isAdmin ? "管理者" : "キッチン" }</title>
-<link rel="stylesheet" type="text/css"
-	href="<%=request.getContextPath()%>/css/08_03.css">
+
 <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath()%>/css/header.css">
+<link rel="stylesheet" type="text/css"
+	href="<%=request.getContextPath()%>/css/default.css">
+<link rel="stylesheet" type="text/css"
+	href="<%=request.getContextPath()%>/css/08_03.css">
 </head>
 <body>
 	<!-- Header -->
-	<%@ include file="/shered/biz_header.jsp" %>
+	<%@ include file="/shered/biz_header.jsp"%>
 	<main>
-		<div class="bodymsg">
-			<h1>商品情報${editItem.id<1 ? "追加" : "更新" }入力</h1>
-		</div>
+		<h1 class="bodytitle text-center">商品情報${editItem.id<1 ? "追加" : "更新" }入力</h1>
 		<form method="post" enctype="multipart/form-data">
 			<div class="container">
 				<div class="right-box">
 					<div class="input-row">
 						<label>商品名</label> <input class="menuInput" type="text"
 							value="${editItem.name }"
-							${isAdmin ? ' name="name"' : ' readonly' }>
+							${sessionScope.admin ? ' name="name"' : ' readonly' }>
 					</div>
 					<div class="input-row">
 						<label>単価</label> <input class="menuInput" type="text"
 							value="${editItem.price }"
-							${isAdmin ? ' name="price"' : ' readonly' }>円
+							${sessionScope.admin ? ' name="price"' : ' readonly' }>円
 						＊税込価格
 					</div>
 					<div class="input-row">
-						<label>商品画像</label><c:if test="${sessionScope.admin }"> <input type="file" name="image"
-							accept=".png, .jpg, .jpeg"></c:if>
+						<label>商品画像</label>
+						<c:if test="${sessionScope.admin }">
+							<input type="file" name="image" accept=".png, .jpg, .jpeg">
+						</c:if>
 						<p>
 							＊JPG, JPEG, PNGのみ<br>現在の商品画像:${editItem.image.replace("items/", "")}
 						</p>
@@ -53,8 +56,7 @@ if (user == null) {
 								name="order_number" value="${editItem.itemNo }" readonly />
 						</div>
 						<div class="input-row">
-							<label>カテゴリー</label> <select id="category-select"
-								class="category-select" name="category">
+							<label>カテゴリー</label> <select id="category-select" name="category">
 								<c:forEach var="category" items="${categoryList}">
 									<option value="${category.key }"
 										${editItem.categoryId == category.key ? "selected" : ""}>${category.value}</option>

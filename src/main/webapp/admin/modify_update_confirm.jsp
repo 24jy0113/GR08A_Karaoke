@@ -13,14 +13,18 @@ if (user == null) {
 <head>
 <meta charset="UTF-8">
 <title>商品情報確認画面-${editItem.id<1 ? "追加" : "更新" }-${isAdmin ? "管理者" : "キッチン" }</title>
-<link rel="stylesheet" type="text/css"
-	href="<%=request.getContextPath()%>/css/08_04.css">
+
 <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath()%>/css/header.css">
+<link rel="stylesheet" type="text/css"
+	href="<%=request.getContextPath()%>/css/default.css">
+<link rel="stylesheet" type="text/css"
+	href="<%=request.getContextPath()%>/css/08_04.css">
+
 </head>
 <body>
 	<!-- Header -->
-	<%@ include file="/shered/biz_header.jsp" %>
+	<%@ include file="/shered/biz_header.jsp"%>
 	<main>
 		<div class="bodymsg">
 			<div class="msg">
