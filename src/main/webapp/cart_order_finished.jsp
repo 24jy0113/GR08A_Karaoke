@@ -46,7 +46,7 @@ if (orderNo == null) {
             <div class="msg">
                 <h2>ご注文の完了</h2>
                 <p>ご注文いただき、誠にありがとうございました</p>
-                <h1 style="color: rgb(17, 106, 223);">受取番号 : <%= session.getAttribute("orderNo") %></h1>
+                <h1 style="color: rgb(17, 106, 223);">受取番号：<%= String.format("%04d", session.getAttribute("orderNo")) %></h1>
                 <p>商品を受け取る際に、受取番号をスタッフにお伝えください</p>
                 
                 <div class="action-buttons">
