@@ -47,6 +47,8 @@ body {
 	cursor: pointer;
 	user-select: none;
 	font-size: 32px;
+	text-decoration: none;
+	
 }
 
 .arrow.disabled {
