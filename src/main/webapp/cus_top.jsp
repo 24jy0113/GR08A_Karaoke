@@ -10,7 +10,6 @@ if (room == null) {
     response.sendRedirect(request.getContextPath() + "/RoomListServlet");
     return;
 }
-Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 %>
 <!DOCTYPE html>
 <html lang="ja">
