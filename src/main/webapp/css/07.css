@@ -1,5 +1,6 @@
-.bodymsg {
-	text-align: center;
+@charset "UTF-8";
+
+.container{
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -7,11 +8,10 @@
 }
 
 table {
-	margin-top: 50px;
+	margin-top: 25px;
 	border-collapse: collapse;
 	width: 700px;
 	border-bottom: 1px solid rgba(217, 217, 217, 1);
-	;
 }
 
 th,
@@ -24,12 +24,24 @@ th {
 	border-top: 1px solid rgba(217, 217, 217, 1);
 }
 
-.small-text {
-	font-size: 14px;
-	margin-top: 3px;
-}
-
 a {
 	text-decoration: underline;
 }
 
+.cart-contents {
+	text-align: left;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.order-summary {
+	margin-top: 20px;
+	font-size: 20px;
+	text-align: right;
+	font-weight: bold;
+}
+
+.order-number{
+	color: rgb(17, 106, 223);
+}
