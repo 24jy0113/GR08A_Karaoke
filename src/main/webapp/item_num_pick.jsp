@@ -20,18 +20,17 @@ OrderItem oi = (OrderItem) session.getAttribute("buildingItem");
 <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath()%>/css/default.css">
 <link rel="stylesheet" type="text/css"
-	href="<%=request.getContextPath()%>/css/06_05.css">
+	href="<%=request.getContextPath()%>/css/06_04.css">
 
 </head>
 <body>
-    <!-- Header -->
-    <%@ include file="/shered/cus_header.jsp" %>
-    <main>
+	<%@ include file="/shered/cus_header.jsp"%>
+	<main>
 		<div class="text-center">
 			<h2 class="bodytitle">注文個数をお選びください</h2>
-            <div class="container">
-                <!-- 左側：画像領域 -->
-                <div>
+			<div class="container">
+				<!-- 左側：画像領域 -->
+				<div>
 					<div class="left-box">
 						<img class="item-img"
 							src="<%=request.getContextPath()%>/img/<%=item.getImage()%>"
@@ -40,25 +39,24 @@ OrderItem oi = (OrderItem) session.getAttribute("buildingItem");
 					<h2 class="bodytitle"><%=item.getName()%></h2>
 					<h2 class="bodytitle"><%=item.getPrice()%>円(税込)
 					</h2>
-                </div>
-                <!-- 右側 -->
-                <div class="right-box">
-                    <form action="CartAddServlet" method="post">
+				</div>
+				<!-- 右側 -->
+				<div class="right-box">
+					<form action="CartAddServlet" method="post">
 						<h3 class="bodymsg">
 							個数： <input type="number" name="count" min="1" value="1"
 								class="quantity-input" required>
 						</h3>
 						<div class="action-buttons flex-center">
-				            <button type="button" class="btn-back" onclick="history.back()">戻る</button>
-				            <button type="submit" class="btn-next">次へ</button>
-				        </div>
-			        </form>
-                </div>
-            </div>
-        </div>
-        
-    </main>
-    <%@ include file="/shered/cus_footer.jsp" %>
-    
+							<button type="button" class="btn-back" onclick="history.back()">戻る</button>
+							<button type="submit" class="btn-next">次へ</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</main>
+	<%@ include file="/shered/cus_footer.jsp"%>
+
 </body>
 </html>

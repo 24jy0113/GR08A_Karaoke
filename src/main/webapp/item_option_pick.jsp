@@ -21,14 +21,13 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 
 </head>
 <body>
-    <!-- Header -->
-    <%@ include file="/shered/cus_header.jsp" %>
-    <main>
+	<%@ include file="/shered/cus_header.jsp"%>
+	<main>
 		<div class="text-center">
 			<h2 class="bodytitle">オプションをお選びください（オプションがなければ「次へ」）</h2>
-            <div class="container">
-                <!-- 左側：画像領域 -->
-                <div>
+			<div class="container">
+				<!-- 左側：画像領域 -->
+				<div>
 					<div class="left-box">
 						<img class="item-img"
 							src="<%=request.getContextPath()%>/img/<%=item.getImage()%>"
@@ -38,24 +37,23 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 					<h2 class="bodytitle"><%=item.getPrice()%>
 						円(税込)
 					</h2>
-                </div>
-                <!-- 右側 -->
-                <div class="right-box">  
-                    <div class="pad">
-                        <form action="ItemNumServlet" method="post">
+				</div>
+				<!-- 右側 -->
+				<div class="right-box">
+					<div class="pad">
+						<form action="ItemNumServlet" method="post">
 							<%
 							for (Option opt : item.getOptionList()) {
 							%>
-							<p>
-								<strong><%=opt.getName()%>（追加料金）</strong>
-							</p>
-						
+							<h3 class="bodymsg"><%=opt.getName()%>（追加料金）
+							</h3>
+
 							<%
 							for (Option.Selection sel : opt.getSelectionList()) {
 							%>
 							<label> <input type="radio" name="opt_<%=opt.getId()%>"
 								value="<%=sel.id()%>" required> <%=sel.name()%>（<%=sel.price()%>円）
-						    </label><br>
+							</label><br>
 							<%
 							}
 							%>
@@ -63,18 +61,18 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 							}
 							%>
 							<div class="action-buttons flex-center">
-					            <button type="button" class="btn-back" onclick="history.back()">戻る</button>
-					            <button type="submit" class="btn-next">次へ</button>
-					        </div>
-				        </form>
-                    </div>
-                </div>
-            </div>
-            
-        </div>
-        
-       
-    </main>
-    <%@ include file="/shered/cus_footer.jsp" %>
+								<button type="button" class="btn-back" onclick="history.back()">戻る</button>
+								<button type="submit" class="btn-next">次へ</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+
+	</main>
+	<%@ include file="/shered/cus_footer.jsp"%>
 </body>
 </html>

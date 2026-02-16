@@ -49,3 +49,12 @@ body {
 .pad form {
 	width: 100%;
 }
+
+.right-box .bodymsg input {
+	width: 50%;
+	height: 32px;
+	font-size: 16px;
+	text-align: center;
+	border: 1px solid #ccc;
+	border-radius: 6px;
+}

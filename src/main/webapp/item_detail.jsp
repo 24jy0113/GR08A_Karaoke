@@ -21,7 +21,7 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 	href="<%=request.getContextPath()%>/css/06_03.css">
 </head>
 <body>
-	<%@ include file="/shered/cus_header.jsp" %>
+	<%@ include file="/shered/cus_header.jsp"%>
 	<main>
 		<div class="text-center">
 			<%
@@ -68,14 +68,15 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 						}
 						%>
 						<button type="button" class="btn-back" onclick="history.back()">メニュー一覧に戻る</button>
-						<button type="button" class="btn-back" onclick="location.href='item_search.jsp'">メニューを番号で探す</button>
+						<button type="button" class="btn-back"
+							onclick="location.href='item_search.jsp'">メニューを番号で探す</button>
 					</div>
 				</div>
 			</div>
 
 		</div>
 	</main>
-	<%@ include file="/shered/cus_footer.jsp" %>
+	<%@ include file="/shered/cus_footer.jsp"%>
 
 </body>
 </html>
