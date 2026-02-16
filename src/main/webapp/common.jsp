@@ -1,9 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
-<link rel="stylesheet" type="text/css"
-	href="<%=request.getContextPath()%>/css/common.css">
-
 <!-- ===== 通知モーダル ===== -->
 <div id="noticeModal" class="hidden">
 	<div class="notice-modal-content">
@@ -14,8 +11,39 @@
 </div>
 
 <!-- 通知＆時間表示のJavascript -->
-<script>const CONTEXT_PATH = "<%=request.getContextPath()%>
-	";
+<script>
+// 自動フォーマットをすると下の行の「"」が改行されて動かなくなる
+const CONTEXT_PATH = "<%=request.getContextPath()%>"
 </script>
 <script src="<%=request.getContextPath()%>/js/notice.js"></script>
 
+<style>
+.hidden {
+	display: none;
+}
+
+#noticeModal {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.5);
+	z-index: 9999;
+}
+
+.notice-modal-content {
+	background: #fff;
+	width: 300px;
+	margin: 30% auto;
+	padding: 20px;
+	text-align: center;
+	border-radius: 8px;
+}
+
+#noticeNote {
+	display: none;
+	color: #555;
+	font-size: 0.8em;
+}
+</style>
