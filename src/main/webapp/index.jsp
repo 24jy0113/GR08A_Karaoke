@@ -29,6 +29,9 @@ String logoutMsg = (String) session.getAttribute("logoutMsg");
 		%>
 		<h2>アカウントIDとパスワードを入力し、ログインしてください</h2>
 		<h3>アカウントログイン</h3>
+		<c:if test="${ error != null}">
+			<p class="errormsg">${error}</p>
+		</c:if>
 		<form method="post"
 			action="<%=request.getContextPath()%>/LoginServlet">
 			<table>
@@ -44,9 +47,6 @@ String logoutMsg = (String) session.getAttribute("logoutMsg");
 			</table>
 			<input class="btn-next" type="submit" value="ログイン">
 		</form>
-		<c:if test="${ error != null}">
-			<p class="errormsg">${error}</p>
-		</c:if>
 	</main>
 </body>
 </html>

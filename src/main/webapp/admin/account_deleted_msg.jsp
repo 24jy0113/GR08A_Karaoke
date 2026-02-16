@@ -25,7 +25,7 @@ if (user == null) {
 			<p class="bodymsg">アカウント情報の削除が完了しました</p>
 			<div class="action-buttons flex-center">
 				<button type="button" class="btn-back"
-					onclick="location.href='account_search.jsp'">アカウント検索へ戻る</button>
+					onclick="location.href='<%=request.getContextPath()%>/admin/account_search.jsp'">アカウント検索へ戻る</button>
 			</div>
 		</div>
 	</main>

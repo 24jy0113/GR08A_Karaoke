@@ -14,9 +14,6 @@ if (u == null) {
 	return;
 }
 %>
-<%
-String error = (String) request.getAttribute("errorMessage");
-%>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -33,13 +30,9 @@ String error = (String) request.getAttribute("errorMessage");
 <body>
 	<%@ include file="/shered/biz_header.jsp"%>
 	<main>
-		<%
-		if (error != null) {
-		%>
-		<p class="errormsg"><%=error%></p>
-		<%
-		}
-		%>
+		<c:if test="${ error != null}">
+			<p class="errormsg">${error}</p>
+		</c:if>
 		<div>
 			<h1 class="bodytitle text-center">アカウント情報の変更確認</h1>
 			<p class="bodymsg text-center">下記の情報を確認してください</p>
