@@ -8,9 +8,6 @@ if (user == null) {
 	return;
 }
 %>
-<%
-String error = (String) request.getAttribute("error");
-%>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -27,13 +24,9 @@ String error = (String) request.getAttribute("error");
 <body>
 	<%@ include file="/shered/biz_header.jsp"%>
 	<main>
-		<%
-		if (error != null) {
-		%>
-		<p class="errormsg"><%=error%></p>
-		<%
-		}
-		%>
+		<c:if test="${ error != null}">
+			<p class="errormsg">${error}</p>
+		</c:if>
 		<div class="main-container">
 			<h1 class="bodytitle text-center">アカウント登録</h1>
 			<p class="bodymsg text-center">下記の情報を入力してください</p>

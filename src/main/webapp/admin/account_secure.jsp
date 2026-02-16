@@ -30,6 +30,9 @@ String error = (String) request.getAttribute("error");
 	<main>
 		<h2>セキュリティのため再度ログインしてください</h2>
 		<h3>アカウントログイン</h3>
+		<c:if test="${ error != null}">
+			<p class="errormsg">${error}</p>
+		</c:if>
 		<form method="post"
 			action="<%=request.getContextPath()%>/AccountSecureServlet">
 			<table>
@@ -49,13 +52,6 @@ String error = (String) request.getAttribute("error");
 					type="submit" value="ログイン">
 			</div>
 		</form>
-		<%
-		if (error != null) {
-		%>
-		<p class="errormsg"><%=error%></p>
-		<%
-		}
-		%>
 	</main>
 </body>
 </html>

@@ -7,9 +7,6 @@ Item item = (Item) request.getAttribute("item");
 Room room = (Room) session.getAttribute("room");
 Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 %>
-<%
-String error = (String) request.getAttribute("error");
-%>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -27,13 +24,9 @@ String error = (String) request.getAttribute("error");
 	<%@ include file="/shered/cus_header.jsp"%>
 	<main>
 		<div class="page">
-			<%
-			if (error != null) {
-			%>
-			<p class="errormsg"><%=error%></p>
-			<%
-			}
-			%>
+			<c:if test="${ error != null}">
+				<p class="errormsg">${error}</p>
+			</c:if>
 			<aside class="ad-area">
 				<img class="campaign"
 					src="<%=request.getContextPath()%>/img/menu.png" alt="menu"
