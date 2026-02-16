@@ -20,7 +20,7 @@ List<Order> orderList = (List<Order>) request.getAttribute("orderList");
 <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath()%>/css/default.css">
 <link rel="stylesheet" type="text/css"
-	href="<%=request.getContextPath()%>/css/12_04.css">
+	href="<%=request.getContextPath()%>/css/12_03.css">
 </head>
 <body>
 	<%@ include file="/shered/biz_header.jsp"%>
