@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -296,6 +297,10 @@ public class RoomDao {
 
 	// 状態更新.
 	public static void updateStatus(int roomId, int statusId) throws Exception {
+		Room room = getRoomById(roomId);
+		if(room.getStatusId()==4&&statusId==1) {
+			new RoomDao().archiveRoomUsage(room);
+		}
 		// SQL作成.
 		String sql = "UPDATE room_usage_status SET status_id = ? WHERE room_id = ?;";
 
@@ -315,10 +320,76 @@ public class RoomDao {
 			throw new Exception(errMsg);
 		}
 	}
-	
+
 	// 利用を利用履歴に移動する.
-	public void archiveRoomUsage() {
+	private void archiveRoomUsage(Room room) throws Exception {
 		// SQL作成.
-		
+		// 利用履歴に利用状況から変換して保存.
+		String sql1 = "INSERT INTO usage_history(`date`, reception_time, leaving_time) "
+				+ "VALUES(?,?,?);";
+		// 利用状況に紐づく注文を、利用履歴に紐づけなおす.
+		String sql2 = "UPDATE orders "
+				+ "SET room_id = NULL, usage_history_id = ? "
+				+ "WHERE room_id = ?;";
+		// 利用状況を空きにする.
+		String sql3 = "UPDATE room_usage_status "
+				+ "SET alcohol_provision = false, status_id = 1, reservation_number = NULL, reception_time = NULL, leaving_time = NULL "
+				+ "WHERE room_id = ?;";
+
+		// 今日の日付を取得する.
+		LocalDate now = LocalDate.now();
+
+		try (Connection con = DatabaseManager.connect();
+				PreparedStatement preState1 = con.prepareStatement(sql1, PreparedStatement.RETURN_GENERATED_KEYS);
+				PreparedStatement preState2 = con.prepareStatement(sql2);
+				PreparedStatement preState3 = con.prepareStatement(sql3)) {
+
+			// 複数テーブルに挿入する必要があるので自動コミットを無効.
+			con.setAutoCommit(false);
+
+			preState1.setObject(1, now);
+			preState1.setTime(2, room.getReceptionTime());
+			preState1.setTime(3, room.getLeavingTime());
+
+			try {
+				// 利用履歴に利用状況から変換して保存.
+				preState1.executeUpdate();
+				try (ResultSet resSet = preState1.getGeneratedKeys()) {
+					if (resSet.next()) {
+						int generatedId = resSet.getInt(1);
+						preState2.setInt(1, generatedId);
+						preState2.setInt(2, room.getId());
+					}
+				}
+
+				preState3.setInt(1, room.getId());
+
+				// 利用状況に紐づく注文を、利用履歴に紐づけなおす.
+				preState2.executeUpdate();
+
+				// 利用状況を空きにする.
+				preState3.executeUpdate();
+
+				// すべて成功したらコミット.
+				con.commit();
+			} catch (SQLException e) {
+
+				// 更新時に例外が出たらロールバックする.
+				con.rollback();
+
+				// 例外を投げる.
+				throw e;
+
+			}
+		} catch (SQLException e) {
+			// デバッグ用のスタックトレース.
+			e.printStackTrace();
+
+			// フロントエンド用のエラーメッセージ.
+			String errMsg = "DB接続に失敗しました！<br>管理者に連絡してください。";
+
+			// 例外を投げる.
+			throw new Exception(errMsg);
+		}
 	}
 }

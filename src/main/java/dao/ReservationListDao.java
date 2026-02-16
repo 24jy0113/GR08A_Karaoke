@@ -3,33 +3,30 @@ package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.ReservationView;
 import model.CsvReservationRow;
+import model.ReservationView;
 public class ReservationListDao {
 
+	// 全予約を取得する.
     public static List<ReservationView> findAll() throws Exception {
 
         List<ReservationView> list = new ArrayList<>();
 
         String sql = """
-            SELECT
-                res.reservation_number,
-                r.room_number,
-                res.reservation_date,
-                res.reservation_reception_time,
-                res.reservation_leaving_time,
-                st.status_name
-            FROM reservation res
-            JOIN room r ON res.room_id = r.room_id
-            LEFT JOIN room_usage_status rus
-                ON res.reservation_number = rus.reservation_number
-            LEFT JOIN status st
-                ON rus.status_id = st.status_id
-            ORDER BY res.reservation_date, res.reservation_reception_time
+            SELECT rus.reservation_number,
+				r.room_number,
+				reservation_date,
+				rus.reception_time AS reservation_reception_time,
+				rus.leaving_time AS reservation_leaving_time,
+				st.status_name
+			FROM room_usage_status rus
+			JOIN room r ON rus.room_id = r.room_id
+			JOIN `status` st ON rus.status_id = st.status_id
+			JOIN reservation ON rus.reservation_number = reservation.reservation_number
+			ORDER BY reservation_date, rus.reception_time;
         """;
 
         try (Connection con = DatabaseManager.connect();
@@ -49,23 +46,24 @@ public class ReservationListDao {
         }
         return list;
     }
+    // 状況で予約を探す.
     public static List<ReservationView> findByStatus(int statusId) throws Exception {
 
         List<ReservationView> list = new ArrayList<>();
 
         String sql = """
-            SELECT
-                rus.reservation_number,
-                r.room_number,
-                rus.usage_date AS reservation_date,
-                rus.reception_time AS reservation_reception_time,
-                rus.leaving_time AS reservation_leaving_time,
-                st.status_name
-            FROM room_usage_status rus
-            JOIN room r ON rus.room_id = r.room_id
-            JOIN status st ON rus.status_id = st.status_id
-            WHERE rus.status_id = ?
-            ORDER BY rus.usage_date, rus.reception_time
+            SELECT rus.reservation_number,
+				r.room_number,
+				reservation_date,
+				rus.reception_time AS reservation_reception_time,
+				rus.leaving_time AS reservation_leaving_time,
+				st.status_name
+			FROM room_usage_status rus
+			JOIN room r ON rus.room_id = r.room_id
+			JOIN `status` st ON rus.status_id = st.status_id
+			JOIN reservation ON rus.reservation_number = reservation.reservation_number
+			WHERE rus.status_id = ?
+			ORDER BY reservation_date, rus.reception_time;
         """;
 
         try (Connection con = DatabaseManager.connect();
@@ -96,7 +94,6 @@ public class ReservationListDao {
 
             for (CsvReservationRow row : rows) {
                 upsertReservation(con, row);
-                upsertRoomUsageStatus(con, row);
             }
 
             con.commit();
@@ -126,78 +123,78 @@ public class ReservationListDao {
         }
     }
 
-    private void upsertRoomUsageStatus(Connection con, CsvReservationRow row) throws Exception {
-
-        String sql = """
-            INSERT INTO room_usage_status
-			(
-			    room_id,
-			    usage_date,
-			    reservation_number,
-			    reception_time,
-			    leaving_time,
-			    status_id,
-        		alcohol_provision
-			)
-			VALUES (?, ?, ?, ?, ?, 2, 0)
-			ON DUPLICATE KEY UPDATE
-			    reservation_number = VALUES(reservation_number),
-			    reception_time     = VALUES(reception_time),
-			    leaving_time       = VALUES(leaving_time),
-			    status_id          = 2,
-        		alcohol_provision  = 0;
-
-        """;
-
-        try (PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setInt(1, row.getRoomId());
-            ps.setDate(2, row.getDate());
-            ps.setInt(3, row.getReservationNumber());
-            ps.setTime(4, row.getStartTime());
-            ps.setTime(5, row.getEndTime());
-            ps.executeUpdate();
-        }
-    }
-    public void updateFrontOperation(
-            int reservationNumber,
-            Time start,
-            Time end,
-            int statusId
-        ) throws Exception {
-
-            try (Connection con = DatabaseManager.connect()) {
-
-                // ① reservation
-                String sql1 = """
-                    UPDATE reservation
-                    SET reservation_reception_time = ?,
-                        reservation_leaving_time = ?
-                    WHERE reservation_number = ?
-                """;
-
-                try (PreparedStatement ps = con.prepareStatement(sql1)) {
-                    ps.setTime(1, start);
-                    ps.setTime(2, end);
-                    ps.setInt(3, reservationNumber);
-                    ps.executeUpdate();
-                }
-
-                // ② room_usage_status
-                String sql2 = """
-                    UPDATE room_usage_status
-                    SET reception_time = ?,
-                        leaving_time = ?,
-                        status_id = ?
-                    WHERE reservation_number = ?
-                """;
-
-                try (PreparedStatement ps = con.prepareStatement(sql2)) {
-                    ps.setTime(1, start);
-                    ps.setTime(2, end);
-                    ps.setInt(3, statusId);
-                    ps.setInt(4, reservationNumber);
-                    ps.executeUpdate();
-                }
-            }
-        }
+    // 部屋に予約を取り込む.
+//    private void upsertRoomUsageStatus(Connection con, CsvReservationRow row) throws Exception {
+//
+//        String sql = """
+//            INSERT INTO room_usage_status
+//			(
+//			    room_id,
+//			    reservation_number,
+//			    reception_time,
+//			    leaving_time,
+//			    status_id,
+//        		alcohol_provision
+//			)
+//			VALUES (?, ?, ?, ?, ?, 2, 0)
+//			ON DUPLICATE KEY UPDATE
+//			    reservation_number = VALUES(reservation_number),
+//			    reception_time     = VALUES(reception_time),
+//			    leaving_time       = VALUES(leaving_time),
+//			    status_id          = 2,
+//        		alcohol_provision  = 0;
+//
+//        """;
+//
+//        try (PreparedStatement ps = con.prepareStatement(sql)) {
+//            ps.setInt(1, row.getRoomId());
+//            ps.setDate(2, row.getDate());
+//            ps.setInt(3, row.getReservationNumber());
+//            ps.setTime(4, row.getStartTime());
+//            ps.setTime(5, row.getEndTime());
+//            ps.executeUpdate();
+//        }
+//    }
+//    public void updateFrontOperation(
+//            int reservationNumber,
+//            Time start,
+//            Time end,
+//            int statusId
+//        ) throws Exception {
+//
+//            try (Connection con = DatabaseManager.connect()) {
+//
+//                // ① reservation
+//                String sql1 = """
+//                    UPDATE reservation
+//                    SET reservation_reception_time = ?,
+//                        reservation_leaving_time = ?
+//                    WHERE reservation_number = ?
+//                """;
+//
+//                try (PreparedStatement ps = con.prepareStatement(sql1)) {
+//                    ps.setTime(1, start);
+//                    ps.setTime(2, end);
+//                    ps.setInt(3, reservationNumber);
+//                    ps.executeUpdate();
+//                }
+//
+//                // ② room_usage_status
+//                String sql2 = """
+//                    UPDATE room_usage_status
+//                    SET reception_time = ?,
+//                        leaving_time = ?,
+//                        status_id = ?
+//                    WHERE reservation_number = ?
+//                """;
+//
+//                try (PreparedStatement ps = con.prepareStatement(sql2)) {
+//                    ps.setTime(1, start);
+//                    ps.setTime(2, end);
+//                    ps.setInt(3, statusId);
+//                    ps.setInt(4, reservationNumber);
+//                    ps.executeUpdate();
+//                }
+//            }
+//        }
 }
