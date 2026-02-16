@@ -1,9 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
-<link rel="stylesheet" type="text/css"
-	href="<%=request.getContextPath()%>/css/common.css">
-
 <!-- ===== 通知モーダル ===== -->
 <div id="noticeModal" class="hidden">
 	<div class="notice-modal-content">
@@ -18,4 +15,3 @@
 	";
 </script>
 <script src="<%=request.getContextPath()%>/js/notice.js"></script>
-
