@@ -10,7 +10,7 @@ if (user == null) {
 }
 %>
 <!DOCTYPE html>
-<html lang=ja>
+<html lang="ja">
 <head>
 <meta charset="UTF-8">
 <title>利用する項目を選択</title>

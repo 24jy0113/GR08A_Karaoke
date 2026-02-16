@@ -9,7 +9,7 @@ if (user == null) {
 %>
 
 <!DOCTYPE html>
-<html lang=ja>
+<html lang="ja">
 <head>
 <meta charset="UTF-8">
 <title>アカウント更新完了画面</title>
@@ -20,8 +20,7 @@ if (user == null) {
 	href="<%=request.getContextPath()%>/css/default.css">
 </head>
 <body>
-	<!-- Header -->
-	<%@ include file="/shered/biz_header.jsp" %>
+	<%@ include file="/shered/biz_header.jsp"%>
 	<main>
 		<div class="text-center">
 			<h1 class="bodytitle">アカウント情報の変更完了</h1>

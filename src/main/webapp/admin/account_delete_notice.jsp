@@ -15,7 +15,7 @@ if (u == null) {
 }
 %>
 <!DOCTYPE html>
-<html lang=ja>
+<html lang="ja">
 <head>
 <meta charset="UTF-8">
 <title>アカウント削除</title>
@@ -28,15 +28,12 @@ if (u == null) {
 	href="<%=request.getContextPath()%>/css/01.css">
 </head>
 <body>
-	<!-- Header -->
-	<%@ include file="/shered/biz_header.jsp" %>
+	<%@ include file="/shered/biz_header.jsp"%>
 	<main>
-		<div>
-			<div class="text-center">
-				<h1 class="bodytitle">アカウント削除</h1>
-				<h3 class="bodymsg">本当にこのアカウントを削除しますか？</h3>
-				<h3 class="warning">※この操作は元に戻せません。</h3>
-			</div>
+		<div class="text-center">
+			<h1 class="bodytitle">アカウント削除</h1>
+			<h3 class="bodymsg">本当にこのアカウントを削除しますか？</h3>
+			<h3 class="warning">※この操作は元に戻せません。</h3>
 			<table class="tbstyle">
 				<tbody>
 					<tr>

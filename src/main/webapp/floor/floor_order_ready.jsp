@@ -25,94 +25,96 @@ List<Order> orderList = (List<Order>) request.getAttribute("orderList");
 </head>
 <body>
 	<%@ include file="/shered/biz_header.jsp"%>
-	<h1 class="bodytitle">調理済み一覧</h1>
-	<div class="card-container">
-		<%
-		if (orderList != null && !orderList.isEmpty()) {
-		%>
-		<%
-		for (Order o : orderList) {
-		%>
-		<div class="card">
-			<strong><%=o.getRoomNo()%>室</strong><br>
+	<main>
+		<h1 class="bodytitle">調理済み一覧</h1>
+		<div class="card-container">
+			<%
+			if (orderList != null && !orderList.isEmpty()) {
+			%>
+			<%
+			for (Order o : orderList) {
+			%>
+			<div class="card">
+				<strong><%=o.getRoomNo()%>室</strong><br>
 
-			<%
-			for (OrderItem oi : o.getItemList()) {
-			%>
+				<%
+				for (OrderItem oi : o.getItemList()) {
+				%>
 
-			<%=oi.getItemName()%>
+				<%=oi.getItemName()%>
 
-			<%
-			if (oi.getSelectedOptionDetails() != null
-					&& !oi.getSelectedOptionDetails().isEmpty()) {
-			%>
-			（
-			<%
-			for (int i = 0; i < oi.getSelectedOptionDetails().size(); i++) {
-				OrderItem.SelectedOptionDetail d = oi.getSelectedOptionDetails().get(i);
-			%>
-			<%=d.selectionName()%>
-			<%
-			if (i < oi.getSelectedOptionDetails().size() - 1) {
-			%>
-			/
+				<%
+				if (oi.getSelectedOptionDetails() != null
+						&& !oi.getSelectedOptionDetails().isEmpty()) {
+				%>
+				（
+				<%
+				for (int i = 0; i < oi.getSelectedOptionDetails().size(); i++) {
+					OrderItem.SelectedOptionDetail d = oi.getSelectedOptionDetails().get(i);
+				%>
+				<%=d.selectionName()%>
+				<%
+				if (i < oi.getSelectedOptionDetails().size() - 1) {
+				%>
+				/
+				<%
+				}
+				%>
+				<%
+				}
+				%>
+				）
+				<%
+				}
+				%>
+
+				×
+				<%=oi.getCount()%><br>
+
+				<%
+				}
+				%>
+				<br>
+
+				<%
+				Integer receivingNo = o.getReceivingNo();
+				%>
+
+				<%
+				if (receivingNo == null || receivingNo == 0) {
+				%>
+				部屋までお届け
+				<%
+				} else {
+				%>
+				受取番号：<%=String.format("%04d", receivingNo)%>
+				<%
+				}
+				%>
+				<br>
+
+				<form action="<%=request.getContextPath()%>/FrontOrderFinished"
+					method="post">
+					<input type="hidden" name="orderId" value="<%=o.getId()%>">
+					<button type="submit">完了</button>
+				</form>
+			</div>
+
 			<%
 			}
 			%>
-			<%
-			}
-			%>
-			）
-			<%
-			}
-			%>
-
-			×
-			<%=oi.getCount()%><br>
-
-			<%
-			}
-			%>
-			<br>
-
-			<%
-			Integer receivingNo = o.getReceivingNo();
-			%>
-
-			<%
-			if (receivingNo == null || receivingNo == 0) {
-			%>
-			部屋までお届け
 			<%
 			} else {
 			%>
-			受取番号：<%=String.format("%04d", receivingNo)%>
+			<p class="bodymsg">調理済みの注文はありません。</p>
 			<%
 			}
 			%>
-			<br>
-
-			<form action="<%=request.getContextPath()%>/FrontOrderFinished"
-				method="post">
-				<input type="hidden" name="orderId" value="<%=o.getId()%>">
-				<button type="submit">完了</button>
-			</form>
 		</div>
-
-		<%
-		}
-		%>
-		<%
-		} else {
-		%>
-		<p>調理済みの注文はありません。</p>
-		<%
-		}
-		%>
-	</div>
-	<div class="action-buttons flex-center">
-		<button type="button" class="btn-back"
-			onclick="location.href='<%=request.getContextPath()%>/index_select.jsp'">担当選択画面へ戻る</button>
-	</div>
+		<div class="action-buttons flex-center">
+			<button type="button" class="btn-back"
+				onclick="location.href='<%=request.getContextPath()%>/index_select.jsp'">担当選択画面へ戻る</button>
+		</div>
+	</main>
 </body>
 </html>

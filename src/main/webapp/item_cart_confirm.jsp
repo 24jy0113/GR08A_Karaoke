@@ -12,7 +12,7 @@ OrderItem oi = (OrderItem) session.getAttribute("buildingItem");
 ArrayList<OrderItem> cart = (ArrayList<OrderItem>) session.getAttribute("cart");
 %>
 <!DOCTYPE html>
-<html lang=ja>
+<html lang="ja">
 <head>
 <meta charset="UTF-8">
 <title>カート追加確認画面</title>

@@ -8,7 +8,7 @@ Room room = (Room) session.getAttribute("room");
 Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 %>
 <!DOCTYPE html>
-<html lang=ja>
+<html lang="ja">
 <head>
 <meta charset="UTF-8">
 <title>商品詳細情報画面</title>

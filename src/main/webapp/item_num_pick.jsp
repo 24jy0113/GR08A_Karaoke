@@ -11,7 +11,7 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 OrderItem oi = (OrderItem) session.getAttribute("buildingItem");
 %>
 <!DOCTYPE html>
-<html lang=ja>
+<html lang="ja">
 <head>
 <meta charset="UTF-8">
 <title>個数選択</title>

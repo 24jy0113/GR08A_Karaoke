@@ -15,7 +15,7 @@ String roleName = (String) session.getAttribute("SIGNUP_ROLE_NAME");
 %>
 
 <!DOCTYPE html>
-<html lang=ja>
+<html lang="ja">
 <head>
 <meta charset="UTF-8">
 <title>アカウント登録確認</title>
@@ -27,7 +27,6 @@ String roleName = (String) session.getAttribute("SIGNUP_ROLE_NAME");
 	href="<%=request.getContextPath()%>/css/01.css">
 </head>
 <body>
-	<!-- Header -->
 	<%@ include file="/shered/biz_header.jsp" %>
 	<main>
 		<div>

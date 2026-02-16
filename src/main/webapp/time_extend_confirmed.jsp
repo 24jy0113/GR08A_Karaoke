@@ -18,7 +18,7 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 	href="<%=request.getContextPath()%>/css/04.css">
 </head>
 <body>
-	<%@ include file="/shered/cus_header.jsp" %>
+	<%@ include file="/shered/cus_header.jsp"%>
 	<main>
 		<div class="container text-center">
 			<h2 class="bodymsg">延長申請が完了し、ご利用可能時間が更新されました</h2>
@@ -29,6 +29,6 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 			</div>
 		</div>
 	</main>
-<%@ include file="/shered/cus_footer.jsp" %>
+	<%@ include file="/shered/cus_footer.jsp"%>
 </body>
 </html>

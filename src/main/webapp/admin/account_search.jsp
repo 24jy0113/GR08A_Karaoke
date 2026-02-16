@@ -16,7 +16,7 @@ if (ok == null || !ok) {
 %>
 
 <!DOCTYPE html>
-<html lang=ja>
+<html lang="ja">
 <head>
 <meta charset="UTF-8">
 <title>アカウント情報検索画面</title>
@@ -30,9 +30,7 @@ if (ok == null || !ok) {
 </head>
 
 <body>
-	<!-- Header -->
-	<%@ include file="/shered/biz_header.jsp" %>
-
+	<%@ include file="/shered/biz_header.jsp"%>
 	<main>
 		<div class="text-center">
 			<h1 class="bodytitle">アカウント情報の確認、変更、削除</h1>

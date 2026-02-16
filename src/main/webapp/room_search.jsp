@@ -8,7 +8,7 @@ if (user == null) {
 }
 %>
 <!DOCTYPE html>
-<html lang=ja>
+<html lang="ja">
 <head>
 <meta charset="UTF-8">
 <title>部屋番号入力画面</title>
@@ -20,8 +20,7 @@ if (user == null) {
 	href="<%=request.getContextPath()%>/css/02_01.css">
 </head>
 <body>
-	<!-- Header -->
-	<%@ include file="/shered/biz_header.jsp" %>
+	<%@ include file="/shered/biz_header.jsp"%>
 	<main>
 		<div class="text-center">
 			<h1 class="bodytitle">部屋番号を入力してください</h1>
@@ -30,7 +29,8 @@ if (user == null) {
 				<input type="search" name="roomNumber" required />
 		</div>
 		<div class="action-buttons flex-center">
-			<button type="button" class="btn-back" onclick="location.href='<%=request.getContextPath()%>/index_select.jsp'">担当選択画面に戻る</button>
+			<button type="button" class="btn-back"
+				onclick="location.href='<%=request.getContextPath()%>/index_select.jsp'">担当選択画面に戻る</button>
 			<button type="submit" class="btn-next">次へ</button>
 		</div>
 		</form>

@@ -9,7 +9,7 @@ if (user == null) {
 }
 %>
 <!DOCTYPE html>
-<html lang=ja>
+<html lang="ja">
 <head>
 <meta charset="UTF-8">
 <title>商品変更検索画面-管理者</title>

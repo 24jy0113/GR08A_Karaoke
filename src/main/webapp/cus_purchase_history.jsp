@@ -25,8 +25,7 @@ if (orderList == null) {
 	href="<%=request.getContextPath()%>/css/05_01.css">
 </head>
 <body>
-	<!-- Header -->
-	<%@ include file="/shered/cus_header.jsp" %>
+	<%@ include file="/shered/cus_header.jsp"%>
 	<main>
 		<div class="container">
 			<div class="text-center">
@@ -37,23 +36,24 @@ if (orderList == null) {
 				<div class="order-card">
 					<div class="order-header">
 						<div class="order-no">
-						<%
-			Integer receivingNo = o.getReceivingNo();
-			
-			if (receivingNo == null || receivingNo == 0) {
-			%>
-			    部屋までお届け
-			<%
-			} else {
-			%>
-			    受取番号：<%= String.format("%04d", receivingNo) %>
-			<%
-			}
-			%>
+							<%
+							Integer receivingNo = o.getReceivingNo();
+
+							if (receivingNo == null || receivingNo == 0) {
+							%>
+							部屋までお届け
+							<%
+							} else {
+							%>
+							受取番号：<%=String.format("%04d", receivingNo)%>
+							<%
+							}
+							%>
 
 						</div>
-						
-						<div class="pickup <%="お部屋までお届け".equals(o.getPickupMethod()) ? "delivery" : "counter"%>">
+
+						<div
+							class="pickup <%="お部屋までお届け".equals(o.getPickupMethod()) ? "delivery" : "counter"%>">
 							<%=o.getPickupMethod()%>
 						</div>
 					</div>
@@ -83,9 +83,9 @@ if (orderList == null) {
 									} else {
 									for (OrderItem.SelectedOptionDetail d : opts) {
 									%> <%=d.selectionName()%>（<%=d.price()%>円）<br> <%
-									 }
-									 }
-									 %>
+ }
+ }
+ %>
 								</td>
 								<td><%=oi.getCount()%></td>
 								<td><%=oi.getTotal()%>円</td>
@@ -115,8 +115,7 @@ if (orderList == null) {
 				</div>
 			</div>
 		</div>
-		
 	</main>
-<%@ include file="/shered/cus_footer.jsp" %>
+	<%@ include file="/shered/cus_footer.jsp"%>
 </body>
 </html>

@@ -8,9 +8,8 @@ if (user == null) {
 }
 %>
 
-
 <!DOCTYPE html>
-<html lang=ja>
+<html lang="ja">
 <head>
 <meta charset="UTF-8">
 <title>表示選択画面ーフロントのトップ画面</title>
@@ -23,7 +22,6 @@ if (user == null) {
 </head>
 <body>
 	<%@ include file="/shered/biz_header.jsp"%>
-
 	<main class="text-center">
 		<h1 class="bodytilte">利用する項目を選択してください</h1>
 		<div class="action-buttons">

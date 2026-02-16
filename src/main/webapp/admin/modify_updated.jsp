@@ -8,7 +8,7 @@ if (user == null) {
 }
 %>
 <!DOCTYPE html>
-<html lang=ja>
+<html lang="ja">
 
 <head>
 <meta charset="UTF-8">
