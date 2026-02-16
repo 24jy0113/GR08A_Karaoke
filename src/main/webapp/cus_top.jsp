@@ -7,8 +7,8 @@ User user = (User) session.getAttribute("loginUser");
 <%
 Room room = (Room) session.getAttribute("room");
 if (room == null) {
-    response.sendRedirect(request.getContextPath() + "/RoomListServlet");
-    return;
+	response.sendRedirect(request.getContextPath() + "/RoomListServlet");
+	return;
 }
 %>
 <!DOCTYPE html>
@@ -27,29 +27,27 @@ if (room == null) {
 </head>
 
 <body>
-	<%@ include file="/shered/cus_header.jsp" %>
-	<main>
-		<div>
-			<h1 class="bodytitle text-center">サービス一覧</h1>
-			<p class="bodymsg text-center">ご利用するサービスをお選びください</p>
-			<div class="container">
-				<a class="button" href="<%=request.getContextPath()%>/item_list">一覧から商品を探す</a>
-				<a class="button"
-					href="<%=request.getContextPath()%>/item_search.jsp">メニュー番号から商品を探す</a>
-
-			</div>
-			<div class="container">
-				<a class="button"
-					href="<%=request.getContextPath()%>/cusPurchaseHistory">注文履歴</a> <a
-					class="button"
-					href="<%=request.getContextPath()%>/ExtendCanServlet">利用時間の延長申請</a>
-				<a class="button"
-					href="<%=request.getContextPath()%>/cart_detail.jsp">カート内容を確認</a>
-			</div>
+	<%@ include file="/shered/cus_header.jsp"%>
+	<main class="text-center">
+		<h1 class="bodytitle">サービス一覧</h1>
+		<p class="bodymsg">ご利用するサービスをお選びください</p>
+		<div class="action-buttons row-2">
+			<button type="button" class="btn-next"
+				onclick="location.href='<%=request.getContextPath()%>/item_list'">一覧から商品を探す</button>
+			<button type="button" class="btn-next"
+				onclick="location.href='<%=request.getContextPath()%>/item_search.jsp'">メニュー番号から商品を探す</button>
+		</div>
+		<div class="action-buttons row-3">
+			<button type="button" class="btn-next"
+				onclick="location.href='<%=request.getContextPath()%>/cusPurchaseHistory'">注文履歴</button>
+			<button type="button" class="btn-next"
+				onclick="location.href='<%=request.getContextPath()%>/ExtendCanServlet'">利用時間の延長申請</button>
+			<button type="button" class="btn-next"
+				onclick="location.href='<%=request.getContextPath()%>/cart_detail.jsp'">カート内容を確認</button>
 		</div>
 
 	</main>
-	<%@ include file="/shered/cus_footer.jsp" %>
+	<%@ include file="/shered/cus_footer.jsp"%>
 
 </body>
 

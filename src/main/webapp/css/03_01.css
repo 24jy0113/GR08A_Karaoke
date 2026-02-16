@@ -1,17 +1,26 @@
 @charset "UTF-8";
 
-.container {
-	display: flex;
-	justify-content: center;
+.action-buttons {
+	display: grid;
+	gap: 25px;
+	width: 80%;
+	margin: 0 auto 30px auto;
 }
 
-.button {
-	display: inline-block;
-	padding: 10px 20px;
-	margin: 50px;
-	font-size: 16px;
-	color: white;
-	background-color: #0c0c0c;
-	text-decoration: none;
-	border-radius: 5px;
+/* 上の2つ */
+.row-2 {
+	grid-template-columns: repeat(2, 1fr);
+}
+
+/* 下の3つ */
+.row-3 {
+	grid-template-columns: repeat(3, 1fr);
+}
+
+/* タブレット用に大きく */
+.btn-next {
+	font-size: 24px;
+	padding: 20px;
+	min-height: 120px;
+	border-radius: 15px;
 }
