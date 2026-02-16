@@ -484,11 +484,11 @@ public class ItemDao {
 
 	public int getItemCount(Integer categoryId, boolean alcohol) throws Exception {
 
-		String sql = "SELECT COUNT(*) FROM item";
+		String sql = "SELECT COUNT(*) FROM item ";
 
 		// categoryIdがあればWHERE句を追加する.
 		if (categoryId != null) {
-			sql += " WHERE category_id = ?";
+			sql += " WHERE category_id = ? ";
 		}
 
 		// 酒類の提供がないなら条件を増やす.
