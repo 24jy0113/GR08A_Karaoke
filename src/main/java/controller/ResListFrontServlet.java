@@ -18,16 +18,20 @@ public class ResListFrontServlet extends HttpServlet {
             throws ServletException, IOException {
 
     	try {
-    		String statusIdStr = req.getParameter("statusId");
+    		String roomNoStr = req.getParameter("room_num");
 
             List<ReservationView> list;
 
-            if (statusIdStr == null || statusIdStr.isEmpty()) {
+            if (roomNoStr == null || roomNoStr.isEmpty()) {
                 list = ReservationListDao.findAll();
             } else {
-                int statusId = Integer.parseInt(statusIdStr);
-                list = ReservationListDao.findByStatus(statusId);
+                int roomNo = Integer.parseInt(roomNoStr);
+                list = ReservationListDao.findByRoom(roomNo);
             }
+			for (int i = 0; i < list.size(); i++) {
+				if (list.get(i).getStatusName() == null)
+					list.get(i).setStatusName("予約");
+			}
 
             req.setAttribute("reservationList", list);
             req.getRequestDispatcher("/front/res_list_front.jsp")

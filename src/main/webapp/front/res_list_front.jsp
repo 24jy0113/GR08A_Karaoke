@@ -30,13 +30,7 @@ if (user == null) {
 			<form method="get"
 				action="<%=request.getContextPath()%>/ResListFrontServlet"
 				class="block">
-				<select name="statusId">
-					<option value="">すべて</option>
-					<option value="1">空き</option>
-					<option value="2">予約</option>
-					<option value="3">受付済み</option>
-					<option value="4">会計済み</option>
-				</select>
+				<label>部屋番号<input type="text" name="room_num"></label>
 				<button type="submit" class="btn-filter">絞り込み</button>
 			</form>
 			<form method="post"
@@ -61,12 +55,7 @@ if (user == null) {
 								value="${fn:substring(r.receptionTime,0,5)}"></td>
 							<td><input type="time" name="endTime"
 								value="${fn:substring(r.leavingTime,0,5)}"></td>
-							<td><select name="statusId">
-									<option value="1" ${r.statusName=="空き"?"selected":""}>空き</option>
-									<option value="2" ${r.statusName=="予約"?"selected":""}>予約</option>
-									<option value="3" ${r.statusName=="受付済み"?"selected":""}>受付済み</option>
-									<option value="4" ${r.statusName=="会計済み"?"selected":""}>会計済み</option>
-							</select></td>
+							<td>${r.statusName}</td>
 						</tr>
 					</c:forEach>
 				</table>

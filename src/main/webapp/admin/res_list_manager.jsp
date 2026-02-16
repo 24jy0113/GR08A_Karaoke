@@ -27,6 +27,12 @@ if (user == null) {
 	<main class="container">
 		<div class="text-center">
 			<h1 class="bodytitle">予約一覧</h1>
+			<form method="get"
+				action="<%=request.getContextPath()%>/ResListManagerServlet"
+				class="block">
+				<label>部屋番号<input type="text" name="room_num"></label>
+				<button type="submit" class="btn-filter">絞り込み</button>
+			</form>
 			<table>
 				<tr>
 					<th>予約番号</th>
