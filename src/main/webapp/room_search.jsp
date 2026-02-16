@@ -27,12 +27,12 @@ if (user == null) {
 			<form action="<%=request.getContextPath()%>/RoomSearchServlet"
 				method="get">
 				<input type="search" name="roomNumber" required />
+				<div class="action-buttons flex-center">
+					<button type="button" class="btn-back"
+						onclick="location.href='<%=request.getContextPath()%>/index_select.jsp'">担当選択画面に戻る</button>
+					<button type="submit" class="btn-next">次へ</button>
+				</div>
 			</form>
-		</div>
-		<div class="action-buttons flex-center">
-			<button type="button" class="btn-back"
-				onclick="location.href='<%=request.getContextPath()%>/index_select.jsp'">担当選択画面に戻る</button>
-			<button type="submit" class="btn-next">次へ</button>
 		</div>
 	</main>
 </body>
