@@ -28,11 +28,9 @@ if (user == null) {
 			<button type="button" class="btn-next"
 				onclick="location.href='room_list.jsp'">部屋状況</button>
 			<button type="button" class="btn-next"
-				onclick="location.href='<%=request.getContextPath()%>/ResListFrontServlet'">
-				予約情報</button>
+				onclick="location.href='<%=request.getContextPath()%>/ResListFrontServlet'">予約情報</button>
 			<button type="button" class="btn-next"
-				onclick="location.href='<%=request.getContextPath()%>/FrontOrderReady'">
-				伝票一覧</button>
+				onclick="location.href='<%=request.getContextPath()%>/FrontOrderReady'">伝票一覧</button>
 			<button type="button" class="btn-next"
 				onclick="location.href='../room_search.jsp'">部屋番号</button>
 			<button type="button" class="btn-back"
