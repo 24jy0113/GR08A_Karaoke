@@ -19,7 +19,7 @@ if (user == null) {
 <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath()%>/css/default.css">
 <link rel="stylesheet" type="text/css"
-	href="<%=request.getContextPath()%>/css/09_01.css">
+	href="<%=request.getContextPath()%>/css/select.css">
 </head>
 <body>
 	<%@ include file="/shered/biz_header.jsp"%>
