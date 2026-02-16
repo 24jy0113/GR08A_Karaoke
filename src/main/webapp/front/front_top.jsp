@@ -32,7 +32,7 @@ if (user == null) {
 			<button type="button" class="btn-next"
 				onclick="location.href='<%=request.getContextPath()%>/FrontOrderReady'">伝票一覧</button>
 			<button type="button" class="btn-next"
-				onclick="location.href='../room_search.jsp'">部屋番号</button>
+				onclick="location.href='front_room_search.jsp'">部屋番号</button>
 			<button type="button" class="btn-back"
 				onclick="location.href='<%=request.getContextPath()%>/index_select.jsp'">担当選択画面に戻る</button>
 		</div>

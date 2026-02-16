@@ -15,36 +15,39 @@ import model.Room;
 public class CusTopServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse res)
-            throws ServletException, IOException {
-		
+			throws ServletException, IOException {
+
 		var session = req.getSession();
+		try {
+			int roomId;
+			String roomNoStr = req.getParameter("roomNumber");
+			if (roomNoStr != null && !roomNoStr.isEmpty()) {
+				roomId = RoomDao.getRoomByRoomNumber(Integer.parseInt(roomNoStr)).getId();
+			} else {
+				String roomIdStr = req.getParameter("roomId");
+				if (roomIdStr == null) {
+					res.sendRedirect(req.getContextPath() + "/RoomListServlet");
+					return;
+				}
+				roomId = Integer.parseInt(roomIdStr);
+			}
 
-        String roomIdStr = req.getParameter("roomId");
-        if (roomIdStr == null) {
-            res.sendRedirect(req.getContextPath() + "/RoomListServlet");
-            return;
-        }
-        
-        int roomId = Integer.parseInt(roomIdStr);
-        
-        boolean isStaffAction = Boolean.parseBoolean(req.getParameter("isStaffAction"));
-        if(isStaffAction) {
-        	session.setAttribute("isStaffAction", true);
-        }
+			boolean isStaffAction = Boolean.parseBoolean(req.getParameter("isStaffAction"));
+			if (isStaffAction) {
+				session.setAttribute("isStaffAction", true);
+			}
 
-        try {
-            RoomDao dao = new RoomDao();
-            Room room = dao.getRoomById(roomId);
+			Room room = RoomDao.getRoomById(roomId);
 
-            if (room == null) {
-                res.sendRedirect(req.getContextPath() + "/RoomListServlet");
-                return;
-            }
-            session.setAttribute("room", room);
-            req.getRequestDispatcher("/cus_top.jsp").forward(req, res);
+			if (room == null) {
+				res.sendRedirect(req.getContextPath() + "/RoomListServlet");
+				return;
+			}
+			session.setAttribute("room", room);
+			req.getRequestDispatcher("/cus_top.jsp").forward(req, res);
 
-        } catch (Exception e) {
-            throw new ServletException(e);
-        }
-    }
+		} catch (Exception e) {
+			throw new ServletException(e);
+		}
+	}
 }
