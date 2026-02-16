@@ -8,6 +8,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import dao.ReservationListDao;
 
 @WebServlet("/ResListUpdateServlet")
@@ -43,8 +44,8 @@ public class ResListUpdateServlet extends HttpServlet {
                 );
             }
 
-            // 更新後Servletに戻す
-            res.sendRedirect(req.getContextPath() + "/ResListFrontServlet");
+            // 更新後
+            res.sendRedirect(req.getContextPath() + "/front/res_list_updated.jsp");
 
         } catch (Exception e) {
             throw new ServletException(e);

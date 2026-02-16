@@ -37,7 +37,7 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 			%>
 			<aside class="ad-area">
 				<img class="campaign"
-					src="<%=request.getContextPath()%>/img/campaign.png" alt="campaign"
+					src="<%=request.getContextPath()%>/img/menu.png" alt="menu"
 					width="260" height="320">
 				<button class="btn-back side-back"
 					onclick="location.href='<%=request.getContextPath()%>/cus_top.jsp'">
