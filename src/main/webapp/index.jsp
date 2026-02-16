@@ -1,8 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%
-String logoutMsg = (String) session.getAttribute("logoutMsg");
-%>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -19,16 +16,11 @@ String logoutMsg = (String) session.getAttribute("logoutMsg");
 <body>
 	<%@ include file="/shered/biz_header.jsp"%>
 	<main>
-		<%
-		if (logoutMsg != null) {
-		%>
-		<p class="errormsg"><%=logoutMsg%></p>
-		<%
-		session.removeAttribute("logoutMsg");
-		}
-		%>
 		<h2>アカウントIDとパスワードを入力し、ログインしてください</h2>
 		<h3>アカウントログイン</h3>
+		<c:if test="${ param.logoutMsg != null}">
+			<p class="errormsg">${param.logoutMsg}</p>
+		</c:if>
 		<c:if test="${ error != null}">
 			<p class="errormsg">${error}</p>
 		</c:if>
