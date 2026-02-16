@@ -8,8 +8,11 @@ if (user == null) {
 	return;
 }
 %>
+<%
+String error = (String) request.getAttribute("error");
+%>
 <!DOCTYPE html>
-<html lang=ja>
+<html lang="ja">
 <head>
 <meta charset="UTF-8">
 <title>フロントアカウント確認画面</title>
@@ -23,9 +26,7 @@ if (user == null) {
 
 </head>
 <body>
-	<!-- Header -->
-	<%@ include file="/shered/biz_header.jsp" %>
-
+	<%@ include file="/shered/biz_header.jsp"%>
 	<main>
 		<h2>セキュリティのため再度ログインしてください</h2>
 		<h3>アカウントログイン</h3>
@@ -49,14 +50,12 @@ if (user == null) {
 			</div>
 		</form>
 		<%
-		String error = (String) request.getAttribute("error");
 		if (error != null) {
 		%>
-		<p style="color: red;"><%=error%></p>
+		<p class="errormsg"><%=error%></p>
 		<%
 		}
 		%>
 	</main>
-
 </body>
 </html>

@@ -8,8 +8,11 @@ if (user == null) {
 	return;
 }
 %>
+<%
+String error = (String) request.getAttribute("error");
+%>
 <!DOCTYPE html>
-<html lang=ja>
+<html lang="ja">
 <head>
 <meta charset="UTF-8">
 <title>アカウント登録</title>
@@ -22,22 +25,15 @@ if (user == null) {
 
 </head>
 <body>
-	<!-- Header -->
-	<%@ include file="/shered/biz_header.jsp" %>
-	<%
-	String error = (String) request.getAttribute("error");
-	%>
-
-	<%
-	if (error != null) {
-	%>
-	<div style="color: red; text-align: center;">
-		<%=error%>
-	</div>
-	<%
-	}
-	%>
+	<%@ include file="/shered/biz_header.jsp"%>
 	<main>
+		<%
+		if (error != null) {
+		%>
+		<p class="errormsg"><%=error%></p>
+		<%
+		}
+		%>
 		<div class="main-container">
 			<h1 class="bodytitle text-center">アカウント登録</h1>
 			<p class="bodymsg text-center">下記の情報を入力してください</p>

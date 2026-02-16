@@ -22,10 +22,9 @@ if (user == null) {
 </head>
 
 <body>
-	<!-- Header -->
 	<%@ include file="/shered/biz_header.jsp" %>
-	<main>
-		<div class="container text-center">
+	<main class="container">
+		<div class="text-center">
 			<h2 class="bodytitle">検索結果</h2>
 			<table>
 				<tr>
@@ -70,7 +69,7 @@ if (user == null) {
 				}
 				%>
 			</table>
-			<div class="action-buttons">
+			<div class="action-buttons flex-center">
 				<button type="button" class="btn-back" onclick="history.back()">アカウント検索へ戻る</button>
 			</div>
 		</div>

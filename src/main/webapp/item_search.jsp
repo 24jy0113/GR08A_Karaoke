@@ -7,8 +7,11 @@ Item item = (Item) request.getAttribute("item");
 Room room = (Room) session.getAttribute("room");
 Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 %>
+<%
+String error = (String) request.getAttribute("error");
+%>
 <!DOCTYPE html>
-<html lang=ja>
+<html lang="ja">
 <head>
 <meta charset="UTF-8">
 <title>メニュー番号入力</title>
@@ -21,13 +24,9 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 	href="<%=request.getContextPath()%>/css/06_01.css">
 </head>
 <body>
-	<!-- Header -->
-	<%@ include file="/shered/cus_header.jsp" %>
+	<%@ include file="/shered/cus_header.jsp"%>
 	<main>
 		<div class="page">
-			<%
-			String error = (String) request.getAttribute("error");
-			%>
 			<%
 			if (error != null) {
 			%>
@@ -37,7 +36,7 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 			%>
 			<aside class="ad-area">
 				<img class="campaign"
-					src="<%=request.getContextPath()%>/img/campaign.png" alt="campaign"
+					src="<%=request.getContextPath()%>/img/menu.png" alt="menu"
 					width="260" height="320">
 				<button class="btn-back side-back"
 					onclick="location.href='<%=request.getContextPath()%>/cus_top.jsp'">
@@ -82,9 +81,7 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
                     });
                 });
             </script>
-
-		
 	</main>
-<%@ include file="/shered/cus_footer.jsp" %>
+	<%@ include file="/shered/cus_footer.jsp"%>
 </body>
 </html>

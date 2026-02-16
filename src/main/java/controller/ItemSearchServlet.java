@@ -45,7 +45,7 @@ public class ItemSearchServlet extends HttpServlet {
             var room=(Room)(session.getAttribute("room"));
             
             if (item.getCategoryId()==1&&!room.isAlcohol()) {
-                req.setAttribute("error", "受付時の設定により、アルコール商品は注文できません");
+                req.setAttribute("error", "20歳未満へのお酒の販売は致しません。");
                 req.getRequestDispatcher("/item_search.jsp")
                        .forward(req, res);
                 return;            	

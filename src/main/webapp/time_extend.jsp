@@ -21,8 +21,7 @@ List<Integer> availableMinutes = (List<Integer>) request.getAttribute("available
 	href="<%=request.getContextPath()%>/css/04.css">
 </head>
 <body>
-	<!-- Header -->
-	<%@ include file="/shered/cus_header.jsp" %>
+	<%@ include file="/shered/cus_header.jsp"%>
 	<main>
 		<div class="container text-center">
 			<h1 class="bodymsg">延長が可能です！</h1>
@@ -59,7 +58,6 @@ List<Integer> availableMinutes = (List<Integer>) request.getAttribute("available
 								＊<a href="time_extend_fee.jsp">料金設定詳細</a>
 							</div>
 						</td>
-
 					</tr>
 				</table>
 				<div class="action-buttons flex-center">
@@ -70,6 +68,6 @@ List<Integer> availableMinutes = (List<Integer>) request.getAttribute("available
 			</form>
 		</div>
 	</main>
-	<%@ include file="/shered/cus_footer.jsp" %>
+	<%@ include file="/shered/cus_footer.jsp"%>
 </body>
 </html>

@@ -16,7 +16,7 @@ if (u == null) {
 %>
 
 <!DOCTYPE html>
-<html lang=ja>
+<html lang="ja">
 <head>
 <meta charset="UTF-8">
 <title>アカウント登録</title>
@@ -29,7 +29,6 @@ if (u == null) {
 	href="<%=request.getContextPath()%>/css/01.css">
 </head>
 <body>
-	<!-- Header -->
 	<%@ include file="/shered/biz_header.jsp" %>
 	<main>
 		<div class="main-container">

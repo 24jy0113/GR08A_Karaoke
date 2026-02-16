@@ -20,8 +20,7 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 </head>
 
 <body>
-	<!-- Header -->
-	<%@ include file="/shered/cus_header.jsp" %>
+	<%@ include file="/shered/cus_header.jsp"%>
 	<main>
 		<div class="container text-center">
 			<h1 class="bodytitle">料金設定表</h1>
@@ -62,7 +61,7 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 			</div>
 		</div>
 	</main>
-<%@ include file="/shered/cus_footer.jsp" %>
+	<%@ include file="/shered/cus_footer.jsp"%>
 </body>
 
 </html>

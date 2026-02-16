@@ -9,7 +9,7 @@ if (user == null) {
 }
 %>
 <!DOCTYPE html>
-<html lang=ja>
+<html lang="ja">
 <head>
 <meta charset="UTF-8">
 <title>商品${editItem.id<1 ? "追加" : "更新" }入力画面-${isAdmin ? "管理者" : "キッチン" }</title>
@@ -22,7 +22,6 @@ if (user == null) {
 	href="<%=request.getContextPath()%>/css/08_03.css">
 </head>
 <body>
-	<!-- Header -->
 	<%@ include file="/shered/biz_header.jsp"%>
 	<main>
 		<h1 class="bodytitle text-center">商品情報${editItem.id<1 ? "追加" : "更新" }入力</h1>

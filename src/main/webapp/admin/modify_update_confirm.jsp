@@ -9,7 +9,7 @@ if (user == null) {
 }
 %>
 <!DOCTYPE html>
-<html lang=ja>
+<html lang="ja">
 <head>
 <meta charset="UTF-8">
 <title>商品情報確認画面-${editItem.id<1 ? "追加" : "更新" }-${isAdmin ? "管理者" : "キッチン" }</title>

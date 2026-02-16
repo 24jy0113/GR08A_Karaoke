@@ -1,8 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
+<%
+String logoutMsg = (String) session.getAttribute("logoutMsg");
+%>
 <!DOCTYPE html>
-<html lang=ja>
+<html lang="ja">
 <head>
 <meta charset="UTF-8">
 <title>ログイン</title>
@@ -15,21 +17,16 @@
 	href="<%=request.getContextPath()%>/css/login.css">
 </head>
 <body>
-	<!-- Header -->
-	<%@ include file="/shered/biz_header.jsp" %>
-	<%
-	String logoutMsg = (String) session.getAttribute("logoutMsg");
-	if (logoutMsg != null) {
-	%>
-	<p style="color: red; text-align: left;">
-		<%=logoutMsg%>
-	</p>
-	<%
-	session.removeAttribute("logoutMsg");
-	}
-	%>
-
+	<%@ include file="/shered/biz_header.jsp"%>
 	<main>
+		<%
+		if (logoutMsg != null) {
+		%>
+		<p class="errormsg"><%=logoutMsg%></p>
+		<%
+		session.removeAttribute("logoutMsg");
+		}
+		%>
 		<h2>アカウントIDとパスワードを入力し、ログインしてください</h2>
 		<h3>アカウントログイン</h3>
 		<form method="post"
@@ -47,15 +44,9 @@
 			</table>
 			<input class="btn-next" type="submit" value="ログイン">
 		</form>
-
-		<%
-		String error = (String) request.getAttribute("error");
-		if (error != null) {
-		%>
-		<p style="color: red;"><%=error%></p>
-		<%
-		}
-		%>
+		<c:if test="${ error != null}">
+			<p class="errormsg">${error}</p>
+		</c:if>
 	</main>
 </body>
 </html>

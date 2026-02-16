@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+
 import dao.PermissionDAO;
 import dao.UserDao;
 import model.User;
@@ -67,7 +68,7 @@ public class LoginServlet extends HttpServlet {
         switch (user.getRoleName()) {
            
             case "キッチン":
-                res.sendRedirect(context + "/kitchen/kitchen_order_list.jsp");
+                res.sendRedirect(context + "/KitchenOrderList");
                 break;
             case "フロント":
                 res.sendRedirect(context + "/front/front_top.jsp");
