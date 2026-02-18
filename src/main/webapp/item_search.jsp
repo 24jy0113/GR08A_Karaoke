@@ -24,9 +24,7 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 	<%@ include file="/shered/cus_header.jsp"%>
 	<main>
 		<div class="page">
-			<c:if test="${ error != null}">
-				<p class="errormsg">${error}</p>
-			</c:if>
+			
 			<aside class="ad-area">
 				<img class="campaign"
 					src="<%=request.getContextPath()%>/img/menu.png" alt="menu"
@@ -36,7 +34,14 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 					トップページへ</button>
 			</aside>
 			<section class="main-area">
+<<<<<<< HEAD
+				<h1 class="bodytitle">メニュー番号で商品を探す</h1>
+				<c:if test="${ error != null}">
+							<p class="errormsg">${error}</p>
+				</c:if>
+=======
 				<h1 class="bodytitle">メニュー番号から商品を探す</h1>
+>>>>>>> refs/remotes/origin/master
 				<p class="bodymsg">メニュー番号を入力してください</p>
 
 				<div class="input-row">
@@ -45,6 +50,7 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 						<input id="menuInput" name="orderNumber" type="text" maxlength="4"
 							readonly />
 						<button id="searchBtn" type="submit">検索</button>
+						
 					</form>
 				</div>
 				<div class="pad">
