@@ -26,6 +26,9 @@ if (user == null) {
 			<h1 class="bodytitle">部屋番号を入力してください</h1>
 			<form action="<%=request.getContextPath()%>/RoomSearchServlet"
 				method="get">
+				<c:if test="${param.e!=null }">
+					<p class="errormsg">${param.e }</p>
+				</c:if>
 				<input type="search" name="roomNumber" required />
 				<div class="action-buttons flex-center">
 					<button type="button" class="btn-back"

@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.sql.Time;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -28,8 +29,13 @@ public class RoomSearchServlet extends HttpServlet {
 			Room room = RoomDao.getRoomByRoomNumber(roomNumber);
 
 			if (room == null) {
-				request.setAttribute("error", "該当する部屋が見つかりません");
-				request.getRequestDispatcher("/room_search.jsp").forward(request, response);
+				// 部屋の検索結果がnull.
+
+				// フロントエンド用のメッセージ.
+				String message = URLEncoder.encode("該当する部屋が見つかりません", "UTF-8");
+
+				// 検索フォームに返却.
+				response.sendRedirect(request.getContextPath() + "/room_search.jsp?e=" + message);
 				return;
 			}
 

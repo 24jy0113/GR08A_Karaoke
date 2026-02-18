@@ -22,15 +22,19 @@ if (user == null) {
 <body>
 	<%@ include file="/shered/biz_header.jsp"%>
 	<main>
-		<form action="<%=request.getContextPath()%>/CusTopServlet?isStaffAction=true"
+		<form action="<%=request.getContextPath()%>/CusTopServlet"
 			method="get">
+			<input type="hidden" name="isStaffAction" value="true">
 			<div class="text-center">
 				<h1 class="bodytitle">部屋番号を入力してください</h1>
-					<input type="search" name="roomNumber " required />
+				<c:if test="${param.e!=null }">
+					<p class="errormsg">${param.e }</p>
+				</c:if>
+				<input type="search" name="roomNumber" required />
 			</div>
 			<div class="action-buttons flex-center">
 				<button type="button" class="btn-back"
-					onclick="location.href='<%=request.getContextPath()%>/index_select.jsp'">担当選択画面に戻る</button>
+					onclick="location.href='<%=request.getContextPath()%>/front/front_top.jsp'">表示選択画面へ</button>
 				<button type="submit" class="btn-next">次へ</button>
 			</div>
 		</form>

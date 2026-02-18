@@ -87,7 +87,7 @@ public class RoomDao {
 				+ " rus.status_id, st.status_name, reservation_reception_time, reservation_leaving_time"
 				+ " FROM room r"
 				+ " JOIN room_usage_status rus ON r.room_id = rus.room_id"
-				+ " JOIN reservation res ON rus.reservation_number = res.reservation_number"
+				+ " LEFT JOIN reservation res ON rus.reservation_number = res.reservation_number"
 				+ " JOIN status st ON rus.status_id = st.status_id"
 				+ " WHERE r.room_number = ?";
 
