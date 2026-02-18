@@ -12,8 +12,8 @@
 			<ul class="gnav_list">
 				<li><a href="<%=request.getContextPath()%>/cus_top.jsp">トップへ</a></li>
 				<li><a href="<%=request.getContextPath()%>/ExtendCanServlet">延長申請</a></li>
-				<li><a href="<%=request.getContextPath()%>/item_search.jsp">メニューを番号で探す</a></li>
-				<li><a href="<%=request.getContextPath()%>/item_list">フード・ドリンク</a></li>
+				<li><a href="<%=request.getContextPath()%>/item_search.jsp">メニュー番号から商品を探す</a></li>
+				<li><a href="<%=request.getContextPath()%>/item_list">フード・ドリンク一覧</a></li>
 				<li><a href="<%=request.getContextPath()%>/cusPurchaseHistory">注文履歴</a></li>
 				<li><a class="gnav_button"
 					href="<%=request.getContextPath()%>/cart_detail.jsp"> <img
