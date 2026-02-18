@@ -27,34 +27,29 @@ String roleName = (String) session.getAttribute("SIGNUP_ROLE_NAME");
 	href="<%=request.getContextPath()%>/css/01.css">
 </head>
 <body>
-	<%@ include file="/shered/biz_header.jsp" %>
+	<%@ include file="/shered/biz_header.jsp"%>
 	<main>
-		<div>
-			<h1 class="bodytitle text-center">アカウント登録情報の確認</h1>
-			<p class="bodymsg text-center">下記の情報を確認してください</p>
+		<div class="text-center">
+			<h1 class="bodytitle">アカウント登録情報の確認</h1>
+			<p class="bodymsg">下記の情報を確認してください</p>
 			<table class="tbstyle">
-				<tbody>
-					<tr>
-						<th>アカウントID</th>
-						<td><%=userId%></td>
-					</tr>
-					<tr>
-						<th>アカウント名</th>
-						<td><%=userName%></td>
-					</tr>
-					<tr>
-						<th>パスワード</th>
-						<td>XXXXXXXX</td>
-					</tr>
-					<tr>
-						<th>役割情報</th>
-						<td><%=roleName%></td>
-					</tr>
-
-
-				</tbody>
+				<tr>
+					<th>アカウントID</th>
+					<td><%=userId%></td>
+				</tr>
+				<tr>
+					<th>アカウント名</th>
+					<td><%=userName%></td>
+				</tr>
+				<tr>
+					<th>パスワード</th>
+					<td>XXXXXXXX</td>
+				</tr>
+				<tr>
+					<th>役割情報</th>
+					<td><%=roleName%></td>
+				</tr>
 			</table>
-
 			<div class="action-buttons flex-center">
 				<button type="button" class="btn-back"
 					onclick="location.href='sign_up.jsp'">修正する</button>

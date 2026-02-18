@@ -24,11 +24,6 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 	<%@ include file="/shered/cus_header.jsp"%>
 	<main>
 		<div class="text-center">
-			<c:if test="${ error != null}">
-				<p class="errormsg">${error}</p>
-			</c:if>
-			<br>
-
 			<div class="container">
 				<!-- 左側：画像領域 -->
 				<div class="left-box">

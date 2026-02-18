@@ -19,7 +19,7 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 <body>
 	<%@ include file="/shered/cus_header.jsp"%>
 	<main>
-		<div class="container text-center">
+		<div class="container-base text-center">
 			<h2 class="bodymsg">下記の延長内容を確認し、完了ボタンを押してください</h2>
 			<table>
 				<tr>

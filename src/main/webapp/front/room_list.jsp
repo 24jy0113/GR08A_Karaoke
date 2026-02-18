@@ -31,7 +31,7 @@ if (roomList == null) {
 </head>
 <body>
 	<%@ include file="/shered/biz_header.jsp"%>
-	<main class="container">
+	<main class="container-base">
 		<div class="text-center">
 			<h2>部屋状況一覧</h2>
 			<div class="block">

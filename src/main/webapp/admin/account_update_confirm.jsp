@@ -30,32 +30,29 @@ if (u == null) {
 <body>
 	<%@ include file="/shered/biz_header.jsp"%>
 	<main>
-		<c:if test="${ error != null}">
-			<p class="errormsg">${error}</p>
-		</c:if>
-		<div>
-			<h1 class="bodytitle text-center">アカウント情報の変更確認</h1>
-			<p class="bodymsg text-center">下記の情報を確認してください</p>
+		<div class="text-center">
+			<h1 class="bodytitle">アカウント情報の変更確認</h1>
+			<p class="bodymsg">下記の情報を確認してください</p>
+			<c:if test="${ error != null}">
+				<p class="errormsg">${error}</p>
+			</c:if>
 			<table class="tbstyle">
-				<tbody>
-					<tr>
-						<th>アカウントID</th>
-						<td><%=u.getUserId()%></td>
-					</tr>
-					<tr>
-						<th>アカウント名</th>
-						<td><%=u.getUserName()%></td>
-					</tr>
-					<tr>
-						<th>パスワード</th>
-						<td><%=u.getPasswordHash() == null ? "変更なし" : "変更あり"%></td>
-					</tr>
-					<tr>
-						<th>役割</th>
-						<td><%=u.getRoleName()%></td>
-					</tr>
-
-				</tbody>
+				<tr>
+					<th>アカウントID</th>
+					<td><%=u.getUserId()%></td>
+				</tr>
+				<tr>
+					<th>アカウント名</th>
+					<td><%=u.getUserName()%></td>
+				</tr>
+				<tr>
+					<th>パスワード</th>
+					<td><%=u.getPasswordHash() == null ? "変更なし" : "変更あり"%></td>
+				</tr>
+				<tr>
+					<th>役割</th>
+					<td><%=u.getRoleName()%></td>
+				</tr>
 			</table>
 
 			<div class="action-buttons flex-center">

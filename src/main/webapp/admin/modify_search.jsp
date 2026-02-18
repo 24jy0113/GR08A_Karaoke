@@ -17,8 +17,6 @@ if (user == null) {
 	href="<%=request.getContextPath()%>/css/header.css">
 <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath()%>/css/default.css">
-<link rel="stylesheet" type="text/css"
-	href="<%=request.getContextPath()%>/css/08_01.css">
 </head>
 
 <body>
@@ -41,7 +39,7 @@ if (user == null) {
 			<button type="button" class="btn-back"
 				onclick="location.href='<%=request.getContextPath()%>/admin/manage_top.jsp'">表示選択画面へ戻る</button>
 			<button type="submit" class="btn-next"
-					onclick="location.href='<%= request.getContextPath() %>/SearchItemByName?isAdmin=true&insertItem=true'">商品新規追加</button>
+				onclick="location.href='<%=request.getContextPath()%>/SearchItemByName?isAdmin=true&insertItem=true'">商品新規追加</button>
 		</div>
 	</main>
 

@@ -29,12 +29,12 @@ if (u == null) {
 	href="<%=request.getContextPath()%>/css/01.css">
 </head>
 <body>
-	<%@ include file="/shered/biz_header.jsp" %>
+	<%@ include file="/shered/biz_header.jsp"%>
 	<main>
-		<div class="main-container">
-			<h1 class="bodytitle text-center">アカウント情報の変更</h1>
-			<p class="bodymsg text-center">変更するアカウント情報を入力してください</p>
-			<h2>アカウント情報</h2>
+		<div class="text-center">
+			<h1 class="bodytitle">アカウント情報の変更</h1>
+			<p class="bodymsg">変更するアカウント情報を入力してください</p>
+			<h2 class="text-left">アカウント情報</h2>
 			<form action="<%=request.getContextPath()%>/AccountUpdateServlet"
 				method="post" onsubmit="return validateForm()">
 				<input type="hidden" name="userId" value="<%=u.getUserId()%>">

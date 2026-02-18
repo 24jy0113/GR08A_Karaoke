@@ -22,8 +22,8 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 <body>
 	<%@ include file="/shered/cus_header.jsp"%>
 	<main>
-		<div class="container text-center">
-			<h1 class="bodytitle">料金設定表</h1>
+		<div class="container-base text-center">
+			<h1 class="bodytitle">料金設定表（30分毎）</h1>
 			<table class="table_border">
 				<tr>
 					<th></th>

@@ -1,22 +1,13 @@
 @charset "UTF-8";
 
-.container {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	font-size: 18px;
-}
-
 table {
-	margin-top: 50px;
+	margin-top: 30px;
 	border-collapse: collapse;
 	width: 700px;
 }
 
 .table_border tr {
-	border-style: solid;
-	border-color: #aaa;
+	border: 1px solid #aaa;
 }
 
 th,

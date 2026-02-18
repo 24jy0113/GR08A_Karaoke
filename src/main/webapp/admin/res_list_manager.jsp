@@ -24,7 +24,7 @@ if (user == null) {
 
 <body>
 	<%@ include file="/shered/biz_header.jsp"%>
-	<main class="container">
+	<main class="container-base">
 		<div class="text-center">
 			<h1 class="bodytitle">予約一覧</h1>
 			<form method="get"

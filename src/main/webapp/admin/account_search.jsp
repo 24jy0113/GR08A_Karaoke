@@ -37,8 +37,8 @@ if (ok == null || !ok) {
 			<p class="bodymsg">アカウントIDかアカウント名を入力してください</p>
 			<form action="<%=request.getContextPath()%>/AccountSearchServlet"
 				method="get">
-				<input type="search" name="keyword">
-				<button type="submit">検索</button>
+				<input type="search" name="keyword" class="searchbox">
+				<button type="submit" class="search-btn">検索</button>
 			</form>
 			<div class="action-buttons flex-center">
 				<p>アカウントを新規で作成する場合は下記のボタンから</p>

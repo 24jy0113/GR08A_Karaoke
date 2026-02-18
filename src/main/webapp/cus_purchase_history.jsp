@@ -27,7 +27,7 @@ if (orderList == null) {
 <body>
 	<%@ include file="/shered/cus_header.jsp"%>
 	<main>
-		<div class="container">
+		<div class="container-base">
 			<div class="text-center">
 				<h1 class="bodytitle">注文履歴一覧</h1>
 				<%
