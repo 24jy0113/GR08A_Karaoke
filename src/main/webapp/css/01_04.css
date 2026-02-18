@@ -1,10 +1,5 @@
 @charset "UTF-8";
 
-input {
-	height: 50px;
-	width: 350px;
-}
-
 .action-buttons {
 	flex-flow: column;
 }
@@ -13,8 +8,4 @@ input {
 .btn-back {
 	width: 50%;
 	margin: 0.5em auto;
-}
-
-form button {
-	height: 50px;
 }

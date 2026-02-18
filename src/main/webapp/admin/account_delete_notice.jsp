@@ -35,24 +35,22 @@ if (u == null) {
 			<h3 class="bodymsg">本当にこのアカウントを削除しますか？</h3>
 			<h3 class="warning">※この操作は元に戻せません。</h3>
 			<table class="tbstyle">
-				<tbody>
-					<tr>
-						<th>アカウントID</th>
-						<td><%=u.getUserId()%>
-					</tr>
-					<tr>
-						<th>アカウント名</th>
-						<td><%=u.getUserName()%>
-					</tr>
-					<tr>
-						<th>パスワード</th>
-						<td>XXXXXXXX</td>
-					</tr>
-					<tr>
-						<th>役割</th>
-						<td><%=u.getRoleName()%></td>
-					</tr>
-				</tbody>
+				<tr>
+					<th>アカウントID</th>
+					<td><%=u.getUserId()%>
+				</tr>
+				<tr>
+					<th>アカウント名</th>
+					<td><%=u.getUserName()%>
+				</tr>
+				<tr>
+					<th>パスワード</th>
+					<td>XXXXXXXX</td>
+				</tr>
+				<tr>
+					<th>役割</th>
+					<td><%=u.getRoleName()%></td>
+				</tr>
 			</table>
 			<div class="action-buttons flex-center">
 				<button type="button" class="btn-back" onclick="history.back()">キャンセル</button>

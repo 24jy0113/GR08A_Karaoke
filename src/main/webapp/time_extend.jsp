@@ -23,7 +23,7 @@ List<Integer> availableMinutes = (List<Integer>) request.getAttribute("available
 <body>
 	<%@ include file="/shered/cus_header.jsp"%>
 	<main>
-		<div class="container text-center">
+		<div class="container-base text-center">
 			<h1 class="bodymsg">延長が可能です！</h1>
 			<h2 class="bodymsg">ご希望の延長時間を選択し、確認ボタンを押してください</h2>
 			<form action="<%=request.getContextPath()%>/ExtendServlet"

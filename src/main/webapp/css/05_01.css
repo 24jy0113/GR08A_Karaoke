@@ -1,13 +1,5 @@
 @charset "UTF-8";
 
-.container {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	font-size: 18px;
-}
-
 /* ヘッダー部分(テーブルの)設定 */
 .order-card {
 	width: 100%;
