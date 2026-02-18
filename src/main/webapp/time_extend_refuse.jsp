@@ -19,7 +19,7 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 <body>
 	<%@ include file="/shered/cus_header.jsp"%>
 	<main>
-		<div class="container text-center">
+		<div class="container-base text-center">
 			<h1 class="bodymsg">申し訳ありませんが延長はできません</h1>
 			<h1 class="bodymsg">お時間になりましたら、ご退室ください</h1>
 			<table>

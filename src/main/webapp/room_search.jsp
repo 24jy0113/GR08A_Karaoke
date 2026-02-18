@@ -16,8 +16,6 @@ if (user == null) {
 	href="<%=request.getContextPath()%>/css/header.css">
 <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath()%>/css/default.css">
-<link rel="stylesheet" type="text/css"
-	href="<%=request.getContextPath()%>/css/02_01.css">
 </head>
 <body>
 	<%@ include file="/shered/biz_header.jsp"%>
@@ -29,7 +27,7 @@ if (user == null) {
 				<c:if test="${param.e!=null }">
 					<p class="errormsg">${param.e }</p>
 				</c:if>
-				<input type="search" name="roomNumber" required />
+				<input class="searchbox"  type="search" name="roomNumber" required />
 				<div class="action-buttons flex-center">
 					<button type="button" class="btn-back"
 						onclick="location.href='<%=request.getContextPath()%>/index_select.jsp'">担当選択画面に戻る</button>

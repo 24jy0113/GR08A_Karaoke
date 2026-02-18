@@ -34,10 +34,14 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 					トップページへ</button>
 			</aside>
 			<section class="main-area">
+<<<<<<< HEAD
 				<h1 class="bodytitle">メニュー番号で商品を探す</h1>
 				<c:if test="${ error != null}">
 							<p class="errormsg">${error}</p>
 				</c:if>
+=======
+				<h1 class="bodytitle">メニュー番号から商品を探す</h1>
+>>>>>>> refs/remotes/origin/master
 				<p class="bodymsg">メニュー番号を入力してください</p>
 
 				<div class="input-row">

@@ -3,6 +3,7 @@
 /* ボタン設定 */
 .btn-next,
 .btn-back {
+	/* 基本的な遷移ボタン */
 	padding: 12px 24px;
 	border-radius: 8px;
 	border: 1px solid;
@@ -25,6 +26,7 @@
 }
 
 .action-buttons {
+	/* ボタンを横並びにする */
 	display: flex;
 	gap: 20px;
 	margin-top: 30px;
@@ -36,6 +38,30 @@
 	background-color: #ddd;
 	cursor: not-allowed;
 	border: none;
+}
+
+.search-btn,
+.searchbox {
+	/* 検索欄＆ボタン */
+	padding: 5px 15px;
+	border-radius: 8px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.search-btn {
+	color: white;
+	margin-left: 10px;
+	background-color: black;
+	cursor: pointer;
+	height: 50px;
+}
+
+.searchbox {
+	width: 350px;
+	height: 50px;
+	font-size: 16px;
+	border: 1px solid #ccc;
 }
 
 /* テキスト関連 */
@@ -61,6 +87,15 @@
 	/* エラーメッセージ */
 	text-align: center;
 	color: red;
+}
+
+/* 範囲設定 */
+.container-base {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	font-size: 18px;
 }
 
 /* 配置 */

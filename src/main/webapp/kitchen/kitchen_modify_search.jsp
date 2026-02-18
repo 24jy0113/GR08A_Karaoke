@@ -17,8 +17,6 @@ if (user == null) {
 	href="<%=request.getContextPath()%>/css/header.css">
 <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath()%>/css/default.css">
-<link rel="stylesheet" type="text/css"
-	href="<%=request.getContextPath()%>/css/08_01.css">
 </head>
 
 <body>
