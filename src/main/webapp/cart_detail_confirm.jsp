@@ -68,7 +68,8 @@ if (order == null) {
 				</p>
 		</div>
 		<div class="action-buttons flex-center">
-			<button type="button" class="btn-back" onclick="history.back()">カート内容へ戻る</button>
+			<button type="button" class="btn-back"
+				onclick="location.href='<%=request.getContextPath()%>/cart_detail.jsp'">カート内容へ戻る</button>
 			<button type="submit" class="btn-next">注文を確定する</button>
 		</div>
 		</form>

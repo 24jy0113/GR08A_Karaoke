@@ -48,7 +48,9 @@ OrderItem oi = (OrderItem) session.getAttribute("buildingItem");
 								class="quantity-input" required>
 						</h3>
 						<div class="action-buttons flex-center">
-							<button type="button" class="btn-back" onclick="history.back()">戻る</button>
+							<button type="button" class="btn-back"
+								onclick="location.href='<%=request.getContextPath()%>/ItemOptionServlet?itemId=<%=item.getId()%>'">
+								キャンセル</button>
 							<button type="submit" class="btn-next">次へ</button>
 						</div>
 					</form>

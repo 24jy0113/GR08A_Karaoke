@@ -63,7 +63,7 @@ body {
 	width: 100%;
 }
 
-.btn-next,
-.btn-back {
+.pad .btn-next,
+.pad .btn-back {
 	width: 100%;
 }

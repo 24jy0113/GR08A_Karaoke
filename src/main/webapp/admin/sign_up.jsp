@@ -67,7 +67,8 @@ if (user == null) {
 				</div>
 				<span id="errorMessage" class="text-center"></span><br>
 				<div class="action-buttons flex-center">
-					<button type="button" class="btn-back" onclick="history.back()">キャンセル</button>
+					<button type="button" class="btn-back"
+						onclick="location.href='<%=request.getContextPath()%>/admin/account_search.jsp'">キャンセル</button>
 					<button type="submit" class="btn-next">確認する</button>
 				</div>
 			</form>

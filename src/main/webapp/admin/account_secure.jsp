@@ -48,8 +48,8 @@ String error = (String) request.getAttribute("error");
 			</table>
 			<div class="action-buttons">
 				<input class="btn-back" type="button" value="戻る"
-					onclick="history.back()"> <input class="btn-next"
-					type="submit" value="ログイン">
+					onclick="location.href='${pageContext.request.contextPath}/admin/manage_top.jsp'">
+				<input class="btn-next" type="submit" value="ログイン">
 			</div>
 		</form>
 	</main>
