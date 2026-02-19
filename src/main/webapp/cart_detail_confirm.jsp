@@ -49,12 +49,34 @@ if (order == null) {
 
 						<tr>
 							<th><%=oi.getItem().getName()%></th>
+							<th>オプション</th>
 							<th>個数</th>
 							<th>小計</th>
 
 						</tr>
 						<tr>
 							<td><%=oi.getItem().getPrice()%>円(税込)</td>
+							<td>
+							<%
+							if (oi.getSelectedOptions() != null && !oi.getSelectedOptions().isEmpty()) {
+								for (OrderItem.SelectedOption so : oi.getSelectedOptions()) {
+									Option opt = oi.getItem().findOptionById(so.optId());
+									if (opt != null) {
+										Option.Selection sel = opt.findSelectionById(so.selectionId());
+										if (sel != null) {
+							%>
+							<%=opt.getName()%>：<%=sel.name()%>（<%=sel.price()%>円）<br>
+							<%
+										}
+									}
+								}
+							} else {
+							%>
+							なし
+							<%
+							}
+							%>
+							</td>
 							<td><%=oi.getCount()%></td>
 							<td><%=oi.getTotal()%>円(税込)</td>
 						</tr>
