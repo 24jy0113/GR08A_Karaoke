@@ -98,8 +98,7 @@ String errorMsg = (String) request.getAttribute("errorMsg");
 					</div>
 				</div>
 
-				<p class="bodymsg">※個数を変更すると小計・合計はサーバー側で自動再計算されます。</p>
-
+				
 				<div class="action-buttons flex-center">
 					<button type="button" class="btn-back"
 						onclick="location.href='<%=request.getContextPath()%>/RoomOrderListServlet?roomId=<%=room.getId()%>'">
