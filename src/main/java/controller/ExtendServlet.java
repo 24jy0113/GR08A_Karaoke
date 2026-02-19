@@ -23,7 +23,7 @@ public class ExtendServlet extends HttpServlet {
 
 		HttpSession session = request.getSession(false);
 		if (session == null || session.getAttribute("room") == null) {
-			response.sendRedirect("room_search.jsp");
+			response.sendRedirect("room_idle.jsp");
 			return;
 		}
 

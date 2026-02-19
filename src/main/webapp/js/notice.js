@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			.then(data => {
 				if (data.sessionExpired) {
 					alert("セッションが切れました。初期画面に戻ります。");
-					location.href = `${CONTEXT_PATH}/room_search.jsp`;
+					location.href = `${CONTEXT_PATH}/room_idle.jsp`;
 					return;
 				}
 				if (data.leaveTime) {
@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				// セッション切れ時の処理
 				if (data.sessionExpired) {
 					alert("セッションが切れました。初期画面に戻ります。");
-					location.href = `${CONTEXT_PATH}/room_search.jsp`;
+					location.href = `${CONTEXT_PATH}/room_idle.jsp`;
 					return;
 				}
 

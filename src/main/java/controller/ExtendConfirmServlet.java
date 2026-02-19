@@ -31,7 +31,7 @@ public class ExtendConfirmServlet extends HttpServlet {
 			throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
 		if (session == null) {
-			response.sendRedirect("room_search.jsp");
+			response.sendRedirect("room_idle.jsp");
 			return;
 		}
 
