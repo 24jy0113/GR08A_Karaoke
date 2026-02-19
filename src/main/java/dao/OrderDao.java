@@ -17,209 +17,208 @@ import model.OrderStatus;
 public class OrderDao {
 	public int insertOrder(Order order) throws Exception {
 
-        Connection con = null;
-        PreparedStatement psOrder = null;
-        PreparedStatement psDetail = null;
-        PreparedStatement psOption = null;
+		Connection con = null;
+		PreparedStatement psOrder = null;
+		PreparedStatement psDetail = null;
+		PreparedStatement psOption = null;
 
-        try {
-            con = DatabaseManager.connect();
-            con.setAutoCommit(false);
-            
-            if ("カウンター受取".equals(order.getPickupMethod())) {
-                int receivingNo = generateReceivingNo(con);
-                order.setReceivingNo(receivingNo);
-            } else {
-                // 部屋まで届ける
-                order.setReceivingNo(null);
-            }
-            /* ① orders*/
-            String sqlOrder =
-                "INSERT INTO orders " +
-                "(total, receiving_number,item_creating_status_id,room_id,pickup_method) " +
-                "VALUES (?, ?, ?, ?,?)";
+		try {
+			con = DatabaseManager.connect();
+			con.setAutoCommit(false);
 
-            psOrder = con.prepareStatement(sqlOrder, Statement.RETURN_GENERATED_KEYS);
-            psOrder.setInt(1, order.getTotal());
-            if (order.getReceivingNo() != null) {
-                psOrder.setInt(2, order.getReceivingNo());
-            } else {
-                psOrder.setNull(2, Types.INTEGER);
-            }
-            psOrder.setInt(3, order.getItemCreatingStatusId());
-            psOrder.setInt(4, order.getRoomId());
-            psOrder.setString(5, order.getPickupMethod());
+			if ("カウンター受取".equals(order.getPickupMethod())) {
+				int receivingNo = generateReceivingNo(con);
+				order.setReceivingNo(receivingNo);
+			} else {
+				// 部屋まで届ける
+				order.setReceivingNo(null);
+			}
+			/* ① orders*/
+			String sqlOrder = "INSERT INTO orders " +
+					"(total, receiving_number,item_creating_status_id,room_id,pickup_method) " +
+					"VALUES (?, ?, ?, ?,?)";
 
-            psOrder.executeUpdate();
+			psOrder = con.prepareStatement(sqlOrder, Statement.RETURN_GENERATED_KEYS);
+			psOrder.setInt(1, order.getTotal());
+			if (order.getReceivingNo() != null) {
+				psOrder.setInt(2, order.getReceivingNo());
+			} else {
+				psOrder.setNull(2, Types.INTEGER);
+			}
+			psOrder.setInt(3, order.getItemCreatingStatusId());
+			psOrder.setInt(4, order.getRoomId());
+			psOrder.setString(5, order.getPickupMethod());
 
-            ResultSet rsOrder = psOrder.getGeneratedKeys();
-            if (!rsOrder.next()) {
-                throw new SQLException("order_id の取得に失敗しました");
-            }
-            int orderId = rsOrder.getInt(1);
+			psOrder.executeUpdate();
 
-            /* =========================
-             * ② order_detail
-             * ========================= */
-            String sqlDetail =
-                "INSERT INTO order_detail " +
-                "(order_id, item_id,item_name,\n"
-                + "  item_price,count,sub_total) " +
-                "VALUES (?, ?, ?,?,?, ?)";
+			ResultSet rsOrder = psOrder.getGeneratedKeys();
+			if (!rsOrder.next()) {
+				throw new SQLException("order_id の取得に失敗しました");
+			}
+			int orderId = rsOrder.getInt(1);
 
-            psDetail = con.prepareStatement(sqlDetail, Statement.RETURN_GENERATED_KEYS);
+			/* =========================
+			 * ② order_detail
+			 * ========================= */
+			String sqlDetail = "INSERT INTO order_detail " +
+					"(order_id, item_id,item_name,\n"
+					+ "  item_price,count,sub_total) " +
+					"VALUES (?, ?, ?,?,?, ?)";
 
-            /* =========================
-             * ③ order_detail_option
-             * ========================= */
-            String sqlOption =
-                "INSERT INTO order_detail_option " +
-                "(order_detail_id, option_detail_id) " +
-                "VALUES (?, ?)";
+			psDetail = con.prepareStatement(sqlDetail, Statement.RETURN_GENERATED_KEYS);
 
-            psOption = con.prepareStatement(sqlOption);
+			/* =========================
+			 * ③ order_detail_option
+			 * ========================= */
+			String sqlOption = "INSERT INTO order_detail_option " +
+					"(order_detail_id, option_detail_id) " +
+					"VALUES (?, ?)";
 
-            for (OrderItem oi : order.getItemList()) {
+			psOption = con.prepareStatement(sqlOption);
 
-                // --- order_detail insert
-                psDetail.setInt(1, orderId);
-                psDetail.setInt(2, oi.getItemId());
-                psDetail.setString(3, oi.getItemName());
-                psDetail.setInt(4, oi.getItemPrice());
-                psDetail.setInt(5, oi.getCount());
-                psDetail.setInt(6, oi.getTotal());
-                psDetail.executeUpdate();
+			for (OrderItem oi : order.getItemList()) {
 
-                ResultSet rsDetail = psDetail.getGeneratedKeys();
-                if (!rsDetail.next()) {
-                    throw new SQLException("order_detail_id の取得に失敗しました");
-                }
-                int orderDetailId = rsDetail.getInt(1);
+				// --- order_detail insert
+				psDetail.setInt(1, orderId);
+				psDetail.setInt(2, oi.getItemId());
+				psDetail.setString(3, oi.getItemName());
+				psDetail.setInt(4, oi.getItemPrice());
+				psDetail.setInt(5, oi.getCount());
+				psDetail.setInt(6, oi.getTotal());
+				psDetail.executeUpdate();
 
-                //option insert
-                List<SelectedOption> options = oi.getSelectedOptions();
-                if (options != null) {
-                    for (SelectedOption opt : options) {
-                        psOption.setInt(1, orderDetailId);
-                        psOption.setInt(2, opt.selectionId());
-                        psOption.executeUpdate();
-                    }
-                }
-            }
+				ResultSet rsDetail = psDetail.getGeneratedKeys();
+				if (!rsDetail.next()) {
+					throw new SQLException("order_detail_id の取得に失敗しました");
+				}
+				int orderDetailId = rsDetail.getInt(1);
 
-            con.commit(); // ★ 全成功
-            return orderId;
+				//option insert
+				List<SelectedOption> options = oi.getSelectedOptions();
+				if (options != null) {
+					for (SelectedOption opt : options) {
+						psOption.setInt(1, orderDetailId);
+						psOption.setInt(2, opt.selectionId());
+						psOption.executeUpdate();
+					}
+				}
+			}
 
-        } catch (Exception e) {
-            if (con != null) con.rollback(); // ★ 途中失敗は全取消
-            throw e;
+			con.commit(); // ★ 全成功
+			return orderId;
 
-        } finally {
-            if (psOption != null) psOption.close();
-            if (psDetail != null) psDetail.close();
-            if (psOrder != null) psOrder.close();
-            if (con != null) con.close();
-        }
-    }
+		} catch (Exception e) {
+			if (con != null)
+				con.rollback(); // ★ 途中失敗は全取消
+			throw e;
+
+		} finally {
+			if (psOption != null)
+				psOption.close();
+			if (psDetail != null)
+				psDetail.close();
+			if (psOrder != null)
+				psOrder.close();
+			if (con != null)
+				con.close();
+		}
+	}
+
 	private int generateReceivingNo(Connection con) throws Exception {
 
-        String selectSql =
-            "SELECT current_no FROM receiving_no WHERE id = 1 FOR UPDATE";
-        String updateSql =
-            "UPDATE receiving_no SET current_no = ? WHERE id = 1";
+		String selectSql = "SELECT current_no FROM receiving_no WHERE id = 1 FOR UPDATE";
+		String updateSql = "UPDATE receiving_no SET current_no = ? WHERE id = 1";
 
-        int nextNo;
+		int nextNo;
 
-        try (
-            PreparedStatement ps = con.prepareStatement(selectSql);
-            ResultSet rs = ps.executeQuery()
-        ) {
-            rs.next();
-            nextNo = rs.getInt("current_no") + 1;
-            if (nextNo > 9999) {
-                nextNo = 1;
-            }
-        }
+		try (
+				PreparedStatement ps = con.prepareStatement(selectSql);
+				ResultSet rs = ps.executeQuery()) {
+			rs.next();
+			nextNo = rs.getInt("current_no") + 1;
+			if (nextNo > 9999) {
+				nextNo = 1;
+			}
+		}
 
-        try (PreparedStatement ps = con.prepareStatement(updateSql)) {
-            ps.setInt(1, nextNo);
-            ps.executeUpdate();
-        }
+		try (PreparedStatement ps = con.prepareStatement(updateSql)) {
+			ps.setInt(1, nextNo);
+			ps.executeUpdate();
+		}
 
-        return nextNo;
-    }
+		return nextNo;
+	}
 
 	public List<Order> findActiveOrdersByRoom(int roomId) throws Exception {
-	    List<Order> list = new ArrayList<>();//顧客側注文履歴取得
+		List<Order> list = new ArrayList<>();//顧客側注文履歴取得
 
-	    String sql =
-	        "SELECT order_id, total, receiving_number, pickup_method " +
-	        "FROM orders " +
-	        "WHERE room_id = ? " +
-	        "AND usage_history_id IS NULL " +
-	        "ORDER BY receiving_number, order_id";
+		String sql = "SELECT order_id, total, receiving_number, pickup_method " +
+				"FROM orders " +
+				"WHERE room_id = ? " +
+				"AND usage_history_id IS NULL " +
+				"ORDER BY receiving_number, order_id";
 
-	    try (Connection con = DatabaseManager.connect();
-	         PreparedStatement ps = con.prepareStatement(sql)) {
+		try (Connection con = DatabaseManager.connect();
+				PreparedStatement ps = con.prepareStatement(sql)) {
 
-	        ps.setInt(1, roomId);
-	        ResultSet rs = ps.executeQuery();
+			ps.setInt(1, roomId);
+			ResultSet rs = ps.executeQuery();
 
-	        while (rs.next()) {
-	            Order o = new Order();
-	            o.setId(rs.getInt("order_id"));
-	            o.setTotal(rs.getInt("total"));
-	            o.setReceivingNo(rs.getInt("receiving_number"));
-	            o.setPickupMethod(rs.getString("pickup_method"));
-	            list.add(o);
-	        }
-	    }
-	    return list;
+			while (rs.next()) {
+				Order o = new Order();
+				o.setId(rs.getInt("order_id"));
+				o.setTotal(rs.getInt("total"));
+				o.setReceivingNo(rs.getInt("receiving_number"));
+				o.setPickupMethod(rs.getString("pickup_method"));
+				list.add(o);
+			}
+		}
+		return list;
 	}
+
 	public int getActiveOrderTotalByRoom(int roomId) throws Exception {
 
-	    String sql =
-	        "SELECT COALESCE(SUM(total), 0) AS sum_total " +
-	        "FROM orders " +
-	        "WHERE room_id = ? " +
-	        "AND usage_history_id IS NULL";
+		String sql = "SELECT COALESCE(SUM(total), 0) AS sum_total " +
+				"FROM orders " +
+				"WHERE room_id = ? " +
+				"AND usage_history_id IS NULL";
 
-	    try (Connection con = DatabaseManager.connect();
-	         PreparedStatement ps = con.prepareStatement(sql)) {
+		try (Connection con = DatabaseManager.connect();
+				PreparedStatement ps = con.prepareStatement(sql)) {
 
-	        ps.setInt(1, roomId);
-	        ResultSet rs = ps.executeQuery();
+			ps.setInt(1, roomId);
+			ResultSet rs = ps.executeQuery();
 
-	        if (rs.next()) {
-	            return rs.getInt("sum_total");
-	        }
-	    }
-	    return 0;
+			if (rs.next()) {
+				return rs.getInt("sum_total");
+			}
+		}
+		return 0;
 	}
 
 	/*
 	public void addOrder(Order order) throws Exception {
-
+	
 		if (order.hasOptionUnselected()) {
 			System.err.println("未選択のオプションがある注文を登録しようとしました。");
-
+	
 			// フロントエンド用のエラーメッセージ.
 			String errMsg = "未選択のオプションがあるため注文の登録に失敗しました。<br>管理者に連絡してください。";
-
+	
 			// 例外を投げる.	
 			throw new Exception(errMsg);
 		}
-
+	
 		if (order.getId() > 0) {
 			System.err.println("order_idが割り振られているため、このorderは登録済みです。");
-
+	
 			// フロントエンド用のエラーメッセージ.
 			String errMsg = "注文の登録が重複したためDBの登録に失敗しました！<br>管理者に連絡してください。";
-
+	
 			// 例外を投げる.
 			throw new Exception(errMsg);
 		}
-
+	
 		// SQL文の作成.
 		// 注文の登録.
 		String sql1 = "INSERT INTO orders(total,receiving_number,item_creating_status_id,room_id) "
@@ -230,51 +229,51 @@ public class OrderDao {
 		// 注文詳細と選択された商品オプションのつながりの登録.
 		String sql3 = "INSERT INTO order_detail_option(order_detail_id,option_detail_id) "
 				+ "VALUES(?,?);";
-
+	
 		try (Connection con = DatabaseManager.connect();
 				PreparedStatement preState1 = con.prepareStatement(sql1, PreparedStatement.RETURN_GENERATED_KEYS);
 				PreparedStatement preState2 = con.prepareStatement(sql2, PreparedStatement.RETURN_GENERATED_KEYS);
 				PreparedStatement preState3 = con.prepareStatement(sql3)) {
-
+	
 			// 複数テーブルに挿入する必要があるので自動コミットを無効.
 			con.setAutoCommit(false);
-
+	
 			// プリペアードステートメントを使用.
 			preState1.setInt(1, order.getTotal());
 			preState1.setInt(2, order.getReceivingNo());
 			preState1.setInt(3, order.getStatusId().getId());
 			preState1.setInt(4, order.getRoomId());
-
+	
 			try {
-
+	
 				// 注文をテーブルに登録.
 				preState1.executeUpdate();
-
+	
 				// 生成された注文の主キーを取得して注文詳細を登録する.
 				try (ResultSet resSet1 = preState1.getGeneratedKeys();) {
 					if (resSet1.next()) {
 						preState2.setInt(1, resSet1.getInt(1));
-
+	
 						for (OrderItem item : order.getItemList()) {
 							preState2.setInt(2, item.getItem().getId());
 							preState2.setInt(3, item.getCount());
 							preState2.setInt(4, item.getTotal());
-
+	
 							// 商品をテーブルに追加.
 							preState2.executeUpdate();
-
+	
 							// 選択したオプションがある場合のみその情報を登録.
 							if (!item.getSelectedOptionList().isEmpty()) {
-
+	
 								// 生成された注文詳細の主キーを取得して選択オプションのテーブルに登録する.
 								try (ResultSet resSet2 = preState2.getGeneratedKeys()) {
 									if (resSet2.next()) {
 										int orderDetailId = resSet2.getInt(1);
-
+	
 										for (SelectedOption option : item.getSelectedOptionList()) {
 											preState3.setInt(1, orderDetailId);
 											preState3.setInt(2, option.selectionId());
-
+	
 											// 複数行の挿入をするためバッチ処理に入れる.
 											preState3.addBatch();
 										}
@@ -284,37 +283,37 @@ public class OrderDao {
 						}
 					}
 				}
-
+	
 				// バッチ処理を実行.
 				// 選択オプションのテーブルに登録する.
 				preState3.executeBatch();
-
+	
 				// すべて成功したらコミット.
 				con.commit();
-
+	
 			} catch (SQLException e) {
-
+	
 				// 挿入時に例外が出たらロールバックする.
 				con.rollback();
-
+	
 				// 例外を投げる.
 				throw e;
-
+	
 			}
 		} catch (SQLException e) {
-
+	
 			// デバッグ用のスタックトレース.
 			e.printStackTrace();
-
+	
 			// フロントエンド用のエラーメッセージ.
 			String errMsg = "DB接続に失敗しました！<br>管理者に連絡してください。";
-
+	
 			// 例外を投げる.
 			throw new Exception(errMsg);
-
+	
 		}
 	}
-*/
+	*/
 	public void updateStatus(int orderId, int statusId) throws Exception {
 
 		// SQL文の作成.
@@ -436,137 +435,137 @@ public class OrderDao {
 	//		}
 	//	}
 
-		// 注文IDに対応する注文をDBから取得してOrderクラスとして返す。見つからないとnullが出るのでnullチェックをすること.
-	//	private Order searchOrderById(int orderId) throws Exception {
-	//
-	//		// 返却値の参照変数を初期化.
-	//		Order resOrder = null;
-	//
-	//		// SQL文の作成.
-	//		String sql = "SELECT order_id,total,orders.room_id,room_number,receiving_number,"
-	//				+ "orders.item_creating_status_id,item_creating_status_name "
-	//				+ "FROM orders "
-	//				+ "INNER JOIN item_creating_status "
-	//				+ "ON orders.item_creating_status_id = item_creating_status.item_creating_status_id "
-	//				+ "INNER JOIN room "
-	//				+ "ON orders.room_id = room.room_id "
-	//				+ "WHERE orders.order_id=?;";
-	//
-	//		try (Connection con = DatabaseManager.connect(); PreparedStatement preState = con.prepareStatement(sql);) {
-	//
-	//			// プリペアードステートメントを使用.
-	//			preState.setInt(1, orderId);
-	//			try (ResultSet resSet = preState.executeQuery();) {
-	//
-	//				// 検索結果からOrderインスタンスを生成.
-	//				while (resSet.next()) {
-	//					resOrder = new Order(orderId, searchOrderItem(orderId), resSet.getInt("total"),
-	//							resSet.getInt("orders.room_id"), resSet.getInt("room"), resSet.getInt("receiving_number"),
-	//							resSet.getInt("orders.item_creating_status_id"),
-	//							resSet.getString("orders.item_creating_status_name"));
-	//				}
-	//			}
-	//		} catch (SQLException e) {
-	//
-	//			// デバッグ用のスタックトレース.
-	//			e.printStackTrace();
-	//
-	//			// フロントエンド用のエラーメッセージ.
-	//			String errMsg = "DB接続に失敗しました！<br>管理者に連絡してください。";
-	//
-	//			// 例外を投げる.
-	//			throw new Exception(errMsg);
-	//
-	//		}
-	//		return resOrder;
-	//
-	//	}
+	// 注文IDに対応する注文をDBから取得してOrderクラスとして返す。見つからないとnullが出るのでnullチェックをすること.
+	public Order searchOrderById(int orderId) throws Exception {
+
+		// 返却値の参照変数を初期化.
+		Order resOrder = new Order();
+
+		// SQL文の作成.
+		String sql = "SELECT order_id,total,orders.room_id,room_number,receiving_number,"
+				+ "orders.item_creating_status_id,item_creating_status_name "
+				+ "FROM orders "
+				+ "INNER JOIN item_creating_status "
+				+ "ON orders.item_creating_status_id = item_creating_status.item_creating_status_id "
+				+ "INNER JOIN room "
+				+ "ON orders.room_id = room.room_id "
+				+ "WHERE orders.order_id=?;";
+
+		try (Connection con = DatabaseManager.connect(); PreparedStatement preState = con.prepareStatement(sql);) {
+
+			// プリペアードステートメントを使用.
+			preState.setInt(1, orderId);
+			try (ResultSet resSet = preState.executeQuery();) {
+
+				// 検索結果からOrderインスタンスを生成.
+				while (resSet.next()) {
+					resOrder.setId(orderId);
+					resOrder.setTotal(resSet.getInt("total"));
+					resOrder.setRoomId(resSet.getInt("orders.room_id"));
+					resOrder.setRoomNo(resSet.getInt("room_number"));
+					resOrder.setReceivingNo(resSet.getInt("receiving_number"));
+					resOrder.setStatus(
+							OrderStatus.fromId(
+									resSet.getInt("orders.item_creating_status_id")));
+				}
+				resOrder.setItemList(searchOrderItem(orderId));
+			}
+		} catch (SQLException e) {
+
+			// デバッグ用のスタックトレース.
+			e.printStackTrace();
+
+			// フロントエンド用のエラーメッセージ.
+			String errMsg = "DB接続に失敗しました！<br>管理者に連絡してください。";
+
+			// 例外を投げる.
+			throw new Exception(errMsg);
+
+		}
+		return resOrder;
+	}
+
 	public List<OrderItem> findOrderItemsByOrderId(int orderId)//注文履歴とキッチン用.
-	        throws Exception {
+			throws Exception {
 
-	    List<OrderItem> list = new ArrayList<>();
+		List<OrderItem> list = new ArrayList<>();
 
-	    String sql = """
-	        SELECT
-	          order_detail_id,
-	          item_id,
-	          item_name,
-	    	  item_price,
-	          count,
-	          sub_total
-	        FROM order_detail
-	        WHERE order_id = ?
-	    """;
+		String sql = """
+				    SELECT
+				      order_detail_id,
+				      item_id,
+				      item_name,
+					  item_price,
+				      count,
+				      sub_total
+				    FROM order_detail
+				    WHERE order_id = ?
+				""";
 
-	    try (Connection con = DatabaseManager.connect();
-	         PreparedStatement ps = con.prepareStatement(sql)) {
+		try (Connection con = DatabaseManager.connect();
+				PreparedStatement ps = con.prepareStatement(sql)) {
 
-	        ps.setInt(1, orderId);
+			ps.setInt(1, orderId);
 
-	        ResultSet rs = ps.executeQuery();
-	        while (rs.next()) {
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
 
-	            OrderItem oi = new OrderItem(
-	                rs.getInt("order_detail_id"),
-	                null, 
-	                rs.getInt("count"),
-	                new ArrayList<>(),
-	                rs.getInt("sub_total")
-	            );
+				OrderItem oi = new OrderItem(
+						rs.getInt("order_detail_id"),
+						null,
+						rs.getInt("count"),
+						new ArrayList<>(),
+						rs.getInt("sub_total"));
 
-	            oi.setItemId(rs.getInt("item_id"));
-	            oi.setItemName(rs.getString("item_name"));
-	            oi.setItemPrice(rs.getInt("item_price"));
-	            oi.setSelectedOptionDetails(
-	            		findOptionsByOrderDetailId(rs.getInt("order_detail_id"), con)
-	                );
-	            list.add(oi);
-	        }
-	    }
-	    return list;
+				oi.setItemId(rs.getInt("item_id"));
+				oi.setItemName(rs.getString("item_name"));
+				oi.setItemPrice(rs.getInt("item_price"));
+				oi.setSelectedOptionDetails(
+						findOptionsByOrderDetailId(rs.getInt("order_detail_id"), con));
+				list.add(oi);
+			}
+		}
+		return list;
 	}
 
 	public List<OrderItem.SelectedOptionDetail> //注文履歴用.
-	findOptionsByOrderDetailId(int orderDetailId,Connection con) throws Exception {
+			findOptionsByOrderDetailId(int orderDetailId, Connection con) throws Exception {
 
-	    List<OrderItem.SelectedOptionDetail> list = new ArrayList<>();
+		List<OrderItem.SelectedOptionDetail> list = new ArrayList<>();
 
-	    String sql = """
-	        SELECT
-	          o.option_id,
-	          o.option_name,
-	          od.option_detail_id,
-	          od.option_detail_name,
-	          od.price
-	        FROM order_detail_option odo
-	        JOIN option_detail od
-	          ON odo.option_detail_id = od.option_detail_id
-	        JOIN `option` o
-	          ON od.option_id = o.option_id
-	        WHERE odo.order_detail_id = ?
-	    """;
+		String sql = """
+				    SELECT
+				      o.option_id,
+				      o.option_name,
+				      od.option_detail_id,
+				      od.option_detail_name,
+				      od.price
+				    FROM order_detail_option odo
+				    JOIN option_detail od
+				      ON odo.option_detail_id = od.option_detail_id
+				    JOIN `option` o
+				      ON od.option_id = o.option_id
+				    WHERE odo.order_detail_id = ?
+				""";
 
-	    try (
-	         PreparedStatement ps = con.prepareStatement(sql)) {
+		try (
+				PreparedStatement ps = con.prepareStatement(sql)) {
 
-	        ps.setInt(1, orderDetailId);
+			ps.setInt(1, orderDetailId);
 
-	        ResultSet rs = ps.executeQuery();
-	        while (rs.next()) {
-	            list.add(
-	                new OrderItem.SelectedOptionDetail(
-	                    rs.getInt("option_id"),
-	                    rs.getString("option_name"),
-	                    rs.getInt("option_detail_id"),
-	                    rs.getString("option_detail_name"),
-	                    rs.getInt("price")
-	                )
-	            );
-	        }
-	    }
-	    return list;
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				list.add(
+						new OrderItem.SelectedOptionDetail(
+								rs.getInt("option_id"),
+								rs.getString("option_name"),
+								rs.getInt("option_detail_id"),
+								rs.getString("option_detail_name"),
+								rs.getInt("price")));
+			}
+		}
+		return list;
 	}
-
 
 	public ArrayList<Order> searchOrderByRoom(int roomId) throws Exception {
 
@@ -592,25 +591,23 @@ public class OrderDao {
 				// 検索結果からOrderインスタンスを生成.
 				while (resSet.next()) {
 
-				    int orderId = resSet.getInt("order_id");
+					int orderId = resSet.getInt("order_id");
 
-				    Order order = new Order();
+					Order order = new Order();
 
-				    order.setId(orderId);
-				    order.setTotal(resSet.getInt("total"));
-				    order.setRoomId(resSet.getInt("orders.room_id"));
-				    order.setRoomNo(resSet.getInt("room_number"));
-				    order.setReceivingNo(resSet.getInt("receiving_number"));
-				    order.setStatus(
-				        OrderStatus.fromId(
-				            resSet.getInt("orders.item_creating_status_id")
-				        )
-				    );
+					order.setId(orderId);
+					order.setTotal(resSet.getInt("total"));
+					order.setRoomId(resSet.getInt("orders.room_id"));
+					order.setRoomNo(resSet.getInt("room_number"));
+					order.setReceivingNo(resSet.getInt("receiving_number"));
+					order.setStatus(
+							OrderStatus.fromId(
+									resSet.getInt("orders.item_creating_status_id")));
 
-				    // 子表查询（OrderItem）
-				    order.setItemList(searchOrderItem(orderId));
+					// 子表查询（OrderItem）
+					order.setItemList(searchOrderItem(orderId));
 
-				    resList.add(order);
+					resList.add(order);
 				}
 
 			}
@@ -640,89 +637,85 @@ public class OrderDao {
 		return resList;
 	}
 
-	
-public List<Order> findByStatus(int statusId) throws Exception {
+	public List<Order> findByStatus(int statusId) throws Exception {
 
-    List<Order> list = new ArrayList<>();
+		List<Order> list = new ArrayList<>();
 
-    String sql = """
-        SELECT
-            o.order_id,
-            o.total,
-            o.receiving_number,
-            o.item_creating_status_id,
-            o.room_id,
-            r.room_number,
-            o.usage_history_id,
-            o.pickup_method
-        FROM orders o
-        JOIN room r
-          ON o.room_id = r.room_id
-        WHERE o.item_creating_status_id = ?
-        ORDER BY o.order_id ASC
-    """;
+		String sql = """
+				    SELECT
+				        o.order_id,
+				        o.total,
+				        o.receiving_number,
+				        o.item_creating_status_id,
+				        o.room_id,
+				        r.room_number,
+				        o.usage_history_id,
+				        o.pickup_method
+				    FROM orders o
+				    JOIN room r
+				      ON o.room_id = r.room_id
+				    WHERE o.item_creating_status_id = ?
+				    ORDER BY o.order_id ASC
+				""";
 
-    try (
-        Connection con = DatabaseManager.connect();
-        PreparedStatement ps = con.prepareStatement(sql)
-    ) {
-        ps.setInt(1, statusId);
+		try (
+				Connection con = DatabaseManager.connect();
+				PreparedStatement ps = con.prepareStatement(sql)) {
+			ps.setInt(1, statusId);
 
-        try (ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) {
-                Order o = new Order();
-                o.setId(rs.getInt("order_id"));
-                o.setTotal(rs.getInt("total"));
-                o.setReceivingNo(rs.getInt("receiving_number"));
-                o.setItemCreatingStatusId(rs.getInt("item_creating_status_id"));
-                o.setRoomId(rs.getInt("room_id"));
-                o.setRoomNo(rs.getInt("room_number"));
-                o.setUsageHistoryId(rs.getInt("usage_history_id"));
-                o.setPickupMethod(rs.getString("pickup_method"));
-                list.add(o);
-            }
-        }
-    }
-    return list;
-}
-
+			try (ResultSet rs = ps.executeQuery()) {
+				while (rs.next()) {
+					Order o = new Order();
+					o.setId(rs.getInt("order_id"));
+					o.setTotal(rs.getInt("total"));
+					o.setReceivingNo(rs.getInt("receiving_number"));
+					o.setItemCreatingStatusId(rs.getInt("item_creating_status_id"));
+					o.setRoomId(rs.getInt("room_id"));
+					o.setRoomNo(rs.getInt("room_number"));
+					o.setUsageHistoryId(rs.getInt("usage_history_id"));
+					o.setPickupMethod(rs.getString("pickup_method"));
+					list.add(o);
+				}
+			}
+		}
+		return list;
+	}
 
 	// 注文済み
 	public List<Order> findOrderedList() throws Exception {
-	    return findByStatus(1);
+		return findByStatus(1);
 	}
 
 	// 調理済み
 	public List<Order> findCookingFinishedList() throws Exception {
-	    return findByStatus(2);
+		return findByStatus(2);
 	}
 
 	// 完了
 	public List<Order> findCompletedList() throws Exception {
-	    return findByStatus(3);
+		return findByStatus(3);
 	}
 
 	public int getItemCreatingStatus(int orderId) throws Exception {//キッチン調理状態変更用
 
-	    String sql = """
-	        SELECT item_creating_status_id
-	        FROM orders
-	        WHERE order_id = ?
-	    """;
+		String sql = """
+				    SELECT item_creating_status_id
+				    FROM orders
+				    WHERE order_id = ?
+				""";
 
-	    try (
-	        Connection con = DatabaseManager.connect();
-	        PreparedStatement ps = con.prepareStatement(sql);
-	    ) {
-	        ps.setInt(1, orderId);
+		try (
+				Connection con = DatabaseManager.connect();
+				PreparedStatement ps = con.prepareStatement(sql);) {
+			ps.setInt(1, orderId);
 
-	        try (ResultSet rs = ps.executeQuery()) {
-	            if (rs.next()) {
-	                return rs.getInt("item_creating_status_id");
-	            }
-	        }
-	    }
-	    return -1;
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					return rs.getInt("item_creating_status_id");
+				}
+			}
+		}
+		return -1;
 	}
 
 	public ArrayList<OrderItem> searchOrderItem(int order) throws Exception {
@@ -785,5 +778,5 @@ public List<Order> findByStatus(int statusId) throws Exception {
 
 		return resList;
 	}
-	
+
 }
