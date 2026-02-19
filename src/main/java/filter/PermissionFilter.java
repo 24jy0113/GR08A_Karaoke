@@ -3,8 +3,6 @@ package filter;
 import java.io.IOException;
 import java.util.Set;
 
-import config.PermissionConfig;
-import dao.PermissionDAO;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -15,7 +13,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-@WebFilter("/*")
+import config.PermissionConfig;
+import dao.PermissionDAO;
+
+@WebFilter(urlPatterns ="/*",asyncSupported = true)
 public class PermissionFilter implements Filter {
 
     @Override

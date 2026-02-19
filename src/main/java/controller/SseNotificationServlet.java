@@ -54,6 +54,10 @@ public class SseNotificationServlet extends HttpServlet {
 		if (roomId == null || roomId.isEmpty())
 			return;
 
+		PrintWriter pw = response.getWriter();
+		pw.write(": ok\n\n"); // SSEのコメント行
+		pw.flush();
+
 		// 非同期コンテキストの開始.
 		final AsyncContext asyncContext = request.startAsync();
 
@@ -106,7 +110,7 @@ public class SseNotificationServlet extends HttpServlet {
 
 		if (ac != null) {
 			try {
-				synchronized (ac) {
+				synchronized (ac.getResponse()) {
 					PrintWriter pw = ac.getResponse().getWriter();
 					pw.write("id: " + messageId + "\n");
 					pw.write("data: " + payload + "\n\n");

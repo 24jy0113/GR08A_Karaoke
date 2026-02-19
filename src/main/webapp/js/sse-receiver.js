@@ -26,13 +26,13 @@ function initializeNotification(roomId) {
 
 // モーダル表示関数.
 function showNotice(msg) {
-	const modal = document.getElementsById("sseNoticeModal");
+	const modal = document.getElementById("sseNoticeModal");
 	const text = document.getElementById("sseNoticeText");
 	const closeBtn = document.getElementById("sseCloseBtn");
-	text.innerText = msg;
+	text.innerHTML = msg;
 	modal.style.display = "block";
 	closeBtn.onclick = function() {
-		sendAckToServer(currentMessageId);
+		sseCloseNotice(currentMessageId);
 	};
 }
 
@@ -52,6 +52,6 @@ function sendAckToServer(messageId) {
 // 確認とモーダルの非表示.
 function sseCloseNotice(messageId) {
 	sendAckToServer(messageId)
-	const modal = document.getElementsById("sseNoticeModal");
+	const modal = document.getElementById("sseNoticeModal");
 	modal.style.display = "none";
 }

@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 
 <!-- ===== 通知モーダル ===== -->
-<div id="SseNoticeModal" class="sse-hidden">
+<div id="sseNoticeModal" class="sse-hidden">
 	<div class="sse-notice-modal-content">
 		<p id="sseNoticeText"></p>
 		<small id="sseNoticeNote"> （注文通知は多少前後することがあります） </small>
@@ -21,6 +21,7 @@
         initializeNotification(currentRoomId);
     });
 </script>
+
 
 <style>
 #sseNoticeModal {
