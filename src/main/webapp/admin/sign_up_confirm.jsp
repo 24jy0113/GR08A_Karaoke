@@ -52,7 +52,7 @@ String roleName = (String) session.getAttribute("SIGNUP_ROLE_NAME");
 			</table>
 			<div class="action-buttons flex-center">
 				<button type="button" class="btn-back"
-					onclick="location.href='sign_up.jsp'">修正する</button>
+					onclick="location.href='<%=request.getContextPath()%>/admin/sign_up.jsp'">修正する</button>
 				<form action="<%=request.getContextPath()%>/SignUpCompleteServlet"
 					method="post">
 					<button type="submit" class="btn-next">ユーザ登録を完了する</button>

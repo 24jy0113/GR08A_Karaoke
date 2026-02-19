@@ -48,7 +48,7 @@ ArrayList<OrderItem> cart = (ArrayList<OrderItem>) session.getAttribute("cart");
 						for (OrderItem.SelectedOptionDetail d : oi.getSelectedOptionDetailList()) {
 						%>
 						<li class="bodymsg">個数 <%=oi.getCount()%></li>
-						<li class="bodymsg">オプション <%=d.optName()%>：<%=d.selectionName()%></li>
+						<li class="bodymsg">オプション <%=d.optName()%>：<%=d.selectionName()%>　(<%=d.price()%>円)</li>
 						<%
 						}
 						%>
