@@ -5,7 +5,6 @@
 
 <%
 Room room = (Room) session.getAttribute("room");
-Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 %>
 <%
 OrderItem oi = (OrderItem) session.getAttribute("buildingItem");

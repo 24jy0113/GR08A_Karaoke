@@ -24,12 +24,20 @@ public class CusTopServlet extends HttpServlet {
 			String roomNoStr = req.getParameter("roomNumber");
 			Room room;
 			if (roomNoStr != null && !roomNoStr.isEmpty()) {
-				room=RoomDao.getRoomByRoomNumber(Integer.parseInt(roomNoStr));
-				if(room==null) {
-					// 部屋の検索結果がnull.
-
+				room = RoomDao.getRoomByRoomNumber(Integer.parseInt(roomNoStr));
+				// 部屋の検索結果がnull.
+				if (room == null) {
 					// フロントエンド用のメッセージ.
 					String message = URLEncoder.encode("該当する部屋が見つかりません", "UTF-8");
+
+					// 検索フォームに返却.
+					res.sendRedirect(req.getContextPath() + "/front/front_room_search.jsp?e=" + message);
+					return;
+				}
+				// 部屋情報のstatusが「空き」の状態である.
+				if (room.getStatusId() == 1) {
+					// フロントエンド用のメッセージ.
+					String message = URLEncoder.encode("該当する部屋は現在空室です", "UTF-8");
 
 					// 検索フォームに返却.
 					res.sendRedirect(req.getContextPath() + "/front/front_room_search.jsp?e=" + message);
@@ -42,8 +50,8 @@ public class CusTopServlet extends HttpServlet {
 					return;
 				}
 				roomId = Integer.parseInt(roomIdStr);
-				room=RoomDao.getRoomById(roomId);
-				if(room == null) {
+				room = RoomDao.getRoomById(roomId);
+				if (room == null) {
 					res.sendRedirect(req.getContextPath() + "/RoomListServlet");
 					return;
 				}

@@ -2,7 +2,6 @@
 	pageEncoding="UTF-8" import="java.util.ArrayList,model.*"%>
 <%
 Room room = (Room) session.getAttribute("room");
-Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 %>
 <%
 ArrayList<OrderItem> cart = (ArrayList<OrderItem>) session.getAttribute("cart");
