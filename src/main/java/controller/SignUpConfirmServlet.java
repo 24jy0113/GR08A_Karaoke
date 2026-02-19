@@ -1,13 +1,14 @@
 package controller;
 import java.io.IOException;
 
-import dao.UserDao;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+
+import dao.UserDao;
 
 @WebServlet("/SignUpConfirmServlet")
 public class SignUpConfirmServlet extends HttpServlet {
@@ -26,7 +27,7 @@ public class SignUpConfirmServlet extends HttpServlet {
             || password == null || password.isEmpty()
             || roleName == null || roleName.isEmpty()) {
             req.setAttribute("error", "入力内容に不備があります");
-            req.getRequestDispatcher(req.getContextPath() + "/admin/sign_up.jsp").forward(req, res);
+            req.getRequestDispatcher("/admin/sign_up.jsp").forward(req, res);
             return;
         }
 
