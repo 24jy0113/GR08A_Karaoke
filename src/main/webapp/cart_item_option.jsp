@@ -14,7 +14,7 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>商品内容変更</title>
+<title>オプション選択</title>
 <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath()%>/css/header.css">
 <link rel="stylesheet" type="text/css"
@@ -25,7 +25,7 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 <body>
 	<%@ include file="/shered/cus_header.jsp"%>
 	<main class="text-center">
-		<h2 class="bodytitle">個数・オプションを変更できます！</h2>
+		<h2 class="bodytitle">オプションを選択してください</h2>
 		<div class="container">
 			<!-- 左側：画像領域 -->
 			<div>
@@ -35,15 +35,14 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 						alt="product">
 				</div>
 				<h2 class="bodytitle"><%=item.getName()%></h2>
-				<h2 class="bodytitle"><%=item.getPrice()%>
-					円(税込)
-				</h2>
+				<h2 class="bodytitle"><%=item.getPrice()%> 円(税込)</h2>
 			</div>
-			<!-- 右側：検索欄＋テンキー -->
+			<!-- 右側：オプション選択 -->
 			<div class="right-box">
 				<div class="pad">
-					<form action="CartItemUpdateServlet" method="post">
+					<form action="cart_item_count.jsp" method="get">
 						<input type="hidden" name="index" value="<%=index%>">
+
 						<%
 						for (Option opt : item.getOptionList()) {
 							OrderItem.SelectedOption so = oi.findSelectedOptionById(opt.getId());
@@ -52,35 +51,30 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 						<%
 						for (Option.Selection sel : opt.getSelectionList()) {
 						%>
-						<label> <input type="radio" name="opt_<%=opt.getId()%>"
-							value="<%=sel.id()%>"
-							<%=(so != null && so.selectionId() == sel.id()) ? "checked" : ""%>
-							required> <%=sel.name()%>（<%=sel.price()%>円）
+						<label>
+							<input type="radio" name="opt_<%=opt.getId()%>"
+								value="<%=sel.id()%>"
+								<%=(so != null && so.selectionId() == sel.id()) ? "checked" : ""%>
+								required>
+							<%=sel.name()%>（<%=sel.price()%>円）
 						</label><br>
 						<%
 						}
 						%>
-
 						<%
 						}
 						%>
 
-						<h3 class="bodymsg">
-							個数： <input type="number" name="count" min="1"
-								value="<%=oi.getCount()%>" required>
-						</h3>
 						<div class="action-buttons flex-center">
 							<button type="button" class="btn-back"
 								onclick="location.href='<%=request.getContextPath()%>/cart_detail.jsp'">カートに戻る</button>
-							<button type="submit" class="btn-next">変更する</button>
+							<button type="submit" class="btn-next">次へ（個数選択）</button>
 						</div>
 					</form>
 				</div>
 			</div>
 		</div>
-
 	</main>
 	<%@ include file="/shered/cus_footer.jsp"%>
-
 </body>
 </html>

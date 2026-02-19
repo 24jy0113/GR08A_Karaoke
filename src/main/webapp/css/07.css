@@ -1,6 +1,6 @@
 @charset "UTF-8";
 
-.container{
+.container {
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -10,17 +10,52 @@
 table {
 	margin-top: 25px;
 	border-collapse: collapse;
-	width: 700px;
+	width: 950px;
 	border-bottom: 1px solid rgba(217, 217, 217, 1);
+	table-layout: fixed;
 }
 
 th,
 td {
-	padding: 8px 12px;
+	padding: 10px 14px;
+	vertical-align: top;
+	word-wrap: break-word;
 }
 
 th {
 	border-top: 1px solid rgba(217, 217, 217, 1);
+	white-space: nowrap;
+}
+
+/* 各列の幅配分 */
+th:nth-child(1),
+td:nth-child(1) {
+	width: 20%;
+}
+
+th:nth-child(2),
+td:nth-child(2) {
+	width: 30%;
+	font-size: 15px;
+	line-height: 1.6;
+}
+
+th:nth-child(3),
+td:nth-child(3) {
+	width: 10%;
+	text-align: center;
+}
+
+th:nth-child(4),
+td:nth-child(4) {
+	width: 20%;
+	text-align: right;
+}
+
+th:nth-child(5),
+td:nth-child(5) {
+	width: 20%;
+	text-align: center;
 }
 
 a {
@@ -41,6 +76,6 @@ a {
 	font-weight: bold;
 }
 
-.order-number{
+.order-number {
 	color: rgb(17, 106, 223);
 }
