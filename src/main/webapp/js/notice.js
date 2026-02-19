@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	let leaveDateTime = null;
 	let countdownInterval = null;
 
-	// サーバーから退室時刻を取得
+	// サーバーから退室時刻を取得.
 	function fetchLeaveTime() {
 		fetch(`${CONTEXT_PATH}/RemainingTimeServlet`)
 			.then(res => res.json())
@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
 					const m = parseInt(parts[1], 10);
 					const s = parts[2] ? parseInt(parts[2], 10) : 0; // ←秒がなければ0にする
 					leaveDateTime = new Date(today.getFullYear(), today.getMonth(), today.getDate(), h, m, s);
-					// カウントダウンがまだ始まっていなければ開始
+					// カウントダウンがまだ始まっていなければ開始.
 					if (!countdownInterval) {
 						startCountdown();
 					}
@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			.catch(err => console.error("退室時刻取得エラー:", err));
 	}
 
-	// 秒ごとのカウントダウン開始
+	// 秒ごとのカウントダウン開始.
 	function startCountdown() {
 		countdownInterval = setInterval(() => {
 			if (!leaveDateTime) return;
@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			const seconds = diffSec % 60;
 			const el = document.getElementById("remainingTime");
 			if (el) {
-				// 常に HH:MM:SS 形式
+				// 常に HH:MM:SS 形式.
 				el.innerText =
 					String(hours).padStart(2, "0") + ":" +
 					String(minutes).padStart(2, "0") + ":" +
@@ -55,19 +55,19 @@ document.addEventListener("DOMContentLoaded", () => {
 		}, 1000);
 	}
 
-	// 通知取得
+	// 通知取得.
 	function fetchNotice() {
 		fetch(`${CONTEXT_PATH}/NoticeServlet`)
 			.then(res => res.json())
 			.then(data => {
-				// セッション切れ時の処理
+				// セッション切れ時の処理.
 				if (data.sessionExpired) {
 					alert("セッションが切れました。初期画面に戻ります。");
 					location.href = `${CONTEXT_PATH}/room_search.jsp`;
 					return;
 				}
 
-				// 通知がある場合、モーダル表示
+				// 通知がある場合、モーダル表示.
 				if (data.notice) {
 					showNotice(data.minutes);
 				}
@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			.catch(err => console.error("通知取得エラー:", err));
 	}
 
-	// モーダル表示関数
+	// モーダル表示関数.
 	function showNotice(minutes) {
 		const modal = document.getElementById("noticeModal");
 		const text = document.getElementById("noticeText");
@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		modal.classList.remove("hidden");
 	}
 
-	// モーダルを閉じる関数（確認ボタン用）
+	// モーダルを閉じる関数（確認ボタン用）.
 	window.closeNotice = function() {
 		const modal = document.getElementById("noticeModal");
 		const note = document.getElementById("noticeNote");
@@ -95,11 +95,11 @@ document.addEventListener("DOMContentLoaded", () => {
 		if (note) note.style.display = "none";
 	}
 
-	// 初回実行
+	// 初回実行.
 	fetchLeaveTime();
 	fetchNotice();
 
-	// 1分ごとにサーバー再同期
+	// 1分ごとにサーバー再同期.
 	setInterval(() => {
 		fetchLeaveTime();
 		fetchNotice();
