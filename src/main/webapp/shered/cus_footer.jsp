@@ -10,5 +10,6 @@
 		<h1>
 			残り時間 <span id="remainingTime">--:--</span>
 		</h1>
-	<jsp:include page="common.jsp" />
+	<jsp:include page="/shered/common.jsp" />
+	<jsp:include page="/shered/sse-handler.jsp" />
 </footer>
