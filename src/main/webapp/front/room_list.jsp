@@ -52,6 +52,7 @@ if (roomList == null) {
 			<table>
 				<tr>
 					<th></th>
+					<th></th>
 					<th>部屋番号</th>
 					<th>酒類提供</th>
 					<th>受付時間</th>
@@ -68,6 +69,11 @@ if (roomList == null) {
 					method="post">
 					<tr>
 						<input type="hidden" name="roomId" value="<%=room.getId()%>">
+						<td>
+							<button type="button"
+								onclick="location.href='<%=request.getContextPath()%>/RoomOrderListServlet?roomId=<%=room.getId()%>'"
+								class="btn">注文変更</button>
+						</td>
 						<td>
 							<button type="button"
 								onclick="location.href='<%=request.getContextPath()%>/CusTopServlet?isStaffAction=true&roomId=<%=room.getId()%>'"
@@ -96,11 +102,10 @@ if (roomList == null) {
 						<!-- 予約受付時間 -->
 						<td>
 							<%
-							// reservationTime が null でない場合のみ表示
 							if (room.getRes_receptionTime() != null) {
 								out.print(room.getRes_receptionTime().toLocalTime());
 							} else {
-								out.print(""); // 空白
+								out.print("");
 							}
 							%>
 						</td>
@@ -120,10 +125,9 @@ if (roomList == null) {
 		</div>
 	</main>
 	<script>
-		// ページ更新ボタンのクリックイベントを設定
 		document.getElementById('reloadButton').addEventListener('click',
 				function() {
-					location.reload(); // ページをリロード
+					location.reload();
 				});
 	</script>
 </body>

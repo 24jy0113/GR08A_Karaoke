@@ -26,7 +26,7 @@ if (user == null) {
 		<h1 class="bodytilte">利用する項目を選択してください</h1>
 		<div class="action-buttons">
 			<button type="button" class="btn-next"
-				onclick="location.href='room_list.jsp'">部屋状況</button>
+				onclick="location.href='<%=request.getContextPath()%>/RoomListServlet'">部屋状況</button>
 			<button type="button" class="btn-next"
 				onclick="location.href='<%=request.getContextPath()%>/ResListFrontServlet'">予約情報</button>
 			<button type="button" class="btn-next"
