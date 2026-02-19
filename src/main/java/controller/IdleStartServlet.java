@@ -24,8 +24,14 @@ public class IdleStartServlet extends HttpServlet {
 		int roomNumber = Integer.parseInt(request.getParameter("roomNumber"));
 
 		try {
-			// 部屋番号からroom_idを取得.
+			// 部屋番号からRoomインスタンスを取得.
 			Room room = RoomDao.getRoomByRoomNumber(roomNumber);
+
+			if (room.getStatusId() == 1) {
+				response.sendRedirect(
+						request.getContextPath() + "/RoomSearchServlet?roomNumber=" + String.valueOf(roomNumber));
+				return;
+			}
 
 			request.getSession().setAttribute("room", room);
 

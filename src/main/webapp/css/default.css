@@ -25,6 +25,18 @@
 	color: black;
 }
 
+.btn-start {
+	background-color: black;
+	border-color: black;
+	color: white;
+	padding: 30px 60px;
+	border-radius: 8px;
+	border: 1px solid;
+	font-size: 40px;
+	cursor: pointer;
+	transition: all 0.2s;
+}
+
 .action-buttons {
 	/* ボタンを横並びにする */
 	display: flex;
@@ -96,6 +108,13 @@
 	justify-content: center;
 	align-items: center;
 	font-size: 18px;
+}
+
+.container-idle {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
 }
 
 /* 配置 */
