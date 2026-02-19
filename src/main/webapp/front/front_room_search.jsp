@@ -28,7 +28,7 @@ if (user == null) {
 				<c:if test="${param.e!=null }">
 					<p class="errormsg">${param.e }</p>
 				</c:if>
-					<input class="searchbox" type="search" name="roomNumber" required />
+				<input class="searchbox" type="search" name="roomNumber" required />
 			</div>
 			<div class="action-buttons flex-center">
 				<button type="button" class="btn-back"
