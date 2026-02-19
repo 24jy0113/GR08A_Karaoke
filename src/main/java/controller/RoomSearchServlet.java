@@ -2,10 +2,6 @@ package controller;
 
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.sql.Time;
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -38,39 +34,10 @@ public class RoomSearchServlet extends HttpServlet {
 				response.sendRedirect(request.getContextPath() + "/room_search.jsp?e=" + message);
 				return;
 			}
-
-			// 残り時間計算.
-			int remainingMinutes = calcRemainingMinutes(room.getReceptionTime(), room.getLeavingTime());
-
-			request.getSession().setAttribute("room", room);
-			request.getSession().setAttribute("remainingMinutes", remainingMinutes);
-
-			request.getRequestDispatcher("/cus_top.jsp").forward(request, response);
+			request.getRequestDispatcher("/room_idle.jsp?roomNumber=" + room.getRoomNo()).forward(request, response);
 
 		} catch (Exception e) {
 			throw new ServletException(e);
 		}
 	}
-
-	private int calcRemainingMinutes(Time receptionTime, Time leavingTime) {
-
-		if (leavingTime == null)
-			return 0;
-
-		LocalDate today = LocalDate.now();
-
-		LocalDateTime now = LocalDateTime.now();
-		LocalDateTime leaveDateTime = LocalDateTime.of(today, leavingTime.toLocalTime());
-
-		// 翌日にまたぐ場合
-		if (receptionTime != null &&
-				leavingTime.before(receptionTime)) {
-			leaveDateTime = leaveDateTime.plusDays(1);
-		}
-
-		long minutes = Duration.between(now, leaveDateTime).toMinutes();
-
-		return (int) Math.max(minutes, 0);
-	}
-
 }

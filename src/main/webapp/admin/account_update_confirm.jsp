@@ -56,7 +56,12 @@ if (u == null) {
 			</table>
 
 			<div class="action-buttons flex-center">
-				<button type="button" class="btn-back" onclick="history.back()">修正する</button>
+				<form
+					action="<%=request.getContextPath()%>/AccountUpdateInitServlet"
+					method="post">
+					<input type="hidden" name="userId" value="<%=u.getUserId()%>">
+					<button type="submit" class="btn-back">修正</button>
+				</form>
 				<form
 					action="<%=request.getContextPath()%>/AccountUpdateConfirmServlet"
 					method="post">

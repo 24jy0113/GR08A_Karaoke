@@ -2,7 +2,6 @@
 	pageEncoding="UTF-8" import="java.util.ArrayList,model.*"%>
 <%
 Room room = (Room) session.getAttribute("room");
-Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 %>
 <%
 ArrayList<OrderItem> cart = (ArrayList<OrderItem>) session.getAttribute("cart");
@@ -51,15 +50,39 @@ int totalSum = 0;
 					%>
 					<tr>
 						<th><%=oi.getItem().getName()%></th>
+						<th>オプション</th>
 						<th>個数</th>
 						<th>小計</th>
-						<th rowspan="2"><a href="item_detail_change.jsp?index=<%=i%>">
-								個数・オプションを変更する </a></th>
+						<th></th>
+						
 					</tr>
 					<tr>
 						<td><%=oi.getItem().getPrice()%>円(税込)</td>
+						<td>
+							<%
+							if (oi.getSelectedOptions() != null && !oi.getSelectedOptions().isEmpty()) {
+								for (OrderItem.SelectedOption so : oi.getSelectedOptions()) {
+									Option opt = oi.getItem().findOptionById(so.optId());
+									if (opt != null) {
+										Option.Selection sel = opt.findSelectionById(so.selectionId());
+										if (sel != null) {
+							%>
+							<%=opt.getName()%>：<%=sel.name()%>（<%=sel.price()%>円）<br>
+							<%
+										}
+									}
+								}
+							} else {
+							%>
+							なし
+							<%
+							}
+							%>
+						</td>
 						<td><%=oi.getCount()%></td>
 						<td><%=oi.getTotal()%>円(税込)</td>
+						<td><a href="cart_item_option.jsp?index=<%=i%>">
+								変更する </a></td>
 					</tr>
 					<tr>
 						<td><a href="CartRemoveServlet?index=<%=i%>">削除する</a></td>

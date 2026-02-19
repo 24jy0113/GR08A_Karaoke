@@ -20,21 +20,21 @@ if (user == null) {
 <body>
 	<%@ include file="/shered/biz_header.jsp"%>
 	<main>
-		<div class="text-center">
-			<h1 class="bodytitle">部屋番号を入力してください</h1>
-			<form action="<%=request.getContextPath()%>/RoomSearchServlet"
-				method="get">
-				<c:if test="${param.e!=null }">
-					<p class="errormsg">${param.e }</p>
+		<form action="<%=request.getContextPath()%>/RoomSearchServlet"
+			method="get">
+			<div class="text-center">
+				<h1 class="bodytitle">部屋番号を入力してください</h1>
+				<c:if test="${param.e!=null}">
+					<p class="errormsg">${param.e}</p>
 				</c:if>
-				<input class="searchbox"  type="search" name="roomNumber" required />
-				<div class="action-buttons flex-center">
-					<button type="button" class="btn-back"
-						onclick="location.href='<%=request.getContextPath()%>/index_select.jsp'">担当選択画面に戻る</button>
-					<button type="submit" class="btn-next">次へ</button>
-				</div>
-			</form>
-		</div>
+				<input class="searchbox" type="search" name="roomNumber" required />
+			</div>
+			<div class="action-buttons flex-center">
+				<button type="button" class="btn-back"
+					onclick="location.href='<%=request.getContextPath()%>/index_select.jsp'">担当選択画面に戻る</button>
+				<button type="submit" class="btn-next">次へ</button>
+			</div>
+		</form>
 	</main>
 </body>
 </html>

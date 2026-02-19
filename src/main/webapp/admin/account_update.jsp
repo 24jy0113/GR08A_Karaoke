@@ -20,7 +20,7 @@ if (u == null) {
 <head>
 <meta charset="UTF-8">
 <title>アカウント登録</title>
-
+　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
 <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath()%>/css/header.css">
 <link rel="stylesheet" type="text/css"
@@ -75,7 +75,8 @@ if (u == null) {
 				</div>
 				<span id="errorMessage"></span><br>
 				<div class="action-buttons flex-center">
-					<button type="button" class="btn-back" onclick="history.back()">キャンセル</button>
+					<button type="button" class="btn-back"
+						onclick="location.href='<%=request.getContextPath()%>/AccountSearchServlet?keyword=<%=u.getUserId()%>'">キャンセル</button>
 					<button type="submit" class="btn-next">確認する</button>
 				</div>
 			</form>

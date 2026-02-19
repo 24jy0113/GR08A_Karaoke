@@ -2,7 +2,6 @@
 	pageEncoding="UTF-8" import="java.util.ArrayList,model.*"%>
 <%
 Room room = (Room) session.getAttribute("room");
-Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 %>
 <%
 Order order = (Order) session.getAttribute("order");
@@ -49,12 +48,34 @@ if (order == null) {
 
 						<tr>
 							<th><%=oi.getItem().getName()%></th>
+							<th>オプション</th>
 							<th>個数</th>
 							<th>小計</th>
 
 						</tr>
 						<tr>
 							<td><%=oi.getItem().getPrice()%>円(税込)</td>
+							<td>
+							<%
+							if (oi.getSelectedOptions() != null && !oi.getSelectedOptions().isEmpty()) {
+								for (OrderItem.SelectedOption so : oi.getSelectedOptions()) {
+									Option opt = oi.getItem().findOptionById(so.optId());
+									if (opt != null) {
+										Option.Selection sel = opt.findSelectionById(so.selectionId());
+										if (sel != null) {
+							%>
+							<%=opt.getName()%>：<%=sel.name()%>（<%=sel.price()%>円）<br>
+							<%
+										}
+									}
+								}
+							} else {
+							%>
+							なし
+							<%
+							}
+							%>
+							</td>
 							<td><%=oi.getCount()%></td>
 							<td><%=oi.getTotal()%>円(税込)</td>
 						</tr>
@@ -68,7 +89,8 @@ if (order == null) {
 				</p>
 		</div>
 		<div class="action-buttons flex-center">
-			<button type="button" class="btn-back" onclick="history.back()">カート内容へ戻る</button>
+			<button type="button" class="btn-back"
+				onclick="location.href='<%=request.getContextPath()%>/cart_detail.jsp'">カート内容へ戻る</button>
 			<button type="submit" class="btn-next">注文を確定する</button>
 		</div>
 		</form>

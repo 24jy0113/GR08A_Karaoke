@@ -5,7 +5,6 @@ Item item = (Item) request.getAttribute("item");
 %>
 <%
 Room room = (Room) session.getAttribute("room");
-Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 %>
 <!DOCTYPE html>
 <html lang="ja">
@@ -24,9 +23,7 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 	<%@ include file="/shered/cus_header.jsp"%>
 	<main>
 		<div class="page">
-			<c:if test="${ error != null}">
-				<p class="errormsg">${error}</p>
-			</c:if>
+
 			<aside class="ad-area">
 				<img class="campaign"
 					src="<%=request.getContextPath()%>/img/menu.png" alt="menu"
@@ -37,14 +34,16 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 			</aside>
 			<section class="main-area">
 				<h1 class="bodytitle">メニュー番号から商品を探す</h1>
-				<p class="bodymsg">メニュー番号を入力してください</p>
-
+				<c:if test="${ error != null}">
+					<p class="errormsg">${error}</p>
+				</c:if>
 				<div class="input-row">
 					<form action="<%=request.getContextPath()%>/ItemSearchServlet"
 						method="get">
 						<input id="menuInput" name="orderNumber" type="text" maxlength="4"
 							readonly />
 						<button id="searchBtn" type="submit">検索</button>
+
 					</form>
 				</div>
 				<div class="pad">

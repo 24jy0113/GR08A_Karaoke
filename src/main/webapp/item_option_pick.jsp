@@ -5,7 +5,6 @@ Item item = (Item) request.getAttribute("item");
 %>
 <%
 Room room = (Room) session.getAttribute("room");
-Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 %>
 <!DOCTYPE html>
 <html lang="ja">
@@ -61,7 +60,8 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 							}
 							%>
 							<div class="action-buttons flex-center">
-								<button type="button" class="btn-back" onclick="history.back()">戻る</button>
+								<button type="button" class="btn-back"
+									onclick="location.href='<%=request.getContextPath()%>/item_detail?id=<%=item.getId()%>'">戻る</button>
 								<button type="submit" class="btn-next">次へ</button>
 							</div>
 						</form>

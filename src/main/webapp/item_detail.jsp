@@ -5,7 +5,6 @@ Item item = (Item) request.getAttribute("item");
 %>
 <%
 Room room = (Room) session.getAttribute("room");
-Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 %>
 <!DOCTYPE html>
 <html lang="ja">
@@ -55,9 +54,10 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 						<%
 						}
 						%>
-						<button type="button" class="btn-back" onclick="history.back()">メニュー一覧に戻る</button>
 						<button type="button" class="btn-back"
-							onclick="location.href='item_search.jsp'">メニューを番号で探す</button>
+							onclick="location.href='<%=request.getContextPath()%>/item_list'">メニュー一覧に戻る</button>
+						<button type="button" class="btn-back"
+							onclick="location.href='<%=request.getContextPath()%>/item_search.jsp'">メニューを番号で探す</button>
 					</div>
 				</div>
 			</div>

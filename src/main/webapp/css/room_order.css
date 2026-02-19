@@ -1,0 +1,213 @@
+@charset "UTF-8";
+
+/* ============================================
+   注文一覧・注文詳細 共通スタイル
+   ============================================ */
+
+.container-base {
+	font-size: 16px;
+}
+
+/* --- 注文カード --- */
+.order-card {
+	background: #fff;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	margin: 20px auto;
+	max-width: 900px;
+	text-align: left;
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+.order-card-header {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	padding: 12px 20px;
+	background: #f7f7f7;
+	border-bottom: 1px solid #eee;
+	border-radius: 8px 8px 0 0;
+	flex-wrap: wrap;
+}
+
+.order-id {
+	font-weight: bold;
+	font-size: 15px;
+}
+
+.receiving-no {
+	color: #555;
+}
+
+.pickup-method {
+	color: #555;
+	font-size: 14px;
+}
+
+.order-status {
+	padding: 3px 12px;
+	border-radius: 12px;
+	font-size: 13px;
+	font-weight: bold;
+	color: #fff;
+}
+
+.status-1 {
+	background-color: #e67e22;
+}
+
+.status-2 {
+	background-color: #2980b9;
+}
+
+.status-3 {
+	background-color: #27ae60;
+}
+
+.order-card-footer {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 12px 20px;
+	border-top: 1px solid #eee;
+}
+
+.order-total {
+	font-size: 18px;
+	font-weight: bold;
+}
+
+/* --- テーブル共通 --- */
+.order-items-table,
+.order-detail-table {
+	width: 100%;
+	border-collapse: collapse;
+	margin: 0;
+}
+
+.order-items-table th,
+.order-items-table td,
+.order-detail-table th,
+.order-detail-table td {
+	padding: 10px 14px;
+	border-bottom: 1px solid #eee;
+	vertical-align: top;
+	text-align: left;
+}
+
+.order-items-table th,
+.order-detail-table th {
+	background: #fafafa;
+	font-size: 14px;
+	color: #666;
+	border-bottom: 2px solid #ddd;
+}
+
+.option-cell {
+	font-size: 13px;
+	line-height: 1.7;
+	color: #555;
+}
+
+/* --- 注文詳細編集ページ --- */
+.order-detail-table {
+	max-width: 900px;
+	margin: 20px auto;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	overflow: hidden;
+}
+
+.count-input {
+	width: 70px;
+	padding: 6px 8px;
+	font-size: 16px;
+	text-align: center;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}
+
+.subtotal-cell {
+	font-weight: bold;
+	white-space: nowrap;
+}
+
+/* --- サマリーセクション --- */
+.order-summary-section {
+	max-width: 900px;
+	margin: 16px auto;
+	text-align: right;
+	padding: 0 20px;
+}
+
+.order-total-display {
+	font-size: 20px;
+	font-weight: bold;
+	margin-bottom: 12px;
+}
+
+.status-select-area {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 10px;
+	margin-top: 8px;
+}
+
+.status-select-area label {
+	font-weight: bold;
+	font-size: 16px;
+}
+
+.status-select-area select {
+	padding: 6px 12px;
+	font-size: 15px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}
+
+/* --- 更新完了ページ --- */
+.success-msg {
+	color: #27ae60;
+	font-weight: bold;
+	font-size: 18px;
+}
+
+.updated-info {
+	max-width: 900px;
+	margin: 10px auto 20px;
+	padding: 12px 20px;
+	background: #eaf7ee;
+	border: 1px solid #a3d9b1;
+	border-radius: 6px;
+	font-size: 15px;
+}
+
+/* --- ボタン --- */
+.action-buttons {
+	margin-top: 30px;
+	margin-bottom: 30px;
+}
+
+.btn {
+	padding: 8px 16px;
+	font-size: 14px;
+	cursor: pointer;
+	border: 1px solid #aaa;
+	border-radius: 4px;
+	background: #f5f5f5;
+}
+
+.btn:hover {
+	background: #e0e0e0;
+}
+
+.errormsg {
+	color: #c0392b;
+	font-weight: bold;
+}
+
+.bodymsg {
+	color: #333;
+	margin: 10px 0;
+}

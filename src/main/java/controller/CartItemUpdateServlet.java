@@ -6,13 +6,12 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.util.ArrayList;
+
 @WebServlet("/CartItemUpdateServlet")
 public class CartItemUpdateServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse res)
 			throws ServletException, IOException {
-
 		req.setCharacterEncoding("UTF-8");
-
 		HttpSession session = req.getSession();
 		ArrayList<OrderItem> cart =
 			(ArrayList<OrderItem>) session.getAttribute("cart");
@@ -21,21 +20,20 @@ public class CartItemUpdateServlet extends HttpServlet {
 		OrderItem target = cart.get(index);
 		Item item = target.getItem();
 
-		// ① option 上書き.
+		// ① option 上書き（cart_item_count.jsp の hidden から受け取る）
 		for (Option opt : item.getOptionList()) {
 			String param = req.getParameter("opt_" + opt.getId());
 			int selectionId = Integer.parseInt(param);
 			target.setSelectedOption(opt.getId(), selectionId);
 		}
 
-		// ② count 上書き.
+		// ② count 上書き（cart_item_count.jsp の number input から受け取る）
 		int count = Integer.parseInt(req.getParameter("count"));
 		target.setCount(count);
 
-		// ③ cart 内合并（自分以外と比較）.
+		// ③ cart 内合并（自分以外と比較）
 		for (int i = 0; i < cart.size(); i++) {
 			if (i == index) continue;
-
 			OrderItem other = cart.get(i);
 			if (other.isSameItemAndOption(target)) {
 				other.setCount(other.getCount() + target.getCount());
@@ -48,4 +46,3 @@ public class CartItemUpdateServlet extends HttpServlet {
 		res.sendRedirect("cart_detail.jsp");
 	}
 }
-

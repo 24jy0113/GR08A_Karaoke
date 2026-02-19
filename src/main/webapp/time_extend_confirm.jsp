@@ -2,7 +2,6 @@
 	pageEncoding="UTF-8" import="model.Room"%>
 <%
 Room room = (Room) session.getAttribute("room");
-Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 %>
 <!DOCTYPE html>
 <html lang="ja">
@@ -41,7 +40,8 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 			<div class="action-buttons flex-center">
 				<form action="<%=request.getContextPath()%>/ExtendConfirmServlet"
 					method="post">
-					<button type="button" class="btn-back" onclick="history.back()">戻る</button>
+					<button type="button" class="btn-next"
+				onclick="location.href='<%=request.getContextPath()%>/ExtendCanServlet'">戻る</button>
 					<button type="submit" class="btn-next">延長申請を完了する</button>
 				</form>
 			</div>

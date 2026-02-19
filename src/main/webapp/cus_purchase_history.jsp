@@ -2,7 +2,6 @@
 	pageEncoding="UTF-8" import="model.*,java.util.*"%>
 <%
 Room room = (Room) session.getAttribute("room");
-Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 %>
 
 <%

@@ -3,7 +3,6 @@
 
 <%
 Room room = (Room) session.getAttribute("room");
-Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 %>
 <!DOCTYPE html>
 <html lang="ja">
@@ -57,7 +56,8 @@ Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 				</tr>
 			</table>
 			<div class="action-buttons">
-				<button type="button" class="btn-back" onclick="history.back()">延長申請へ戻る</button>
+				<button type="button" class="btn-next"
+				onclick="location.href='<%=request.getContextPath()%>/ExtendCanServlet'">延長申請へ戻る</button>
 			</div>
 		</div>
 	</main>
