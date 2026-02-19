@@ -196,127 +196,6 @@ public class OrderDao {
 		return 0;
 	}
 
-<<<<<<< HEAD
-	/*
-	public void addOrder(Order order) throws Exception {
-	
-		if (order.hasOptionUnselected()) {
-			System.err.println("未選択のオプションがある注文を登録しようとしました。");
-	
-			// フロントエンド用のエラーメッセージ.
-			String errMsg = "未選択のオプションがあるため注文の登録に失敗しました。<br>管理者に連絡してください。";
-	
-			// 例外を投げる.	
-			throw new Exception(errMsg);
-		}
-	
-		if (order.getId() > 0) {
-			System.err.println("order_idが割り振られているため、このorderは登録済みです。");
-	
-			// フロントエンド用のエラーメッセージ.
-			String errMsg = "注文の登録が重複したためDBの登録に失敗しました！<br>管理者に連絡してください。";
-	
-			// 例外を投げる.
-			throw new Exception(errMsg);
-		}
-	
-		// SQL文の作成.
-		// 注文の登録.
-		String sql1 = "INSERT INTO orders(total,receiving_number,item_creating_status_id,room_id) "
-				+ "VALUES(?,?,?,?);";
-		// 注文詳細（OrderItemごと）の登録.
-		String sql2 = "INSERT INTO order_detail(order_id,item_id,`count`,sub_total) "
-				+ "VALUES(?,?,?,?);";
-		// 注文詳細と選択された商品オプションのつながりの登録.
-		String sql3 = "INSERT INTO order_detail_option(order_detail_id,option_detail_id) "
-				+ "VALUES(?,?);";
-	
-		try (Connection con = DatabaseManager.connect();
-				PreparedStatement preState1 = con.prepareStatement(sql1, PreparedStatement.RETURN_GENERATED_KEYS);
-				PreparedStatement preState2 = con.prepareStatement(sql2, PreparedStatement.RETURN_GENERATED_KEYS);
-				PreparedStatement preState3 = con.prepareStatement(sql3)) {
-	
-			// 複数テーブルに挿入する必要があるので自動コミットを無効.
-			con.setAutoCommit(false);
-	
-			// プリペアードステートメントを使用.
-			preState1.setInt(1, order.getTotal());
-			preState1.setInt(2, order.getReceivingNo());
-			preState1.setInt(3, order.getStatusId().getId());
-			preState1.setInt(4, order.getRoomId());
-	
-			try {
-	
-				// 注文をテーブルに登録.
-				preState1.executeUpdate();
-	
-				// 生成された注文の主キーを取得して注文詳細を登録する.
-				try (ResultSet resSet1 = preState1.getGeneratedKeys();) {
-					if (resSet1.next()) {
-						preState2.setInt(1, resSet1.getInt(1));
-	
-						for (OrderItem item : order.getItemList()) {
-							preState2.setInt(2, item.getItem().getId());
-							preState2.setInt(3, item.getCount());
-							preState2.setInt(4, item.getTotal());
-	
-							// 商品をテーブルに追加.
-							preState2.executeUpdate();
-	
-							// 選択したオプションがある場合のみその情報を登録.
-							if (!item.getSelectedOptionList().isEmpty()) {
-	
-								// 生成された注文詳細の主キーを取得して選択オプションのテーブルに登録する.
-								try (ResultSet resSet2 = preState2.getGeneratedKeys()) {
-									if (resSet2.next()) {
-										int orderDetailId = resSet2.getInt(1);
-	
-										for (SelectedOption option : item.getSelectedOptionList()) {
-											preState3.setInt(1, orderDetailId);
-											preState3.setInt(2, option.selectionId());
-	
-											// 複数行の挿入をするためバッチ処理に入れる.
-											preState3.addBatch();
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-	
-				// バッチ処理を実行.
-				// 選択オプションのテーブルに登録する.
-				preState3.executeBatch();
-	
-				// すべて成功したらコミット.
-				con.commit();
-	
-			} catch (SQLException e) {
-	
-				// 挿入時に例外が出たらロールバックする.
-				con.rollback();
-	
-				// 例外を投げる.
-				throw e;
-	
-			}
-		} catch (SQLException e) {
-	
-			// デバッグ用のスタックトレース.
-			e.printStackTrace();
-	
-			// フロントエンド用のエラーメッセージ.
-			String errMsg = "DB接続に失敗しました！<br>管理者に連絡してください。";
-	
-			// 例外を投げる.
-			throw new Exception(errMsg);
-	
-		}
-	}
-	*/
-=======
->>>>>>> branch 'master' of https://github.com/24jy0113/GR08A_Karaoke.git
 	public void updateStatus(int orderId, int statusId) throws Exception {
 
 		// SQL文の作成.
@@ -349,13 +228,6 @@ public class OrderDao {
 		}
 	}
 
-	
-	/**
-     * order_detail の count と sub_total を一括更新する.
-     */
-    public void updateOrderDetail(List<OrderItem> detailList) throws Exception {
-
-<<<<<<< HEAD
 	// 注文IDに対応する注文をDBから取得してOrderクラスとして返す。見つからないとnullが出るのでnullチェックをすること.
 	public Order searchOrderById(int orderId) throws Exception {
 
@@ -406,45 +278,48 @@ public class OrderDao {
 		return resOrder;
 	}
 
-=======
-        String sql = "UPDATE order_detail SET count = ?, sub_total = ? WHERE order_detail_id = ?";
+	/**
+	 * order_detail の count と sub_total を一括更新する.
+	 */
+	public void updateOrderDetail(List<OrderItem> detailList) throws Exception {
+		String sql = "UPDATE order_detail SET count = ?, sub_total = ? WHERE order_detail_id = ?";
 
-        try (Connection con = DatabaseManager.connect();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+		try (Connection con = DatabaseManager.connect();
+				PreparedStatement ps = con.prepareStatement(sql)) {
 
-            con.setAutoCommit(false);
+			con.setAutoCommit(false);
 
-            for (OrderItem oi : detailList) {
-                ps.setInt(1, oi.getCount());
-                ps.setInt(2, oi.getTotal());
-                ps.setInt(3, oi.getId());
-                ps.addBatch();
-            }
+			for (OrderItem oi : detailList) {
+				ps.setInt(1, oi.getCount());
+				ps.setInt(2, oi.getTotal());
+				ps.setInt(3, oi.getId());
+				ps.addBatch();
+			}
 
-            ps.executeBatch();
-            con.commit();
+			ps.executeBatch();
+			con.commit();
 
-        }
-    }
+		}
+	}
 
-    /**
-     * orders の total と item_creating_status_id を更新する.
-     */
-    public void updateOrderTotalAndStatus(int orderId, int newTotal, int newStatusId) throws Exception {
+	/**
+	 * orders の total と item_creating_status_id を更新する.
+	 */
+	public void updateOrderTotalAndStatus(int orderId, int newTotal, int newStatusId) throws Exception {
 
-        String sql = "UPDATE orders SET total = ?, item_creating_status_id = ? WHERE order_id = ?";
+		String sql = "UPDATE orders SET total = ?, item_creating_status_id = ? WHERE order_id = ?";
 
-        try (Connection con = DatabaseManager.connect();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+		try (Connection con = DatabaseManager.connect();
+				PreparedStatement ps = con.prepareStatement(sql)) {
 
-            ps.setInt(1, newTotal);
-            ps.setInt(2, newStatusId);
-            ps.setInt(3, orderId);
-            ps.executeUpdate();
+			ps.setInt(1, newTotal);
+			ps.setInt(2, newStatusId);
+			ps.setInt(3, orderId);
+			ps.executeUpdate();
 
-        }
-    }
->>>>>>> branch 'master' of https://github.com/24jy0113/GR08A_Karaoke.git
+		}
+	}
+
 	public List<OrderItem> findOrderItemsByOrderId(int orderId)//注文履歴とキッチン用.
 			throws Exception {
 
