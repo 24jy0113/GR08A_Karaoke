@@ -17,7 +17,6 @@ String catParam = categoryId != null ? "&category=" + categoryId : "";
 %>
 <%
 Room room = (Room) session.getAttribute("room");
-Integer remainingMinutes = (Integer) session.getAttribute("remainingMinutes");
 %>
 <!doctype html>
 <html lang="ja">
