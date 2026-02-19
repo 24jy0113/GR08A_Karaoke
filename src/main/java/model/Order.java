@@ -68,12 +68,12 @@ public class Order {
 		return total;
 	}
 
-	public int calculateTotal() {
+	public void calculateTotal() {
 		int sum = 0;
 		for (OrderItem oi : itemList) {
 			sum += oi.getTotal();
 		}
-		return sum;
+		total=sum;
 	}
 
 	public void setReceivingNo(Integer receivingNo) {

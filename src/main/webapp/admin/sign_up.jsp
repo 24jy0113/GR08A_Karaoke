@@ -8,6 +8,11 @@ if (user == null) {
 	return;
 }
 %>
+<%
+String signupUserName = (String) session.getAttribute("SIGNUP_USER_NAME");
+String signupRoleName = (String) session.getAttribute("SIGNUP_ROLE_NAME");
+%>
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -32,22 +37,42 @@ if (user == null) {
 			</c:if>
 			<h2 class="text-left">アカウント情報</h2>
 			<form action="<%=request.getContextPath()%>/SignUpConfirmServlet"
-				method="post" onsubmit="return validateForm()">
+				method="POST" onsubmit="return validateForm()">
 				<div class="form-row">
 					<label>役割</label>
 					<div class="required-badge required">必須</div>
 					<div class="radio-group">
-						<label><input type="radio" name="roleName" value="キッチン">
-							キッチン</label> <label><input type="radio" name="roleName"
-							value="フロント"> フロント</label> <label><input type="radio"
-							name="roleName" value="フロア"> フロア</label> <label><input
-							type="radio" name="roleName" value="管理者"> 管理者</label>
+						<label>
+						  <input type="radio" name="roleName" value="キッチン"
+						    <%= "キッチン".equals(signupRoleName) ? "checked" : "" %>>
+						  キッチン
+						</label>
+						
+						<label>
+						  <input type="radio" name="roleName" value="フロント"
+						    <%= "フロント".equals(signupRoleName) ? "checked" : "" %>>
+						  フロント
+						</label>
+						
+						<label>
+						  <input type="radio" name="roleName" value="フロア"
+						    <%= "フロア".equals(signupRoleName) ? "checked" : "" %>>
+						  フロア
+						</label>
+						
+						<label>
+						  <input type="radio" name="roleName" value="管理者"
+						    <%= "管理者".equals(signupRoleName) ? "checked" : "" %>>
+						  管理者
+						</label>
+
 					</div>
 				</div>
 				<div class="form-row">
 					<label>アカウント名</label>
 					<div class="required-badge required">必須</div>
-					<input type="text" name="userName">
+					<input type="text" name="userName"value="<%= signupUserName != null ? signupUserName : "" %>">
+
 				</div>
 				<div class="form-row">
 					<label>パスワード</label>
@@ -89,10 +114,15 @@ if (user == null) {
       }
 
       function validateForm() {
-
+    	  const userName = document.querySelector('input[name="userName"]').value.trim();
           const pwd1 = document.getElementById("password").value;
           const pwd2 = document.getElementById("confirmPassword").value;
           const error = document.getElementById("errorMessage");
+
+          if (userName === "") {
+              error.textContent = "アカウント名を入力してください";
+              return false;
+          }
 
           // 半角英数字のみ、8桁以上、12桁以下
           const pwdPattern = /^[a-zA-Z0-9]+$/;
