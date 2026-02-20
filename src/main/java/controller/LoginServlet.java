@@ -40,7 +40,7 @@ public class LoginServlet extends HttpServlet {
                 return;
             }
         } catch (NumberFormatException e) {
-            req.setAttribute("error", "アカウントIDは6桁の数字で入力してください");
+            req.setAttribute("error", "アカウントIDは半角数字のみ有効です");
             req.getRequestDispatcher("index.jsp").forward(req, res);
             return;
         }
