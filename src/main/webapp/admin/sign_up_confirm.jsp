@@ -27,7 +27,7 @@ String roleName = (String) session.getAttribute("SIGNUP_ROLE_NAME");
 	href="<%=request.getContextPath()%>/css/01.css">
 </head>
 <body>
-	<%@ include file="/shered/biz_header.jsp"%>
+	<%@ include file="/shared/biz_header.jsp"%>
 	<main>
 		<div class="text-center">
 			<h1 class="bodytitle">アカウント登録情報の確認</h1>

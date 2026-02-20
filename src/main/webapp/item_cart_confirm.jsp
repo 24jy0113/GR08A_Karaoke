@@ -24,7 +24,7 @@ ArrayList<OrderItem> cart = (ArrayList<OrderItem>) session.getAttribute("cart");
 
 </head>
 <body>
-	<%@ include file="/shered/cus_header.jsp" %>
+	<%@ include file="/shared/cus_header.jsp" %>
 	<main>
 		<div class="text-center">
 			<h1 class="bodytitle">注文を確認してください</h1>
@@ -64,7 +64,7 @@ ArrayList<OrderItem> cart = (ArrayList<OrderItem>) session.getAttribute("cart");
 			</div>
 		</form>
 	</main>
-	<%@ include file="/shered/cus_footer.jsp" %>
+	<%@ include file="/shared/cus_footer.jsp" %>
 
 </body>
 </html>

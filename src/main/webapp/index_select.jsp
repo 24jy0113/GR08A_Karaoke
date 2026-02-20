@@ -22,7 +22,7 @@ if (user == null) {
 	href="<%=request.getContextPath()%>/css/select.css">
 </head>
 <body>
-	<%@ include file="/shered/biz_header.jsp"%>
+	<%@ include file="/shared/biz_header.jsp"%>
 	<main class="text-center">
 		<h1 class="bodytitle">利用する項目をクリックしてください</h1>
 		<div class="action-buttons">

@@ -30,7 +30,7 @@ if (ok == null || !ok) {
 </head>
 
 <body>
-	<%@ include file="/shered/biz_header.jsp"%>
+	<%@ include file="/shared/biz_header.jsp"%>
 	<main>
 		<div class="text-center">
 			<h1 class="bodytitle">アカウント情報の確認、変更、削除</h1>

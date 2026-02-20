@@ -27,7 +27,7 @@ String signupRoleName = (String) session.getAttribute("SIGNUP_ROLE_NAME");
 
 </head>
 <body>
-	<%@ include file="/shered/biz_header.jsp"%>
+	<%@ include file="/shared/biz_header.jsp"%>
 	<main>
 		<div class="text-center">
 			<h1 class="bodytitle">アカウント登録</h1>

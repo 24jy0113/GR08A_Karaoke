@@ -23,7 +23,7 @@ if (user == null) {
 </head>
 
 <body>
-	<%@ include file="/shered/biz_header.jsp"%>
+	<%@ include file="/shared/biz_header.jsp"%>
 	<main class="text-center">
 		<h1 class="bodytitle">利用する項目を選択してください</h1>
 		<div class="action-buttons">

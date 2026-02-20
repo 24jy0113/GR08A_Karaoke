@@ -27,7 +27,7 @@ if (room == null) {
 </head>
 
 <body>
-	<%@ include file="/shered/cus_header.jsp"%>
+	<%@ include file="/shared/cus_header.jsp"%>
 	<main class="text-center">
 		<h1 class="bodytitle">サービス一覧</h1>
 		<p class="bodymsg">ご利用するサービスをお選びください</p>
@@ -47,7 +47,7 @@ if (room == null) {
 		</div>
 
 	</main>
-	<%@ include file="/shered/cus_footer.jsp"%>
+	<%@ include file="/shared/cus_footer.jsp"%>
 
 </body>
 

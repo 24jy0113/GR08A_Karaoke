@@ -24,7 +24,7 @@ if (order == null) {
 	href="<%=request.getContextPath()%>/css/07.css">
 </head>
 <body>
-	<%@ include file="/shered/cus_header.jsp"%>
+	<%@ include file="/shared/cus_header.jsp"%>
 	<main class="text-center">
 		<h1 class="bodytitle">ご注文の確認</h1>
 		<p class="bodymsg">受け取り方法を選択し、注文内容に問題なければ「注文を確定する」を押してください</p>
@@ -95,7 +95,7 @@ if (order == null) {
 		</div>
 		</form>
 	</main>
-	<%@ include file="/shered/cus_footer.jsp"%>
+	<%@ include file="/shared/cus_footer.jsp"%>
 
 </body>
 </html>

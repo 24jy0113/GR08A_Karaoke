@@ -21,7 +21,7 @@ if (user == null) {
 </head>
 
 <body>
-	<%@ include file="/shered/biz_header.jsp"%>
+	<%@ include file="/shared/biz_header.jsp"%>
 	<main class="text-center">
 		<h1 class="bodytitle">予約情報取得完了</h1>
 		<h2 class="bodymsg">予約情報の読み込みが完了しました！</h2>

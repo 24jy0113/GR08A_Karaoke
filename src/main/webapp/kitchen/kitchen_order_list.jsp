@@ -25,7 +25,7 @@ List<Order> orderList = (List<Order>) request.getAttribute("orderList");
 	href="<%=request.getContextPath()%>/css/12_01.css">
 </head>
 <body>
-	<%@ include file="/shered/biz_header.jsp"%>
+	<%@ include file="/shared/biz_header.jsp"%>
 	<main>
 		<h1 class="bodytitle">注文一覧</h1>
 		<div class="card-container">

@@ -22,7 +22,7 @@ if (user == null) {
 </head>
 
 <body>
-	<%@ include file="/shered/biz_header.jsp"%>
+	<%@ include file="/shared/biz_header.jsp"%>
 	<main class="text-center">
 		<h1 class="bodytitle">商品情報${editItem.id<1 ? "追加" : "更新" }完了</h1>
 		<p class="bodymsg">下記の内容で商品${editItem.id<1 ? "追加" : "更新" }を更新しました</p>

@@ -22,7 +22,7 @@ if (user == null) {
 	href="<%=request.getContextPath()%>/css/08_03.css">
 </head>
 <body>
-	<%@ include file="/shered/biz_header.jsp"%>
+	<%@ include file="/shared/biz_header.jsp"%>
 	<main>
 		<h1 class="bodytitle text-center">商品情報${editItem.id<1 ? "追加" : "更新" }入力</h1>
 		<form method="post" enctype="multipart/form-data">

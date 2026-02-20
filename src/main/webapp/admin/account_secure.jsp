@@ -26,7 +26,7 @@ String error = (String) request.getAttribute("error");
 
 </head>
 <body>
-	<%@ include file="/shered/biz_header.jsp"%>
+	<%@ include file="/shared/biz_header.jsp"%>
 	<main>
 		<h2>セキュリティのため再度ログインしてください</h2>
 		<h3>アカウントログイン</h3>

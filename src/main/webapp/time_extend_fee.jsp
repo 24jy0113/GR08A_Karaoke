@@ -19,7 +19,7 @@ Room room = (Room) session.getAttribute("room");
 </head>
 
 <body>
-	<%@ include file="/shered/cus_header.jsp"%>
+	<%@ include file="/shared/cus_header.jsp"%>
 	<main>
 		<div class="container-base text-center">
 			<h1 class="bodytitle">料金設定表（30分毎）</h1>
@@ -61,7 +61,7 @@ Room room = (Room) session.getAttribute("room");
 			</div>
 		</div>
 	</main>
-	<%@ include file="/shered/cus_footer.jsp"%>
+	<%@ include file="/shared/cus_footer.jsp"%>
 </body>
 
 </html>

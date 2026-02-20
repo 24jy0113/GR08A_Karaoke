@@ -23,7 +23,7 @@ OrderItem oi = (OrderItem) session.getAttribute("buildingItem");
 
 </head>
 <body>
-	<%@ include file="/shered/cus_header.jsp"%>
+	<%@ include file="/shared/cus_header.jsp"%>
 	<main>
 		<div class="text-center">
 			<h2 class="bodytitle">注文個数をお選びください</h2>
@@ -57,7 +57,7 @@ OrderItem oi = (OrderItem) session.getAttribute("buildingItem");
 			</div>
 		</div>
 	</main>
-	<%@ include file="/shered/cus_footer.jsp"%>
+	<%@ include file="/shared/cus_footer.jsp"%>
 
 </body>
 </html>

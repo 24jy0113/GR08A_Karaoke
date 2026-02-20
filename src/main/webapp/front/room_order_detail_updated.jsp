@@ -26,7 +26,7 @@ switch (order.getItemCreatingStatusId()) {
 	href="<%=request.getContextPath()%>/css/room_order.css">
 </head>
 <body>
-	<%@ include file="/shered/biz_header.jsp"%>
+	<%@ include file="/shared/biz_header.jsp"%>
 	<main class="container-base">
 		<div class="text-center">
 			<h2>注文の更新が完了しました</h2>

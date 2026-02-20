@@ -27,7 +27,7 @@ if (orderNo == null) {
 	href="<%=request.getContextPath()%>/css/07.css">
 </head>
 <body>
-	<%@ include file="/shered/cus_header.jsp"%>
+	<%@ include file="/shared/cus_header.jsp"%>
 	<main class="text-center">
 		<h1 class="bodytitle">ご注文の完了</h1>
 		<p class="bodymsg">ご注文いただき、誠にありがとうございました</p>
@@ -46,6 +46,6 @@ if (orderNo == null) {
 		session.removeAttribute("orderNo");
 		%>
 	</main>
-	<%@ include file="/shered/cus_footer.jsp"%>
+	<%@ include file="/shared/cus_footer.jsp"%>
 </body>
 </html>

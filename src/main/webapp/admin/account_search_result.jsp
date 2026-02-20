@@ -22,7 +22,7 @@ if (user == null) {
 </head>
 
 <body>
-	<%@ include file="/shered/biz_header.jsp"%>
+	<%@ include file="/shared/biz_header.jsp"%>
 	<main class="container">
 		<div class="text-center">
 			<h2 class="bodytitle">検索結果</h2>

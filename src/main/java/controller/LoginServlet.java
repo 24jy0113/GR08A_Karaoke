@@ -62,10 +62,10 @@ public class LoginServlet extends HttpServlet {
 
         session.setAttribute("permissions", permissions);
         
-        String role = user.getRoleName().trim();
+        String role = user.getRoleName();
         String context = req.getContextPath();
         
-        switch (user.getRoleName()) {
+        switch (role) {
            
             case "キッチン":
                 res.sendRedirect(context + "/KitchenOrderList");

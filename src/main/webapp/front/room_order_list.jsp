@@ -20,7 +20,7 @@ String errorMsg = (String) request.getAttribute("errorMsg");
 	href="<%=request.getContextPath()%>/css/room_order.css">
 </head>
 <body>
-	<%@ include file="/shered/biz_header.jsp"%>
+	<%@ include file="/shared/biz_header.jsp"%>
 	<main class="container-base">
 		<div class="text-center">
 			<h2>部屋<%=room != null ? room.getRoomNo() : ""%> の注文一覧</h2>

@@ -24,7 +24,7 @@ if (orderList == null) {
 	href="<%=request.getContextPath()%>/css/05_01.css">
 </head>
 <body>
-	<%@ include file="/shered/cus_header.jsp"%>
+	<%@ include file="/shared/cus_header.jsp"%>
 	<main>
 		<div class="container-base">
 			<div class="text-center">
@@ -115,6 +115,6 @@ if (orderList == null) {
 			</div>
 		</div>
 	</main>
-	<%@ include file="/shered/cus_footer.jsp"%>
+	<%@ include file="/shared/cus_footer.jsp"%>
 </body>
 </html>

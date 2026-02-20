@@ -23,7 +23,7 @@ if (user == null) {
 	href="<%=request.getContextPath()%>/css/10.css">
 </head>
 <body>
-	<%@ include file="/shered/biz_header.jsp"%>
+	<%@ include file="/shared/biz_header.jsp"%>
 	<main class="container-base">
 		<div class="text-center">
 			<h2 class="bodytitle">予約一覧</h2>

@@ -20,7 +20,7 @@ Room room = (Room) session.getAttribute("room");
 	href="<%=request.getContextPath()%>/css/06_01.css">
 </head>
 <body>
-	<%@ include file="/shered/cus_header.jsp"%>
+	<%@ include file="/shared/cus_header.jsp"%>
 	<main>
 		<div class="page">
 
@@ -74,6 +74,6 @@ Room room = (Room) session.getAttribute("room");
                 });
             </script>
 	</main>
-	<%@ include file="/shered/cus_footer.jsp"%>
+	<%@ include file="/shared/cus_footer.jsp"%>
 </body>
 </html>

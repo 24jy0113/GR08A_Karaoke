@@ -25,7 +25,7 @@ int totalSum = 0;
 
 </head>
 <body>
-	<%@ include file="/shered/cus_header.jsp"%>
+	<%@ include file="/shared/cus_header.jsp"%>
 	<main class="container">
 		<div class="text-center">
 			<%
@@ -104,6 +104,6 @@ int totalSum = 0;
 			%>
 		</div>
 	</main>
-	<%@ include file="/shered/cus_footer.jsp"%>
+	<%@ include file="/shared/cus_footer.jsp"%>
 </body>
 </html>

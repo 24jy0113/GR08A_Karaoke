@@ -10,8 +10,8 @@
 	<h1>
 		残り時間 <span id="remainingTime">--:--</span>
 	</h1>
-	<jsp:include page="/shered/common.jsp" />
+	<jsp:include page="/shared/common.jsp" />
 	<c:if test="${!isStaffAction }">
-		<jsp:include page="/shered/sse-handler.jsp" />
+		<jsp:include page="/shared/sse-handler.jsp" />
 	</c:if>
 </footer>

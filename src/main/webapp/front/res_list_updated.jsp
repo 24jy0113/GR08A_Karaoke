@@ -19,7 +19,7 @@ if (user == null) {
 	href="<%=request.getContextPath()%>/css/default.css">
 </head>
 <body>
-	<%@ include file="/shered/biz_header.jsp"%>
+	<%@ include file="/shared/biz_header.jsp"%>
 	<main class="text-center">
 		<h2 class="bodytitle">予約更新完了</h2>
 		<h3 class="bodymsg">予約情報の更新が完了しました</h3>

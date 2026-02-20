@@ -16,7 +16,7 @@ Room room = (Room) session.getAttribute("room");
 	href="<%=request.getContextPath()%>/css/04.css">
 </head>
 <body>
-	<%@ include file="/shered/cus_header.jsp"%>
+	<%@ include file="/shared/cus_header.jsp"%>
 	<main>
 		<div class="container-base text-center">
 			<h1 class="bodymsg">申し訳ありませんが延長はできません</h1>
@@ -42,6 +42,6 @@ Room room = (Room) session.getAttribute("room");
 			</div>
 		</div>
 	</main>
-	<%@ include file="/shered/cus_footer.jsp"%>
+	<%@ include file="/shared/cus_footer.jsp"%>
 </body>
 </html>

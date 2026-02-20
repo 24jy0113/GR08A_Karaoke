@@ -34,7 +34,7 @@ Room room = (Room) session.getAttribute("room");
 </head>
 
 <body>
-	<%@ include file="/shered/cus_header.jsp"%>
+	<%@ include file="/shared/cus_header.jsp"%>
 	<main>
 		<!-- ▼ カテゴリタブ -->
 		<div class="tabs">
@@ -102,7 +102,7 @@ Room room = (Room) session.getAttribute("room");
 
 		</div>
 	</main>
-	<%@ include file="/shered/cus_footer.jsp"%>
+	<%@ include file="/shared/cus_footer.jsp"%>
 
 </body>
 

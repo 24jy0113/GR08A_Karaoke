@@ -20,7 +20,7 @@ Room room = (Room) session.getAttribute("room");
 
 </head>
 <body>
-	<%@ include file="/shered/cus_header.jsp"%>
+	<%@ include file="/shared/cus_header.jsp"%>
 	<main>
 		<div class="text-center">
 			<h2 class="bodytitle">オプションをお選びください（オプションがなければ「次へ」）</h2>
@@ -73,6 +73,6 @@ Room room = (Room) session.getAttribute("room");
 
 
 	</main>
-	<%@ include file="/shered/cus_footer.jsp"%>
+	<%@ include file="/shared/cus_footer.jsp"%>
 </body>
 </html>

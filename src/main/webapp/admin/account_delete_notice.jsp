@@ -28,7 +28,7 @@ if (u == null) {
 	href="<%=request.getContextPath()%>/css/01.css">
 </head>
 <body>
-	<%@ include file="/shered/biz_header.jsp"%>
+	<%@ include file="/shared/biz_header.jsp"%>
 	<main>
 		<div class="text-center">
 			<h1 class="bodytitle">アカウント削除</h1>

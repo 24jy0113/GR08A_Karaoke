@@ -20,7 +20,7 @@ if (user == null) {
 	href="<%=request.getContextPath()%>/css/default.css">
 </head>
 <body>
-	<%@ include file="/shered/biz_header.jsp"%>
+	<%@ include file="/shared/biz_header.jsp"%>
 	<main class="text-center">
 		<h1 class="bodytitle">アカウント登録完了</h1>
 		<p class="bodymsg">アカウント登録が完了しました</p>
