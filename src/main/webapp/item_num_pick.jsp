@@ -41,7 +41,7 @@ OrderItem oi = (OrderItem) session.getAttribute("buildingItem");
 				</div>
 				<!-- 右側 -->
 				<div class="right-box">
-					<form action="CartAddServlet" method="post">
+					<form action="<%=request.getContextPath()%>/ItemCartConfirmServlet" method="post">
 						<h3 class="bodymsg">
 							個数： <input type="number" name="count" min="1" value="1"
 								class="quantity-input" required>

@@ -15,12 +15,12 @@ import model.OrderItem;
 public class CartAddServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse res)
 			throws ServletException, IOException {
+		
+		req.setCharacterEncoding("UTF-8");
 
 		HttpSession session = req.getSession();
 		OrderItem oi = (OrderItem) session.getAttribute("buildingItem");
 
-		int count = Integer.parseInt(req.getParameter("count"));
-		oi.setCount(count);
 
 		ArrayList<OrderItem> cart = (ArrayList<OrderItem>) session.getAttribute("cart");
 		if (cart == null) {
@@ -43,7 +43,7 @@ public class CartAddServlet extends HttpServlet {
 		session.setAttribute("cart", cart);
 		session.setAttribute("buildingItem", oi);
 
-		req.getRequestDispatcher("/item_cart_confirm.jsp").forward(req, res);
+		req.getRequestDispatcher("/cart_detail.jsp").forward(req, res);
 	}
 }
 

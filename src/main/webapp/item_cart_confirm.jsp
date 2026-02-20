@@ -56,7 +56,7 @@ ArrayList<OrderItem> cart = (ArrayList<OrderItem>) session.getAttribute("cart");
 				</div>
 			</div>
 		</div>
-		<form action="<%=request.getContextPath()%>/CartConfirmServlet"
+		<form action="<%=request.getContextPath()%>/CartAddServlet"
 			method="post">
 			<div class="action-buttons flex-center">
 				<button type="button" class="btn-back" onclick="history.back()">戻る</button>
