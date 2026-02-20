@@ -36,7 +36,7 @@ public class LoginServlet extends HttpServlet {
 			req.getRequestDispatcher("/login.jsp").forward(req, res);
 			return;
 		}
-		if (!userId.matches("^\\\\d{6}$")) {
+		if (!userId.matches("^\\d{6}$")) {
 			req.setAttribute("error", "アカウントIDは半角数字6桁のみ有効です");
 			req.getRequestDispatcher("index.jsp").forward(req, res);
 			return;
