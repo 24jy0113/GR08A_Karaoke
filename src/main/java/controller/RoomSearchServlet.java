@@ -18,8 +18,16 @@ public class RoomSearchServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
+		String rawRoomNumber = request.getParameter("roomNumber");
+		if (!rawRoomNumber.matches("^\\d+$")) {
+			// 入力されたパラメータが数字以外の時.
+			// 検索フォームに返却.
+			response.sendRedirect(request.getContextPath() + "/room_search.jsp");
+			return;
+		}
+
 		try {
-			int roomNumber = Integer.parseInt(request.getParameter("roomNumber"));
+			int roomNumber = Integer.parseInt(rawRoomNumber);
 
 			// 部屋番号からroom_idを取得.
 			Room room = RoomDao.getRoomByRoomNumber(roomNumber);
