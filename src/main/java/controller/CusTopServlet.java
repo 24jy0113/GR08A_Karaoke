@@ -17,14 +17,20 @@ public class CusTopServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse res)
 			throws ServletException, IOException {
+		String rawRoomNumber = req.getParameter("roomNumber");
+		if (!rawRoomNumber.matches("^\\d+$")) {
+			// 入力されたパラメータが数字以外の時.
+			// 検索フォームに返却.
+			res.sendRedirect(req.getContextPath() + "/front/front_room_search.jsp");
+			return;
+		}
 
 		var session = req.getSession();
 		try {
 			int roomId;
-			String roomNoStr = req.getParameter("roomNumber");
 			Room room;
-			if (roomNoStr != null && !roomNoStr.isEmpty()) {
-				room = RoomDao.getRoomByRoomNumber(Integer.parseInt(roomNoStr));
+			if (rawRoomNumber != null && !rawRoomNumber.isEmpty()) {
+				room = RoomDao.getRoomByRoomNumber(Integer.parseInt(rawRoomNumber));
 				// 部屋の検索結果がnull.
 				if (room == null) {
 					// フロントエンド用のメッセージ.
