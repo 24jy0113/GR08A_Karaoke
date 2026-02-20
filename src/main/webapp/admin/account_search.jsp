@@ -40,7 +40,7 @@ if (ok == null || !ok) {
 				<input type="search" name="keyword" class="searchbox">
 				<button type="submit" class="search-btn">検索</button>
 			</form>
-			<div class="action-buttons flex-center">
+			<div class="action-buttons column flex-center">
 				<p>アカウントを新規で作成する場合は下記のボタンから</p>
 				<button type="submit" class="btn-next"
 					onclick="location.href='sign_up.jsp'">アカウント新規作成</button>

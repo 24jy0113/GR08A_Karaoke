@@ -26,7 +26,7 @@ if (user == null) {
 	<%@ include file="/shared/biz_header.jsp"%>
 	<main class="text-center">
 		<h1 class="bodytitle">利用する項目を選択してください</h1>
-		<div class="action-buttons">
+		<div class="action-buttons column">
 			<button type="button" class="btn-next"
 				onclick="location.href='modify_search.jsp'">商品情報</button>
 			<button type="button" class="btn-next"

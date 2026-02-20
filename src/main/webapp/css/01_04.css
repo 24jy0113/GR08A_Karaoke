@@ -1,9 +1,4 @@
 @charset "UTF-8";
-
-.action-buttons {
-	flex-flow: column;
-}
-
 .btn-next,
 .btn-back {
 	width: 50%;
