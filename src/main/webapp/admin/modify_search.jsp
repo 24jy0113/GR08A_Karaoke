@@ -24,17 +24,15 @@ if (user == null) {
 	<main class="text-center">
 		<h1 class="bodytitle">商品検索</h1>
 		<h3 class="bodymsg">変更する商品名を入力してください</h3>
+		<c:if test="${!e.isEmpty }">
+			<p class="errormsg">${param.e }</p>
+		</c:if>
 		<form action="<%=request.getContextPath()%>/SearchItemByName"
 			method="GET">
 			<input type="hidden" name="isAdmin" value="true"> <input
 				type="search" name="q" class="searchbox"> <input
 				type="submit" class="search-btn" value="検索">
 		</form>
-
-		<c:if test="${!e.isEmpty }">
-			<p class="errormsg">${param.e }</p>
-		</c:if>
-
 		<div class="action-buttons flex-center">
 			<button type="button" class="btn-back"
 				onclick="location.href='<%=request.getContextPath()%>/admin/manage_top.jsp'">表示選択画面へ戻る</button>
