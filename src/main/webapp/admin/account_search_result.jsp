@@ -26,6 +26,14 @@ if (user == null) {
 	<main class="container">
 		<div class="text-center">
 			<h2 class="bodytitle">検索結果</h2>
+			<%
+			List<User> list = (List<User>) request.getAttribute("userList");
+			if (list == null || list.isEmpty()) {
+			%>
+			<p>検索結果はありません。</p>
+			<%
+			} else {
+			%>
 			<table>
 				<tr>
 					<th>アカウントID</th>
@@ -37,7 +45,7 @@ if (user == null) {
 					<th></th>
 				</tr>
 				<%
-				List<User> list = (List<User>) request.getAttribute("userList");
+
 				for (User u : list) {
 				%>
 				<tr>
@@ -69,6 +77,9 @@ if (user == null) {
 				}
 				%>
 			</table>
+			<%
+			}
+			%>
 			<div class="action-buttons flex-center">
 				<button type="button" class="btn-back"
 					onclick="location.href='<%=request.getContextPath()%>/admin/account_search.jsp'">アカウント検索へ戻る</button>
