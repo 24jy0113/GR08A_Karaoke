@@ -106,6 +106,12 @@ public class ItemUpdateConfirmAction implements Action {
 			// フロントエンド用のメッセージ.
 			request.setAttribute("errMsg", e.getMessage());
 		}
+		
+
+		if(name==null||name.isEmpty()) {
+			request.setAttribute("errMsg", "商品名を入力してください");
+			return "modify_update.jsp";
+		}
 
 		return "modify_update_confirm.jsp";
 	}

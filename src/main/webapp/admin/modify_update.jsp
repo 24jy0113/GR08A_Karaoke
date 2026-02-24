@@ -25,6 +25,9 @@ if (user == null) {
 	<%@ include file="/shared/biz_header.jsp"%>
 	<main>
 		<h1 class="bodytitle text-center">商品情報${editItem.id<1 ? "追加" : "更新" }入力</h1>
+		<c:if test="${errMsg!=null&&!errMsg.isEmpty() }">
+		<p class="errormsg">${errMsg }</p>
+		</c:if>
 		<form method="post" enctype="multipart/form-data">
 			<div class="container">
 				<div class="right-box">
