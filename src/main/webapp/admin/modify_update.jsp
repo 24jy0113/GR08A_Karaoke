@@ -31,17 +31,17 @@ if (user == null) {
 					<div class="input-row">
 						<label>商品名</label> <input class="menuInput" type="text"
 							value="${editItem.name }"
-							${sessionScope.admin ? ' name="name"' : ' readonly' }>
+							${isAdmin ? ' name="name"' : ' readonly' }>
 					</div>
 					<div class="input-row">
 						<label>単価</label> <input class="menuInput" type="text"
 							value="${editItem.price }"
-							${sessionScope.admin ? ' name="price"' : ' readonly' }>円
+							${isAdmin ? ' name="price"' : ' readonly' }>円
 						＊税込価格
 					</div>
 					<div class="input-row">
 						<label>商品画像</label>
-						<c:if test="${sessionScope.admin }">
+						<c:if test="${isAdmin }">
 							<input type="file" name="image" accept=".png, .jpg, .jpeg">
 						</c:if>
 						<p>
