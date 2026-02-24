@@ -27,12 +27,18 @@ public class AccountUpdateServlet extends HttpServlet {
         u.setUserId(req.getParameter("userId"));
         u.setUserName(req.getParameter("userName"));
         
+        String userName = req.getParameter("userName");
         String password = req.getParameter("password");
-        if (password != null && !password.isEmpty()) {
-            u.setPasswordHash(PasswordUtil.hash(password));
-        }
-        
         String roleName = req.getParameter("roleName");
+        
+        if (userName == null || userName.isEmpty()
+                || password == null || password.isEmpty()
+                || roleName == null || roleName.isEmpty()) {
+                req.setAttribute("error", "入力内容に不備があります");
+                res.sendRedirect(req.getContextPath() + "/admin/account_update.jsp");
+                return;
+        }
+        u.setUserName(userName);
         u.setRoleName(roleName);
         u.setRoleId(UserDao.findRoleIdByRoleName(roleName));
         

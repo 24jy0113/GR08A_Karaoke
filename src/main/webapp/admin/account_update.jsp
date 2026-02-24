@@ -97,23 +97,30 @@ if (u == null) {
       }
 
       function validateForm() {
+    	    const userName = document.querySelector('input[name="userName"]').value.trim();
+    	    const pwd1 = document.getElementById("password").value;
+    	    const pwd2 = document.getElementById("confirmPassword").value;
+    	    const error = document.getElementById("errorMessage");
 
-          const pwd1 = document.getElementById("password").value;
-          const pwd2 = document.getElementById("confirmPassword").value;
-          const error = document.getElementById("errorMessage");
+    	    // アカウント名の空チェック
+    	    if (userName === "") {
+    	        error.textContent = "アカウント名を入力してください";
+    	        return false;
+    	    }
 
-          // 半角英数字のみ、8桁以上、12桁以下
-          const pwdPattern = /^[a-zA-Z0-9]+$/;
-          if (!pwdPattern.test(pwd1) || pwd1.length < 8 || pwd1.length > 12) {
-              error.textContent = "パスワードは半角英数字のみ、8桁以上、12桁以下で入力してください";
-              return false;
-          }
+    	    // 半角英数字のみ、8桁以上、12桁以下
+    	    const pwdPattern = /^[a-zA-Z0-9]+$/;
+    	    if (!pwdPattern.test(pwd1) || pwd1.length < 8 || pwd1.length > 12) {
+    	        error.textContent = "パスワードは半角英数字のみ、8桁以上、12桁以下で入力してください";
+    	        return false;
+    	    }
 
-          if (pwd1 !== pwd2) {
-              error.textContent = "入力されたパスワードが不一致です";
-              return false;
-          }
-      }
+    	    if (pwd1 !== pwd2) {
+    	        error.textContent = "入力されたパスワードが不一致です";
+    	        return false;
+    	    }
+    	    return true;
+    	}
   </script>
 </body>
 </html>
