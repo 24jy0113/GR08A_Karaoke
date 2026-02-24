@@ -39,7 +39,7 @@ switch (order.getItemCreatingStatusId()) {
 			<table class="order-detail-table">
 				<tr>
 					<th>商品名</th>
-					<th>単価</th>
+					<th>単価(税込)</th>
 					<th>オプション</th>
 					<th>個数</th>
 					<th>小計</th>
@@ -78,7 +78,7 @@ switch (order.getItemCreatingStatusId()) {
 			</table>
 
 			<div class="order-summary-section">
-				<p class="order-total-display">合計：<%=order.getTotal()%>円</p>
+				<p class="order-total-display">合計：<%=order.getTotal()%>円（税込）</p>
 			</div>
 
 			<div class="action-buttons flex-center">

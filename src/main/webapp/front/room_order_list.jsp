@@ -65,7 +65,7 @@ String errorMsg = (String) request.getAttribute("errorMsg");
 				<table class="order-items-table">
 					<tr>
 						<th>商品名</th>
-						<th>単価</th>
+						<th>単価(税込)</th>
 						<th>オプション</th>
 						<th>個数</th>
 						<th>小計</th>
@@ -104,7 +104,7 @@ String errorMsg = (String) request.getAttribute("errorMsg");
 				</table>
 
 				<div class="order-card-footer">
-					<span class="order-total">合計：<%=order.getTotal()%>円</span>
+					<span class="order-total">合計：<%=order.getTotal()%>円（税込）</span>
 					<button type="button" class="btn"
 						onclick="location.href='<%=request.getContextPath()%>/RoomOrderDetailServlet?orderId=<%=order.getId()%>&roomId=<%=room.getId()%>'">
 						この注文を変更する
