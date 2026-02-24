@@ -295,30 +295,27 @@ public class RoomDao {
 		}
 	}
 
-	// 状態更新.
 	public static void updateStatus(int roomId, int statusId) throws Exception {
-		Room room = getRoomById(roomId);
-		if(room.getStatusId()==4&&statusId==1) {
-			new RoomDao().archiveRoomUsage(room);
-		}
-		// SQL作成.
-		String sql = "UPDATE room_usage_status SET status_id = ? WHERE room_id = ?;";
-
-		try (Connection con = DatabaseManager.connect(); PreparedStatement preState = con.prepareStatement(sql);) {
-			// プリペアードステートメントを使用.
-			preState.setInt(1, statusId);
-			preState.setInt(2, roomId);
-			preState.executeUpdate();
-		} catch (SQLException e) {
-			// デバッグ用のスタックトレース.
-			e.printStackTrace();
-
-			// フロントエンド用のエラーメッセージ.
-			String errMsg = "DB接続に失敗しました！<br>管理者に連絡してください。";
-
-			// 例外を投げる.
-			throw new Exception(errMsg);
-		}
+	    Room room = getRoomById(roomId);
+	    
+	    // 「空き」にするには「会計済み」からのみ許可
+	    if (statusId == 1 && room.getStatusId() != 4) {
+	        throw new IllegalStateException("会計済みの状態からのみ空きに変更できます。");
+	    }
+	    
+	    if (room.getStatusId() == 4 && statusId == 1) {
+	        new RoomDao().archiveRoomUsage(room);
+	    }
+	    
+	    String sql = "UPDATE room_usage_status SET status_id = ? WHERE room_id = ?;";
+	    try (Connection con = DatabaseManager.connect(); PreparedStatement preState = con.prepareStatement(sql);) {
+	        preState.setInt(1, statusId);
+	        preState.setInt(2, roomId);
+	        preState.executeUpdate();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        throw new Exception("DB接続に失敗しました！<br>管理者に連絡してください。");
+	    }
 	}
 
 	// 利用を利用履歴に移動する.
