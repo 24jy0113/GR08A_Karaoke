@@ -25,8 +25,17 @@ public class ResListManagerServlet extends HttpServlet {
             if (roomNoStr == null || roomNoStr.isEmpty()) {
                 list = ReservationListDao.findAll();
             } else {
-                int roomNo = Integer.parseInt(roomNoStr);
-                list = ReservationListDao.findByRoom(roomNo);
+            	try {
+                    int roomNo = Integer.parseInt(roomNoStr);
+                    list = ReservationListDao.findByRoom(roomNo);
+                    if (list.isEmpty()) {
+                        list = ReservationListDao.findAll();
+                        req.setAttribute("error", "正しい部屋番号を入力してください。");
+                    }
+                } catch (NumberFormatException e) {
+                    list = ReservationListDao.findAll();
+                    req.setAttribute("error", "正しい部屋番号を入力してください。");
+                }
             }
             for (int i = 0; i < list.size(); i++) {
 				if (list.get(i).getStatusName() == null)

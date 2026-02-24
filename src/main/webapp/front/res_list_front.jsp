@@ -33,6 +33,9 @@ if (user == null) {
 				<label>部屋番号<input type="text" name="room_num"></label>
 				<button type="submit" class="btn-filter">絞り込み</button>
 			</form>
+			<c:if test="${not empty error}">
+			    <p style="color: red;">${error}</p>
+			</c:if>
 			<form method="post"
 				action="<%=request.getContextPath()%>/ResListUpdateServlet">
 				<table>
