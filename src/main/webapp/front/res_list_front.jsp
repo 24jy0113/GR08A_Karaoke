@@ -33,6 +33,9 @@ if (user == null) {
 				<label>部屋番号<input type="text" name="room_num"></label>
 				<button type="submit" class="btn-filter">絞り込み</button>
 			</form>
+			<c:if test="${not empty error}">
+			    <p style="color: red;">${error}</p>
+			</c:if>
 			<form method="post"
 				action="<%=request.getContextPath()%>/ResListUpdateServlet">
 				<table>
@@ -43,6 +46,7 @@ if (user == null) {
 						<th>予約受付時間</th>
 						<th>予約退室時間</th>
 						<th>状態</th>
+						<th>操作</th>
 					</tr>
 					<c:forEach var="r" items="${reservationList}">
 						<tr>
@@ -56,6 +60,17 @@ if (user == null) {
 							<td><input type="time" name="endTime"
 								value="${fn:substring(r.leavingTime,0,5)}"></td>
 							<td>${r.statusName}</td>
+							    <td>
+								    <button type="button" class="btn-cancel"
+								        onclick="if(confirm('予約番号${r.reservationNumber}をキャンセルしますか？')){
+								            var f=document.createElement('form');
+								            f.method='post';
+								            f.action='<%=request.getContextPath()%>/ResCancelServlet';
+								            var inp=document.createElement('input');
+								            inp.type='hidden';inp.name='reservationNumber';inp.value='${r.reservationNumber}';
+								            f.appendChild(inp);document.body.appendChild(f);f.submit();
+								        }">キャンセル</button>
+								</td>
 						</tr>
 					</c:forEach>
 				</table>

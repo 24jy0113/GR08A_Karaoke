@@ -21,7 +21,7 @@ public class ResListUpdateServlet extends HttpServlet {
             String[] reservationNums = req.getParameterValues("reservationNumber");
             String[] startTimes      = req.getParameterValues("startTime");
             String[] endTimes        = req.getParameterValues("endTime");
-            String[] statusIds       = req.getParameterValues("statusId");
+            //String[] statusIds       = req.getParameterValues("statusId");
 
             if (reservationNums == null) {
                 throw new ServletException("更新対象がありません");
@@ -34,13 +34,13 @@ public class ResListUpdateServlet extends HttpServlet {
 
                 Time start = parseTime(startTimes[i]);
                 Time end   = parseTime(endTimes[i]);
-                int status = Integer.parseInt(statusIds[i]);
+                //int status = Integer.parseInt(statusIds[i]);
 
                 dao.updateFrontOperation(
                     reservationNumber,
                     start,
-                    end,
-                    status
+                    end
+                    //status
                 );
             }
 
