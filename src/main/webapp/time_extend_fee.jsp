@@ -56,7 +56,7 @@ Room room = (Room) session.getAttribute("room");
 				</tr>
 			</table>
 			<div class="action-buttons">
-				<button type="button" class="btn-next"
+				<button type="button" class="btn-back"
 				onclick="location.href='<%=request.getContextPath()%>/ExtendCanServlet'">延長申請へ戻る</button>
 			</div>
 		</div>
