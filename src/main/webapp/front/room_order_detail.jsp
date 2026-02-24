@@ -104,7 +104,7 @@ String errorMsg = (String) request.getAttribute("errorMsg");
 						onclick="location.href='<%=request.getContextPath()%>/RoomOrderListServlet?roomId=<%=room.getId()%>'">
 						注文一覧へ戻る
 					</button>
-					<button type="submit" class="btn-next">更新確認</button>
+					<button type="submit" class="btn-next">完了する</button>
 				</div>
 			</form>
 		</div>
