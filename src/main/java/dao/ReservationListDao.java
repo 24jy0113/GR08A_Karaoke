@@ -27,7 +27,7 @@ public class ReservationListDao {
 			JOIN `status` st ON rus.status_id = st.status_id
 			RIGHT JOIN reservation ON rus.reservation_number = reservation.reservation_number
 			JOIN room r ON reservation.room_id = r.room_id
-			ORDER BY reservation_date, rus.reception_time;
+			ORDER BY reservation_date, rus.reception_time,rus.room_id ASC;
         """;
 
         try (Connection con = DatabaseManager.connect();
@@ -64,7 +64,7 @@ public class ReservationListDao {
 			RIGHT JOIN reservation ON rus.reservation_number = reservation.reservation_number
 			JOIN room r ON reservation.room_id = r.room_id
 			WHERE r.room_number = ?
-			ORDER BY reservation_date, rus.reception_time;
+			ORDER BY reservation_date, rus.reception_time,rus.room_id ASC;
         """;
 
         try (Connection con = DatabaseManager.connect();
