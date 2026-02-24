@@ -18,18 +18,18 @@ public class CusTopServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse res)
 			throws ServletException, IOException {
 		String rawRoomNumber = req.getParameter("roomNumber");
-		if (!rawRoomNumber.matches("^\\d+$")) {
-			// 入力されたパラメータが数字以外の時.
-			// 検索フォームに返却.
-			res.sendRedirect(req.getContextPath() + "/front/front_room_search.jsp");
-			return;
-		}
 
 		var session = req.getSession();
 		try {
 			int roomId;
 			Room room;
 			if (rawRoomNumber != null && !rawRoomNumber.isEmpty()) {
+				if (!rawRoomNumber.matches("^\\d+$")) {
+					// 入力されたパラメータが数字以外の時.
+					// 検索フォームに返却.
+					res.sendRedirect(req.getContextPath() + "/front/front_room_search.jsp");
+					return;
+				}
 				room = RoomDao.getRoomByRoomNumber(Integer.parseInt(rawRoomNumber));
 				// 部屋の検索結果がnull.
 				if (room == null) {
@@ -57,7 +57,7 @@ public class CusTopServlet extends HttpServlet {
 				}
 				roomId = Integer.parseInt(roomIdStr);
 				room = RoomDao.getRoomById(roomId);
-				if (room == null) {
+				if (room == null || room.getStatusId() == 1) {
 					res.sendRedirect(req.getContextPath() + "/RoomListServlet");
 					return;
 				}
