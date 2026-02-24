@@ -198,4 +198,25 @@ public class ReservationListDao {
                 }
             }
         }
+    public void updateFrontOperation(int reservationNumber, Time start, Time end) 
+            throws Exception {
+        String sql = "UPDATE reservation SET reservation_reception_time = ?, reservation_leaving_time = ? "
+                   + "WHERE reservation_number = ?";
+        try (Connection con = DatabaseManager.connect();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setTime(1, start);
+            ps.setTime(2, end);
+            ps.setInt(3, reservationNumber);
+            ps.executeUpdate();
+        }
+    }
+ // キャンセル（行削除 or 状態変更、ここでは削除の例）
+    public void cancelReservation(int reservationNumber) throws Exception {
+        String sql = "DELETE FROM reservation WHERE reservation_number = ?";
+        try (Connection con = DatabaseManager.connect();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, reservationNumber);
+            ps.executeUpdate();
+        }
+    }
 }
