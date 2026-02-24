@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" import="model.User" import="java.util.List"
 	import="java.util.ArrayList" import="model.Room" import="java.sql.Time"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
 
 <%
 User user = (User) session.getAttribute("loginUser");
@@ -47,7 +48,7 @@ if (roomList == null) {
 					<button type="submit" class="btn">絞り込み</button>
 					<button id="reloadButton" class="btn">更新</button>
 				</form>
-
+				<p style="color: red;">${message}</p>
 			</div>
 			<table>
 				<tr>
