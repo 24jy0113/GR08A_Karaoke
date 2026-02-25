@@ -48,13 +48,14 @@ if (user == null) {
 							<input type="file" name="image" accept=".png, .jpg, .jpeg">
 						</c:if>
 						<p>
-							＊JPG, JPEG, PNGのみ<br>現在の商品画像:${editItem.image.replace("items/", "")}
+							＊JPG, JPEG, PNGのみ<br>
+							<c:if test="${!editItem.image.replace('items/','').isEmpty()}">現在の商品画像:${editItem.image.replace("items/", "")}</c:if>
 						</p>
 					</div>
 					<c:if test='${isAdmin }'>
 						<div class="input-row">
 
-							<label>注文番号</label> <input class="menuInput" type="text"
+							<label>メニュー番号</label> <input class="menuInput" type="text"
 								name="order_number" value="${editItem.itemNo }" readonly />
 						</div>
 						<div class="input-row">

@@ -44,7 +44,7 @@ if (user == null) {
 				</tr>
 				<c:if test='${isAdmin}'>
 					<tr>
-						<th>注文番号</th>
+						<th>メニュー番号</th>
 						<td>${editItem.itemNo }</td>
 					</tr>
 					<tr>

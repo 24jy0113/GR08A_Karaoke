@@ -284,7 +284,11 @@ public class ItemDao {
 					target.setSelection(resSet.getInt("option_detail_id"), resSet.getString("option_detail_name"),
 							resSet.getInt("price"));
 				}
+			} catch (SQLException e) {
+				throw e;
 			}
+		} catch (SQLException e) {
+			throw e;
 		}
 	}
 

@@ -108,7 +108,7 @@ public class ItemUpdateConfirmAction implements Action {
 		}
 		
 
-		if(name==null||name.isEmpty()) {
+		if(item.getName().isEmpty()) {
 			request.setAttribute("errMsg", "商品名を入力してください");
 			return "modify_update.jsp";
 		}
