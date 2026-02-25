@@ -45,7 +45,6 @@ if (user == null) {
                 <th>アカウントID</th>
                 <th>アカウント名</th>
                 <th>役割</th>
-                <th>パスワード</th>
                 <th>最終ログイン日時</th>
                 <th></th>
                 <th></th>
@@ -56,7 +55,6 @@ if (user == null) {
                     <td>${u.userId}</td>
                     <td>${u.userName}</td>
                     <td>${u.roleName}</td>
-                    <td>XXXXXXXX</td>
 
                     <td>
                         <c:choose>
