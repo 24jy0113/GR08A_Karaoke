@@ -39,7 +39,9 @@ if (u == null) {
 				method="post" onsubmit="return validateForm()">
 				<input type="hidden" name="userId" value="<%=u.getUserId()%>">
 				<div class="form-row">
-					<label>アカウント名</label> <input type="text" name="userName"
+					<label>アカウント名</label> 
+					<div class="required-badge required">必須</div>
+					<input type="text" name="userName"
 						value="<%=u.getUserName()%>">
 				</div>
 				<div class="form-row">
@@ -59,13 +61,13 @@ if (u == null) {
 				</div>
 				<div class="form-row">
 					<label>パスワード</label>
-					<div class="required-badge required">必須</div>
+					
 					<input type="password" id="password" name="password"
 						placeholder="半角英数字のみ、8 桁以上、12 桁以下">
 				</div>
 				<div class="form-row">
 					<label>パスワード（再入力）</label>
-					<div class="required-badge required">必須</div>
+					
 					<input type="password" id="confirmPassword"
 						name="newPasswordConfirm" placeholder="確認のため、再度ご入力ください">
 				</div>
@@ -101,13 +103,23 @@ if (u == null) {
     	    const pwd1 = document.getElementById("password").value;
     	    const pwd2 = document.getElementById("confirmPassword").value;
     	    const error = document.getElementById("errorMessage");
-
+			
+    	    error.textContent = "";
+    	    
     	    // アカウント名の空チェック
     	    if (userName === "") {
     	        error.textContent = "アカウント名を入力してください";
     	        return false;
     	    }
-
+    	 	// 🔹 パスワード未入力 → OK（変更しない）
+    	    if (pwd1 === "" && pwd2 === "") {
+    	        return true;
+    	    }
+    	   // 🔹 どちらかだけ入力されている場合はエラー
+    	    if (pwd1 === "" || pwd2 === "") {
+    	        error.textContent = "パスワードを変更する場合は両方入力してください";
+    	        return false;
+    	    }
     	    // 半角英数字のみ、8桁以上、12桁以下
     	    const pwdPattern = /^[a-zA-Z0-9]+$/;
     	    if (!pwdPattern.test(pwd1) || pwd1.length < 8 || pwd1.length > 12) {

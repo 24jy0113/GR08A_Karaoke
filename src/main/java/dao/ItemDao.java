@@ -44,6 +44,7 @@ public class ItemDao {
 
 				if (!item.getOptionList().isEmpty()) {
 					try (ResultSet resSet = preState1.getGeneratedKeys()) {
+						item.setId(resSet.getInt(1));
 						// 生成された主キーを取得.
 						if (resSet.next()) {
 							int generatedId = resSet.getInt(1);
@@ -83,6 +84,39 @@ public class ItemDao {
 			throw new Exception(errMsg);
 		}
 
+	}
+
+	// 注文番号がユニークか検証する.
+	public boolean existsByOrderNumber(int value) throws Exception {
+		boolean res = false;
+
+		// SQL文作成.
+		String sql = "SELECT item_id "
+				+ "FROM item "
+				+ "WHERE order_number = ?;";
+
+		try (Connection con = DatabaseManager.connect();
+				PreparedStatement preState = con.prepareStatement(sql);) {
+			preState.setInt(1, value);
+			try (ResultSet resSet = preState.executeQuery();) {
+				if (resSet.next())
+					res = true;
+			} catch (SQLException e) {
+				throw e;
+			}
+
+		} catch (SQLException e) {
+			// デバッグ用のスタックトレース.
+			e.printStackTrace();
+
+			// フロントエンド用のエラーメッセージ.
+			String errMsg = "DB接続に失敗しました！<br>管理者に連絡してください。";
+
+			// 例外を投げる.
+			throw new Exception(errMsg);
+		}
+		
+		return res;
 	}
 
 	// 商品を更新する.
@@ -284,7 +318,11 @@ public class ItemDao {
 					target.setSelection(resSet.getInt("option_detail_id"), resSet.getString("option_detail_name"),
 							resSet.getInt("price"));
 				}
+			} catch (SQLException e) {
+				throw e;
 			}
+		} catch (SQLException e) {
+			throw e;
 		}
 	}
 

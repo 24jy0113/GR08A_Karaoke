@@ -1,4 +1,5 @@
 package controller;
+
 import java.io.IOException;
 
 import dao.UserDao;
@@ -10,6 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import model.User;
 import util.PasswordUtil;
+
 @WebServlet("/AccountUpdateServlet")
 public class AccountUpdateServlet extends HttpServlet {
 
@@ -17,33 +19,36 @@ public class AccountUpdateServlet extends HttpServlet {
             throws ServletException, IOException {
 
         req.setCharacterEncoding("UTF-8");
-        
+
         User u = (User) req.getSession().getAttribute("UPDATE_USER");
         if (u == null) {
             res.sendRedirect(req.getContextPath() + "/admin/account_search.jsp");
             return;
         }
-       
-        u.setUserId(req.getParameter("userId"));
-        u.setUserName(req.getParameter("userName"));
-        
+
+        String userId   = req.getParameter("userId");
         String userName = req.getParameter("userName");
-        String password = req.getParameter("password");
+        String password = req.getParameter("password"); 
         String roleName = req.getParameter("roleName");
-        
+
         if (userName == null || userName.isEmpty()
-                || password == null || password.isEmpty()
                 || roleName == null || roleName.isEmpty()) {
-                req.setAttribute("error", "入力内容に不備があります");
-                res.sendRedirect(req.getContextPath() + "/admin/account_update.jsp");
-                return;
+
+            req.getSession().setAttribute("error", "入力内容に不備があります");
+            res.sendRedirect(req.getContextPath() + "/admin/account_update.jsp");
+            return;
         }
+
+        u.setUserId(userId);
         u.setUserName(userName);
         u.setRoleName(roleName);
         u.setRoleId(UserDao.findRoleIdByRoleName(roleName));
-        
+
+        if (password != null && !password.isEmpty()) {
+            u.setPasswordHash(PasswordUtil.hash(password));
+        }
+
         req.getSession().setAttribute("UPDATE_USER", u);
         res.sendRedirect(req.getContextPath() + "/admin/account_update_confirm.jsp");
     }
 }
-

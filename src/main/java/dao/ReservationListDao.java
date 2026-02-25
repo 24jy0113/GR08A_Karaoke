@@ -27,7 +27,8 @@ public class ReservationListDao {
 			JOIN `status` st ON rus.status_id = st.status_id
 			RIGHT JOIN reservation ON rus.reservation_number = reservation.reservation_number
 			JOIN room r ON reservation.room_id = r.room_id
-			ORDER BY reservation_date, rus.reception_time,rus.room_id ASC;
+			WHERE reservation.reservation_date >= CURDATE()
+			ORDER BY reservation_date ASC, r.room_number ASC, reservation_reception_time ASC;
         """;
 
         try (Connection con = DatabaseManager.connect();
@@ -44,6 +45,8 @@ public class ReservationListDao {
                     rs.getString("status_name")
                 ));
             }
+        } catch (Exception e) {
+            throw new Exception("予約一覧の取得に失敗しました", e);
         }
         return list;
     }
@@ -64,7 +67,8 @@ public class ReservationListDao {
 			RIGHT JOIN reservation ON rus.reservation_number = reservation.reservation_number
 			JOIN room r ON reservation.room_id = r.room_id
 			WHERE r.room_number = ?
-			ORDER BY reservation_date, rus.reception_time,rus.room_id ASC;
+        	AND reservation.reservation_date >= CURDATE()
+			ORDER BY reservation_date ASC, r.room_number ASC, reservation_reception_time ASC;
         """;
 
         try (Connection con = DatabaseManager.connect();
@@ -84,6 +88,8 @@ public class ReservationListDao {
                     ));
                 }
             }
+        } catch (Exception e) {
+            throw new Exception("部屋別予約の取得に失敗しました", e);
         }
         return list;
     }
@@ -98,6 +104,8 @@ public class ReservationListDao {
             }
 
             con.commit();
+        } catch (Exception e) {
+            throw new Exception("CSV取込処理に失敗しました", e);
         }
     }
     private void upsertReservation(Connection con, CsvReservationRow row) throws Exception {
@@ -121,41 +129,12 @@ public class ReservationListDao {
             ps.setTime(4, row.getStartTime());
             ps.setTime(5, row.getEndTime());
             ps.executeUpdate();
+        } catch (Exception e) {
+            throw new Exception("予約データの登録／更新に失敗しました", e);
         }
     }
 
-    // 部屋に予約を取り込む.
-//    private void upsertRoomUsageStatus(Connection con, CsvReservationRow row) throws Exception {
-//
-//        String sql = """
-//            INSERT INTO room_usage_status
-//			(
-//			    room_id,
-//			    reservation_number,
-//			    reception_time,
-//			    leaving_time,
-//			    status_id,
-//        		alcohol_provision
-//			)
-//			VALUES (?, ?, ?, ?, ?, 2, 0)
-//			ON DUPLICATE KEY UPDATE
-//			    reservation_number = VALUES(reservation_number),
-//			    reception_time     = VALUES(reception_time),
-//			    leaving_time       = VALUES(leaving_time),
-//			    status_id          = 2,
-//        		alcohol_provision  = 0;
-//
-//        """;
-//
-//        try (PreparedStatement ps = con.prepareStatement(sql)) {
-//            ps.setInt(1, row.getRoomId());
-//            ps.setDate(2, row.getDate());
-//            ps.setInt(3, row.getReservationNumber());
-//            ps.setTime(4, row.getStartTime());
-//            ps.setTime(5, row.getEndTime());
-//            ps.executeUpdate();
-//        }
-//    }
+   
     public void updateFrontOperation(
             int reservationNumber,
             Time start,
@@ -195,6 +174,8 @@ public class ReservationListDao {
                     ps.setInt(3, statusId);
                     ps.setInt(4, reservationNumber);
                     ps.executeUpdate();
+                } catch (Exception e) {
+                    throw new Exception("フロント操作の更新に失敗しました", e);
                 }
             }
         }
@@ -208,6 +189,8 @@ public class ReservationListDao {
             ps.setTime(2, end);
             ps.setInt(3, reservationNumber);
             ps.executeUpdate();
+        } catch (Exception e) {
+            throw new Exception("予約時間の更新に失敗しました", e);
         }
     }
  // キャンセル（行削除 or 状態変更、ここでは削除の例）
@@ -217,6 +200,90 @@ public class ReservationListDao {
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, reservationNumber);
             ps.executeUpdate();
+        } catch (Exception e) {
+            throw new Exception("予約キャンセルに失敗しました", e);
+        }
+    }
+    /**
+     * 予約番号で1件取得（バリデーション用：部屋ID・日付を含む）
+     */
+    public ReservationView findByReservationNumber(int reservationNumber) throws Exception {
+        String sql = """
+            SELECT reservation.reservation_number,
+                   reservation.room_id,
+                   r.room_number,
+                   reservation_date,
+                   reservation_reception_time,
+                   reservation_leaving_time,
+                   st.status_name
+            FROM reservation
+            JOIN room r ON reservation.room_id = r.room_id
+            LEFT JOIN room_usage_status rus
+                ON rus.reservation_number = reservation.reservation_number
+            LEFT JOIN `status` st ON rus.status_id = st.status_id
+            WHERE reservation.reservation_number = ?
+        """;
+        try (Connection con = DatabaseManager.connect();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, reservationNumber);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    ReservationView v = new ReservationView(
+                        rs.getInt("reservation_number"),
+                        rs.getInt("room_number"),
+                        rs.getDate("reservation_date"),
+                        rs.getTime("reservation_reception_time"),
+                        rs.getTime("reservation_leaving_time"),
+                        rs.getString("status_name")
+                    );
+                    v.setRoomId(rs.getInt("room_id"));
+                    return v;
+                }
+            }
+        } catch (Exception e) {
+            throw new Exception("予約情報の取得に失敗しました", e);
+        }
+        return null;
+    }
+
+    /**
+     * 同一部屋・同一日で時間帯が重複する予約があるか確認
+     * excludeNumbers: 今回の更新対象の予約番号リスト（全て除外する）
+     */
+    public boolean hasOverlap(int reservationNumber, java.sql.Date date,
+                               int roomId, Time start, Time end,
+                               List<Integer> excludeNumbers) throws Exception {
+
+        // IN句用のプレースホルダを生成
+        String placeholders = excludeNumbers.stream()
+            .map(n -> "?")
+            .collect(java.util.stream.Collectors.joining(","));
+
+        String sql = "SELECT COUNT(*) FROM reservation"
+                   + " WHERE room_id = ?"
+                   + " AND reservation_date = ?"
+                   + " AND reservation_number NOT IN (" + placeholders + ")"
+                   + " AND reservation_reception_time < ?"
+                   + " AND reservation_leaving_time > ?";
+
+        try (Connection con = DatabaseManager.connect();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            int idx = 1;
+            ps.setInt(idx++, roomId);
+            ps.setDate(idx++, date);
+            for (int num : excludeNumbers) {
+                ps.setInt(idx++, num);
+            }
+            ps.setTime(idx++, end);
+            ps.setTime(idx++, start);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                rs.next();
+                return rs.getInt(1) > 0;
+            }
+        } catch (Exception e) {
+            throw new Exception("重複チェックに失敗しました", e);
         }
     }
 }

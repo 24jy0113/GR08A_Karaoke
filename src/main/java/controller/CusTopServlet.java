@@ -26,8 +26,11 @@ public class CusTopServlet extends HttpServlet {
 			if (rawRoomNumber != null && !rawRoomNumber.isEmpty()) {
 				if (!rawRoomNumber.matches("^\\d+$")) {
 					// 入力されたパラメータが数字以外の時.
+					// フロントエンド用のメッセージ.
+					String message = URLEncoder.encode("半角数字以外は使用できません", "UTF-8");
+					
 					// 検索フォームに返却.
-					res.sendRedirect(req.getContextPath() + "/front/front_room_search.jsp");
+					res.sendRedirect(req.getContextPath() + "/front/front_room_search.jsp?e=" + message);
 					return;
 				}
 				room = RoomDao.getRoomByRoomNumber(Integer.parseInt(rawRoomNumber));

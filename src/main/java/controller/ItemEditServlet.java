@@ -66,11 +66,27 @@ public class ItemEditServlet extends HttpServlet {
 
 		if (action != null) {
 			String view = action.execute(request, response);
-			RequestDispatcher rd = request.getRequestDispatcher("/admin/" + view);
-			rd.forward(request, response);
+			if (view.startsWith("redirect:")) {
+				String redirectUrl = view.substring("redirect:".length());
+				String errMsg = ((String) (request.getAttribute("errMsg")));
+
+				// errMsgがある時.
+				if (errMsg != null && !errMsg.isEmpty()) {
+					// フロントエンド用のメッセージ.
+					String message = URLEncoder.encode(errMsg, "UTF-8");
+					redirectUrl += "&e=" + message;
+				}
+
+				response.sendRedirect(request.getContextPath() + redirectUrl);
+				return;
+			} else {
+				RequestDispatcher rd = request.getRequestDispatcher("/admin/" + view);
+				rd.forward(request, response);
+			}
 		} else {
-			// エラーハンドリング：一覧に戻すなど
-			response.sendRedirect("/SearchItemByName");
+			// エラーハンドリング：一覧に戻すなど.
+			response.sendRedirect(request.getContextPath() + "/SearchItemByName");
+			return;
 		}
 
 		// errMsgがある時.

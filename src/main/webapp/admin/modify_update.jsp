@@ -24,39 +24,57 @@ if (user == null) {
 <body>
 	<%@ include file="/shared/biz_header.jsp"%>
 	<main>
+	<c:choose>
+				<c:when test="${isAdmin }">
 		<h1 class="bodytitle text-center">商品情報${editItem.id<1 ? "追加" : "更新" }入力</h1>
-		<c:if test="${errMsg!=null&&!errMsg.isEmpty() }">
-		<p class="errormsg">${errMsg }</p>
+				</c:when>
+				<c:otherwise>
+				<h1 class="bodytitle text-center">商品在庫情報更新入力</h1>
+				</c:otherwise>
+				</c:choose>
+		<c:if test="${!param.e.isEmpty() }">
+		<p class="errormsg">${param.e}</p>
 		</c:if>
 		<form method="post" enctype="multipart/form-data">
 			<div class="container">
 				<div class="right-box">
+				<c:choose>
+				<c:when test="${isAdmin }">
 					<div class="input-row">
 						<label>商品名</label> <input class="menuInput" type="text"
-							value="${editItem.name }"
-							${isAdmin ? ' name="name"' : ' readonly' }>
+							value="${editItem.name }" name="name">
 					</div>
 					<div class="input-row">
 						<label>単価</label> <input class="menuInput" type="text"
-							value="${editItem.price }"
-							${isAdmin ? ' name="price"' : ' readonly' }>円
+							value="${editItem.price }" name="price">円
 						＊税込価格
 					</div>
+				</c:when>
+				<c:otherwise>
+				<div class="input-row">
+				<h3 class="bodymsg">商品名</h3><p>${editItem.name }</p>
+				</div>
+				<div class="input-row">
+				<h3 class="bodymsg">単価</h3><p>${editItem.price }円＊税込価格</p>
+				</div>
+				</c:otherwise>
+				</c:choose>
 					<div class="input-row">
 						<label>商品画像</label>
 						<c:if test="${isAdmin }">
 							<input type="file" name="image" accept=".png, .jpg, .jpeg">
 						</c:if>
 						<p>
-							＊JPG, JPEG, PNGのみ<br>現在の商品画像:${editItem.image.replace("items/", "")}
+							＊JPG, JPEG, PNGのみ<br>
+							現在の商品画像:${editItem.image.replace("items/", "")}
 						</p>
 					</div>
 					<c:if test='${isAdmin }'>
 						<div class="input-row">
 
-							<label>注文番号</label> <input class="menuInput" type="text"
-								name="order_number" value="${editItem.itemNo }" readonly />
-						</div>
+							<label>メニュー番号</label> <input class="menuInput" type="text"
+								name="order_number" value="${editItem.itemNo == 0 ? '未登録' : editItem.itemNo }" />
+						</div> 
 						<div class="input-row">
 							<label>カテゴリー</label> <select id="category-select" name="category">
 								<c:forEach var="category" items="${categoryList}">

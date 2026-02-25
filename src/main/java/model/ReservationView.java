@@ -7,6 +7,7 @@ public class ReservationView {
 
     private int reservationNumber;
     private int roomNumber;
+    private int roomId;
     private Date date;
     private Time receptionTime;
     private Time leavingTime;
@@ -37,6 +38,14 @@ public class ReservationView {
 
 	public void setRoomNumber(int roomNumber) {
 		this.roomNumber = roomNumber;
+	}
+
+	public int getRoomId() {
+		return roomId;
+	}
+
+	public void setRoomId(int roomId) {
+		this.roomId = roomId;
 	}
 
 	public Date getDate() {

@@ -21,8 +21,11 @@ public class RoomSearchServlet extends HttpServlet {
 		String rawRoomNumber = request.getParameter("roomNumber");
 		if (!rawRoomNumber.matches("^\\d+$")) {
 			// 入力されたパラメータが数字以外の時.
+			// フロントエンド用のメッセージ.
+			String message = URLEncoder.encode("半角数字以外は使用できません", "UTF-8");
+			
 			// 検索フォームに返却.
-			response.sendRedirect(request.getContextPath() + "/room_search.jsp");
+			response.sendRedirect(request.getContextPath() + "/room_search.jsp?e=" + message);
 			return;
 		}
 
