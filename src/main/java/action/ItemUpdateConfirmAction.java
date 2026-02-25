@@ -35,8 +35,17 @@ public class ItemUpdateConfirmAction implements Action {
 		// パラメータの受け取り.
 		String name = request.getParameter("name");
 
+		String rawOrderNumber = request.getParameter("order_number");
+		Integer orderNumber = 0;
+		if (rawOrderNumber != null && rawOrderNumber.matches("^\\d+$")) {
+			orderNumber = rawOrderNumber != null ? Integer.parseInt(rawOrderNumber) : null;
+		}
+
 		String rawPrice = request.getParameter("price");
-		Integer price = rawPrice != null ? Integer.parseInt(rawPrice) : null;
+		Integer price = null;
+		if (rawPrice != null && rawPrice.matches("^\\d+$")) {
+			price = rawPrice != null ? Integer.parseInt(rawPrice) : null;
+		}
 
 		String rawCategoryId = request.getParameter("category");
 		Integer categoryId = rawCategoryId != null ? Integer.parseInt(rawCategoryId) : null;
@@ -67,8 +76,18 @@ public class ItemUpdateConfirmAction implements Action {
 			if (permissions.contains("VIEW_CUS") && admin) {
 				if (name != null)
 					item.setName(name);
-				if (price != null)
-					item.setPrice(price);
+				if (orderNumber != null) {
+					if (orderNumber > 0 && !dao.existsByOrderNumber(orderNumber)) {
+						item.setItemNo(orderNumber);
+					} else {
+						orderNumber = 0;
+					}
+				}
+				if (price != null) {
+					if (price >= 0) {
+						item.setPrice(price);
+					}
+				}
 				if (categoryId != null) {
 					item.setCategoryId(categoryId);
 					item.setCategory(categoryName);
@@ -106,13 +125,28 @@ public class ItemUpdateConfirmAction implements Action {
 			// フロントエンド用のメッセージ.
 			request.setAttribute("errMsg", e.getMessage());
 		}
-		
 
-		if(item.getName().isEmpty()) {
-			request.setAttribute("errMsg", "商品名を入力してください");
-			return "modify_update.jsp";
+		if (price != null && price < 0) {
+			request.setAttribute("errMsg", "価格は0以上にしてください");
+			return "redirect:/ItemEditServlet?cmd=edit";
 		}
-
+		if (rawPrice != null && !rawPrice.matches("^\\d+$")) {
+			request.setAttribute("errMsg", "価格は半角数字以外使用できません");
+			return "redirect:/ItemEditServlet?cmd=edit";
+		}
+		if (rawOrderNumber != null && !rawOrderNumber.matches("^\\d+$")) {
+			request.setAttribute("errMsg", "注文番号は半角数字以外使用できません");
+			return "redirect:/ItemEditServlet?cmd=edit";
+		}
+		if (item.getName().isEmpty()) {
+			request.setAttribute("errMsg", "商品名を入力してください");
+			return "redirect:/ItemEditServlet?cmd=edit";
+		}
+		if (orderNumber <= 0) {
+			request.setAttribute("errMsg", "注文番号は1以上で重複していない数値にしてください<br>"
+					+ "注文番号:" + rawOrderNumber + "は重複しています");
+			return "redirect:/ItemEditServlet?cmd=edit";
+		}
 		return "modify_update_confirm.jsp";
 	}
 

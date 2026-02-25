@@ -32,8 +32,8 @@ if (user == null) {
 				<h1 class="bodytitle text-center">商品在庫情報更新入力</h1>
 				</c:otherwise>
 				</c:choose>
-		<c:if test="${errMsg!=null&&!errMsg.isEmpty() }">
-		<p class="errormsg">${errMsg }</p>
+		<c:if test="${!param.e.isEmpty() }">
+		<p class="errormsg">${param.e}</p>
 		</c:if>
 		<form method="post" enctype="multipart/form-data">
 			<div class="container">
