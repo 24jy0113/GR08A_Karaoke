@@ -41,6 +41,20 @@ input {
 	flex: 0.5;
 }
 
+.required-badge {
+	border: 2px solid;
+	padding: 4px 8px;
+	font-size: 14px;
+	text-align: center;
+	min-width: 50px;
+	margin-right: 20px;
+}
+
+.required-badge.required {
+	color: #dc2626;
+	border-color: #dc2626;
+}
+
 input[type="radio"] {
 	margin: 0;
 	width: auto;

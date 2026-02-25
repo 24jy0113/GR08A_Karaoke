@@ -41,10 +41,12 @@ if (user == null) {
 				<c:choose>
 				<c:when test="${isAdmin }">
 					<div class="input-row">
+						<div class="required-badge required">必須</div>
 						<label>商品名</label> <input class="menuInput" type="text"
 							value="${editItem.name }" name="name">
 					</div>
 					<div class="input-row">
+						<div class="required-badge required">必須</div>
 						<label>単価</label> <input class="menuInput" type="text"
 							value="${editItem.price }" name="price">円
 						＊税込価格
@@ -71,7 +73,7 @@ if (user == null) {
 					</div>
 					<c:if test='${isAdmin }'>
 						<div class="input-row">
-
+							<div class="required-badge required">必須</div>
 							<label>メニュー番号</label> <input class="menuInput" type="text"
 								name="order_number" value="${editItem.itemNo == 0 ? '未登録' : editItem.itemNo }" />
 						</div> 
