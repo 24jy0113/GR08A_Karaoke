@@ -44,6 +44,7 @@ public class ItemDao {
 
 				if (!item.getOptionList().isEmpty()) {
 					try (ResultSet resSet = preState1.getGeneratedKeys()) {
+						item.setId(resSet.getInt(1));
 						// 生成された主キーを取得.
 						if (resSet.next()) {
 							int generatedId = resSet.getInt(1);
@@ -84,6 +85,8 @@ public class ItemDao {
 		}
 
 	}
+	
+	// 注文番号がユニークか検証する.
 
 	// 商品を更新する.
 	public void updateItem(Item item) throws Exception {

@@ -15,7 +15,7 @@ public class Item {
 	private List<Option> options;
 
 	public Item() {
-		this(-1, "", 1, "アルコール", 0, 0, "", false);
+		this(-1, "", 1, "アルコール", 0, 0, "default.png", false);
 	}
 
 	public Item(int id, String name, int categoryId, String category, int itemNo, int price, String image,
