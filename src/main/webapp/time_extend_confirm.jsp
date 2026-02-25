@@ -40,7 +40,7 @@ Room room = (Room) session.getAttribute("room");
 			<div class="action-buttons flex-center">
 				<form action="<%=request.getContextPath()%>/ExtendConfirmServlet"
 					method="post">
-					<button type="button" class="btn-next"
+					<button type="button" class="btn-back"
 				onclick="location.href='<%=request.getContextPath()%>/ExtendCanServlet'">戻る</button>
 					<button type="submit" class="btn-next">延長申請を完了する</button>
 				</form>
