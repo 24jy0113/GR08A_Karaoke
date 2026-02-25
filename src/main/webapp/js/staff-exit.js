@@ -14,7 +14,7 @@ document.body
 				}
 				if (tapCount >= 5) {
 					clearTimeout(resetTimer);
-					window.location.href = "${pageContext.request.contextPath}/room_search.jsp";
+					window.location.href = contextPath;
 				}
 			}
 		});

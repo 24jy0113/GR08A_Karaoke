@@ -16,6 +16,9 @@ int roomNo = Integer.parseInt(request.getParameter("roomNumber"));
 		<button type="button" class="btn-start"
 			onclick="location.href='<%=request.getContextPath()%>/IdleStartServlet?roomNumber=<%=roomNo%>'">利用を開始する</button>
 	</main>
+	<script>
+		const contextPath = "${pageContext.request.contextPath}/room_search.jsp"
+	</script>
 	<script src="<%=request.getContextPath()%>/js/staff-exit.js"></script>
 </body>
 </html>
