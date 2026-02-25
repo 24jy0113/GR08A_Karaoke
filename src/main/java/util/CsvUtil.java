@@ -12,40 +12,70 @@ import model.CsvReservationRow;
 
 public class CsvUtil {
 
-    public static List<CsvReservationRow> parse(InputStream is) throws Exception {
+	public static List<CsvReservationRow> parse(InputStream is) throws Exception {
 
-        List<CsvReservationRow> list = new ArrayList<>();
+	    List<CsvReservationRow> list = new ArrayList<>();
 
-        try (BufferedReader br =
-                 new BufferedReader(new InputStreamReader(is, "UTF-8"))) {
+	    try (BufferedReader br =
+	            new BufferedReader(new InputStreamReader(is, "UTF-8"))) {
 
-            String line;
-            boolean isHeader = true;
+	        String line;
+	        boolean isHeader = true;
+	        int lineNo = 0;
 
-            while ((line = br.readLine()) != null) {
+	        while ((line = br.readLine()) != null) {
+	            lineNo++;
 
-                if (isHeader) {
-                    isHeader = false;
-                    continue;
-                }
+	            if (isHeader) {
+	                isHeader = false;
+	                continue;
+	            }
 
-                if (line.trim().isEmpty()) continue;
+	            if (line.trim().isEmpty()) {
+	                continue;
+	            }
 
-                String[] cols = line.split(",");
+	            String[] cols = line.split(",");
 
-                CsvReservationRow row = new CsvReservationRow(
-                    Integer.parseInt(cols[0].trim()), // reservation_number
-                    Integer.parseInt(cols[1].trim()), // room_id
-                    Date.valueOf(cols[2].trim()),     // date
-                    Time.valueOf(cols[3].trim() + ":00"), // start_time
-                    Time.valueOf(cols[4].trim() + ":00") // end_time
-                    
-                );
+	            boolean allEmpty = true;
+	            for (String c : cols) {
+	                if (!c.trim().isEmpty()) {
+	                    allEmpty = false;
+	                    break;
+	                }
+	            }
+	            if (allEmpty) {
+	                continue; 
+	            }
 
-                list.add(row);
-            }
-        }
+	            if (cols.length < 5) {
+	                throw new Exception(
+	                    "CSVファイルの内容に不備があります（" + lineNo + "行目を確認してください）"
+	                );
+	            }
 
-        return list;
-    }
+	            try {
+	                CsvReservationRow row = new CsvReservationRow(
+	                    Integer.parseInt(cols[0].trim()),
+	                    Integer.parseInt(cols[1].trim()),
+	                    Date.valueOf(cols[2].trim()),
+	                    Time.valueOf(cols[3].trim() + ":00"),
+	                    Time.valueOf(cols[4].trim() + ":00")
+	                );
+	                list.add(row);
+
+	            } catch (Exception e) {
+	                throw new Exception(
+	                    "CSVファイルの内容を正しく読み取れませんでした（" + lineNo + "行目）", e
+	                );
+	            }
+	        }
+	    }
+
+	    if (list.isEmpty()) {
+	        throw new Exception("CSVファイルに有効なデータがありません");
+	    }
+
+	    return list;
+	}
 }
