@@ -23,7 +23,6 @@ Room room = (Room) session.getAttribute("room");
 	<%@ include file="/shared/cus_header.jsp"%>
 	<main>
 		<div class="page">
-
 			<aside class="ad-area">
 				<img class="campaign"
 					src="<%=request.getContextPath()%>/img/menu.png" alt="menu"
@@ -43,22 +42,22 @@ Room room = (Room) session.getAttribute("room");
 						<input id="menuInput" name="orderNumber" type="text" maxlength="4"
 							readonly />
 						<button id="searchBtn" type="submit">検索</button>
-
+						<div class="pad">
+							<button type="button">1</button>
+							<button type="button">2</button>
+							<button type="button">3</button>
+							<button type="button">4</button>
+							<button type="button">5</button>
+							<button type="button">6</button>
+							<button type="button">7</button>
+							<button type="button">8</button>
+							<button type="button">9</button>
+							<button type="button">←</button>
+							<button type="button">0</button>
+						</div>
 					</form>
 				</div>
-				<div class="pad">
-					<button>1</button>
-					<button>2</button>
-					<button>3</button>
-					<button>4</button>
-					<button>5</button>
-					<button>6</button>
-					<button>7</button>
-					<button>8</button>
-					<button>9</button>
-					<button id="clear">←</button>
-					<button>0</button>
-				</div>
+
 			</section>
 		</div>
 		<script>
@@ -69,7 +68,9 @@ Room room = (Room) session.getAttribute("room");
                     btn.addEventListener('click', () => {
                         const val = btn.textContent;
                         if (val === '←') { input.value = input.value.slice(0, -1); return; }
-                        if (input.value.length < 4) input.value += val;
+                        if (/^\d$/.test(val) && input.value.length < 4) {
+                            input.value += val;
+                        }
                     });
                 });
             </script>

@@ -1,10 +1,5 @@
 @charset "UTF-8";
 
-body {
-	margin: 0;
-	padding: 24px;
-}
-
 .container {
 	margin-left: 120px;
 	margin-right: 120px;

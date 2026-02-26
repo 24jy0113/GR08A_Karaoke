@@ -1,15 +1,11 @@
 @charset "UTF-8";
 
-body {
-	margin: 0;
-	padding: 24px;
-}
-
 .page {
-	position: relative;
+	display: flex;
 	max-width: 980px;
 	margin: 0 auto;
 	padding-top: 30px;
+	gap: 40px;
 }
 
 /* 主役 */
@@ -21,7 +17,6 @@ body {
 
 /* 左(広告＆トップページボタン) */
 .ad-area {
-	position: absolute;
 	left: 0;
 	top: 120px;
 	display: flex;
@@ -62,11 +57,13 @@ body {
 }
 
 .pad {
-	width: 240px;
+	width: 100%;
+	max-width: 320px;
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
 	gap: 12px;
 	margin: 0 auto;
+	margin-top: 10px;
 }
 
 .pad button {
@@ -74,17 +71,13 @@ body {
 	background: #ddd;
 	border: 0;
 	border-radius: 12px;
-	font-size: 30px;
+	height: 80px;
+	font-size: 32px;
+	border-radius: 16px;
 	cursor: pointer;
 }
 
 .pad button:active {
-	transform: translateY(2px);
-}
-
-.action-buttons {
-	display: flex;
-	gap: 20px;
-	justify-content: center;
-	margin-top: 50px;
+	transform: scale(0.96);
+	background: #ccc;
 }
