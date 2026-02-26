@@ -10,30 +10,5 @@
 	<h1>
 		残り時間 <span id="remainingTime">--:--</span>
 	</h1>
-	<jsp:include page="/shared/common.jsp" />
-	<c:if test="${!isStaffAction }">
-		<jsp:include page="/shared/sse-handler.jsp" />
-	</c:if>
-	<script>
-		let tapCount = 0;
-		let resetTimer = null;
-		document.body
-				.addEventListener(
-						"click",
-						function(e) {
-							if (e.clientX < 50 && e.clientY < 50) {
-								tapCount++;
-								// 最初のタップなら3秒タイマー開始
-								if (tapCount === 1) {
-									resetTimer = setTimeout(function() {
-										tapCount = 0;
-									}, 3000);
-								}
-								if (tapCount >= 5) {
-									clearTimeout(resetTimer);
-									window.location.href = "${pageContext.request.contextPath}/room_search.jsp";
-								}
-							}
-						});
-	</script>
+	<jsp:include page="/shared/cus_common.jsp" />
 </footer>

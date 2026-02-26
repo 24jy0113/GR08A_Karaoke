@@ -39,7 +39,7 @@ if (user == null) {
 			    </div>
 			</c:if>
 			<c:if test="${not empty errors}">
-			    <div style="color: red; margin: 10px 0; padding: 10px; border: 1px solid red;">
+			    <div class="errormsg">
 			        <c:forEach var="err" items="${errors}">
 			            <p>${fn:escapeXml(err)}</p>
 			        </c:forEach>

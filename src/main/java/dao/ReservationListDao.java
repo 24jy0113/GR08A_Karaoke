@@ -46,7 +46,12 @@ public class ReservationListDao {
                 ));
             }
         } catch (Exception e) {
-            throw new Exception("予約一覧の取得に失敗しました", e);
+        	// デバッグ用のスタックトレース.
+        	e.printStackTrace();
+        	// フロントエンド用のエラーメッセージ.
+        	String errMsg = "予約一覧の取得に失敗しました！<br>管理者に連絡してください。";
+        	// 例外を投げる.
+        	throw new Exception(errMsg);
         }
         return list;
     }
@@ -89,7 +94,12 @@ public class ReservationListDao {
                 }
             }
         } catch (Exception e) {
-            throw new Exception("部屋別予約の取得に失敗しました", e);
+        	// デバッグ用のスタックトレース.
+        	e.printStackTrace();
+        	// フロントエンド用のエラーメッセージ.
+        	String errMsg = "部屋別予約の取得に失敗しました！<br>管理者に連絡してください。";
+        	// 例外を投げる.
+        	throw new Exception(errMsg);
         }
         return list;
     }
@@ -175,7 +185,12 @@ public class ReservationListDao {
                     ps.setInt(4, reservationNumber);
                     ps.executeUpdate();
                 } catch (Exception e) {
-                    throw new Exception("フロント操作の更新に失敗しました", e);
+                	// デバッグ用のスタックトレース.
+                	e.printStackTrace();
+                	// フロントエンド用のエラーメッセージ.
+                	String errMsg = "フロント操作の更新に失敗しました。";
+                	// 例外を投げる.
+                	throw new Exception(errMsg);
                 }
             }
         }
@@ -190,7 +205,12 @@ public class ReservationListDao {
             ps.setInt(3, reservationNumber);
             ps.executeUpdate();
         } catch (Exception e) {
-            throw new Exception("予約時間の更新に失敗しました", e);
+        	// デバッグ用のスタックトレース.
+        	e.printStackTrace();
+        	// フロントエンド用のエラーメッセージ.
+        	String errMsg = "予約時間の更新に失敗しました。";
+        	// 例外を投げる.
+        	throw new Exception(errMsg);
         }
     }
  // キャンセル（行削除 or 状態変更、ここでは削除の例）
@@ -201,7 +221,12 @@ public class ReservationListDao {
             ps.setInt(1, reservationNumber);
             ps.executeUpdate();
         } catch (Exception e) {
-            throw new Exception("予約キャンセルに失敗しました", e);
+        	// デバッグ用のスタックトレース.
+        	e.printStackTrace();
+        	// フロントエンド用のエラーメッセージ.
+        	String errMsg = "予約キャンセルに失敗しました";
+        	// 例外を投げる.
+        	throw new Exception(errMsg);
         }
     }
     /**
@@ -241,7 +266,12 @@ public class ReservationListDao {
                 }
             }
         } catch (Exception e) {
-            throw new Exception("予約情報の取得に失敗しました", e);
+        	// デバッグ用のスタックトレース.
+        	e.printStackTrace();
+        	// フロントエンド用のエラーメッセージ.
+        	String errMsg = "予約情報の取得に失敗しました";
+        	// 例外を投げる.
+        	throw new Exception(errMsg);
         }
         return null;
     }
@@ -283,7 +313,12 @@ public class ReservationListDao {
                 return rs.getInt(1) > 0;
             }
         } catch (Exception e) {
-            throw new Exception("重複チェックに失敗しました", e);
+        	// デバッグ用のスタックトレース.
+        	e.printStackTrace();
+        	// フロントエンド用のエラーメッセージ.
+        	String errMsg = "重複チェックに失敗しました";
+        	// 例外を投げる.
+        	throw new Exception(errMsg);
         }
     }
 }

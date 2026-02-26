@@ -126,26 +126,28 @@ public class ItemUpdateConfirmAction implements Action {
 			request.setAttribute("errMsg", e.getMessage());
 		}
 
-		if (price != null && price < 0) {
-			request.setAttribute("errMsg", "価格は0以上にしてください");
-			return "redirect:/ItemEditServlet?cmd=edit";
-		}
-		if (rawPrice != null && !rawPrice.matches("^\\d+$")) {
-			request.setAttribute("errMsg", "価格は半角数字以外使用できません");
-			return "redirect:/ItemEditServlet?cmd=edit";
-		}
-		if (rawOrderNumber != null && !rawOrderNumber.matches("^\\d+$")) {
-			request.setAttribute("errMsg", "注文番号は半角数字以外使用できません");
-			return "redirect:/ItemEditServlet?cmd=edit";
-		}
-		if (item.getName().isEmpty()) {
-			request.setAttribute("errMsg", "商品名を入力してください");
-			return "redirect:/ItemEditServlet?cmd=edit";
-		}
-		if (orderNumber <= 0) {
-			request.setAttribute("errMsg", "注文番号は1以上で重複していない数値にしてください<br>"
-					+ "注文番号:" + rawOrderNumber + "は重複しています");
-			return "redirect:/ItemEditServlet?cmd=edit";
+		if (permissions.contains("VIEW_CUS") && admin) {
+			if (price != null && price < 0) {
+				request.setAttribute("errMsg", "価格は0以上にしてください");
+				return "redirect:/ItemEditServlet?cmd=edit";
+			}
+			if (rawPrice != null && !rawPrice.matches("^\\d+$")) {
+				request.setAttribute("errMsg", "価格は半角数字以外使用できません");
+				return "redirect:/ItemEditServlet?cmd=edit";
+			}
+			if (rawOrderNumber != null && !rawOrderNumber.matches("^\\d+$")) {
+				request.setAttribute("errMsg", "注文番号は半角数字以外使用できません");
+				return "redirect:/ItemEditServlet?cmd=edit";
+			}
+			if (item.getName().isEmpty()) {
+				request.setAttribute("errMsg", "商品名を入力してください");
+				return "redirect:/ItemEditServlet?cmd=edit";
+			}
+			if (orderNumber <= 0) {
+				request.setAttribute("errMsg", "注文番号は1以上で重複していない数値にしてください<br>"
+						+ "注文番号:" + rawOrderNumber + "は重複しています");
+				return "redirect:/ItemEditServlet?cmd=edit";
+			}
 		}
 		return "modify_update_confirm.jsp";
 	}
