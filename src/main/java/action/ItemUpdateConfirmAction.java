@@ -74,36 +74,34 @@ public class ItemUpdateConfirmAction implements Action {
 
 			// 商品オブジェクトに受け取ったパラメータを入れる.
 			if (permissions.contains("VIEW_CUS") && admin) {
-				if (name != null)
+				if (name != null && name != item.getName())
 					item.setName(name);
-				if (orderNumber != null) {
+				if (orderNumber != null && orderNumber != item.getItemNo()) {
 					if (orderNumber > 0 && !dao.existsByOrderNumber(orderNumber)) {
 						item.setItemNo(orderNumber);
 					} else {
 						orderNumber = 0;
 					}
 				}
-				if (price != null) {
+				if (price != null && price != item.getPrice()) {
 					if (price >= 0) {
 						item.setPrice(price);
 					}
 				}
-				if (categoryId != null) {
+				if (categoryId != null && categoryId != item.getCategoryId()) {
 					item.setCategoryId(categoryId);
 					item.setCategory(categoryName);
 				}
-				if (!optionList.isEmpty())
+				if (!new HashSet<>(item.getOptionList()).equals(new HashSet<>(optionList)))
 					item.setOptionList(optionList);
 
 				// ファイルの受け取り.
 				var imagePart = request.getPart("image");
 				// ファイルがある場合.
 				if (imagePart != null && imagePart.getSize() != 0) {
-					System.out.println(2);
 					// ファイル名を取得する.
 					String fileName = imagePart.getSubmittedFileName();
 					if (fileName != null && !fileName.isEmpty()) {
-						System.out.println(3);
 						// 物理保存用のパス（これはフルパスが必要）.
 						String uploadPath = request.getServletContext().getRealPath("/img/items");
 

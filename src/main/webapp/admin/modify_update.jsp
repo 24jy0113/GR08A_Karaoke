@@ -12,7 +12,7 @@ if (user == null) {
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>商品${editItem.id<1 ? "追加" : "更新" }入力画面-${isAdmin ? "管理者" : "キッチン" }</title>
+<title>商品${editItem.id < 1 ? "追加" : "更新" }入力画面-${isAdmin ? "管理者" : "キッチン" }</title>
 
 <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath()%>/css/header.css">
@@ -26,7 +26,7 @@ if (user == null) {
 	<main>
 	<c:choose>
 				<c:when test="${isAdmin }">
-		<h1 class="bodytitle text-center">商品情報${editItem.id<1 ? "追加" : "更新" }入力</h1>
+		<h1 class="bodytitle text-center">商品情報${editItem.id < 1 ? "追加" : "更新" }入力</h1>
 				</c:when>
 				<c:otherwise>
 				<h1 class="bodytitle text-center">商品在庫情報更新入力</h1>
@@ -41,15 +41,20 @@ if (user == null) {
 				<c:choose>
 				<c:when test="${isAdmin }">
 					<div class="input-row">
-						<div class="required-badge required">必須</div>
-						<label>商品名</label> <input class="menuInput" type="text"
-							value="${editItem.name }" name="name">
+						
+						<label>商品名
+						<c:if test="${editItem.id < 1 }">
+						<span class="required-badge required">必須</span>
+						</c:if>
+						<input class="menuInput" type="text"
+							value="${editItem.name }" name="name"></label> 
 					</div>
 					<div class="input-row">
-						<div class="required-badge required">必須</div>
-						<label>単価</label> <input class="menuInput" type="text"
-							value="${editItem.price }" name="price">円
-						＊税込価格
+						<label>単価
+						<c:if test="${editItem.id < 1 }"> <span class="required-badge required">必須</span>
+						</c:if>
+						<input class="menuInput" type="text"
+							value="${editItem.price }" name="price">円＊税込価格</label>
 					</div>
 				</c:when>
 				<c:otherwise>
@@ -73,9 +78,13 @@ if (user == null) {
 					</div>
 					<c:if test='${isAdmin }'>
 						<div class="input-row">
-							<div class="required-badge required">必須</div>
-							<label>メニュー番号</label> <input class="menuInput" type="text"
+							<label>メニュー番号
+						<c:if test="${editItem.id < 1 }">
+						<span class="required-badge required">必須</span>
+						</c:if>
+						 <input class="menuInput" type="text"
 								name="order_number" value="${editItem.itemNo == 0 ? '未登録' : editItem.itemNo }" />
+						</label>
 						</div> 
 						<div class="input-row">
 							<label>カテゴリー</label> <select id="category-select" name="category">

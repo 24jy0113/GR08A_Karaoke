@@ -29,6 +29,11 @@ public class Option {
 		return name;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		return id == ((Option) obj).getId();
+	}
+
 	// 選択肢IDに対応するSelectionを返す。見つからないとnullが出るのでnullチェックをすること.
 	public Selection findSelectionById(int selectionId) {
 		Selection resSel = null;
