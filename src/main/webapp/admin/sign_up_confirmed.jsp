@@ -13,7 +13,7 @@ if (user == null) {
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>アカウント登録完了画面</title>
+<title>アカウント作成完了画面</title>
 <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath()%>/css/header.css">
 <link rel="stylesheet" type="text/css"

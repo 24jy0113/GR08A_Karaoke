@@ -17,7 +17,7 @@ String signupRoleName = (String) session.getAttribute("SIGNUP_ROLE_NAME");
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>アカウント登録</title>
+<title>アカウント作成</title>
 <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath()%>/css/header.css">
 <link rel="stylesheet" type="text/css"
