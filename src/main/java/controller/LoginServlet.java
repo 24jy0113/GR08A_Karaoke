@@ -41,44 +41,47 @@ public class LoginServlet extends HttpServlet {
 			req.getRequestDispatcher("index.jsp").forward(req, res);
 			return;
 		}
-		User user = UserDao.login(userId, password);
+		User user=null;
+		try {
+			user = UserDao.login(userId, password);
+			if (user == null) {
+				req.setAttribute("error", "アカウントIDまたはパスワードが違います");
+				req.getRequestDispatcher("index.jsp").forward(req, res);
+				return;
+			}
+			UserDao.updateLastLoginTime(user.getUserId());
 
-		if (user == null) {
-			req.setAttribute("error", "アカウントIDまたはパスワードが違います");
-			req.getRequestDispatcher("index.jsp").forward(req, res);
-			return;
+			HttpSession session = req.getSession(true);
+			session.setAttribute("loginUser", user);
+			session.setAttribute("user_id", user.getUserId());
+
+			Set<String> permissions = PermissionDAO.getPermissionsByUserId(user.getUserId());
+
+			session.setAttribute("permissions", permissions);
+
+			String role = user.getRoleName();
+			String context = req.getContextPath();
+
+			switch (role) {
+
+			case "キッチン":
+				res.sendRedirect(context + "/KitchenOrderList");
+				break;
+			case "フロント":
+				res.sendRedirect(context + "/front/front_top.jsp");
+				break;
+			case "フロア":
+				res.sendRedirect(context + "/index_select.jsp");
+				break;
+			case "管理者":
+				res.sendRedirect(context + "/index_select.jsp");
+				break;
+			default:
+				res.sendRedirect(context + "/index.jsp");
+			}
+		} catch (Exception e) {
+			req.setAttribute("error", "システムに不具合が発生しました。管理者に連絡してください。");
+		    req.getRequestDispatcher("/index.jsp").forward(req, res);
 		}
-
-		UserDao.updateLastLoginTime(user.getUserId());
-
-		HttpSession session = req.getSession(true);
-		session.setAttribute("loginUser", user);
-		session.setAttribute("user_id", user.getUserId());
-
-		Set<String> permissions = PermissionDAO.getPermissionsByUserId(user.getUserId());
-
-		session.setAttribute("permissions", permissions);
-
-		String role = user.getRoleName();
-		String context = req.getContextPath();
-
-		switch (role) {
-
-		case "キッチン":
-			res.sendRedirect(context + "/KitchenOrderList");
-			break;
-		case "フロント":
-			res.sendRedirect(context + "/front/front_top.jsp");
-			break;
-		case "フロア":
-			res.sendRedirect(context + "/index_select.jsp");
-			break;
-		case "管理者":
-			res.sendRedirect(context + "/index_select.jsp");
-			break;
-		default:
-			res.sendRedirect(context + "/index.jsp");
-		}
-
 	}
 }

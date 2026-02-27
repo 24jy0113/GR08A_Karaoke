@@ -10,7 +10,7 @@ import model.User;
 import util.PasswordUtil;
 
 public class UserDao {
-	public static User login(String userId, String plainPassword) {
+	public static User login(String userId, String plainPassword) throws Exception {
 
 		String sql = "SELECT u.user_id, u.user_name, u.password, u.last_login_time, r.role_name " +
 				"FROM user u " +
@@ -43,11 +43,11 @@ public class UserDao {
 
 				return user;
 			}
+			return null;
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new Exception("DBアクセスエラー", e);
 		}
-		return null;
 	}
 
 	public static void insertUser(String userId, String userName, String rawPassword) {
