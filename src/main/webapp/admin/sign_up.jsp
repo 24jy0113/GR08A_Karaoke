@@ -30,7 +30,7 @@ String signupRoleName = (String) session.getAttribute("SIGNUP_ROLE_NAME");
 	<%@ include file="/shared/biz_header.jsp"%>
 	<main>
 		<div class="text-center">
-			<h1 class="bodytitle">アカウント登録</h1>
+			<h1 class="bodytitle">アカウント作成</h1>
 			<p class="bodymsg">下記の情報を入力してください</p>
 			<c:if test="${ error != null}">
 				<p class="errormsg">${error}</p>

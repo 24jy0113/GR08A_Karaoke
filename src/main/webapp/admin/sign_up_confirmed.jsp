@@ -22,8 +22,8 @@ if (user == null) {
 <body>
 	<%@ include file="/shared/biz_header.jsp"%>
 	<main class="text-center">
-		<h1 class="bodytitle">アカウント登録完了</h1>
-		<p class="bodymsg">アカウント登録が完了しました</p>
+		<h1 class="bodytitle">アカウント作成完了</h1>
+		<p class="bodymsg">アカウント作成が完了しました</p>
 		<div class="action-buttons flex-center">
 			<button type="button" class="btn-back"
 				onclick="location.href='account_search.jsp'">アカウント検索へ戻る</button>

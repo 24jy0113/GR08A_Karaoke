@@ -30,7 +30,7 @@ String roleName = (String) session.getAttribute("SIGNUP_ROLE_NAME");
 	<%@ include file="/shared/biz_header.jsp"%>
 	<main>
 		<div class="text-center">
-			<h1 class="bodytitle">アカウント登録情報の確認</h1>
+			<h1 class="bodytitle">作成するアカウント情報の確認</h1>
 			<p class="bodymsg">下記の情報を確認してください</p>
 			<table class="tbstyle">
 				<tr>
@@ -55,7 +55,7 @@ String roleName = (String) session.getAttribute("SIGNUP_ROLE_NAME");
 					onclick="location.href='<%=request.getContextPath()%>/admin/sign_up.jsp'">修正する</button>
 				<form action="<%=request.getContextPath()%>/SignUpCompleteServlet"
 					method="post">
-					<button type="submit" class="btn-next">ユーザ登録を完了する</button>
+					<button type="submit" class="btn-next">アカウント作成を完了する</button>
 				</form>
 			</div>
 		</div>
